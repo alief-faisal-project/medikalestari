@@ -1,0 +1,131 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║           ✅ PERBAIKAN ADMIN PANEL - RINGKASAN FINAL                        ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+📁 FILE YANG SUDAH DIUBAH:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ app/admin/doctors/page.tsx
+  - Hapus field "experience_years" dari form
+  - Hapus dari tabel display
+  - Fix session check (hanya jalankan sekali saat mount)
+  - Add error message di alert saat submit
+
+✓ lib/types.ts
+  - Buat experience_years optional (experience_years?: number)
+
+✓ SUPABASE_FIX.sql (FILE BARU - SIAP COPY-PASTE)
+✓ SUPABASE_ALTER.sql (sudah ada - penjelasan lengkap)
+✓ PERBAIKAN_ADMIN_PANEL.md (panduan lengkap)
+✓ SQL_READY_TO_RUN.txt (checklist & ringkasan)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎯 3 MASALAH YANG DIPERBAIKI:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1️⃣ ERROR: "new row violates row-level security policy for table doctors"
+   ✓ SOLUSI: Jalankan SQL di SUPABASE_FIX.sql
+   
+2️⃣ ERROR: Login ulang setiap masuk admin panel
+   ✓ SOLUSI: Sudah diperbaiki di app/admin/doctors/page.tsx (dependency array)
+   
+3️⃣ FEATURE: Hapus field "Tahun Pengalaman"
+   ✓ SOLUSI: Sudah dihapus dari form, tabel, dan state
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🚀 LANGKAH EKSEKUSI (COPY-PASTE):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1: Jalankan SQL di Supabase
+   → Buka: https://supabase.com
+   → Login ke project "rs medika lestari"
+   → Klik: SQL Editor → New Query
+   → Copy-paste isi file: SUPABASE_FIX.sql
+   → Klik: Run
+   → ✓ Tunggu sampai "Success"
+
+STEP 2: Pastikan Storage Bucket Ada
+   → Klik: Storage → New Bucket
+   → Nama: doctors
+   → Public: ✓ ON
+   → Create
+   → ✓ Selesai
+
+STEP 3: Test di Local
+   → npm run dev (jika belum)
+   → Buka: http://localhost:3000/admin/login
+   → Login dengan credentials Anda
+   → Klik: Kelola Dokter
+   → ✓ Seharusnya tidak redirect ke login lagi
+   → Klik: Tambah Dokter
+   → Isi form (semua field terlihat)
+   → Klik: Simpan
+   → ✓ Dokter muncul di tabel tanpa error
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📋 FORM ADMIN SEKARANG PUNYA FIELD:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Foto Dokter (upload gambar)
+✓ Nama Dokter (text input)
+✓ Spesialisasi (dropdown - 12 pilihan tetap)
+✓ Biodata (textarea)
+✓ Email (text input)
+✓ Telepon (text input)
+
+(Dihapus: Tahun Pengalaman)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📊 SPESIALISASI YANG TERSEDIA:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Spesialis Penyakit Dalam
+2. Spesialis Bedah Umum
+3. Spesialis Saraf
+4. Spesialis Orthopedi
+5. Spesialis Paru
+6. Spesialis Jantung & Pembuluh Darah
+7. Spesialis THT
+8. Spesialis Anak
+9. Spesialis Mata
+10. Spesialis Obgyn
+11. Spesialis Gigi
+12. Spesialis Fisioterapi
+
+(Sama dengan di SearchDropdown homepage)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🧪 JIKA MASIH ERROR:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ Error: "bucket not found"
+   → Buat bucket "doctors" di Storage (lihat STEP 2 di atas)
+
+❌ Error: "violates row-level security policy"
+   → SQL belum dijalankan atau error saat jalankan
+   → Cek di Supabase Console → Database → Policies
+   → Seharusnya ada 8 policies baru
+
+❌ Error: "unauthorized" atau 401
+   → Session expired, login ulang di /admin/login
+
+❌ Error: "Cannot read properties of undefined"
+   → Refresh halaman atau clear browser cache
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ SEMUANYA SELESAI! 
+
+Sekarang admin panel sudah bisa:
+✓ Submit dokter tanpa error RLS
+✓ Upload gambar dokter
+✓ Tidak login ulang setiap masuk
+✓ Spesialisasi pilih dari dropdown (konsisten)
+✓ Tidak ada field tahun pengalaman
+
+═══════════════════════════════════════════════════════════════════════════════

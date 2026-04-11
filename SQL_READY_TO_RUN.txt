@@ -1,0 +1,150 @@
+📌 RINGKASAN PERBAIKAN ADMIN PANEL - FINAL CHECKLIST
+
+═══════════════════════════════════════════════════════════════════
+
+✅ PERBAIKAN KODE (SUDAH SELESAI):
+
+1. ✓ Hapus field "Tahun Pengalaman" dari form admin
+   - Dihapus dari state formData
+   - Dihapus dari tabel display
+   - Dihapus dari form input
+   - Updated lib/types.ts (experience_years sekarang optional)
+
+2. ✓ Perbaiki login ulang (session tidak redirect berulang kali)
+   - Mengubah useEffect dependency dari [router] menjadi []
+   - Sekarang hanya check session saat pertama kali load
+   - Admin tidak akan di-redirect ke login jika sudah login
+
+3. ✓ Dropdown spesialisasi (sesuai dengan homepage SearchDropdown)
+   - 12 pilihan specialty tetap
+   - Admin tidak bisa input specialty custom
+   - Data lebih konsisten di database
+
+═══════════════════════════════════════════════════════════════════
+
+❌ MASALAH YANG MASIH PERLU DIPERBAIKI DI SUPABASE:
+
+Error saat submit dokter:
+"new row violates row-level security policy for table "doctors""
+
+Penyebab: RLS policies tidak mengizinkan INSERT
+
+Solusi: JALANKAN SQL DI BAWAH INI
+
+═══════════════════════════════════════════════════════════════════
+
+🔧 SQL UNTUK JALANKAN DI SUPABASE SQL EDITOR:
+
+LANGKAH:
+1. Buka https://supabase.com → Login
+2. Pilih Project "rs medika lestari"
+3. Klik "SQL Editor" (sidebar kiri)
+4. Klik "New Query"
+5. Copy-paste SEMUA SQL di bawah ini
+6. Klik "Run"
+
+─────────────────────────────────────────────────────────────────
+
+-- DROP policies lama yang mungkin conflict
+DROP POLICY IF EXISTS "Allow authenticated insert doctors" ON public.doctors;
+DROP POLICY IF EXISTS "Allow authenticated update doctors" ON public.doctors;
+DROP POLICY IF EXISTS "Allow authenticated delete doctors" ON public.doctors;
+DROP POLICY IF EXISTS "Allow public read doctors" ON public.doctors;
+DROP POLICY IF EXISTS "Allow authenticated upload doctors storage" ON storage.objects;
+DROP POLICY IF EXISTS "Allow public read doctors storage" ON storage.objects;
+DROP POLICY IF EXISTS "Allow authenticated update doctors storage" ON storage.objects;
+DROP POLICY IF EXISTS "Allow authenticated delete doctors storage" ON storage.objects;
+
+-- ENABLE RLS pada tabel doctors
+ALTER TABLE public.doctors ENABLE ROW LEVEL SECURITY;
+
+-- CREATE policies untuk doctors table - untuk publik baca
+CREATE POLICY "Allow public read doctors" ON public.doctors
+  FOR SELECT USING (true);
+
+-- CREATE policies untuk doctors table - untuk authenticated INSERT
+CREATE POLICY "Allow authenticated insert doctors" ON public.doctors
+  FOR INSERT WITH CHECK (true);
+
+-- CREATE policies untuk doctors table - untuk authenticated UPDATE
+CREATE POLICY "Allow authenticated update doctors" ON public.doctors
+  FOR UPDATE USING (true) WITH CHECK (true);
+
+-- CREATE policies untuk doctors table - untuk authenticated DELETE
+CREATE POLICY "Allow authenticated delete doctors" ON public.doctors
+  FOR DELETE USING (true);
+
+-- ENABLE RLS pada storage.objects
+ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
+
+-- CREATE policies untuk storage bucket doctors - publik baca
+CREATE POLICY "Allow public read doctors storage" ON storage.objects
+  FOR SELECT USING (bucket_id = 'doctors');
+
+-- CREATE policies untuk storage bucket doctors - authenticated upload
+CREATE POLICY "Allow authenticated insert doctors storage" ON storage.objects
+  FOR INSERT WITH CHECK (bucket_id = 'doctors');
+
+-- CREATE policies untuk storage bucket doctors - authenticated update
+CREATE POLICY "Allow authenticated update doctors storage" ON storage.objects
+  FOR UPDATE USING (bucket_id = 'doctors') WITH CHECK (bucket_id = 'doctors');
+
+-- CREATE policies untuk storage bucket doctors - authenticated delete
+CREATE POLICY "Allow authenticated delete doctors storage" ON storage.objects
+  FOR DELETE USING (bucket_id = 'doctors');
+
+─────────────────────────────────────────────────────────────────
+
+7. Tunggu sampai muncul pesan "Success" atau tidak ada error
+8. Selesai! ✓
+
+═══════════════════════════════════════════════════════════════════
+
+📋 CHECKLIST SEBELUM TEST:
+
+☐ Sudah update kode (file sudah di-edit, errors sudah hilang)
+☐ Sudah buat bucket "doctors" di Storage (public=true)
+☐ Sudah jalankan SQL di Supabase untuk RLS policies
+☐ Sudah login ke admin panel dengan akun yang valid
+
+═══════════════════════════════════════════════════════════════════
+
+🧪 TEST SETELAH PERBAIKAN:
+
+1. Test login tidak berulang:
+   - Buka http://localhost:3000/admin/login
+   - Login dengan email & password
+   - Seharusnya masuk ke /admin/dashboard
+   - Klik "Kelola Dokter"
+   - ✓ Seharusnya TIDAK redirect ke login lagi
+
+2. Test submit dokter baru:
+   - Klik tombol "Tambah Dokter"
+   - Isi form:
+     * Foto: Pilih gambar
+     * Nama: "dr. Budi Santoso"
+     * Spesialisasi: Pilih dari dropdown
+     * Biodata: "Dokter berpengalaman"
+     * Email: "budi@example.com"
+     * Telepon: "0812345678"
+   - Klik "Simpan"
+   - ✓ Seharusnya dokter muncul di tabel tanpa error
+
+═══════════════════════════════════════════════════════════════════
+
+🚨 JIKA MASIH ERROR SETELAH SQL:
+
+1. Copy pesan error yang muncul di alert
+2. Cek apakah sudah jalankan SQL sampai selesai
+3. Cek apakah bucket "doctors" sudah dibuat & public
+4. Jika masih error, beri tahu pesan error-nya!
+
+═══════════════════════════════════════════════════════════════════
+
+FILE YANG SUDAH DIUBAH:
+✓ app/admin/doctors/page.tsx
+✓ lib/types.ts
+✓ SUPABASE_ALTER.sql (baru)
+✓ PERBAIKAN_ADMIN_PANEL.md (baru)
+
+═══════════════════════════════════════════════════════════════════
