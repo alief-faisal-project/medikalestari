@@ -8,10 +8,10 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-slate-900 text-gray-300 font-sans">
+    <footer className="bg-linear-to-b from-slate-900 to-slate-950 text-gray-300 font-sans border-t-4 border-blue-600">
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12">
           {/* Column 1: About */}
           <div className="space-y-4">
             <h3 className="text-white font-bold text-lg mb-4">

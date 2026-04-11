@@ -10,9 +10,10 @@ import { SPECIALTY_CATEGORIES } from "./DoctorSection";
 
 interface SearchDropdownProps {
   isOpen: boolean;
+  onClose?: () => void;
 }
 
-const SearchDropdown: React.FC<SearchDropdownProps> = ({ isOpen }) => {
+const SearchDropdown: React.FC<SearchDropdownProps> = ({ isOpen, onClose }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
   const router = useRouter();
@@ -65,6 +66,10 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ isOpen }) => {
       router.push(`/dokter?specialty=${encodeURIComponent(specialty)}`);
     }
     setSearchQuery("");
+    // Close the searchbar setelah memilih kategori
+    if (onClose) {
+      onClose();
+    }
   };
 
   return (

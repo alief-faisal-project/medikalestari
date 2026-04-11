@@ -1,42 +1,32 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   Phone,
   Mail,
-  Clock,
-  Stethoscope,
-  Award,
   ArrowLeft,
   Calendar,
   Heart,
+  Award,
+  Stethoscope,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { fetchDoctorById, fetchSchedulesByDoctor } from "@/lib/api";
 import { Doctor, Schedule } from "@/lib/types";
+import DoctorScheduleDisplay from "@/components/DoctorScheduleDisplay";
+import BookingForm from "@/components/BookingForm";
 
 const DoctorDetailPage = () => {
   const params = useParams();
-  const searchParams = useSearchParams();
   const router = useRouter();
   const doctorId = params.id as string;
-  const action = searchParams.get("action");
 
   const [doctor, setDoctor] = useState<Doctor | null>(null);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"profil" | "jadwal" | "booking">(
-    action === "booking" ? "booking" : "profil",
-  );
-  const [bookingForm, setBookingForm] = useState({
-    patientName: "",
-    patientPhone: "",
-    patientEmail: "",
-    patientAge: "",
-    keluhan: "",
-    preferredDate: "",
-  });
+  const [activeTab, setActiveTab] = useState<"profil" | "jadwal">("profil");
+  const [showBookingForm, setShowBookingForm] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -58,22 +48,6 @@ const DoctorDetailPage = () => {
       loadData();
     }
   }, [doctorId]);
-
-  const handleBookingSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Handle booking submission here
-    alert(
-      `Janji temu berhasil dibuat untuk ${bookingForm.patientName} dengan ${doctor?.name}`,
-    );
-    setBookingForm({
-      patientName: "",
-      patientPhone: "",
-      patientEmail: "",
-      patientAge: "",
-      keluhan: "",
-      preferredDate: "",
-    });
-  };
 
   if (loading) {
     return (
@@ -181,7 +155,7 @@ const DoctorDetailPage = () => {
                 Lihat Jadwal
               </button>
               <button
-                onClick={() => setActiveTab("booking")}
+                onClick={() => setShowBookingForm(true)}
                 className="flex items-center gap-2 px-6 py-3 bg-[#0084BF] text-white font-bold rounded-lg hover:bg-[#0073a5] transition-all"
               >
                 <Heart size={18} />
@@ -213,16 +187,6 @@ const DoctorDetailPage = () => {
               }`}
             >
               Jadwal Praktek
-            </button>
-            <button
-              onClick={() => setActiveTab("booking")}
-              className={`pb-4 px-2 font-bold uppercase text-sm tracking-wider transition-all ${
-                activeTab === "booking"
-                  ? "text-[#0084BF] border-b-2 border-[#0084BF]"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              Buat Janji
             </button>
           </div>
         </div>
@@ -278,208 +242,22 @@ const DoctorDetailPage = () => {
 
           {/* Schedule Tab */}
           {activeTab === "jadwal" && (
-            <div>
-              <h3 className="text-2xl font-bold text-[#003d79] mb-6">
-                Jadwal Praktek
-              </h3>
-              {schedules.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {schedules.map((schedule) => (
-                    <div
-                      key={schedule.id}
-                      className="p-6 border border-gray-200 rounded-lg hover:shadow-md transition-all"
-                    >
-                      <div className="flex items-center gap-2 mb-2">
-                        <Clock size={18} className="text-[#0084BF]" />
-                        <span className="font-bold text-[#003d79]">
-                          {schedule.day_of_week}
-                        </span>
-                      </div>
-                      <p className="text-gray-600 ml-7">
-                        {schedule.start_time} - {schedule.end_time}
-                      </p>
-                      <div className="mt-3">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-bold ${
-                            schedule.is_available
-                              ? "bg-green-100 text-green-700"
-                              : "bg-red-100 text-red-700"
-                          }`}
-                        >
-                          {schedule.is_available ? "Tersedia" : "Penuh"}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12 bg-gray-50 rounded-lg border border-gray-200">
-                  <p className="text-gray-500">Jadwal praktek belum tersedia</p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Booking Tab */}
-          {activeTab === "booking" && (
-            <div className="max-w-2xl">
-              <h3 className="text-2xl font-bold text-[#003d79] mb-6">
-                Buat Janji Temu
-              </h3>
-              <form
-                onSubmit={handleBookingSubmit}
-                className="space-y-6 bg-gray-50 p-8 rounded-lg border border-gray-200"
-              >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="patientName"
-                      className="block text-sm font-bold text-[#003d79] mb-2"
-                    >
-                      Nama Lengkap *
-                    </label>
-                    <input
-                      id="patientName"
-                      type="text"
-                      required
-                      value={bookingForm.patientName}
-                      onChange={(e) =>
-                        setBookingForm({
-                          ...bookingForm,
-                          patientName: e.target.value,
-                        })
-                      }
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0084BF]"
-                      placeholder="Nama Anda"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="patientAge"
-                      className="block text-sm font-bold text-[#003d79] mb-2"
-                    >
-                      Usia *
-                    </label>
-                    <input
-                      id="patientAge"
-                      type="number"
-                      required
-                      value={bookingForm.patientAge}
-                      onChange={(e) =>
-                        setBookingForm({
-                          ...bookingForm,
-                          patientAge: e.target.value,
-                        })
-                      }
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0084BF]"
-                      placeholder="Usia Anda"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="patientEmail"
-                      className="block text-sm font-bold text-[#003d79] mb-2"
-                    >
-                      Email *
-                    </label>
-                    <input
-                      id="patientEmail"
-                      type="email"
-                      required
-                      value={bookingForm.patientEmail}
-                      onChange={(e) =>
-                        setBookingForm({
-                          ...bookingForm,
-                          patientEmail: e.target.value,
-                        })
-                      }
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0084BF]"
-                      placeholder="Email Anda"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="patientPhone"
-                      className="block text-sm font-bold text-[#003d79] mb-2"
-                    >
-                      Nomor Telepon *
-                    </label>
-                    <input
-                      id="patientPhone"
-                      type="tel"
-                      required
-                      value={bookingForm.patientPhone}
-                      onChange={(e) =>
-                        setBookingForm({
-                          ...bookingForm,
-                          patientPhone: e.target.value,
-                        })
-                      }
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0084BF]"
-                      placeholder="Nomor Telepon Anda"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="preferredDate"
-                    className="block text-sm font-bold text-[#003d79] mb-2"
-                  >
-                    Tanggal Pilihan *
-                  </label>
-                  <input
-                    id="preferredDate"
-                    type="date"
-                    required
-                    value={bookingForm.preferredDate}
-                    onChange={(e) =>
-                      setBookingForm({
-                        ...bookingForm,
-                        preferredDate: e.target.value,
-                      })
-                    }
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0084BF]"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="keluhan"
-                    className="block text-sm font-bold text-[#003d79] mb-2"
-                  >
-                    Keluhan / Gejala *
-                  </label>
-                  <textarea
-                    id="keluhan"
-                    required
-                    value={bookingForm.keluhan}
-                    onChange={(e) =>
-                      setBookingForm({
-                        ...bookingForm,
-                        keluhan: e.target.value,
-                      })
-                    }
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0084BF] resize-none"
-                    rows={4}
-                    placeholder="Deskripsikan keluhan atau gejala Anda"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full px-6 py-4 bg-[#0084BF] text-white font-bold rounded-lg hover:bg-[#0073a5] transition-all uppercase tracking-wider"
-                >
-                  Konfirmasi Janji Temu
-                </button>
-              </form>
-            </div>
+            <DoctorScheduleDisplay
+              schedules={schedules}
+              onBooking={() => setShowBookingForm(true)}
+            />
           )}
         </motion.div>
       </div>
+
+      {/* Booking Form Modal */}
+      {showBookingForm && (
+        <BookingForm
+          doctorName={doctor.name}
+          specialty={doctor.specialty}
+          onClose={() => setShowBookingForm(false)}
+        />
+      )}
     </div>
   );
 };

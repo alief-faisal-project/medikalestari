@@ -220,7 +220,10 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
           </div>
         </div>
 
-        <SearchDropdown isOpen={isSearchOpen} />
+        <SearchDropdown
+          isOpen={isSearchOpen}
+          onClose={() => setIsSearchOpen(false)}
+        />
       </div>
 
       {/* --- Mobile Menu --- */}

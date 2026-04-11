@@ -13,11 +13,20 @@ export interface Doctor {
 export interface Schedule {
   id: string;
   doctor_id: string;
-  day_of_week: string; // Monday, Tuesday, etc.
+  day_of_week: string; // Senin, Selasa, etc.
   start_time: string; // HH:mm format
   end_time: string; // HH:mm format
   is_available: boolean;
   created_at: string;
+}
+
+export interface DaySchedule {
+  day: string;
+  dayOfWeek: string;
+  schedules: Array<{
+    startTime: string;
+    endTime: string;
+  }>;
 }
 
 export interface AdminUser {

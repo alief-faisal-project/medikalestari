@@ -13,32 +13,51 @@ const AdminDashboard = () => {
   const router = useRouter();
 
   useEffect(() => {
+    let mounted = true;
+
     const checkAuth = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session) {
-        router.push("/admin/login");
-        return;
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
+        if (!mounted) return;
+
+        if (!session) {
+          router.push("/admin/login");
+          return;
+        }
+
+        // Fetch statistics hanya jika sudah authenticated
+        const { count: doctorCount } = await supabase
+          .from("doctors")
+          .select("*", { count: "exact", head: true });
+
+        const { count: scheduleCount } = await supabase
+          .from("schedules")
+          .select("*", { count: "exact", head: true });
+
+        if (mounted) {
+          setStats({
+            totalDoctors: doctorCount || 0,
+            totalSchedules: scheduleCount || 0,
+          });
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Auth check error:", error);
+        if (mounted) {
+          setLoading(false);
+        }
       }
-
-      // Fetch statistics
-      const { count: doctorCount } = await supabase
-        .from("doctors")
-        .select("*", { count: "exact", head: true });
-
-      const { count: scheduleCount } = await supabase
-        .from("schedules")
-        .select("*", { count: "exact", head: true });
-
-      setStats({
-        totalDoctors: doctorCount || 0,
-        totalSchedules: scheduleCount || 0,
-      });
-      setLoading(false);
     };
 
+    // Cek auth hanya sekali saat mount
     checkAuth();
+
+    return () => {
+      mounted = false;
+    };
   }, [router]);
 
   if (loading) {

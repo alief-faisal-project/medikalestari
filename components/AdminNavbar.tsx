@@ -12,19 +12,30 @@ const AdminNavbar = () => {
   const pathname = usePathname();
 
   useEffect(() => {
+    let mounted = true;
+
     const checkAuth = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (session) {
-        setUserEmail(session.user.email || null);
-      } else {
-        router.push("/admin/login");
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
+        if (!mounted) return;
+
+        if (session) {
+          setUserEmail(session.user.email || null);
+        }
+      } catch (error) {
+        console.error("Auth check error:", error);
       }
     };
 
     checkAuth();
-  }, [router]);
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();

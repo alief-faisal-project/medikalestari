@@ -6,6 +6,7 @@ import { Search, User, Stethoscope, CalendarDays } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchDoctors } from "@/lib/api";
 import { Doctor } from "@/lib/types";
+import DoctorSkeleton from "./DoctorSkeleton";
 
 // Hardcoded specialty categories
 export const SPECIALTY_CATEGORIES = [
@@ -24,6 +25,8 @@ export const SPECIALTY_CATEGORIES = [
   "Spesialis Fisioterapi",
 ];
 
+const ITEMS_PER_PAGE = 10;
+
 const DoctorSection = ({
   initialSearch = "",
   initialSpecialty = "",
@@ -39,6 +42,10 @@ const DoctorSection = ({
   const [selectedDay, setSelectedDay] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [hasSearched, setHasSearched] = useState(false);
+  const [isFromSearchBar, setIsFromSearchBar] = useState(
+    !!initialSearch || !!initialSpecialty,
+  );
+  const [currentPage, setCurrentPage] = useState(1);
 
   // --- Memuat Data Dokter ---
   useEffect(() => {
@@ -46,7 +53,8 @@ const DoctorSection = ({
       try {
         const data = await fetchDoctors();
         setDoctors(data);
-        if (initialSearch || initialSpecialty) setHasSearched(true);
+        // Selalu tampilkan dokter (baik ada param atau tidak)
+        setHasSearched(true);
       } catch (error) {
         console.error("Error loading doctors:", error);
       } finally {
@@ -56,36 +64,55 @@ const DoctorSection = ({
     load();
   }, [initialSearch, initialSpecialty]);
 
+  // Update selectedSpecialty ketika initialSpecialty berubah (dari searchbar)
+  useEffect(() => {
+    if (initialSpecialty) {
+      setSelectedSpecialty(initialSpecialty);
+      setIsFromSearchBar(true);
+    }
+  }, [initialSpecialty]);
+
   // Use hardcoded specialty categories
   const specialties = SPECIALTY_CATEGORIES;
 
   // --- Logika Filter ---
-  const filteredDoctors = hasSearched
-    ? doctors.filter((doc) => {
-        const matchSpecialty =
-          selectedSpecialty === "Semua Spesialis" ||
-          doc.specialty === selectedSpecialty;
-        const matchName =
-          searchName === "" ||
-          doc.name.toLowerCase().includes(searchName.toLowerCase());
-        return matchSpecialty && matchName;
-      })
-    : [];
+  const filteredDoctors = doctors.filter((doc) => {
+    const matchSpecialty =
+      selectedSpecialty === "Semua Spesialis" ||
+      doc.specialty === selectedSpecialty;
+    const matchName =
+      searchName === "" ||
+      doc.name.toLowerCase().includes(searchName.toLowerCase());
+    return matchSpecialty && matchName;
+  });
+
+  // --- Logika Pagination ---
+  const totalPages = Math.ceil(filteredDoctors.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedDoctors = filteredDoctors.slice(startIndex, endIndex);
+
+  // Reset ke halaman 1 saat filter berubah
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedSpecialty, searchName, selectedDay]);
 
   return (
     <section
-      className="w-full py-16 bg-white min-h-screen font-sans text-slate-800"
+      className="w-full bg-white min-h-screen font-sans text-slate-800"
       id="section-dokter"
     >
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
-        {/* --- Header & Title --- */}
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-[#003d79] tracking-tight uppercase">
+      {/* --- STICKY HEADER --- */}
+      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
+          <h1 className="text-4xl font-bold text-[#003d79] tracking-tight mb-1">
             Dokter Kami
           </h1>
-          <div className="h-1.5 w-16 bg-[#0084BF] mt-4"></div>
+          <span className="text-gray-600">Temukan Dokter Spesialis Kami</span>
         </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
         <div className="flex flex-col lg:flex-row gap-10 items-start">
           {/* --- SISI KIRI: Sticky Filter Panel (Sharp Design) --- */}
           <aside className="w-full lg:w-1/3 xl:w-1/4 lg:sticky lg:top-24">
@@ -187,7 +214,10 @@ const DoctorSection = ({
               </div>
 
               <button
-                onClick={() => setHasSearched(true)}
+                onClick={() => {
+                  setHasSearched(true);
+                  setIsFromSearchBar(true);
+                }}
                 className="w-full bg-[#0084BF] text-white py-4 font-bold hover:bg-[#0073a5] transition-all duration-300 uppercase text-[11px] tracking-[0.2em] flex items-center justify-center gap-2 group"
               >
                 Cari Dokter
@@ -198,33 +228,37 @@ const DoctorSection = ({
           {/* --- SISI KANAN: List Dokter --- */}
           <main className="w-full lg:w-2/3 xl:w-3/4">
             {loading && (
-              <div className="flex flex-col items-center justify-center h-96 border border-gray-100">
-                <div className="animate-spin h-8 w-8 border-2 border-[#0084BF] border-t-transparent"></div>
-              </div>
-            )}
-
-            {!loading && !hasSearched && (
-              <div className="flex flex-col items-center justify-center h-96 border border-gray-100 bg-gray-50/30">
-                <Search size={40} className="text-gray-200 mb-4" />
-                <h3 className="text-gray-500 text-sm font-medium tracking-wide">
-                  Masukkan kriteria pencarian untuk menemukan dokter
-                </h3>
-              </div>
-            )}
-
-            {!loading && hasSearched && filteredDoctors.length > 0 && (
               <div className="space-y-8">
                 <div className="text-xs text-gray-400 tracking-widest uppercase border-b border-gray-100 pb-4">
-                  Menampilkan{" "}
-                  <span className="text-[#0084BF] font-bold">
-                    {filteredDoctors.length}
-                  </span>{" "}
-                  Dokter
+                  Memuat data dokter...
                 </div>
+                <div className="grid grid-cols-1 gap-10">
+                  <DoctorSkeleton />
+                  <DoctorSkeleton />
+                  <DoctorSkeleton />
+                </div>
+              </div>
+            )}
+
+            {!loading && filteredDoctors.length > 0 && (
+              <div className="space-y-8">
+                {isFromSearchBar && (
+                  <div className="text-xs text-gray-400 tracking-widest uppercase border-b border-gray-100 pb-4">
+                    Menampilkan{" "}
+                    <span className="text-[#0084BF] font-bold">
+                      {paginatedDoctors.length}
+                    </span>{" "}
+                    dari{" "}
+                    <span className="text-[#0084BF] font-bold">
+                      {filteredDoctors.length}
+                    </span>{" "}
+                    Dokter (Halaman {currentPage} dari {totalPages})
+                  </div>
+                )}
 
                 <div className="grid grid-cols-1 gap-10">
                   <AnimatePresence mode="popLayout">
-                    {filteredDoctors.map((doctor) => (
+                    {paginatedDoctors.map((doctor) => (
                       <motion.div
                         key={doctor.id}
                         initial={{ opacity: 0 }}
@@ -292,23 +326,68 @@ const DoctorSection = ({
                     ))}
                   </AnimatePresence>
                 </div>
+
+                {/* --- PAGINATION --- */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center gap-2 mt-12 pt-8 border-t border-gray-100">
+                    {/* Previous Button */}
+                    <button
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.max(1, prev - 1))
+                      }
+                      disabled={currentPage === 1}
+                      className="px-4 py-2 text-sm font-semibold text-[#003d79] border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    >
+                      ← Sebelumnya
+                    </button>
+
+                    {/* Page Numbers */}
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                        (page) => (
+                          <button
+                            key={page}
+                            onClick={() => setCurrentPage(page)}
+                            className={`w-10 h-10 rounded-lg font-semibold text-sm transition-all ${
+                              currentPage === page
+                                ? "bg-[#0084BF] text-white"
+                                : "text-[#003d79] border border-gray-200 hover:bg-gray-50"
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        ),
+                      )}
+                    </div>
+
+                    {/* Next Button */}
+                    <button
+                      onClick={() =>
+                        setCurrentPage((prev) =>
+                          Math.min(totalPages, prev + 1),
+                        )
+                      }
+                      disabled={currentPage === totalPages}
+                      className="px-4 py-2 text-sm font-semibold text-[#003d79] border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    >
+                      Selanjutnya →
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
             {!loading && hasSearched && filteredDoctors.length === 0 && (
-              <div className="text-center py-20 border border-gray-100">
-                <p className="text-gray-400 text-sm tracking-widest uppercase">
-                  Dokter tidak ditemukan
-                </p>
-                <button
-                  onClick={() => {
-                    setSearchName("");
-                    setSelectedSpecialty("Semua Spesialis");
-                  }}
-                  className="mt-4 text-[#0084BF] text-[10px] font-bold uppercase tracking-widest border-b border-[#0084BF]"
-                >
-                  Reset Filter
-                </button>
+              // Jangan tampilkan apapun jika tidak ada dokter sesuai filter
+              <div />
+            )}
+
+            {!loading && !hasSearched && filteredDoctors.length === 0 && (
+              <div className="flex flex-col items-center justify-center h-96 border border-gray-100 bg-gray-50/30">
+                <Search size={40} className="text-gray-200 mb-4" />
+                <h3 className="text-gray-500 text-sm font-medium tracking-wide">
+                  Tidak ada dokter sesuai dengan kriteria pencarian
+                </h3>
               </div>
             )}
           </main>

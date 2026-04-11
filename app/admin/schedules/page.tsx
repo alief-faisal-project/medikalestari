@@ -38,18 +38,37 @@ const AdminSchedulesPage = () => {
   const router = useRouter();
 
   useEffect(() => {
+    let mounted = true;
+
     const checkAuth = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session) {
-        router.push("/admin/login");
-        return;
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
+        if (!mounted) return;
+
+        if (!session) {
+          router.push("/admin/login");
+          return;
+        }
+
+        if (mounted) {
+          fetchData();
+        }
+      } catch (error) {
+        console.error("Auth check error:", error);
+        if (mounted) {
+          setLoading(false);
+        }
       }
-      fetchData();
     };
 
     checkAuth();
+
+    return () => {
+      mounted = false;
+    };
   }, [router]);
 
   const fetchData = async () => {

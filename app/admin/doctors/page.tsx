@@ -31,20 +31,38 @@ const AdminDoctorsPage = () => {
   const router = useRouter();
 
   useEffect(() => {
+    let mounted = true;
+
     const checkAuth = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session) {
-        router.push("/admin/login");
-        return;
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
+        if (!mounted) return;
+
+        if (!session) {
+          router.push("/admin/login");
+          return;
+        }
+
+        if (mounted) {
+          fetchDoctors();
+        }
+      } catch (error) {
+        console.error("Auth check error:", error);
+        if (mounted) {
+          setLoading(false);
+        }
       }
-      fetchDoctors();
     };
 
     checkAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    return () => {
+      mounted = false;
+    };
+  }, [router]);
 
   const fetchDoctors = async () => {
     try {
@@ -95,9 +113,12 @@ const AdminDoctorsPage = () => {
       fetchDoctors();
       setShowModal(false);
     } catch (error) {
-  console.error("Error saving doctor:", error);
-  const message = (error && (error as Error).message) || String(error) || "Terjadi kesalahan saat menyimpan data";
-  alert(message);
+      console.error("Error saving doctor:", error);
+      const message =
+        (error && (error as Error).message) ||
+        String(error) ||
+        "Terjadi kesalahan saat menyimpan data";
+      alert(message);
     }
   };
 
@@ -342,18 +363,28 @@ const AdminDoctorsPage = () => {
                   required
                 >
                   <option value="">Pilih Spesialisasi</option>
-                  <option value="Spesialis Penyakit Dalam">Spesialis Penyakit Dalam</option>
-                  <option value="Spesialis Bedah Umum">Spesialis Bedah Umum</option>
+                  <option value="Spesialis Penyakit Dalam">
+                    Spesialis Penyakit Dalam
+                  </option>
+                  <option value="Spesialis Bedah Umum">
+                    Spesialis Bedah Umum
+                  </option>
                   <option value="Spesialis Saraf">Spesialis Saraf</option>
-                  <option value="Spesialis Orthopedi">Spesialis Orthopedi</option>
+                  <option value="Spesialis Orthopedi">
+                    Spesialis Orthopedi
+                  </option>
                   <option value="Spesialis Paru">Spesialis Paru</option>
-                  <option value="Spesialis Jantung & Pembuluh Darah">Spesialis Jantung & Pembuluh Darah</option>
+                  <option value="Spesialis Jantung & Pembuluh Darah">
+                    Spesialis Jantung & Pembuluh Darah
+                  </option>
                   <option value="Spesialis THT">Spesialis THT</option>
                   <option value="Spesialis Anak">Spesialis Anak</option>
                   <option value="Spesialis Mata">Spesialis Mata</option>
                   <option value="Spesialis Obgyn">Spesialis Obgyn</option>
                   <option value="Spesialis Gigi">Spesialis Gigi</option>
-                  <option value="Spesialis Fisioterapi">Spesialis Fisioterapi</option>
+                  <option value="Spesialis Fisioterapi">
+                    Spesialis Fisioterapi
+                  </option>
                 </select>
               </div>
 

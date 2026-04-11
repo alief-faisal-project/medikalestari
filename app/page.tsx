@@ -1,5 +1,5 @@
-import Image from "next/image";
-import HeroSection from "@/components/HeroSection"; // Sesuaikan path folder komponenmu
+import HeroSection from "@/components/HeroSection";
+import ServicesSection from "@/components/ServicesSection";
 
 export default function Home() {
   return (
@@ -7,6 +7,9 @@ export default function Home() {
       {/* HeroSection tepat di bawah navbar */}
       <main>
         <HeroSection />
+
+        {/* Services Section */}
+        <ServicesSection />
 
         {/* Konten tambahan di bawah hero jika perlu */}
         <div className="container-custom py-16">
