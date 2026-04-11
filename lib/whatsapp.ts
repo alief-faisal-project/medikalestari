@@ -29,7 +29,9 @@ export function getWhatsAppLink(message: string): string {
   // Format nomor tanpa simbol (hanya angka)
   const cleanPhone = CS_PHONE.replaceAll(/\D/g, "");
   // Tambahkan kode negara Indonesia jika belum ada
-  const phoneWithCountry = cleanPhone.startsWith("62") ? cleanPhone : "62" + cleanPhone.substring(1);
+  const phoneWithCountry = cleanPhone.startsWith("62")
+    ? cleanPhone
+    : "62" + cleanPhone.substring(1);
   return `https://api.whatsapp.com/send?phone=${phoneWithCountry}&text=${encodedMessage}`;
 }
 

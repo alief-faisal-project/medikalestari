@@ -1,27 +1,22 @@
 import HeroSection from "@/components/HeroSection";
 import ServicesSection from "@/components/ServicesSection";
+import MadingSection from "@/components/MadingSection"; // Import komponen baru
 
 export default function Home() {
   return (
     <div className="w-full min-h-screen bg-white">
-      {/* HeroSection tepat di bawah navbar */}
       <main>
+        {/* 1. HeroSection: Banner Utama */}
         <HeroSection />
 
-        {/* Services Section */}
+        {/* 3. Services Section: Informasi & Pelayanan (Aksen Biru) */}
         <ServicesSection />
 
-        {/* Konten tambahan di bawah hero jika perlu */}
-        <div className="container-custom py-16">
-          <div className="max-w-7xl mx-auto px-4 md:px-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              Selamat Datang di RS Medika Lestari
-            </h2>
-            <p className="text-gray-600 leading-relaxed">
-              Kami berkomitmen untuk memberikan layanan kesehatan terbaik...
-            </p>
-          </div>
-        </div>
+        {/* 4. Mading Section: Edukasi & Event (Sesuai Gambar Mading Melati) */}
+        <MadingSection />
+
+        {/* Tambahan Spacing di bawah jika diperlukan */}
+        <div className="pb-20"></div>
       </main>
     </div>
   );

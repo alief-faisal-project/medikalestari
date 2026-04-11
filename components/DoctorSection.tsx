@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Search, User, Stethoscope, CalendarDays } from "lucide-react";
+import { Search, User, Stethoscope, CalendarDays, FilterIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchDoctors } from "@/lib/api";
 import { Doctor } from "@/lib/types";
@@ -99,13 +99,13 @@ const DoctorSection = ({
 
   return (
     <section
-      className="w-full bg-white min-h-screen font-sans text-slate-800"
+      className="w-full bg-white min-h-screen font-sans text-slate-800 "
       id="section-dokter"
     >
       {/* --- STICKY HEADER --- */}
-      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+      <div className="sticky top-0 z-40 bg-whiteshadow-sm -mb-10">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
-          <h1 className="text-4xl font-bold text-[#003d79] tracking-tight mb-1">
+          <h1 className="text-4xl font-bold text-[#005075] tracking-tight mb-1">
             Dokter Kami
           </h1>
           <span className="text-gray-600">Temukan Dokter Spesialis Kami</span>
@@ -115,11 +115,11 @@ const DoctorSection = ({
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
         <div className="flex flex-col lg:flex-row gap-10 items-start">
           {/* --- SISI KIRI: Sticky Filter Panel (Sharp Design) --- */}
-          <aside className="w-full lg:w-1/3 xl:w-1/4 lg:sticky lg:top-24">
+          <aside className="w-full lg:w-1/3 xl:w-1/4 lg:sticky lg:top-50">
             <div className="border border-gray-200 p-8 bg-white shadow-sm h-fit">
-              <div className="flex items-center gap-3 mb-10 text-[#003d79] border-b border-gray-100 pb-4">
-                <Search size={18} className="text-[#0084BF]" />
-                <span className="uppercase tracking-[0.2em] text-xs font-bold">
+              <div className="flex items-center gap-3 mb-10 text-[#005075] border-b border-gray-100 pb-4">
+                <FilterIcon size={18} className="text-[#005075]" />
+                <span className="uppercase text-[17px] font-semibold">
                   Filter Pencarian
                 </span>
               </div>
@@ -128,7 +128,7 @@ const DoctorSection = ({
               <div className="mb-8">
                 <label
                   htmlFor="doctorName"
-                  className="text-[10px] font-bold text-[#003d79] uppercase mb-1 block tracking-widest"
+                  className="text-[15px] font-bold text-[#005075] mb-1"
                 >
                   Nama Dokter
                 </label>
@@ -152,7 +152,7 @@ const DoctorSection = ({
               <div className="mb-8 group">
                 <label
                   htmlFor="specialty"
-                  className="text-[10px] font-bold text-[#003d79] uppercase mb-1 block tracking-widest"
+                  className="text-[15px] font-bold text-[#005075] mb-1"
                 >
                   Spesialis
                 </label>
@@ -180,7 +180,7 @@ const DoctorSection = ({
               <div className="mb-12 group">
                 <label
                   htmlFor="day"
-                  className="text-[10px] font-bold text-[#003d79] uppercase mb-1 block tracking-widest"
+                  className="text-[15px] font-bold text-[#005075] mb-1"
                 >
                   Pilih Hari
                 </label>
@@ -218,7 +218,7 @@ const DoctorSection = ({
                   setHasSearched(true);
                   setIsFromSearchBar(true);
                 }}
-                className="w-full bg-[#0084BF] text-white py-4 font-bold hover:bg-[#0073a5] transition-all duration-300 uppercase text-[11px] tracking-[0.2em] flex items-center justify-center gap-2 group"
+                className="w-full bg-gradient-to-r from-[#0084BF] to-[#005075] text-white py-4 font-bold hover:brightness-110 hover:shadow-lg transition-all duration-300 text-[17px] flex items-center justify-center gap-2 group rounded-full cursor-pointer shadow-md"
               >
                 Cari Dokter
               </button>
@@ -264,10 +264,11 @@ const DoctorSection = ({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="flex flex-col md:flex-row items-center md:items-start gap-8"
+                        // Menambahkan border-b, padding-bottom (pb), dan menghilangkan border pada item terakhir
+                        className="flex flex-col md:flex-row items-center md:items-start gap-8 border-b border-gray-300 pb-10 last:border-0 last:pb-0"
                       >
                         {/* Foto Dokter (Bulat) */}
-                        <div className="relative w-40 h-40 md:w-48 md:h-48 shrink-0 rounded-full overflow-hidden bg-gray-100 border-4 border-gray-200">
+                        <div className="relative w-40 h-40 md:w-48 md:h-48 shrink-0 rounded-full overflow-hidden bg-gray-100 border-4 border-gray-200 group/img">
                           <Image
                             src={
                               doctor.image_url ||
@@ -275,16 +276,16 @@ const DoctorSection = ({
                             }
                             alt={doctor.name}
                             fill
-                            className="object-cover"
+                            className="object-cover transition-transform duration-500 ease-in-out group-hover/img:scale-110"
                           />
                         </div>
 
                         {/* Konten Dokter */}
                         <div className="flex-1 flex flex-col items-center text-center md:items-start md:text-left pt-2">
-                          <h3 className="text-2xl font-bold text-[#003d79] mb-1">
+                          <h3 className="text-2xl font-bold text-[#005075] mb-1">
                             {doctor.name}
                           </h3>
-                          <p className="text-[#0084BF] font-bold text-xs uppercase tracking-widest mb-4">
+                          <p className="text-gray-600 font-semibold text-xs mb-4">
                             {doctor.specialty}
                           </p>
 
@@ -294,31 +295,26 @@ const DoctorSection = ({
                             </p>
                           )}
 
-                          <div className="flex items-center gap-2 mb-6">
-                            <button className="text-[11px] font-bold text-[#0084BF] uppercase tracking-tighter border-b border-[#0084BF]/30 hover:border-[#0084BF] transition-all flex items-center gap-1 ">
-                              <CalendarDays size={12} />
-                              Lihat Jadwal
-                            </button>
-                          </div>
-
                           <div className="flex flex-wrap gap-3 w-full md:w-auto">
                             <button
                               onClick={() => {
                                 const url = `/dokter/${doctor.id}`;
                                 globalThis.location.href = url;
                               }}
-                              className="px-8 py-3 bg-white border border-gray-200 text-[#003d79] text-[10px] font-bold uppercase tracking-widest hover:bg-gray-50 transition-all rounded-full"
+                              className="px-8 py-3 bg-white border border-[#0084BF] text-[#0084BF] hover:bg-[#0084BF] hover:text-white text-[12px] font-bold transition-all rounded-full cursor-pointer"
                             >
                               Lihat Profil
                             </button>
+
+                            {/* Button Buat Janji Temu dengan BG Gradient */}
                             <button
                               onClick={() => {
                                 const url = `/dokter/${doctor.id}?action=booking`;
                                 globalThis.location.href = url;
                               }}
-                              className="px-8 py-3 bg-[#003d79] text-white text-[10px] font-bold uppercase tracking-widest hover:bg-[#002b55] transition-all rounded-full"
+                              className="px-8 py-3 bg-gradient-to-r from-[#0084BF] to-[#005075] text-white text-[12px] font-bold hover:opacity-90 transition-all rounded-full cursor-pointer shadow-md"
                             >
-                              Buat Janji
+                              Buat Janji Temu
                             </button>
                           </div>
                         </div>
@@ -363,9 +359,7 @@ const DoctorSection = ({
                     {/* Next Button */}
                     <button
                       onClick={() =>
-                        setCurrentPage((prev) =>
-                          Math.min(totalPages, prev + 1),
-                        )
+                        setCurrentPage((prev) => Math.min(totalPages, prev + 1))
                       }
                       disabled={currentPage === totalPages}
                       className="px-4 py-2 text-sm font-semibold text-[#003d79] border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"

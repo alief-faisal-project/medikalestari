@@ -115,9 +115,7 @@ export default function BookingForm({
           <div className="bg-linear-to-r from-[#0084BF] to-[#0073a5] text-white p-6 flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold">Buat Janji Temu</h2>
-              <p className="text-blue-100 text-sm mt-1">
-                Dengan {doctorName}
-              </p>
+              <p className="text-blue-100 text-sm mt-1">Dengan {doctorName}</p>
             </div>
             <button
               onClick={onClose}

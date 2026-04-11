@@ -2,218 +2,154 @@
 
 import React from "react";
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
+import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faYoutube,
+  faFacebookF,
+  faInstagram,
+} from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="bg-linear-to-b from-slate-900 to-slate-950 text-gray-300 font-sans border-t-4 border-blue-600">
-      {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12">
-          {/* Column 1: About */}
-          <div className="space-y-4">
-            <h3 className="text-white font-bold text-lg mb-4">
-              RS Medika Lestari
-            </h3>
-            <p className="text-sm leading-relaxed">
-              Rumah sakit terkemuka dengan komitmen memberikan layanan kesehatan
-              berkualitas tinggi dan terpercaya untuk masyarakat.
-            </p>
-            <div className="flex gap-3 pt-2">
-              <button
-                className="hover:text-blue-400 transition-colors"
-                aria-label="Facebook"
-              >
-                <span className="text-xl">f</span>
-              </button>
-              <button
-                className="hover:text-blue-400 transition-colors"
-                aria-label="Twitter"
-              >
-                <span className="text-xl">𝕏</span>
-              </button>
-              <button
-                className="hover:text-blue-400 transition-colors"
-                aria-label="Instagram"
-              >
-                <span className="text-xl">📷</span>
-              </button>
-              <button
-                className="hover:text-blue-400 transition-colors"
-                aria-label="LinkedIn"
-              >
-                <span className="text-xl">in</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Column 2: Quick Links */}
-          <div className="space-y-4">
-            <h3 className="text-white font-bold text-lg mb-4">Menu Utama</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/"
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  Beranda
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/dokter"
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  Dokter Kami
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  Fasilitas & Layanan
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  Tentang Kami
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  Berita & Artikel
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3: Services */}
-          <div className="space-y-4">
-            <h3 className="text-white font-bold text-lg mb-4">Layanan</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  Instalasi Gawat Darurat (IGD)
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  Rawat Inap
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  Rawat Jalan
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  Laboratorium
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  Radiologi
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 4: Contact */}
-          <div className="space-y-4">
-            <h3 className="text-white font-bold text-lg mb-4">Hubungi Kami</h3>
-            <div className="space-y-3 text-sm">
-              <div className="flex gap-3 items-start">
-                <MapPin size={20} className="text-blue-400 shrink-0 mt-1" />
-                <p className="leading-relaxed">
-                  Jalan Kesehatan No. 123
-                  <br />
+    <footer className="bg-white text-[#003d79] font-sans pt-16 pb-12 border-t border-gray-100">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
+          {/* Kolom Kiri: Logo & Info Alamat */}
+          <div className="md:col-span-3 space-y-6">
+            <Image
+              src="/logo.png"
+              alt="RS Medika Lestari"
+              width={180}
+              height={50}
+              className="h-10 w-auto object-contain"
+            />
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold leading-tight">
+                RS Medika Lestari
+              </h2>
+              <div className="flex gap-3 text-sm leading-relaxed text-[#003d79]">
+                <FontAwesomeIcon icon={faMapMarkerAlt} className="mt-1" />
+                <p>
+                  Jl. Kesehatan No. 123, <br />
                   Jakarta, Indonesia 12345
                 </p>
               </div>
-              <div className="flex gap-3 items-center">
-                <Phone size={20} className="text-blue-400 shrink-0" />
-                <a
-                  href="tel:+62215551234"
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  +62 (21) 555-1234
-                </a>
-              </div>
-              <div className="flex gap-3 items-center">
-                <Mail size={20} className="text-blue-400 shrink-0" />
-                <a
-                  href="mailto:info@medikaLestari.com"
-                  className="hover:text-blue-400 transition-colors break-all"
-                >
-                  info@medikaLestari.com
-                </a>
+              {/* Sosmed Icon ala RS Premier */}
+              <div className="flex gap-6 pt-4 text-[#003d79]">
+                <Link href="#" className="hover:opacity-70">
+                  <FontAwesomeIcon icon={faYoutube} size="lg" />
+                </Link>
+                <Link href="#" className="hover:opacity-70">
+                  <FontAwesomeIcon icon={faFacebookF} size="lg" />
+                </Link>
+                <Link href="#" className="hover:opacity-70">
+                  <FontAwesomeIcon icon={faInstagram} size="lg" />
+                </Link>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Divider */}
-        <div className="border-t border-gray-700 my-8 md:my-12"></div>
-
-        {/* Bottom Footer */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 items-center">
-          {/* Left: Copyright */}
-          <div className="text-xs text-gray-400 text-center md:text-left">
-            <p>&copy; {currentYear} RS Medika Lestari. Semua hak dilindungi.</p>
+          {/* Kolom Tengah 1: Layanan */}
+          <div className="md:col-span-3 space-y-6">
+            <div>
+              <h3 className="font-bold text-[15px] mb-4">Layanan Unggulan</h3>
+              <ul className="space-y-2 text-[13px]">
+                {[
+                  "Orthopedic Center",
+                  "Spine Center",
+                  "Heart Centre",
+                  "Vascular Center",
+                  "Stroke Center",
+                ].map((item) => (
+                  <li key={item}>
+                    <Link href="#" className="hover:underline">
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold text-[15px] mb-4">
+                Fasilitas & Pelayanan
+              </h3>
+              <ul className="space-y-2 text-[13px]">
+                {[
+                  "Fasilitas Kamar",
+                  "Klinik Konselor",
+                  "Home Care",
+                  "Medical Check Up",
+                ].map((item) => (
+                  <li key={item}>
+                    <Link href="#" className="hover:underline">
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
-          {/* Center: Links */}
-          <div className="flex justify-center gap-4 md:gap-6 text-xs text-gray-400 flex-wrap">
-            <Link href="#" className="hover:text-blue-400 transition-colors">
-              Kebijakan Privasi
-            </Link>
-            <span className="text-gray-600">|</span>
-            <Link href="#" className="hover:text-blue-400 transition-colors">
-              Syarat & Ketentuan
-            </Link>
-            <span className="text-gray-600">|</span>
-            <Link href="#" className="hover:text-blue-400 transition-colors">
-              Sitemap
-            </Link>
+          {/* Kolom Tengah 2: Tentang Kami */}
+          <div className="md:col-span-3 space-y-6">
+            <div>
+              <h3 className="font-bold text-[15px] mb-4">Tentang Kami</h3>
+              <ul className="space-y-2 text-[13px]">
+                {[
+                  "Visi & Misi",
+                  "Akreditasi & Penghargaan",
+                  "Kebijakan Antisuap",
+                  "Karir",
+                  "Vendor Governance",
+                ].map((item) => (
+                  <li key={item}>
+                    <Link href="#" className="hover:underline">
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold text-[15px] mb-4">Promo & Paket</h3>
+              <ul className="space-y-2 text-[13px]">
+                {["Promo", "Paket Kesehatan"].map((item) => (
+                  <li key={item}>
+                    <Link href="#" className="hover:underline">
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
-          {/* Right: Extra Info */}
-          <div className="text-xs text-gray-400 text-center md:text-right">
-            <p>
-              Dikembangkan dengan <span className="text-red-500">♥</span> untuk
-              kesehatan Anda
-            </p>
+          {/* Kolom Kanan: Lainnya */}
+          <div className="md:col-span-3 space-y-6">
+            <div>
+              <h3 className="font-bold text-[15px] mb-4">Lainnya</h3>
+              <ul className="space-y-2 text-[13px]">
+                {[
+                  "Dokter Kami",
+                  "Spesialis Kami",
+                  "Hubungi Kami",
+                  "Download Brosur",
+                  "Media Informasi",
+                ].map((item) => (
+                  <li key={item}>
+                    <Link href="#" className="hover:underline">
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {/* Widget atau Info Tambahan jika ada */}
           </div>
         </div>
       </div>
-
-      {/* Top Gradient Border */}
-      <div className="h-1 bg-linear-to-r from-blue-600 via-blue-500 to-blue-600"></div>
     </footer>
   );
 };

@@ -124,7 +124,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
         </div>
       </div>
 
-      {/* --- Bagian Utama: Navigasi Biru --- */}
+      {/* --- buttom navbar --- */}
       <div className="hidden md:block relative w-full bg-[#0084BF] text-white z-30">
         <div
           className="absolute right-0 top-0 h-full w-[38%] bg-[#005075] hidden lg:block"
