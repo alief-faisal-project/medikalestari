@@ -136,7 +136,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
             {/* --- Menu Beranda --- */}
             <button
               onClick={handleHomeClick}
-              className="flex items-center h-full px-6 transition-colors font-medium relative group"
+              className="flex items-center h-full px-6 transition-colors font-medium relative group cursor-pointer"
             >
               Beranda
               <div
