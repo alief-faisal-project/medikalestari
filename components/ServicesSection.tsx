@@ -3,14 +3,19 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const ServicesSection = () => {
-  // Logic Smooth Scroll
-  const scrollToSection = (id) => {
+  // Logic Smooth Scroll (accounts for sticky header offset)
+  const scrollToSection = (id: string | null) => {
+    if (!id) return;
     const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+    if (!element) return;
+
+    // If there's a sticky header, offset so the section isn't hidden behind it.
+    const headerOffset = 150; // adjust if your header height changes
+    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+    window.scrollTo({ top: elementPosition, behavior: "smooth" });
   };
 
   const infoData = [
@@ -46,6 +51,22 @@ const ServicesSection = () => {
       targetId: null,
     },
   ];
+
+  const router = useRouter();
+
+  const handleServiceClick = (item: { id: number; img: string; title: string; targetId: string | null }) => {
+    if (!item.targetId) return;
+
+    const el = document.getElementById(item.targetId);
+    if (el) {
+      scrollToSection(item.targetId);
+      return;
+    }
+
+    // If target not found on current page, navigate to the doctors page with hash
+    // so the browser will jump to the anchored section after navigation.
+    router.push(`/dokter#${item.targetId}`);
+  };
 
   return (
     <section className="w-full bg-white font-sans text-[#005075] relative">
@@ -95,10 +116,8 @@ const ServicesSection = () => {
                 key={item.id}
                 whileHover={{ y: -12 }}
                 onClick={() => {
-                  if (item.title === "Lokasi") {
-                    const el = document.getElementById("lokasi");
-                    if (el) el.scrollIntoView({ behavior: "smooth" });
-                  }
+                  // reuse scroll helper so offsets are consistent
+                  if (item.title === "Lokasi") scrollToSection("lokasi");
                 }}
                 className="aspect-square flex flex-col items-center justify-center text-center p-6  transition-all duration-500 rounded-full cursor-pointer group"
               >
@@ -140,7 +159,7 @@ const ServicesSection = () => {
               <motion.div
                 key={item.id}
                 whileHover={{ y: -12 }}
-                onClick={() => item.targetId && scrollToSection(item.targetId)}
+                onClick={() => handleServiceClick(item)}
                 className="aspect-square flex flex-col items-center justify-center text-center p-6 border border-gray-100 hover:shadow-[0px_30px_60px_rgba(0,80,117,0.12)] transition-all duration-500 rounded-full cursor-pointer group"
               >
                 {/* Lingkaran Ikon Efek Emboss */}
