@@ -14,7 +14,8 @@ const ServicesSection = () => {
 
     // If there's a sticky header, offset so the section isn't hidden behind it.
     const headerOffset = 150; // adjust if your header height changes
-    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+    const elementPosition =
+      element.getBoundingClientRect().top + window.pageYOffset - headerOffset;
     window.scrollTo({ top: elementPosition, behavior: "smooth" });
   };
 
@@ -54,7 +55,12 @@ const ServicesSection = () => {
 
   const router = useRouter();
 
-  const handleServiceClick = (item: { id: number; img: string; title: string; targetId: string | null }) => {
+  const handleServiceClick = (item: {
+    id: number;
+    img: string;
+    title: string;
+    targetId: string | null;
+  }) => {
     if (!item.targetId) return;
 
     const el = document.getElementById(item.targetId);
