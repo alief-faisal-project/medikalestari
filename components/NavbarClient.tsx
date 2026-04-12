@@ -3,6 +3,7 @@ import React, { useState, useCallback } from "react";
 import Link from "next/link";
 import { Search, Menu, X, Globe, UserCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/context/AuthProvider";
 import SearchDropdown from "./SearchDropdown";
 import DropdownMenuItem from "./DropdownMenuItem";
 import { usePathname, useRouter } from "next/navigation";
@@ -58,9 +59,8 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 
   // --- Helper Render Dropdown ---
   const renderDropdownContent = (
-    items: any[],
+    items: Array<string | { label: string; code?: string; active?: boolean }>,
     widthClass: string = "w-72",
-    isLang: boolean = false,
   ) => (
     <motion.div
       initial={{ opacity: 0, y: -10, height: 0 }}
@@ -72,8 +72,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
     >
       <div className="py-2">
         {items.map((item) => {
-          const title = isLang ? item.label : item;
-          const isActive = isLang ? item.active : true;
+          const title = typeof item === "string" ? item : item.label;
 
           // LOGIKA NAVIGASI KE HALAMAN BARU
           let itemHref = "#";
@@ -82,20 +81,15 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
           }
 
           return (
-            <DropdownMenuItem
+            <div
               key={title}
-              title={title}
-              href={itemHref}
               onClick={() => {
                 setActiveMenu(null);
                 setIsMobileMenuOpen(false);
               }}
-              className={
-                isLang && !isActive
-                  ? "text-gray-400 cursor-default hover:bg-transparent"
-                  : ""
-              }
-            />
+            >
+              <DropdownMenuItem title={title} href={itemHref} />
+            </div>
           );
         })}
       </div>
@@ -211,18 +205,15 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               ></div>
               <AnimatePresence>
                 {activeMenu === "Lang" &&
-                  renderDropdownContent(languages, "right-0 w-48", true)}
+                  renderDropdownContent(languages, "right-0 w-48")}
               </AnimatePresence>
             </div>
 
-            {/* --- Login Admin --- */}
-            <Link
-              href="/admin/login"
-              className="flex items-center px-3 h-full transition-colors"
-              title="Admin Login"
-            >
-              <UserCircle size={22} />
-            </Link>
+            {/* --- Login Admin (uses persisted session) --- */}
+            <div className="flex items-center px-3 h-full transition-colors">
+              {/* render client-only auth state */}
+              <AuthArea />
+            </div>
           </div>
         </div>
 
@@ -308,3 +299,28 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 };
 
 export default NavbarClient;
+
+function AuthArea() {
+  const { isAuthenticated } = useAuth();
+  if (isAuthenticated) {
+    return (
+      <Link
+        href="/admin/dashboard"
+        className="flex items-center gap-2 text-sm font-medium"
+        title="Admin Dashboard"
+      >
+        <UserCircle size={20} />
+      </Link>
+    );
+  }
+
+  return (
+    <Link
+      href="/admin/login"
+      className="flex items-center gap-2 text-sm font-medium"
+    >
+      <UserCircle size={22} />
+      <span className="hidden lg:inline">Admin</span>
+    </Link>
+  );
+}

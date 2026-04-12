@@ -1,8 +1,32 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import AdminNavbar from "@/components/AdminNavbar";
-import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthProvider";
+import {
+  Users,
+  Calendar,
+  Plus,
+  LayoutDashboard,
+  ChevronRight,
+} from "lucide-react";
+
+// Pindahkan ke luar agar tidak merah dan tidak re-render tidak perlu
+const EmbossButton = ({ onClick, children, className = "", icon: Icon }) => (
+  <button
+    onClick={onClick}
+    className={`group px-6 py-4 bg-white text-slate-700 rounded-xl transition-all duration-300 
+    shadow-[0_0_15px_rgba(0,0,0,0.06)] 
+    hover:shadow-[inset_0_0_15px_rgba(0,0,0,0.1)] 
+    active:scale-[0.97] cursor-pointer flex items-center justify-center gap-3 ${className}`}
+  >
+    {Icon && (
+      <Icon size={18} className="transition-transform group-hover:scale-110" />
+    )}
+    <span className="font-medium text-[14px]">{children}</span>
+  </button>
+);
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -11,132 +35,148 @@ const AdminDashboard = () => {
   });
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { loading: authLoading, isAuthenticated } = useAuth();
 
   useEffect(() => {
     let mounted = true;
 
-    const checkAuth = async () => {
+    const loadStats = async () => {
+      if (authLoading) return;
+      if (!isAuthenticated) {
+        router.push("/admin/login");
+        return;
+      }
+
       try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
-        if (!mounted) return;
-
-        if (!session) {
-          router.push("/admin/login");
-          return;
-        }
-
-        // Fetch statistics hanya jika sudah authenticated
-        const { count: doctorCount } = await supabase
-          .from("doctors")
-          .select("*", { count: "exact", head: true });
-
-        const { count: scheduleCount } = await supabase
-          .from("schedules")
-          .select("*", { count: "exact", head: true });
+        const [docRes, schRes] = await Promise.all([
+          fetch("/api/admin/stats/doctors")
+            .then((r) => r.json())
+            .catch(() => ({ count: 0 })),
+          fetch("/api/admin/stats/schedules")
+            .then((r) => r.json())
+            .catch(() => ({ count: 0 })),
+        ]);
 
         if (mounted) {
           setStats({
-            totalDoctors: doctorCount || 0,
-            totalSchedules: scheduleCount || 0,
+            totalDoctors: docRes.count || 0,
+            totalSchedules: schRes.count || 0,
           });
           setLoading(false);
         }
       } catch (error) {
-        console.error("Auth check error:", error);
-        if (mounted) {
-          setLoading(false);
-        }
+        console.error("Error loading stats:", error);
+        if (mounted) setLoading(false);
       }
     };
 
-    // Cek auth hanya sekali saat mount
-    checkAuth();
+    loadStats();
 
     return () => {
       mounted = false;
     };
-  }, [router]);
+  }, [authLoading, isAuthenticated, router]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100">
+      <div className="min-h-screen bg-[#F9F9F9]">
         <AdminNavbar />
         <div className="flex items-center justify-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          <div className="animate-spin rounded-full h-10 w-10 border-[3px] border-slate-200 border-t-black"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-[#F2F2F2] text-black font-sans">
       <AdminNavbar />
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8">Dashboard</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Doctors Card */}
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <div className="flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-12">
+        <header className="mb-12 flex items-center gap-4">
+          <div className="p-2.5 bg-white rounded-lg shadow-[0_0_10px_rgba(0,0,0,0.05)] border border-slate-100">
+            <LayoutDashboard size={20} className="text-black" />
+          </div>
+          <h1 className="text-xl font-medium">Dashboard</h1>
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          {/* Card Dokter */}
+          <div className="bg-white rounded-2xl p-8 shadow-[0_4px_25px_rgba(0,0,0,0.02)] border border-slate-100 group">
+            <div className="flex justify-between items-start">
               <div>
-                <p className="text-gray-600 text-sm font-medium mb-2">
-                  Total Dokter
+                <p className="text-slate-400 text-[12px] mb-2">
+                  Total Database Dokter
                 </p>
-                <p className="text-4xl font-bold text-blue-600">
-                  {stats.totalDoctors}
+                <p className="text-5xl font-light tracking-normal">
+                  {stats.totalDoctors < 10
+                    ? `0${stats.totalDoctors}`
+                    : stats.totalDoctors}
                 </p>
               </div>
-              <div className="text-6xl text-blue-200">👨‍⚕️</div>
+              <div className="p-4 bg-slate-50 rounded-xl group-hover:bg-black group-hover:text-white transition-all duration-500">
+                <Users size={24} />
+              </div>
             </div>
-            <button
+            <EmbossButton
               onClick={() => router.push("/admin/doctors")}
-              className="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              className="mt-10 w-full border border-slate-100"
+              icon={ChevronRight}
             >
-              Kelola Dokter
-            </button>
+              Kelola Data Dokter
+            </EmbossButton>
           </div>
 
-          {/* Schedules Card */}
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <div className="flex items-center justify-between">
+          {/* Card Jadwal */}
+          <div className="bg-white rounded-2xl p-8 shadow-[0_4px_25px_rgba(0,0,0,0.02)] border border-slate-100 group">
+            <div className="flex justify-between items-start">
               <div>
-                <p className="text-gray-600 text-sm font-medium mb-2">
-                  Total Jadwal
+                <p className="text-slate-400 text-[12px] mb-2">
+                  Total Jadwal Aktif
                 </p>
-                <p className="text-4xl font-bold text-green-600">
-                  {stats.totalSchedules}
+                <p className="text-5xl font-light tracking-normal">
+                  {stats.totalSchedules < 10
+                    ? `0${stats.totalSchedules}`
+                    : stats.totalSchedules}
                 </p>
               </div>
-              <div className="text-6xl text-green-200">📅</div>
+              <div className="p-4 bg-slate-50 rounded-xl group-hover:bg-black group-hover:text-white transition-all duration-500">
+                <Calendar size={24} />
+              </div>
             </div>
-            <button
+            <EmbossButton
               onClick={() => router.push("/admin/schedules")}
-              className="mt-6 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors"
+              className="mt-10 w-full border border-slate-100"
+              icon={ChevronRight}
             >
-              Kelola Jadwal
-            </button>
+              Atur Jadwal Praktik
+            </EmbossButton>
           </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="mt-8 bg-white rounded-lg shadow-md p-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Aksi Cepat</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <button
+        <div className="mt-12 bg-white rounded-2xl p-10 shadow-[0_4px_30px_rgba(0,0,0,0.03)] border border-slate-100">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-1 h-5 bg-black rounded-full"></div>
+            <h2 className="text-[14px] font-medium uppercase tracking-tight">
+              Aksi Cepat
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <EmbossButton
               onClick={() => router.push("/admin/doctors?action=create")}
-              className="bg-blue-50 border border-blue-200 text-blue-600 py-3 rounded-lg hover:bg-blue-100 transition-colors font-semibold"
+              className="border border-slate-100"
+              icon={Plus}
             >
-              + Tambah Dokter Baru
-            </button>
-            <button
+              Tambah Tenaga Medis
+            </EmbossButton>
+            <EmbossButton
               onClick={() => router.push("/admin/schedules?action=create")}
-              className="bg-green-50 border border-green-200 text-green-600 py-3 rounded-lg hover:bg-green-100 transition-colors font-semibold"
+              className="border border-slate-100"
+              icon={Plus}
             >
-              + Tambah Jadwal Baru
-            </button>
+              Buat Plotting Jadwal
+            </EmbossButton>
           </div>
         </div>
       </div>

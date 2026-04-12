@@ -1,6 +1,7 @@
 import HeroSection from "@/components/HeroSection";
 import ServicesSection from "@/components/ServicesSection";
 import MadingSection from "@/components/MadingSection"; // Import komponen baru
+import LocationSection from "@/components/LocationSection";
 
 export default function Home() {
   return (
@@ -11,6 +12,9 @@ export default function Home() {
 
         {/* 3. Services Section: Informasi & Pelayanan (Aksen Biru) */}
         <ServicesSection />
+
+        {/* Lokasi: Map Tangerang */}
+        <LocationSection />
 
         {/* 4. Mading Section: Edukasi & Event (Sesuai Gambar Mading Melati) */}
         <MadingSection />

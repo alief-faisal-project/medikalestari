@@ -30,7 +30,8 @@ const ServicesSection = () => {
       id: 2,
       img: "/icons/pelayanan/doctor.png",
       title: "Dokter Kami",
-      targetId: "doctor-section",
+      // scroll target should match DoctorSection id
+      targetId: "section-dokter",
     },
     {
       id: 3,
@@ -93,6 +94,12 @@ const ServicesSection = () => {
               <motion.div
                 key={item.id}
                 whileHover={{ y: -12 }}
+                onClick={() => {
+                  if (item.title === "Lokasi") {
+                    const el = document.getElementById("lokasi");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
                 className="aspect-square flex flex-col items-center justify-center text-center p-6  transition-all duration-500 rounded-full cursor-pointer group"
               >
                 {/* Lingkaran Ikon Efek Emboss */}

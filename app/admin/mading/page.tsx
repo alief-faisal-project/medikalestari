@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import AdminNavbar from "@/components/AdminNavbar";
-import { supabase } from "@/lib/supabase";
 import {
   fetchMadingContent,
   createMadingContent,
@@ -11,6 +10,7 @@ import {
 } from "@/lib/api";
 import { MadingContent } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthProvider";
 import { Plus, Edit2, Trash2, X, Upload } from "lucide-react";
 import Image from "next/image";
 
@@ -33,40 +33,24 @@ const AdminMadingPage = () => {
     order: 0,
   });
   const router = useRouter();
+  const { loading: authLoading, isAuthenticated } = useAuth();
 
   useEffect(() => {
     let mounted = true;
-
-    const checkAuth = async () => {
-      try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
-        if (!mounted) return;
-
-        if (!session) {
-          router.push("/admin/login");
-          return;
-        }
-
-        if (mounted) {
-          fetchContent();
-        }
-      } catch (error) {
-        console.error("Auth check error:", error);
-        if (mounted) {
-          setLoading(false);
-        }
+    const init = async () => {
+      if (!mounted) return;
+      if (authLoading) return;
+      if (!isAuthenticated) {
+        router.push("/admin/login");
+        return;
       }
+      fetchContent();
     };
-
-    checkAuth();
-
+    init();
     return () => {
       mounted = false;
     };
-  }, [router]);
+  }, [authLoading, isAuthenticated, router]);
 
   const fetchContent = async () => {
     try {

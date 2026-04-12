@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthProvider";
 import Link from "next/link";
 import { AlertCircle, Eye, EyeOff } from "lucide-react";
 
@@ -12,6 +13,7 @@ const AdminLoginPage = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,8 +33,20 @@ const AdminLoginPage = () => {
       } else if (data.session) {
         router.push("/admin/dashboard");
       }
-    } catch {
-      setError("Terjadi kesalahan. Silakan coba lagi.");
+      // persist session in our AuthProvider so it survives refresh
+      try {
+        await login(
+          // access token
+          (data.session as any).access_token,
+          // user
+          (data.session as any).user,
+          // full session object
+          data.session,
+        );
+      } catch {
+        // fallback: still continue
+      }
+      router.push("/admin/dashboard");
     } finally {
       setLoading(false);
     }

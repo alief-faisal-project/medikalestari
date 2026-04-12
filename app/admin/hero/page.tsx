@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import AdminNavbar from "@/components/AdminNavbar";
-import { supabase } from "@/lib/supabase";
 import {
   fetchHeroBanners,
   createHeroBanner,
@@ -11,6 +10,7 @@ import {
 } from "@/lib/api";
 import { HeroBanner } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthProvider";
 import { Plus, Edit2, Trash2, X, Upload } from "lucide-react";
 import Image from "next/image";
 
@@ -27,40 +27,24 @@ const AdminHeroBannersPage = () => {
     is_active: true,
   });
   const router = useRouter();
+  const { loading: authLoading, isAuthenticated } = useAuth();
 
   useEffect(() => {
     let mounted = true;
-
-    const checkAuth = async () => {
-      try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
-        if (!mounted) return;
-
-        if (!session) {
-          router.push("/admin/login");
-          return;
-        }
-
-        if (mounted) {
-          fetchBanners();
-        }
-      } catch (error) {
-        console.error("Auth check error:", error);
-        if (mounted) {
-          setLoading(false);
-        }
+    const init = async () => {
+      if (!mounted) return;
+      if (authLoading) return;
+      if (!isAuthenticated) {
+        router.push("/admin/login");
+        return;
       }
+      fetchBanners();
     };
-
-    checkAuth();
-
+    init();
     return () => {
       mounted = false;
     };
-  }, [router]);
+  }, [authLoading, isAuthenticated, router]);
 
   const fetchBanners = async () => {
     try {

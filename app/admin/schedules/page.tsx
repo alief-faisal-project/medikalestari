@@ -10,6 +10,7 @@ import {
 } from "@/lib/api";
 import { Doctor, Schedule } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthProvider";
 import { Plus, Edit2, Trash2, X } from "lucide-react";
 
 const DAYS_OF_WEEK = [
@@ -36,40 +37,24 @@ const AdminSchedulesPage = () => {
     is_available: true,
   });
   const router = useRouter();
+  const { loading: authLoading, isAuthenticated } = useAuth();
 
   useEffect(() => {
     let mounted = true;
-
-    const checkAuth = async () => {
-      try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
-        if (!mounted) return;
-
-        if (!session) {
-          router.push("/admin/login");
-          return;
-        }
-
-        if (mounted) {
-          fetchData();
-        }
-      } catch (error) {
-        console.error("Auth check error:", error);
-        if (mounted) {
-          setLoading(false);
-        }
+    const init = async () => {
+      if (!mounted) return;
+      if (authLoading) return;
+      if (!isAuthenticated) {
+        router.push("/admin/login");
+        return;
       }
+      fetchData();
     };
-
-    checkAuth();
-
+    init();
     return () => {
       mounted = false;
     };
-  }, [router]);
+  }, [authLoading, isAuthenticated, router]);
 
   const fetchData = async () => {
     try {

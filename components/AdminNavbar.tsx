@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/context/AuthProvider";
 import Link from "next/link";
 import { LogOut, Menu, X } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
@@ -8,37 +9,33 @@ import { useRouter, usePathname } from "next/navigation";
 const AdminNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const { logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
     let mounted = true;
-
-    const checkAuth = async () => {
+    const load = async () => {
       try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
+        const { data } = await supabase.auth.getSession();
         if (!mounted) return;
-
-        if (session) {
-          setUserEmail(session.user.email || null);
-        }
-      } catch (error) {
-        console.error("Auth check error:", error);
+        if (data?.session?.user?.email) setUserEmail(data.session.user.email);
+      } catch {
+        // ignore
       }
     };
-
-    checkAuth();
-
+    load();
     return () => {
       mounted = false;
     };
   }, []);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    try {
+      await logout();
+    } catch {
+      await supabase.auth.signOut().catch(() => null);
+    }
     router.push("/admin/login");
   };
 
