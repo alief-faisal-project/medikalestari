@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import AdminNavbar from "@/components/AdminNavbar";
+import AdminNavbar from "@/components/AdminSidebar";
 import {
   fetchHeroBanners,
   createHeroBanner,

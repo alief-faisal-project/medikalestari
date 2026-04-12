@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import AdminNavbar from "@/components/AdminNavbar";
+import AdminNavbar from "@/components/AdminSidebar";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import {
@@ -94,10 +94,7 @@ const AdminDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-12">
         <header className="mb-12 flex items-center gap-4">
-          <div className="p-2.5 bg-white rounded-lg shadow-[0_0_10px_rgba(0,0,0,0.05)] border border-slate-100">
-            <LayoutDashboard size={20} className="text-black" />
-          </div>
-          <h1 className="text-xl font-medium">Dashboard</h1>
+          <h1 className="text-[] font-medium">Dashboard</h1>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -106,7 +103,7 @@ const AdminDashboard = () => {
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-slate-400 text-[12px] mb-2">
-                  Total Database Dokter
+                  Total Dokter
                 </p>
                 <p className="text-5xl font-light tracking-normal">
                   {stats.totalDoctors < 10
@@ -157,10 +154,6 @@ const AdminDashboard = () => {
         {/* Quick Actions */}
         <div className="mt-12 bg-white rounded-2xl p-10 shadow-[0_4px_30px_rgba(0,0,0,0.03)] border border-slate-100">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-1 h-5 bg-black rounded-full"></div>
-            <h2 className="text-[14px] font-medium uppercase tracking-tight">
-              Aksi Cepat
-            </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <EmbossButton
