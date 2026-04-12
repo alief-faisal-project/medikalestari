@@ -26,7 +26,7 @@ export default function DoctorScheduleDisplay({
         Jadwal Praktek
       </h3>
 
-      <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.05)] bg-white">
+      <div className="overflow-x-auto border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.05)] bg-white">
         <table className="w-full border-collapse table-fixed min-w-[650px]">
           <thead>
             <tr className="bg-[#f8fdff]">
@@ -95,7 +95,11 @@ export default function DoctorScheduleDisplay({
       <div className="mt-10">
         <button
           onClick={onBooking}
-          className="bg-[#0084BF] hover:bg-[#0084BF]/90 text-white px-10 py-4 rounded-full font-bold transition-all shadow-lg shadow-cyan-100/50 active:scale-95 text-sm uppercase tracking-wide cursor-pointer"
+          className="bg-gradient-to-r from-[#0084BF] to-[#006694] text-white px-10 py-4 rounded-full font-bold 
+             transition-all duration-300 text-sm uppercase tracking-wide cursor-pointer
+             shadow-[0_0_15px_rgba(0,0,0,0.2)]
+             hover:shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]
+             active:scale-95"
         >
           Buat Janji Temu
         </button>

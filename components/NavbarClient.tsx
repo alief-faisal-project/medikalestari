@@ -56,11 +56,6 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
     }
   };
 
-  const scrollToTop = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
-
   // --- Helper Render Dropdown ---
   const renderDropdownContent = (
     items: any[],
@@ -79,11 +74,22 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
         {items.map((item) => {
           const title = isLang ? item.label : item;
           const isActive = isLang ? item.active : true;
+
+          // LOGIKA NAVIGASI KE HALAMAN BARU
+          let itemHref = "#";
+          if (title === "Profil RS Medika Lestari" || title === "Visi & Misi") {
+            itemHref = "/tentang-kami";
+          }
+
           return (
             <DropdownMenuItem
               key={title}
               title={title}
-              href="#"
+              href={itemHref}
+              onClick={() => {
+                setActiveMenu(null);
+                setIsMobileMenuOpen(false);
+              }}
               className={
                 isLang && !isActive
                   ? "text-gray-400 cursor-default hover:bg-transparent"
@@ -97,7 +103,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
   );
 
   return (
-    <nav className="w-full font-sans sticky top-0 z-100 bg-white shadow-sm">
+    <nav className="w-full font-sans sticky top-0 z-[100] bg-white shadow-sm">
       {/* --- Bagian Atas: Logo & Top Links --- */}
       <div className="bg-white py-4 relative z-40">
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center">
@@ -124,7 +130,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
         </div>
       </div>
 
-      {/* --- buttom navbar --- */}
+      {/* --- Bottom Navbar --- */}
       <div className="hidden md:block relative w-full bg-[#0084BF] text-white z-30">
         <div
           className="absolute right-0 top-0 h-full w-[38%] bg-[#005075] hidden lg:block"
@@ -178,7 +184,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
           </div>
 
           <div className="flex items-center h-full gap-2 text-[15px]">
-            {/* --- Search Bar: Underline & Clean --- */}
+            {/* --- Search Bar --- */}
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
               className="flex items-center gap-2 transition-all h-full px-3 relative group"
@@ -244,6 +250,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               </button>
               <Link
                 href="/dokter#section-dokter"
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="text-left p-4 font-bold text-blue-600 border-b text-lg"
               >
                 Dokter Kami
@@ -267,15 +274,26 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                         exit={{ height: 0 }}
                         className="overflow-hidden bg-gray-50"
                       >
-                        {menuData[item].map((subitem) => (
-                          <Link
-                            key={subitem}
-                            href="#"
-                            className="block p-4 pl-8 text-gray-600 border-b text-sm"
-                          >
-                            {subitem}
-                          </Link>
-                        ))}
+                        {menuData[item].map((subitem) => {
+                          const subitemHref =
+                            subitem === "Profil RS Medika Lestari" ||
+                            subitem === "Visi & Misi"
+                              ? "/tentang-kami"
+                              : "#";
+                          return (
+                            <Link
+                              key={subitem}
+                              href={subitemHref}
+                              onClick={() => {
+                                setIsMobileMenuOpen(false);
+                                setActiveMenu(null);
+                              }}
+                              className="block p-4 pl-8 text-gray-600 border-b text-sm"
+                            >
+                              {subitem}
+                            </Link>
+                          );
+                        })}
                       </motion.div>
                     )}
                   </AnimatePresence>

@@ -242,7 +242,11 @@ const DoctorSection = ({
 
               <button
                 onClick={handleApplyFilter}
-                className="w-full bg-gradient-to-r from-[#0084BF] to-[#005075] text-white py-4 font-bold rounded-full cursor-pointer shadow-md hover:brightness-110 transition-all active:scale-[0.98]"
+                className="w-full bg-gradient-to-r from-[#0084BF] to-[#005075] text-white py-4 font-bold rounded-full cursor-pointer 
+             transition-all duration-300
+             shadow-[0_0_12px_rgba(0,0,0,0.2)] 
+             hover:shadow-[inset_0_0_20px_rgba(0,0,0,0.4)]
+             active:scale-[0.98]"
               >
                 Cari Dokter
               </button>
@@ -295,21 +299,34 @@ const DoctorSection = ({
                           )}
 
                           <div className="flex flex-wrap gap-3">
+                            {/* Tombol Putih Emboss */}
                             <button
                               onClick={() =>
                                 (globalThis.location.href = `/dokter/${doctor.id}`)
                               }
-                              className="px-8 py-3 bg-white border border-[#0084BF] text-[#0084BF] text-[12px] font-bold rounded-full cursor-pointer hover:bg-[#0084BF] hover:text-white transition-all"
+                              className="px-8 py-3 bg-white text-[#0084BF] text-[12px] font-bold rounded-full cursor-pointer 
+             transition-all duration-300
+             /* Shadow simetris merata */
+             shadow-[0_0_15px_rgba(0,0,0,0.1)] 
+             /* Inset simetris saat hover */
+             hover:shadow-[inset_0_0_12px_rgba(0,0,0,0.15)]
+             active:scale-95"
                             >
                               Lihat Profil
                             </button>
+
+                            {/* Tombol Gradient Emboss */}
                             <button
                               onClick={() =>
                                 (globalThis.location.href = `/dokter/${doctor.id}?action=booking`)
                               }
-                              className="px-8 py-3 bg-gradient-to-r from-[#0084BF] to-[#005075] text-white text-[12px] font-bold rounded-full cursor-pointer shadow-md"
+                              className="px-8 py-3 bg-gradient-to-r from-[#0084BF] to-[#005075] text-white text-[12px] font-bold rounded-full cursor-pointer 
+             transition-all duration-300
+             shadow-[0_0_10px_rgba(0,0,0,0.2)] 
+             hover:shadow-[inset_0_0_15px_rgba(0,0,0,0.4)]
+             active:scale-95"
                             >
-                              Buat Janji Temu
+                              Lihat Jadwal
                             </button>
                           </div>
                         </div>
