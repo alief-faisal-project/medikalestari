@@ -35,3 +35,22 @@ export interface AdminUser {
   role: string;
   created_at: string;
 }
+
+export interface MadingContent {
+  id: string;
+  type: "edukasi" | "event"; // edukasi or event
+  title: string;
+  description: string;
+  image_url: string;
+  date?: string;
+  order: number;
+  created_at: string;
+}
+
+export interface HeroBanner {
+  id: string;
+  image_url: string;
+  order: number;
+  is_active: boolean;
+  created_at: string;
+}

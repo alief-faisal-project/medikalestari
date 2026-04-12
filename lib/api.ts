@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { Doctor, Schedule } from "./types";
+import { Doctor, Schedule, MadingContent, HeroBanner } from "./types";
 
 // DOCTOR OPERATIONS
 export async function fetchDoctors(
@@ -149,7 +149,7 @@ export async function uploadDoctorImage(file: File): Promise<string> {
   const filePath = `doctor-images/${fileName}`;
 
   try {
-  const { error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("doctors")
       .upload(filePath, file);
 
@@ -158,7 +158,7 @@ export async function uploadDoctorImage(file: File): Promise<string> {
       throw new Error(uploadError.message || "Upload error");
     }
 
-      // getPublicUrl returns { data: { publicUrl: string } }
+    // getPublicUrl returns { data: { publicUrl: string } }
     interface GetPublicUrlResponse {
       data?: {
         publicUrl?: string;
@@ -167,17 +167,201 @@ export async function uploadDoctorImage(file: File): Promise<string> {
       publicUrl?: string;
       public_url?: string;
     }
-    const publicData = (await supabase.storage.from("doctors").getPublicUrl(filePath)) as GetPublicUrlResponse;
-    const publicUrl = publicData?.data?.publicUrl || publicData?.data?.public_url || publicData?.publicUrl || publicData?.public_url;
-      if (!publicUrl) {
-        console.error("Public URL missing", publicData);
-        throw new Error("Public URL not available. Check bucket permissions and that the bucket exists.");
-      }
+    const publicData = (await supabase.storage
+      .from("doctors")
+      .getPublicUrl(filePath)) as GetPublicUrlResponse;
+    const publicUrl =
+      publicData?.data?.publicUrl ||
+      publicData?.data?.public_url ||
+      publicData?.publicUrl ||
+      publicData?.public_url;
+    if (!publicUrl) {
+      console.error("Public URL missing", publicData);
+      throw new Error(
+        "Public URL not available. Check bucket permissions and that the bucket exists.",
+      );
+    }
 
-      return publicUrl;
+    return publicUrl;
   } catch (err) {
     // normalize error
-    const message = (err && (err as Error).message) || String(err) || "Unknown upload error";
-      throw message;
+    const message =
+      (err && (err as Error).message) || String(err) || "Unknown upload error";
+    throw message;
+  }
+}
+
+// MADING OPERATIONS
+export async function fetchMadingContent(
+  type?: "edukasi" | "event",
+): Promise<MadingContent[]> {
+  let query = supabase
+    .from("mading_content")
+    .select("*")
+    .order("order", { ascending: true });
+
+  if (type) {
+    query = query.eq("type", type);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error fetching mading content:", error);
+    return [];
+  }
+
+  return data || [];
+}
+
+export async function createMadingContent(
+  content: Omit<MadingContent, "id" | "created_at">,
+) {
+  const { data, error } = await supabase
+    .from("mading_content")
+    .insert([content])
+    .select();
+
+  if (error) {
+    console.error("Error creating mading content:", error);
+    throw error;
+  }
+
+  return data[0];
+}
+
+export async function updateMadingContent(
+  id: string,
+  content: Partial<Omit<MadingContent, "id" | "created_at">>,
+) {
+  const { data, error } = await supabase
+    .from("mading_content")
+    .update(content)
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    console.error("Error updating mading content:", error);
+    throw error;
+  }
+
+  return data[0];
+}
+
+export async function deleteMadingContent(id: string) {
+  const { error } = await supabase.from("mading_content").delete().eq("id", id);
+
+  if (error) {
+    console.error("Error deleting mading content:", error);
+    throw error;
+  }
+}
+
+// HERO BANNER OPERATIONS
+export async function fetchHeroBanners(): Promise<HeroBanner[]> {
+  const { data, error } = await supabase
+    .from("hero_banners")
+    .select("*")
+    .order("order", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching hero banners:", error);
+    return [];
+  }
+
+  return data || [];
+}
+
+export async function createHeroBanner(
+  banner: Omit<HeroBanner, "id" | "created_at">,
+) {
+  const { data, error } = await supabase
+    .from("hero_banners")
+    .insert([banner])
+    .select();
+
+  if (error) {
+    console.error("Error creating hero banner:", error);
+    throw error;
+  }
+
+  return data[0];
+}
+
+export async function updateHeroBanner(
+  id: string,
+  banner: Partial<Omit<HeroBanner, "id" | "created_at">>,
+) {
+  const { data, error } = await supabase
+    .from("hero_banners")
+    .update(banner)
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    console.error("Error updating hero banner:", error);
+    throw error;
+  }
+
+  return data[0];
+}
+
+export async function deleteHeroBanner(id: string) {
+  const { error } = await supabase.from("hero_banners").delete().eq("id", id);
+
+  if (error) {
+    console.error("Error deleting hero banner:", error);
+    throw error;
+  }
+}
+
+// UPLOAD IMAGE (generic for mading/hero)
+export async function uploadContentImage(
+  file: File,
+  folder: string = "content",
+): Promise<string> {
+  const fileExt = file.name.split(".").pop();
+  const fileName = `${Math.random()}.${fileExt}`;
+  const filePath = `${folder}/${fileName}`;
+
+  try {
+    const { error: uploadError } = await supabase.storage
+      .from("content")
+      .upload(filePath, file);
+
+    if (uploadError) {
+      console.error("Error uploading image:", uploadError);
+      throw new Error(uploadError.message || "Upload error");
+    }
+
+    interface GetPublicUrlResponse {
+      data?: {
+        publicUrl?: string;
+        public_url?: string;
+      };
+      publicUrl?: string;
+      public_url?: string;
+    }
+    const publicData = (await supabase.storage
+      .from("content")
+      .getPublicUrl(filePath)) as GetPublicUrlResponse;
+    const publicUrl =
+      publicData?.data?.publicUrl ||
+      publicData?.data?.public_url ||
+      publicData?.publicUrl ||
+      publicData?.public_url;
+
+    if (!publicUrl) {
+      console.error("Public URL missing", publicData);
+      throw new Error(
+        "Public URL not available. Check bucket permissions and that the bucket exists.",
+      );
+    }
+
+    return publicUrl;
+  } catch (err) {
+    const message =
+      (err && (err as Error).message) || String(err) || "Unknown upload error";
+    throw message;
   }
 }

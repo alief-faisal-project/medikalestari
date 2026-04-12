@@ -3,28 +3,28 @@ import React, { useState, useEffect } from "react";
 import AdminNavbar from "@/components/AdminNavbar";
 import { supabase } from "@/lib/supabase";
 import {
-  uploadDoctorImage,
-  createDoctor,
-  updateDoctor,
-  deleteDoctor,
+  fetchHeroBanners,
+  createHeroBanner,
+  updateHeroBanner,
+  deleteHeroBanner,
+  uploadContentImage,
 } from "@/lib/api";
-import { Doctor } from "@/lib/types";
+import { HeroBanner } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { Plus, Edit2, Trash2, X, Upload } from "lucide-react";
 import Image from "next/image";
 
-const AdminDoctorsPage = () => {
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
+const AdminHeroBannersPage = () => {
+  const [banners, setBanners] = useState<HeroBanner[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
   const [formData, setFormData] = useState({
-    name: "",
-    specialty: "",
-    bio: "",
     image_url: "",
+    order: 0,
+    is_active: true,
   });
   const router = useRouter();
 
@@ -45,7 +45,7 @@ const AdminDoctorsPage = () => {
         }
 
         if (mounted) {
-          fetchDoctors();
+          fetchBanners();
         }
       } catch (error) {
         console.error("Auth check error:", error);
@@ -62,13 +62,12 @@ const AdminDoctorsPage = () => {
     };
   }, [router]);
 
-  const fetchDoctors = async () => {
+  const fetchBanners = async () => {
     try {
-      const { data, error } = await supabase.from("doctors").select("*");
-      if (error) throw error;
-      setDoctors(data || []);
+      const data = await fetchHeroBanners();
+      setBanners(data);
     } catch (error) {
-      console.error("Error fetching doctors:", error);
+      console.error("Error fetching hero banners:", error);
     } finally {
       setLoading(false);
     }
@@ -93,52 +92,58 @@ const AdminDoctorsPage = () => {
       let imageUrl = formData.image_url;
 
       if (imageFile) {
-        imageUrl = await uploadDoctorImage(imageFile);
+        imageUrl = await uploadContentImage(imageFile, "hero-banners");
       }
 
-      const doctorData = {
-        ...formData,
+      if (!imageUrl) {
+        alert("Gambar harus dipilih");
+        return;
+      }
+
+      const bannerData = {
         image_url: imageUrl,
+        order: formData.order,
+        is_active: formData.is_active,
       };
 
       if (editingId) {
-        await updateDoctor(editingId, doctorData);
+        await updateHeroBanner(editingId, bannerData);
       } else {
-        await createDoctor(doctorData);
+        await createHeroBanner(bannerData);
       }
 
       resetForm();
-      fetchDoctors();
+      fetchBanners();
       setShowModal(false);
+      alert("Banner berhasil disimpan!");
     } catch (error) {
-      console.error("Error saving doctor:", error);
+      console.error("Error saving banner:", error);
       const message =
         (error && (error as Error).message) ||
         String(error) ||
         "Terjadi kesalahan saat menyimpan data";
-      alert(message);
+      alert(`Error: ${message}`);
     }
   };
 
-  const handleEdit = (doctor: Doctor) => {
-    setEditingId(doctor.id);
+  const handleEdit = (banner: HeroBanner) => {
+    setEditingId(banner.id);
     setFormData({
-      name: doctor.name,
-      specialty: doctor.specialty,
-      bio: doctor.bio,
-      image_url: doctor.image_url,
+      image_url: banner.image_url,
+      order: banner.order,
+      is_active: banner.is_active,
     });
-    setImagePreview(doctor.image_url);
+    setImagePreview(banner.image_url);
     setShowModal(true);
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("Apakah Anda yakin ingin menghapus dokter ini?")) {
+    if (confirm("Apakah Anda yakin ingin menghapus banner ini?")) {
       try {
-        await deleteDoctor(id);
-        fetchDoctors();
+        await deleteHeroBanner(id);
+        fetchBanners();
       } catch (error) {
-        console.error("Error deleting doctor:", error);
+        console.error("Error deleting banner:", error);
         alert("Terjadi kesalahan saat menghapus data");
       }
     }
@@ -146,10 +151,9 @@ const AdminDoctorsPage = () => {
 
   const resetForm = () => {
     setFormData({
-      name: "",
-      specialty: "",
-      bio: "",
       image_url: "",
+      order: 0,
+      is_active: true,
     });
     setImageFile(null);
     setImagePreview("");
@@ -172,7 +176,9 @@ const AdminDoctorsPage = () => {
       <AdminNavbar />
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800">Kelola Dokter</h1>
+          <h1 className="text-4xl font-bold text-gray-800">
+            Kelola Hero Banner
+          </h1>
           <button
             onClick={() => {
               resetForm();
@@ -181,24 +187,24 @@ const AdminDoctorsPage = () => {
             className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
           >
             <Plus size={20} />
-            Tambah Dokter
+            Tambah Banner
           </button>
         </div>
 
-        {/* Doctors List */}
+        {/* Banners List */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50 border-b">
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                    Foto
+                    Gambar
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                    Nama
+                    Urutan
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                    Spesialisasi
+                    Status
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                     Aksi
@@ -206,14 +212,14 @@ const AdminDoctorsPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {doctors.map((doctor) => (
-                  <tr key={doctor.id} className="border-b hover:bg-gray-50">
+                {banners.map((banner) => (
+                  <tr key={banner.id} className="border-b hover:bg-gray-50">
                     <td className="px-6 py-4">
-                      {doctor.image_url && (
-                        <div className="w-12 h-12 relative rounded-lg overflow-hidden">
+                      {banner.image_url && (
+                        <div className="w-20 h-12 relative rounded-lg overflow-hidden">
                           <Image
-                            src={doctor.image_url}
-                            alt={doctor.name}
+                            src={banner.image_url}
+                            alt="Banner"
                             fill
                             className="object-cover"
                           />
@@ -221,20 +227,28 @@ const AdminDoctorsPage = () => {
                       )}
                     </td>
                     <td className="px-6 py-4 font-medium text-gray-800">
-                      {doctor.name}
+                      {banner.order}
                     </td>
-                    <td className="px-6 py-4 text-gray-600">
-                      {doctor.specialty}
+                    <td className="px-6 py-4">
+                      <span
+                        className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
+                          banner.is_active
+                            ? "bg-green-100 text-green-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {banner.is_active ? "Aktif" : "Tidak Aktif"}
+                      </span>
                     </td>
                     <td className="px-6 py-4 flex gap-2">
                       <button
-                        onClick={() => handleEdit(doctor)}
+                        onClick={() => handleEdit(banner)}
                         className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                       >
                         <Edit2 size={18} />
                       </button>
                       <button
-                        onClick={() => handleDelete(doctor.id)}
+                        onClick={() => handleDelete(banner.id)}
                         className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                       >
                         <Trash2 size={18} />
@@ -250,11 +264,11 @@ const AdminDoctorsPage = () => {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-96 overflow-y-auto">
-            <div className="flex justify-between items-center p-6 border-b sticky top-0 bg-white">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full my-8">
+            <div className="flex justify-between items-center p-6 border-b sticky top-0 bg-white z-10">
               <h2 className="text-2xl font-bold text-gray-800">
-                {editingId ? "Edit Dokter" : "Tambah Dokter Baru"}
+                {editingId ? "Edit Banner" : "Tambah Banner Baru"}
               </h2>
               <button
                 onClick={() => {
@@ -271,14 +285,14 @@ const AdminDoctorsPage = () => {
               {/* Image Upload */}
               <div>
                 <label
-                  htmlFor="doctor-image"
+                  htmlFor="banner-image"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Foto Dokter
+                  Gambar Banner
                 </label>
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
                   {imagePreview ? (
-                    <div className="relative w-32 h-32 mx-auto">
+                    <div className="relative w-full h-40 mx-auto">
                       <Image
                         src={imagePreview}
                         alt="Preview"
@@ -293,7 +307,7 @@ const AdminDoctorsPage = () => {
                         size={32}
                       />
                       <p className="text-gray-600 text-sm">
-                        Klik untuk upload foto
+                        Klik untuk upload gambar banner
                       </p>
                     </div>
                   )}
@@ -302,98 +316,57 @@ const AdminDoctorsPage = () => {
                     onChange={handleImageChange}
                     accept="image/*"
                     className="hidden"
-                    id="doctor-image"
+                    id="banner-image"
                   />
-                  <label htmlFor="doctor-image" className="cursor-pointer">
+                  <label htmlFor="banner-image" className="cursor-pointer">
                     <div className="mt-2 text-center text-sm text-blue-600 hover:text-blue-700">
-                      Pilih Foto
+                      Pilih Gambar
                     </div>
                   </label>
                 </div>
               </div>
 
-              {/* Name */}
+              {/* Order */}
               <div>
                 <label
-                  htmlFor="name"
+                  htmlFor="order"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Nama Dokter
+                  Urutan Tampilan
                 </label>
                 <input
-                  id="name"
-                  type="text"
-                  value={formData.name}
+                  id="order"
+                  type="number"
+                  value={formData.order}
                   onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
+                    setFormData({
+                      ...formData,
+                      order: parseInt(e.target.value) || 0,
+                    })
                   }
-                  placeholder="dr. Nama Dokter"
+                  placeholder="0"
+                  min="0"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                  required
                 />
               </div>
 
-              {/* Specialty */}
-              <div>
-                <label
-                  htmlFor="specialty"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Spesialisasi
-                </label>
-                <select
-                  id="specialty"
-                  value={formData.specialty}
+              {/* Active Status */}
+              <div className="flex items-center">
+                <input
+                  id="is_active"
+                  type="checkbox"
+                  checked={formData.is_active}
                   onChange={(e) =>
-                    setFormData({ ...formData, specialty: e.target.value })
+                    setFormData({ ...formData, is_active: e.target.checked })
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                  required
-                >
-                  <option value="">Pilih Spesialisasi</option>
-                  <option value="Spesialis Penyakit Dalam">
-                    Spesialis Penyakit Dalam
-                  </option>
-                  <option value="Spesialis Bedah Umum">
-                    Spesialis Bedah Umum
-                  </option>
-                  <option value="Spesialis Saraf">Spesialis Saraf</option>
-                  <option value="Spesialis Orthopedi">
-                    Spesialis Orthopedi
-                  </option>
-                  <option value="Spesialis Paru">Spesialis Paru</option>
-                  <option value="Spesialis Jantung & Pembuluh Darah">
-                    Spesialis Jantung & Pembuluh Darah
-                  </option>
-                  <option value="Spesialis THT">Spesialis THT</option>
-                  <option value="Spesialis Anak">Spesialis Anak</option>
-                  <option value="Spesialis Mata">Spesialis Mata</option>
-                  <option value="Spesialis Obgyn">Spesialis Obgyn</option>
-                  <option value="Spesialis Gigi">Spesialis Gigi</option>
-                  <option value="Spesialis Fisioterapi">
-                    Spesialis Fisioterapi
-                  </option>
-                </select>
-              </div>
-
-              {/* Bio */}
-              <div>
-                <label
-                  htmlFor="bio"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Biodata
-                </label>
-                <textarea
-                  id="bio"
-                  value={formData.bio}
-                  onChange={(e) =>
-                    setFormData({ ...formData, bio: e.target.value })
-                  }
-                  placeholder="Deskripsi singkat dokter"
-                  rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
                 />
+                <label
+                  htmlFor="is_active"
+                  className="ml-2 text-sm font-medium text-gray-700"
+                >
+                  Aktif (akan ditampilkan di halaman utama)
+                </label>
               </div>
 
               {/* Submit Button */}
@@ -401,7 +374,7 @@ const AdminDoctorsPage = () => {
                 type="submit"
                 className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold mt-6"
               >
-                {editingId ? "Perbarui Dokter" : "Tambah Dokter"}
+                {editingId ? "Perbarui Banner" : "Tambah Banner"}
               </button>
             </form>
           </div>
@@ -411,4 +384,4 @@ const AdminDoctorsPage = () => {
   );
 };
 
-export default AdminDoctorsPage;
+export default AdminHeroBannersPage;

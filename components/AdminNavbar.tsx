@@ -79,6 +79,18 @@ const AdminNavbar = () => {
             >
               Jadwal Dokter
             </Link>
+            <Link
+              href="/admin/mading"
+              className={`px-4 py-2 rounded-lg transition-colors ${isActive("/admin/mading")}`}
+            >
+              Kelola Mading
+            </Link>
+            <Link
+              href="/admin/hero"
+              className={`px-4 py-2 rounded-lg transition-colors ${isActive("/admin/hero")}`}
+            >
+              Hero Banner
+            </Link>
             <div className="flex items-center gap-4 border-l border-gray-200 pl-8">
               <span className="text-sm text-gray-600">{userEmail}</span>
               <button
@@ -120,6 +132,18 @@ const AdminNavbar = () => {
               className={`px-4 py-2 rounded-lg transition-colors ${isActive("/admin/schedules")}`}
             >
               Jadwal Dokter
+            </Link>
+            <Link
+              href="/admin/mading"
+              className={`px-4 py-2 rounded-lg transition-colors ${isActive("/admin/mading")}`}
+            >
+              Kelola Mading
+            </Link>
+            <Link
+              href="/admin/hero"
+              className={`px-4 py-2 rounded-lg transition-colors ${isActive("/admin/hero")}`}
+            >
+              Hero Banner
             </Link>
             <button
               onClick={handleLogout}

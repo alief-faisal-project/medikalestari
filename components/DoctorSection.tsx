@@ -2,7 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Search, User, Stethoscope, CalendarDays, FilterIcon } from "lucide-react";
+import {
+  Search,
+  User,
+  Stethoscope,
+  CalendarDays,
+  FilterIcon,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchDoctors } from "@/lib/api";
 import { Doctor } from "@/lib/types";
@@ -53,8 +59,8 @@ const DoctorSection = ({
       try {
         const data = await fetchDoctors();
         setDoctors(data);
-        // Selalu tampilkan dokter (baik ada param atau tidak)
-        setHasSearched(true);
+        // Tampilkan semua dokter di awal tanpa filter
+        setHasSearched(false);
       } catch (error) {
         console.error("Error loading doctors:", error);
       } finally {
@@ -62,15 +68,7 @@ const DoctorSection = ({
       }
     };
     load();
-  }, [initialSearch, initialSpecialty]);
-
-  // Update selectedSpecialty ketika initialSpecialty berubah (dari searchbar)
-  useEffect(() => {
-    if (initialSpecialty) {
-      setSelectedSpecialty(initialSpecialty);
-      setIsFromSearchBar(true);
-    }
-  }, [initialSpecialty]);
+  }, []);
 
   // Use hardcoded specialty categories
   const specialties = SPECIALTY_CATEGORIES;
@@ -242,7 +240,7 @@ const DoctorSection = ({
 
             {!loading && filteredDoctors.length > 0 && (
               <div className="space-y-8">
-                {isFromSearchBar && (
+                {hasSearched && isFromSearchBar && (
                   <div className="text-xs text-gray-400 tracking-widest uppercase border-b border-gray-100 pb-4">
                     Menampilkan{" "}
                     <span className="text-[#0084BF] font-bold">
@@ -372,8 +370,12 @@ const DoctorSection = ({
             )}
 
             {!loading && hasSearched && filteredDoctors.length === 0 && (
-              // Jangan tampilkan apapun jika tidak ada dokter sesuai filter
-              <div />
+              <div className="flex flex-col items-center justify-center h-96 border border-gray-100 bg-gray-50/30">
+                <Search size={40} className="text-gray-200 mb-4" />
+                <h3 className="text-gray-500 text-sm font-medium tracking-wide">
+                  Tidak ada dokter sesuai dengan kriteria pencarian
+                </h3>
+              </div>
             )}
 
             {!loading && !hasSearched && filteredDoctors.length === 0 && (

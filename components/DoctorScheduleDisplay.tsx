@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Schedule } from "@/lib/types";
-import { Calendar, Clock, CheckCircle } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface DoctorScheduleDisplayProps {
@@ -43,81 +43,58 @@ export default function DoctorScheduleDisplay({
   );
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-8 border border-blue-100">
-      <div className="flex items-center gap-3 mb-8">
-        <div className="bg-[#0084BF] p-3 rounded-lg">
-          <Calendar className="text-white" size={24} />
-        </div>
-        <h2 className="text-2xl font-bold text-[#003d79]">Jadwal Praktik</h2>
+    // Container utama compact
+    <div className="max-w-2xl bg-white rounded-xl border border-gray-200 p-4 md:p-5 shadow-sm">
+      <div className="flex items-center gap-2 mb-4">
+        <h2 className="text-lg font-bold text-gray-800">Jadwal Praktik</h2>
       </div>
 
       {sortedDays.length === 0 ? (
-        <div className="text-center py-8">
-          <p className="text-gray-500 mb-4">Belum ada jadwal praktik</p>
+        <div className="text-center py-6 bg-gray-50 rounded-lg border border-dashed border-gray-200 mb-4">
+          <p className="text-xs text-gray-500">
+            Belum ada jadwal praktik tersedia
+          </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-6">
           {sortedDays.map((day, dayIndex) => (
-            <motion.div
-              key={day}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: dayIndex * 0.1 }}
-              className="bg-white rounded-lg border-2 border-blue-200 p-6 hover:border-[#0084BF] transition-all hover:shadow-lg"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <span className="bg-[#0084BF] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-sm">
-                  {dayIndex + 1}
-                </span>
-                <h3 className="text-lg font-bold text-[#003d79]">{day}</h3>
-                {schedulesByDay[day]?.every((s) => s.is_available) && (
-                  <CheckCircle className="text-green-500 ml-auto" size={20} />
-                )}
-              </div>
-
-              <div className="space-y-3">
-                {schedulesByDay[day].map((schedule, idx) => (
-                  <div
-                    key={schedule.id}
-                    className="flex items-center justify-between bg-linear-to-r from-blue-50 to-white p-4 rounded-lg border border-blue-100"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Clock className="text-[#0084BF]" size={18} />
-                      <div>
-                        <p className="font-semibold text-gray-800">
-                          Jam {idx + 1}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {schedule.start_time} - {schedule.end_time}
-                        </p>
-                      </div>
-                    </div>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-bold ${
-                        schedule.is_available
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
-                    >
-                      {schedule.is_available ? "Tersedia" : "Penuh"}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+            <div key={day} className="flex flex-col gap-1.5">
+              {schedulesByDay[day].map((schedule) => (
+                <motion.div
+                  key={schedule.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex items-center justify-between bg-[#f0f9fb] border border-[#e0f2f7] rounded-lg px-3 py-2"
+                >
+                  <span className="text-sm font-bold text-[#2d3748]">
+                    {day}
+                  </span>
+                  <span className="text-sm font-medium text-[#4a5568]">
+                    {schedule.start_time.substring(0, 5)} -{" "}
+                    {schedule.end_time.substring(0, 5)}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
           ))}
         </div>
       )}
 
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={onBooking}
-        className="w-full bg-linear-to-r from-[#0084BF] to-[#0073a5] text-white font-bold py-4 rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2"
-      >
-        <Calendar size={20} />
-        Buat Janji Temu
-      </motion.button>
+      {/* Button Rounded Full dengan Gradient [#005075] ke [#0084BF] */}
+      <div className="flex justify-start">
+        <motion.button
+          whileHover={{
+            scale: 1.03,
+            shadow: "0px 4px 10px rgba(0, 80, 117, 0.3)",
+          }}
+          whileTap={{ scale: 0.97 }}
+          onClick={onBooking}
+          className="inline-flex items-center gap-2 bg-gradient-to-r from-[#005075] to-[#0084BF] text-white font-bold px-6 py-2.5 rounded-full shadow-md transition-all text-sm"
+        >
+          <Calendar size={16} strokeWidth={2.5} />
+          <span>Buat Janji</span>
+        </motion.button>
+      </div>
     </div>
   );
 }
