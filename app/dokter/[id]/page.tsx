@@ -2,13 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import {
-  ArrowLeft,
-  Calendar,
-  Award,
-  Stethoscope,
-  MoveRight,
-} from "lucide-react";
 import { motion } from "framer-motion";
 import { fetchDoctorById, fetchSchedulesByDoctor } from "@/lib/api";
 import { Doctor, Schedule } from "@/lib/types";
@@ -17,13 +10,11 @@ import BookingForm from "@/components/BookingForm";
 
 const DoctorDetailPage = () => {
   const params = useParams();
-  const router = useRouter();
   const doctorId = params.id as string;
 
   const [doctor, setDoctor] = useState<Doctor | null>(null);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"profil" | "jadwal">("profil");
   const [showBookingForm, setShowBookingForm] = useState(false);
 
   useEffect(() => {
@@ -41,190 +32,107 @@ const DoctorDetailPage = () => {
         setLoading(false);
       }
     };
-
-    if (doctorId) {
-      loadData();
-    }
+    if (doctorId) loadData();
   }, [doctorId]);
 
-  if (loading) {
+  if (loading)
     return (
-      <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center">
-        <div className="animate-spin h-8 w-8 border-2 border-[#0084BF] border-t-transparent rounded-full"></div>
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin h-8 w-8 border-4 border-cyan-500 border-t-transparent rounded-full"></div>
       </div>
     );
-  }
 
-  if (!doctor) {
-    return (
-      <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-xl font-bold text-gray-900">
-            Dokter tidak ditemukan
-          </h2>
-          <button
-            onClick={() => router.push("/dokter")}
-            className="mt-4 text-sm font-bold border-b-2 border-black pb-1"
-          >
-            Kembali
-          </button>
-        </div>
-      </div>
-    );
-  }
+  if (!doctor) return null;
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-[#1A1A1A]">
-      <div className="max-w-6xl mx-auto px-6 py-10">
-        {/* Navigation - Font Normal */}
-        <button
-          onClick={() => router.back()}
-          className="group flex items-center gap-2 text-sm font-bold mb-12 hover:text-gray-500 transition-colors"
-        >
-          <ArrowLeft size={18} />
-          Kembali
-        </button>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 mb-20">
-          {/* Left: Foto Bulat Clean */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="lg:col-span-4 flex justify-center lg:justify-start"
-          >
-            <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-[8px] border-white shadow-xl bg-white">
+    <div className="min-h-screen bg-white text-[#1A1A1A]">
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mt-10">
+          {/* KOLOM KIRI: STICKY IMAGE 
+              - 'lg:sticky': Membuat kolom menempel saat scroll di layar besar.
+              - 'lg:top-24': Mengatur jarak dari atas layar saat sticky aktif.
+          */}
+          <div className="lg:col-span-4 lg:sticky lg:top-70 flex flex-col items-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-8 border-white shadow-[0_10px_50px_rgba(0,0,0,0.1)] bg-slate-50"
+            >
               <Image
-                src={
-                  doctor.image_url ||
-                  "https://images.unsplash.com/photo-1612349317150-e539c59dc62a?w=800"
-                }
+                src={doctor.image_url || "/placeholder-doctor.jpg"}
                 alt={doctor.name}
                 fill
                 className="object-cover"
                 priority
               />
-            </div>
-          </motion.div>
+            </motion.div>
 
-          {/* Right: Info Section */}
-          <div className="lg:col-span-8 flex flex-col justify-center">
+            <div className="mt-10 flex flex-col items-center gap-4">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+                Bagikan Profil Dokter
+              </p>
+              <div className="flex gap-4">
+                {/* WhatsApp */}
+                <a
+                  href="#"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-slate-400 hover:text-[#25D366] transition-all border border-slate-100 shadow-sm hover:shadow-md"
+                >
+                  <i className="fa-brands fa-whatsapp text-xl"></i>
+                </a>
+                {/* Instagram */}
+                <a
+                  href="#"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-slate-400 hover:text-[#E1306C] transition-all border border-slate-100 shadow-sm hover:shadow-md"
+                >
+                  <i className="fa-brands fa-instagram text-xl"></i>
+                </a>
+                {/* Telegram */}
+                <a
+                  href="#"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-slate-400 hover:text-[#0088cc] transition-all border border-slate-100 shadow-sm hover:shadow-md"
+                >
+                  <i className="fa-brands fa-telegram text-xl"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* KOLOM KANAN: INFO & JADWAL */}
+          <div className="lg:col-span-8">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
             >
-              {/* Label Kategori - Tracking Normal */}
-              <span className="inline-block px-4 py-1.5 bg-[#0084BF] text-white text-xs font-bold uppercase mb-6 rounded-full shadow-sm">
-                {doctor.specialty}
-              </span>
+              {/* Identitas Dokter */}
+              <div className="mb-10">
+                <h1 className="text-5xl font-bold text-[#005075] mb-2 lowercase tracking-tight">
+                  {doctor.name}
+                </h1>
+                <p className="text-xl text-slate-400 font-medium">
+                  Spesialis {doctor.specialty}
+                </p>
+              </div>
 
-              <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
-                {doctor.name}
-              </h1>
-
-              {doctor.bio && (
-                <div className="max-w-xl mb-10">
-                  <p className="text-lg text-gray-600 leading-relaxed font-medium">
-                    {doctor.bio}
-                  </p>
+              {/* SECTION 1: BIODATA (Berada di atas Jadwal) */}
+              <div className="mb-12">
+                <h2 className="text-xl font-bold text-[#005075] mb-4">
+                  Biodata
+                </h2>
+                <div className="text-slate-600 leading-relaxed max-w-3xl text-lg">
+                  {doctor.bio || "Informasi biodata dokter belum tersedia."}
                 </div>
-              )}
+              </div>
 
-              {/* Button - Gradient & Rounded Full */}
-              <button
-                onClick={() => setActiveTab("jadwal")}
-                className="group flex items-center gap-3 bg-gradient-to-r from-[#005075] to-[#0084BF] text-white font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all"
-              >
-                <Calendar size={20} />
-                Lihat Jadwal Praktek
-                <MoveRight
-                  size={20}
-                  className="ml-2 group-hover:translate-x-1 transition-transform"
+              {/* SECTION 2: JADWAL PRAKTEK */}
+              <div className="pt-10 border-t border-slate-100">
+                <DoctorScheduleDisplay
+                  schedules={schedules}
+                  onBooking={() => setShowBookingForm(true)}
                 />
-              </button>
+              </div>
             </motion.div>
           </div>
         </div>
-
-        {/* Tabs - Font Normal */}
-        <div className="flex gap-10 border-b border-gray-200 mb-12">
-          {["profil", "jadwal"].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab as any)}
-              className={`pb-4 text-sm font-extrabold uppercase transition-all relative ${
-                activeTab === tab ? "text-black" : "text-gray-400"
-              }`}
-            >
-              {tab === "profil" ? "Profil Lengkap" : "Jadwal Praktik"}
-              {activeTab === tab && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#0084BF]"
-                />
-              )}
-            </button>
-          ))}
-        </div>
-
-        {/* Tab Content */}
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="min-h-[300px]"
-        >
-          {activeTab === "profil" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="p-8 bg-white border border-gray-100 rounded-3xl shadow-sm">
-                <div className="flex items-center gap-4 mb-6">
-                  <Award size={24} className="text-[#0084BF]" />
-                  <h3 className="text-sm font-bold uppercase text-gray-400">
-                    Pengalaman
-                  </h3>
-                </div>
-                {doctor.experience_years && (
-                  <div className="mb-4">
-                    <span className="text-5xl font-black">
-                      {doctor.experience_years}
-                    </span>
-                    <span className="text-sm font-bold text-gray-500 ml-2">
-                      Tahun Praktik
-                    </span>
-                  </div>
-                )}
-                <p className="text-sm text-gray-500 leading-loose font-medium">
-                  Berfokus pada pemulihan pasien secara holistik menggunakan
-                  standar medis {doctor.specialty} yang teruji.
-                </p>
-              </div>
-
-              <div className="p-8 bg-white border border-gray-100 rounded-3xl shadow-sm">
-                <div className="flex items-center gap-4 mb-6">
-                  <Stethoscope size={24} className="text-[#0084BF]" />
-                  <h3 className="text-sm font-bold uppercase text-gray-400">
-                    Bidang Fokus
-                  </h3>
-                </div>
-                <div className="text-2xl font-bold mb-4">
-                  {doctor.specialty}
-                </div>
-                <p className="text-sm text-gray-500 leading-loose font-medium">
-                  Memberikan layanan konsultasi dan tindakan medis profesional
-                  demi hasil yang maksimal bagi setiap pasien.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "jadwal" && (
-            <div className="max-w-4xl">
-              <DoctorScheduleDisplay
-                schedules={schedules}
-                onBooking={() => setShowBookingForm(true)}
-              />
-            </div>
-          )}
-        </motion.div>
       </div>
 
       {showBookingForm && (

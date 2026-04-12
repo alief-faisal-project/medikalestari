@@ -1,99 +1,104 @@
 "use client";
 import React from "react";
 import { Schedule } from "@/lib/types";
-import { Calendar } from "lucide-react";
-import { motion } from "framer-motion";
 
 interface DoctorScheduleDisplayProps {
   schedules: Schedule[];
   onBooking: () => void;
 }
 
-const DAYS_ORDER = {
-  Senin: 0,
-  Selasa: 1,
-  Rabu: 2,
-  Kamis: 3,
-  Jumat: 4,
-  Sabtu: 5,
-  Minggu: 6,
-};
+const DAYS = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
 
 export default function DoctorScheduleDisplay({
   schedules,
   onBooking,
 }: Readonly<DoctorScheduleDisplayProps>) {
-  // Group schedules by day of week
-  const schedulesByDay = schedules.reduce(
-    (acc, schedule) => {
-      if (!acc[schedule.day_of_week]) {
-        acc[schedule.day_of_week] = [];
-      }
-      acc[schedule.day_of_week].push(schedule);
-      return acc;
-    },
-    {} as Record<string, Schedule[]>,
-  );
-
-  // Sort days
-  const sortedDays = Object.keys(schedulesByDay).sort(
-    (a, b) =>
-      (DAYS_ORDER[a as keyof typeof DAYS_ORDER] || 7) -
-      (DAYS_ORDER[b as keyof typeof DAYS_ORDER] || 7),
-  );
+  const getScheduleForCell = (day: string, row: number) => {
+    const daySchedules = schedules.filter((s) => s.day_of_week === day);
+    if (row === 1) return daySchedules.slice(0, 1); // Jam pertama
+    if (row === 2) return daySchedules.slice(1, 2); // Jam kedua (jika ada)
+    return [];
+  };
 
   return (
-    // Container utama compact
-    <div className="max-w-2xl bg-white rounded-xl border border-gray-200 p-4 md:p-5 shadow-sm">
-      <div className="flex items-center gap-2 mb-4">
-        <h2 className="text-lg font-bold text-gray-800">Jadwal Praktik</h2>
+    <div className="w-full">
+      <h3 className="text-base font-bold text-slate-800 mb-6 uppercase tracking-widest">
+        Jadwal Praktek
+      </h3>
+
+      <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.05)] bg-white">
+        <table className="w-full border-collapse table-fixed min-w-[650px]">
+          <thead>
+            <tr className="bg-[#f8fdff]">
+              {DAYS.map((day) => (
+                <th
+                  key={day}
+                  className="py-4 px-2 text-[12px] font-semibold text-slate-500 border-b border-r border-slate-200 last:border-r-0"
+                >
+                  {day}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {/* BARIS 1: Slot Pertama */}
+            <tr>
+              {DAYS.map((day) => {
+                const rowSchedules = getScheduleForCell(day, 1);
+                return (
+                  <td
+                    key={`${day}-1`}
+                    className="border-b border-r border-slate-100 last:border-r-0 p-3 h-20 text-center"
+                  >
+                    <div className="flex flex-col items-center justify-center">
+                      {rowSchedules.length > 0 ? (
+                        <span className="text-[11px] font-medium text-slate-700 block whitespace-nowrap">
+                          {rowSchedules[0].start_time.substring(0, 5)} -{" "}
+                          {rowSchedules[0].end_time.substring(0, 5)}
+                        </span>
+                      ) : (
+                        <span className="text-slate-300">-</span>
+                      )}
+                    </div>
+                  </td>
+                );
+              })}
+            </tr>
+
+            {/* BARIS 2: Slot Kedua */}
+            <tr>
+              {DAYS.map((day) => {
+                const rowSchedules = getScheduleForCell(day, 2);
+                return (
+                  <td
+                    key={`${day}-2`}
+                    className="border-r border-slate-100 last:border-r-0 p-3 h-20 text-center"
+                  >
+                    <div className="flex flex-col items-center justify-center">
+                      {rowSchedules.length > 0 ? (
+                        <span className="text-[11px] font-medium text-slate-700 block whitespace-nowrap">
+                          {rowSchedules[0].start_time.substring(0, 5)} -{" "}
+                          {rowSchedules[0].end_time.substring(0, 5)}
+                        </span>
+                      ) : (
+                        <span className="text-slate-300">-</span>
+                      )}
+                    </div>
+                  </td>
+                );
+              })}
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      {sortedDays.length === 0 ? (
-        <div className="text-center py-6 bg-gray-50 rounded-lg border border-dashed border-gray-200 mb-4">
-          <p className="text-xs text-gray-500">
-            Belum ada jadwal praktik tersedia
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-6">
-          {sortedDays.map((day, dayIndex) => (
-            <div key={day} className="flex flex-col gap-1.5">
-              {schedulesByDay[day].map((schedule) => (
-                <motion.div
-                  key={schedule.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex items-center justify-between bg-[#f0f9fb] border border-[#e0f2f7] rounded-lg px-3 py-2"
-                >
-                  <span className="text-sm font-bold text-[#2d3748]">
-                    {day}
-                  </span>
-                  <span className="text-sm font-medium text-[#4a5568]">
-                    {schedule.start_time.substring(0, 5)} -{" "}
-                    {schedule.end_time.substring(0, 5)}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Button Rounded Full dengan Gradient [#005075] ke [#0084BF] */}
-      <div className="flex justify-start">
-        <motion.button
-          whileHover={{
-            scale: 1.03,
-            shadow: "0px 4px 10px rgba(0, 80, 117, 0.3)",
-          }}
-          whileTap={{ scale: 0.97 }}
+      <div className="mt-10">
+        <button
           onClick={onBooking}
-          className="inline-flex items-center gap-2 bg-gradient-to-r from-[#005075] to-[#0084BF] text-white font-bold px-6 py-2.5 rounded-full shadow-md transition-all text-sm"
+          className="bg-[#0084BF] hover:bg-[#0084BF]/90 text-white px-10 py-4 rounded-full font-bold transition-all shadow-lg shadow-cyan-100/50 active:scale-95 text-sm uppercase tracking-wide cursor-pointer"
         >
-          <Calendar size={16} strokeWidth={2.5} />
-          <span>Buat Janji</span>
-        </motion.button>
+          Buat Janji Temu
+        </button>
       </div>
     </div>
   );
