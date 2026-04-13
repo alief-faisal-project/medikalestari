@@ -46,24 +46,15 @@ export default function BookingForm({
     e.preventDefault();
     setError("");
 
-    // Validasi
-    if (!formData.patientName.trim()) {
-      setError("Nama pasien harus diisi");
-      return;
-    }
-    if (!formData.patientPhone.trim()) {
-      setError("Nomor telepon harus diisi");
-      return;
-    }
-    if (!formData.keluhan.trim()) {
-      setError("Keluhan/alasan kunjungan harus diisi");
-      return;
-    }
+    if (!formData.patientName.trim())
+      return setError("Nama pasien wajib diisi");
+    if (!formData.patientPhone.trim())
+      return setError("Nomor telepon wajib diisi");
+    if (!formData.keluhan.trim()) return setError("Keluhan wajib diisi");
 
     setLoading(true);
 
     try {
-      // Kirim ke WhatsApp
       sendWhatsAppBooking({
         patientName: formData.patientName,
         doctorName,
@@ -77,16 +68,9 @@ export default function BookingForm({
       setTimeout(() => {
         onClose();
         setSubmitted(false);
-        setFormData({
-          patientName: "",
-          patientPhone: "",
-          preferredDate: "",
-          keluhan: "",
-        });
       }, 3000);
     } catch (err) {
       setError("Terjadi kesalahan. Silakan coba lagi.");
-      console.error("Error:", err);
     } finally {
       setLoading(false);
     }
@@ -94,177 +78,127 @@ export default function BookingForm({
 
   return (
     <AnimatePresence>
-      {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+        className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[60]"
       />
 
-      {/* Modal */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        initial={{ opacity: 0, scale: 0.98, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        exit={{ opacity: 0, scale: 0.98, y: 10 }}
+        className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none"
       >
-        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+        <div className="bg-white rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] w-full max-w-sm overflow-hidden pointer-events-auto border border-slate-100">
           {/* Header */}
-          <div className="bg-linear-to-r from-[#0084BF] to-[#0073a5] text-white p-6 flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-bold">Buat Janji Temu</h2>
-              <p className="text-blue-100 text-sm mt-1">Dengan {doctorName}</p>
+          <div className="p-7 pb-2 flex items-start justify-between">
+            <div className="pr-4">
+              <h2 className="text-xl font-bold text-slate-900 leading-tight">
+                Buat Janji Temu
+              </h2>
+              <p className="text-slate-400 text-xs mt-1 font-medium">
+                {doctorName} • {specialty}
+              </p>
             </div>
             <button
               onClick={onClose}
-              className="hover:bg-white hover:bg-opacity-20 p-2 rounded-lg transition-all"
+              className="p-2 hover:bg-slate-50 rounded-full transition-colors text-slate-400"
             >
-              <X size={24} />
+              <X size={20} />
             </button>
           </div>
 
-          {/* Content */}
-          <div className="p-6">
-            <AnimatePresence>
+          <div className="p-7">
+            <AnimatePresence mode="wait">
               {submitted ? (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
                   className="text-center py-8"
                 >
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                    className="inline-block mb-4"
-                  >
-                    <CheckCircle className="text-green-500" size={64} />
-                  </motion.div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">
-                    Permintaan Terkirim!
+                  <div className="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle size={32} />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-800">
+                    Data Terkirim
                   </h3>
-                  <p className="text-gray-600">
-                    Kami akan menghubungi Anda melalui WhatsApp segera.
+                  <p className="text-sm text-slate-500 px-4 mt-1 leading-relaxed">
+                    Admin akan segera menghubungi Anda melalui WhatsApp.
                   </p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  {/* Error Message */}
+                <form onSubmit={handleSubmit} className="space-y-3">
                   {error && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3"
-                    >
-                      <AlertCircle className="text-red-500 shrink-0 mt-0.5" />
-                      <p className="text-red-700 text-sm">{error}</p>
-                    </motion.div>
+                    <div className="bg-red-50 text-red-600 p-3 rounded-2xl text-[11px] font-bold flex gap-2 items-center border border-red-100">
+                      <AlertCircle size={14} /> {error}
+                    </div>
                   )}
 
-                  {/* Patient Name */}
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">
-                      Nama Pasien
-                    </label>
+                  <div className="space-y-3">
                     <input
                       type="text"
                       name="patientName"
                       value={formData.patientName}
                       onChange={handleChange}
-                      placeholder="Masukkan nama lengkap"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0084BF] transition-all"
-                      disabled={loading}
+                      placeholder="Nama Lengkap Pasien"
+                      className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100  focus:bg-white focus:ring-2 focus:ring-blue-500/10 transition-all text-sm outline-none  rounded-xl"
                     />
-                  </div>
 
-                  {/* Phone Number */}
-                  <div>
-                    <label className="flex text-sm font-bold text-gray-700 mb-2 items-center gap-2">
-                      <Phone size={16} />
-                      Nomor Telepon
-                    </label>
-                    <input
-                      type="tel"
-                      name="patientPhone"
-                      value={formData.patientPhone}
-                      onChange={handleChange}
-                      placeholder="08xx-xxxx-xxxx"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0084BF] transition-all"
-                      disabled={loading}
-                    />
-                    <p className="text-xs text-gray-500 mt-1">
-                      * Gunakan nomor dengan WhatsApp
-                    </p>
-                  </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <input
+                        type="tel"
+                        name="patientPhone"
+                        value={formData.patientPhone}
+                        onChange={handleChange}
+                        placeholder="Masukan No Tlp"
+                        className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100  focus:bg-white focus:ring-2 focus:ring-blue-500/10 transition-all text-sm outline-none  rounded-xl"
+                      />
+                      <input
+                        type="date"
+                        name="preferredDate"
+                        value={formData.preferredDate}
+                        onChange={handleChange}
+                        className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100  focus:bg-white focus:ring-2 focus:ring-blue-500/10 transition-all text-sm outline-none text-slate-400 rounded-xl"
+                      />
+                    </div>
 
-                  {/* Preferred Date */}
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">
-                      Tanggal Preferensi (Opsional)
-                    </label>
-                    <input
-                      type="date"
-                      name="preferredDate"
-                      value={formData.preferredDate}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0084BF] transition-all"
-                      disabled={loading}
-                    />
-                  </div>
-
-                  {/* Keluhan */}
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">
-                      Keluhan/Alasan Kunjungan
-                    </label>
                     <textarea
                       name="keluhan"
                       value={formData.keluhan}
                       onChange={handleChange}
-                      placeholder="Jelaskan keluhan atau alasan Anda berkunjung..."
-                      rows={3}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0084BF] transition-all resize-none"
-                      disabled={loading}
+                      placeholder="Keluhan atau Alasan Kunjungan"
+                      rows={2}
+                      className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100  focus:bg-white focus:ring-2 focus:ring-blue-500/10 transition-all text-sm outline-none resize-none  rounded-xl"
                     />
                   </div>
 
-                  {/* Info */}
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <p className="text-sm text-gray-700 flex items-start gap-2">
-                      <MessageCircle className="text-[#0084BF] shrink-0 mt-0.5" />
-                      Pesan akan dikirim ke WhatsApp CS kami:
-                      <span className="font-bold">+62 831-2099-6468</span>
-                    </p>
-                  </div>
-
-                  {/* Submit Buttons */}
-                  <div className="flex gap-3 pt-4">
-                    <button
-                      type="button"
-                      onClick={onClose}
-                      disabled={loading}
-                      className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition-all disabled:opacity-50"
-                    >
-                      Batal
-                    </button>
+                  {/* Emboss Button - Black Shadow Style */}
+                  <div className="pt-6">
                     <button
                       type="submit"
                       disabled={loading}
-                      className="flex-1 px-4 py-3 bg-linear-to-r from-[#0084BF] to-[#0073a5] text-white font-bold rounded-lg hover:shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                      className="w-full py-4 bg-[#0084BF] text-white font-bold rounded-full transition-all duration-300
+                      shadow-[0_4px_10px_rgba(0,0,0,0.2) ] 
+                      hover:shadow-[inset_0_4px_8px_rgba(0,0,0,0.3)]
+                      active:scale-95 flex items-center justify-center gap-3 text-sm cursor-pointer"
                     >
                       {loading ? (
-                        <>
-                          <div className="w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin" />
-                          Mengirim...
-                        </>
+                        <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin " />
                       ) : (
-                        <>
-                          <MessageCircle size={18} />
-                          Kirim via WhatsApp
-                        </>
+                        <>Kirim via WhatsApp</>
                       )}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={onClose}
+                      className="w-full py-3 bg-transparent text-slate-400 font-medium rounded-full transition-all duration-200
+                      hover:text-slate-600 active:scale-95 text-xs mt-2"
+                    >
+                      Batal
                     </button>
                   </div>
                 </form>

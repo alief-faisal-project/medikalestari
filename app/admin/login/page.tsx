@@ -56,7 +56,9 @@ const AdminLoginPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-blue-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-600 mb-2">Admin Panel</h1>
+          <h1 className="text-3xl font-bold text-[#005075] mb-2">
+            Admin Panel
+          </h1>
           <p className="text-gray-600">RS Medika Lestari</p>
         </div>
 
@@ -80,8 +82,8 @@ const AdminLoginPage = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@example.com"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              placeholder="Masukan email anda ..."
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
               required
             />
           </div>
@@ -100,7 +102,7 @@ const AdminLoginPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
                 required
               />
               <button
@@ -116,7 +118,7 @@ const AdminLoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-blue-400"
+            className="w-full bg-[#005075] text-white py-2 rounded-lg font-semibold hover:bg-[#0084BF] transition-colors disabled:bg-[#003050]"
           >
             {loading ? "Sedang masuk..." : "Masuk"}
           </button>
@@ -124,7 +126,7 @@ const AdminLoginPage = () => {
 
         <Link
           href="/"
-          className="block text-center mt-6 text-blue-600 hover:text-blue-700"
+          className="block text-center mt-6 text-[#005075] hover:text-[#005075]"
         >
           Kembali ke Beranda
         </Link>

@@ -131,24 +131,24 @@ const AdminSidebar = () => {
           {/* Button Kembali ke Beranda */}
           <button
             onClick={() => router.push("/")}
-            className="w-full flex items-center gap-4 px-4 py-3 bg-white text-slate-300 hover:text-black rounded-xl transition-all duration-300 
+            className="w-full flex items-center gap-4 px-4 py-3 bg-white text-black hover:text-black rounded-xl transition-all duration-300 
             shadow-[0_0_15px_rgba(0,0,0,0.06)] 
             hover:shadow-[inset_0_0_15px_rgba(0,0,0,0.1)] 
             active:scale-[0.97] group border border-slate-50"
           >
-            <Home size={20} className="text-slate-400 group-hover:text-black" />
-            {isOpen && <span className="text-[14px] font-medium">Beranda</span>}
+            <Home size={20} className="text-black group-hover:text-black" />
+            {isOpen && <span className="text-[14px] font-bold">Beranda</span>}
           </button>
 
-          {/* Button Logout - Tetap Merah tapi Emboss */}
+          {/* Button Logout */}
           <button
             onClick={handleLogout}
             className={`
               w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300
-              bg-red-500 text-white font-bold active:scale-[0.97]
+              bg-red-600 text-white font-bold active:scale-[0.97]
               shadow-[0_4px_15px_rgba(239,68,68,0.4)] 
               hover:shadow-[inset_0_0_20px_rgba(0,0,0,0.2)]
-              border border-red-400
+              border border-red-500
             `}
           >
             <LogOut size={20} />
@@ -157,7 +157,7 @@ const AdminSidebar = () => {
         </div>
       </aside>
 
-      {/* Overlay for mobile when sidebar is open */}
+      {/* Overlay mobile ketika sidebar aktif */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/5 z-40 md:hidden"

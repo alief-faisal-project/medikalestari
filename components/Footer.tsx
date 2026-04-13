@@ -69,8 +69,7 @@ const Footer = () => {
                 className="h-11 w-auto object-contain"
               />
               <p className="text-[15px] leading-relaxed text-slate-500 font-medium max-w-sm">
-                Pelayanan kesehatan komprehensif dengan pendekatan teknologi
-                mutakhir untuk keamanan dan kenyamanan pasien.
+                Rumah Sakit Medika Lestari adalah pusat layanan kesehatan terkemuka yang berada dikota tangerang...........
               </p>
 
               {/* Social Media - Bigger & Borderless */}
@@ -138,8 +137,8 @@ const Footer = () => {
       <div className="mt-20 border-t border-slate-100 bg-slate-50/30">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="text-[12px] font-bold text-slate-400 tracking-wider">
-              © 2026 SIGAP SYSTEM • MEDIKA LESTARI GROUP
+            <div className="text-[12px] font-bold text-slate-400 ">
+              © 2026 RS MEDIKA LESTARI
             </div>
 
             <div className="flex gap-10">

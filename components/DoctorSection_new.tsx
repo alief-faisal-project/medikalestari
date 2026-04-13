@@ -56,7 +56,7 @@ const DoctorSection = () => {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-12">
-          {/* SISI KIRI: Filter Panel (Sticky Sidebar) */}
+          {/* Filter Panel */}
           <aside className="w-full lg:w-1/4">
             <div className="border border-gray-100 rounded-lg p-6 sticky top-10 bg-white shadow-sm">
               <div className="flex items-center gap-2 mb-8 text-[#003d79] font-bold">
@@ -124,7 +124,7 @@ const DoctorSection = () => {
             </div>
           </aside>
 
-          {/* SISI KANAN: List Dokter */}
+          {/* List Dokter */}
           <main className="w-full lg:w-3/4">
             {loading ? (
               <div className="flex items-center justify-center h-96">

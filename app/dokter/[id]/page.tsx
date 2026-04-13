@@ -68,7 +68,7 @@ const DoctorDetailPage = () => {
             </motion.div>
 
             <div className="mt-10 flex flex-col items-center gap-4">
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+              <p className="text-[12px] font-bold text-slate-400 uppercase">
                 Bagikan Profil Dokter
               </p>
               <div className="flex gap-4">

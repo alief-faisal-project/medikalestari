@@ -44,14 +44,14 @@ const DoctorSection = ({
   const [isPaging, setIsPaging] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // --- FILTER SEMENTARA (Input) ---
+  // --- FILTER SEMENTARA  ---
   const [tempFilter, setTempFilter] = useState({
     name: initialSearch || "",
     specialty: initialSpecialty || "Semua Spesialis",
     day: "",
   });
 
-  // --- FILTER AKTIF (Render) ---
+  // --- FILTER AKTIF  ---
   const [activeFilter, setActiveFilter] = useState({
     name: initialSearch || "",
     specialty: initialSpecialty || "Semua Spesialis",
@@ -72,13 +72,12 @@ const DoctorSection = ({
     }
   };
 
-  // 1. Efek saat pertama kali masuk (Landing dari section lain)
+  // 1. Efek saat pertama kali masuk 
   useEffect(() => {
     const load = async () => {
       try {
         const data = await fetchDoctors();
         setDoctors(data);
-        // Selalu pastikan posisi di atas saat komponen di-mount (terutama jika ada anchor link)
         setTimeout(jumpToTop, 50);
       } catch (error) {
         console.error("Error loading doctors:", error);
@@ -89,7 +88,7 @@ const DoctorSection = ({
     load();
   }, []);
 
-  // 2. Logika Otomatis Reset ketika Nama Dihapus (Sesuai Permintaan)
+  // 2. Logika Otomatis Reset ketika Nama Dihapus
   useEffect(() => {
     if (tempFilter.name === "" && activeFilter.name !== "") {
       setIsPaging(true);
@@ -299,7 +298,7 @@ const DoctorSection = ({
                           )}
 
                           <div className="flex flex-wrap gap-3">
-                            {/* Tombol Putih Emboss */}
+                            {/* Tombol Lihat Profil */}
                             <button
                               onClick={() =>
                                 (globalThis.location.href = `/dokter/${doctor.id}`)
@@ -315,7 +314,7 @@ const DoctorSection = ({
                               Lihat Profil
                             </button>
 
-                            {/* Tombol Gradient Emboss */}
+                            {/* Tombol Lihat Jadwal */}
                             <button
                               onClick={() =>
                                 (globalThis.location.href = `/dokter/${doctor.id}?action=booking`)
@@ -338,15 +337,17 @@ const DoctorSection = ({
                 {/* --- PAGINATION --- */}
                 {totalPages > 1 && (
                   <div className="flex items-center justify-center gap-2 mt-12 pt-8 border-t border-gray-100">
-                    <button
-                      onClick={() =>
-                        handlePageChange(Math.max(1, currentPage - 1))
-                      }
-                      disabled={currentPage === 1}
-                      className="px-4 py-2 text-sm font-semibold text-[#003d79] border border-gray-200 rounded-lg disabled:opacity-50 hover:bg-gray-50 cursor-pointer transition-all"
-                    >
-                      ← Sebelumnya
-                    </button>
+                    {currentPage > 1 && (
+                      <button
+                        onClick={() =>
+                          handlePageChange(Math.max(1, currentPage - 1))
+                        }
+                        className="px-4 py-2 text-sm font-semibold text-[#003d79] border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-all"
+                      >
+                        ← Sebelumnya
+                      </button>
+                    )}
+
                     <div className="flex items-center gap-1">
                       {[...Array(totalPages)].map((_, i) => (
                         <button
@@ -362,6 +363,7 @@ const DoctorSection = ({
                         </button>
                       ))}
                     </div>
+
                     <button
                       onClick={() =>
                         handlePageChange(Math.min(totalPages, currentPage + 1))

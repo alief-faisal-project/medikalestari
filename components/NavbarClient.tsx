@@ -106,11 +106,11 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
           </Link>
 
           <div className="hidden md:flex gap-4 items-center text-[15px] font-normal text-gray-700">
-            <Link href="#" className="hover:text-blue-600">
+            <Link href="#" className="hover:text-[#005075]">
               Kontak Kami
             </Link>
             <span className="text-gray-300">|</span>
-            <Link href="#" className="hover:text-blue-600">
+            <Link href="#" className="hover:text-[#005075]">
               Jenjang Karir
             </Link>
           </div>
@@ -209,9 +209,8 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               </AnimatePresence>
             </div>
 
-            {/* --- Login Admin (uses persisted session) --- */}
+            {/* --- Login Admin  --- */}
             <div className="flex items-center px-3 h-full transition-colors">
-              {/* render client-only auth state */}
               <AuthArea />
             </div>
           </div>
@@ -235,14 +234,14 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
             <div className="flex flex-col p-4">
               <button
                 onClick={handleHomeClick}
-                className="text-left p-4 font-bold text-blue-600 border-b text-lg"
+                className="text-left p-4 font-bold text-[#005075] border-b text-lg"
               >
                 Beranda
               </button>
               <Link
                 href="/dokter#section-dokter"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-left p-4 font-bold text-blue-600 border-b text-lg"
+                className="text-left p-4 font-bold text-[#005075] border-b text-lg"
               >
                 Dokter Kami
               </Link>
@@ -320,7 +319,6 @@ function AuthArea() {
       className="flex items-center gap-2 text-sm font-medium"
     >
       <UserCircle size={22} />
-      <span className="hidden lg:inline">Admin</span>
     </Link>
   );
 }

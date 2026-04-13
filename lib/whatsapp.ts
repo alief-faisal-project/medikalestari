@@ -1,5 +1,5 @@
 // WhatsApp API Utility
-const CS_PHONE = "083120996468"; // No WhatsApp CS
+const CS_PHONE = "082246232527"; // No WhatsApp CS
 
 export interface BookingMessage {
   patientName: string;
@@ -26,9 +26,7 @@ Mohon bantu mengatur jadwal konsultasi.`;
 
 export function getWhatsAppLink(message: string): string {
   const encodedMessage = encodeURIComponent(message);
-  // Format nomor tanpa simbol (hanya angka)
   const cleanPhone = CS_PHONE.replaceAll(/\D/g, "");
-  // Tambahkan kode negara Indonesia jika belum ada
   const phoneWithCountry = cleanPhone.startsWith("62")
     ? cleanPhone
     : "62" + cleanPhone.substring(1);

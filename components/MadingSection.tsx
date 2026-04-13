@@ -21,29 +21,17 @@ const MadingSection = () => {
         setEventData(events);
       } catch (error) {
         console.error("Error loading mading content:", error);
-        // Fallback to hardcoded data
         setEdukasiData([
           {
             id: "1",
             type: "edukasi",
-            title: "Trik Yang Bisa Dilakukan Agar Anak Semangat Berpuasa",
+            title: "Trik yang bisa dilakukan agar anak semangat berpuasa",
             description:
-              "Sudah menjelang minggu-minggu terakhir puasa di bulan Ramadhan, bagaimana puasanya Moms and Dads?...",
+              "Sudah menjelang minggu-minggu terakhir puasa di bulan Ramadhan...",
             image_url:
               "https://images.unsplash.com/photo-1536640712247-c45474d41d44?q=80&w=400&auto=format&fit=crop",
-            date: "April 14, 2026",
+            date: "14 April 2026",
             order: 1,
-            created_at: new Date().toISOString(),
-          },
-          {
-            id: "2",
-            type: "edukasi",
-            title: "Tips Aman Puasa di Bulan Ramadhan Bagi Penderita Maag",
-            description: "Sakit maag adalah rasa tidak nyaman di perut...",
-            image_url:
-              "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=400&auto=format&fit=crop",
-            date: "April 13, 2026",
-            order: 2,
             created_at: new Date().toISOString(),
           },
         ]);
@@ -51,8 +39,9 @@ const MadingSection = () => {
           {
             id: "1",
             type: "event",
-            title: "SKRINING TBC & RONTGEN THORAX",
-            description: "",
+            title: "Skrining TBC & Rontgen Thorax",
+            description:
+              "Program deteksi dini kesehatan paru gratis bagi masyarakat umum.",
             image_url:
               "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=400",
             order: 1,
@@ -61,8 +50,9 @@ const MadingSection = () => {
           {
             id: "2",
             type: "event",
-            title: "KICKBOXING CLASS",
-            description: "",
+            title: "Kickboxing Class",
+            description:
+              "Tingkatkan kebugaran jantung dengan sesi cardio intensif bersama pelatih.",
             image_url:
               "https://images.unsplash.com/photo-1552072092-7f9b8d63efcb?q=80&w=400",
             order: 2,
@@ -73,7 +63,6 @@ const MadingSection = () => {
         setLoading(false);
       }
     };
-
     loadContent();
   }, []);
 
@@ -84,8 +73,7 @@ const MadingSection = () => {
 
   return (
     <section className="w-full bg-white py-24 relative overflow-hidden">
-      {/* --- BACKGROUND DECORATION --- */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.04]">
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03]">
         <svg
           width="100%"
           height="100%"
@@ -100,108 +88,90 @@ const MadingSection = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10 px-4 md:px-8">
-        {/* --- MAIN HEADER (Divider Style, No Underline) --- */}
+        {/* Main Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="flex items-center gap-6 mb-20"
         >
-          <div className="flex-1 h-[1px] bg-gray-200" />
-          <h1 className="text-2xl md:text-4xl font-black text-[#005075] uppercase tracking-[0.2em] text-center whitespace-nowrap">
+          <div className="flex-1 h-[1px] bg-slate-100" />
+          <h1 className="text-2xl md:text-[30px] font-bold text-[#005075] text-center whitespace-nowrap tracking-normal uppercase">
             Mading Medika Lestari
           </h1>
-          <div className="flex-1 h-[1px] bg-gray-200" />
+          <div className="flex-1 h-[1px] bg-slate-100" />
         </motion.div>
 
-        {/* --- SUB SECTION: EDUKASI --- */}
+        {/* Edukasi Section */}
         <div className="mb-24">
           <div className="flex items-center gap-4 mb-12">
             <div className="w-1.5 h-10 bg-[#005075]"></div>
-            <h2 className="text-3xl font-black text-[#005075] uppercase tracking-tighter italic">
+            <h2 className="text-3xl font-bold text-[#005075] italic tracking-normal">
               Edukasi
             </h2>
           </div>
 
-          {/* Mobile: 2 Cards per row, Horizontal Scroll | Desktop: Grid 4 */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="flex md:grid md:grid-cols-4 gap-4 overflow-x-auto md:overflow-visible pb-8 md:pb-0 snap-x snap-mandatory scrollbar-hide"
+            className="flex md:grid md:grid-cols-4 gap-4 overflow-x-auto md:overflow-visible pb-8 scrollbar-hide snap-x snap-mandatory"
           >
-            {loading ? (
-              <>
-                <div className="min-w-[75%] sm:min-w-[45%] md:min-w-0 snap-center bg-gray-200 animate-pulse rounded-lg h-72" />
-                <div className="min-w-[75%] sm:min-w-[45%] md:min-w-0 snap-center bg-gray-200 animate-pulse rounded-lg h-72" />
-                <div className="min-w-[75%] sm:min-w-[45%] md:min-w-0 snap-center bg-gray-200 animate-pulse rounded-lg h-72" />
-                <div className="min-w-[75%] sm:min-w-[45%] md:min-w-0 snap-center bg-gray-200 animate-pulse rounded-lg h-72" />
-              </>
-            ) : edukasiData.length > 0 ? (
-              edukasiData.slice(0, 4).map((item) => (
-                <motion.div
-                  key={item.id}
-                  className="min-w-[75%] sm:min-w-[45%] md:min-w-0 snap-center bg-white border border-gray-100 p-5 group cursor-pointer hover:border-[#0084BF] transition-all duration-300 shadow-sm"
-                >
-                  <div className="relative overflow-hidden mb-5 aspect-4/3 bg-gray-100">
-                    <img
-                      src={item.image_url}
-                      alt={item.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute top-0 left-0 bg-[#005075] text-white text-[10px] font-bold px-3 py-1 uppercase tracking-widest">
-                      Medical News
+            {loading
+              ? [...Array(4)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="min-w-[75%] md:min-w-0 h-72 bg-slate-50 animate-pulse rounded-xl"
+                  />
+                ))
+              : edukasiData.map((item) => (
+                  <motion.div
+                    key={item.id}
+                    className="min-w-[75%] sm:min-w-[45%] md:min-w-0 snap-center bg-white p-5 group cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-slate-100"
+                  >
+                    <div className="relative overflow-hidden mb-5 aspect-4/3 bg-slate-100 rounded-xl">
+                      <img
+                        src={item.image_url}
+                        alt={item.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute top-0 left-0 bg-[#005075] text-white text-[10px] font-bold px-3 py-1 rounded-br-xl">
+                        Kabar medis
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center gap-2 text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-3">
-                    <CalendarDays size={12} className="text-[#0084BF]" />
-                    {item.date || "-"}
-                  </div>
+                    <div className="flex items-center gap-2 text-[10px] text-slate-400 font-bold mb-3">
+                      <CalendarDays size={12} className="text-[#0084BF]" />{" "}
+                      {item.date || "-"}
+                    </div>
 
-                  <h3 className="text-[#005075] font-black text-sm md:text-base leading-tight mb-4 min-h-12 group-hover:text-[#0084BF] transition-colors">
-                    {item.title}
-                  </h3>
+                    <h3 className="text-[#005075] font-bold text-sm md:text-base leading-tight mb-4 min-h-12 group-hover:text-[#0084BF] transition-colors line-clamp-2 tracking-normal">
+                      {item.title}
+                    </h3>
 
-                  <p className="text-gray-500 text-[11px] md:text-xs leading-relaxed mb-6 line-clamp-3">
-                    {item.description || "-"}
-                  </p>
+                    <p className="text-slate-500 text-[11px] md:text-xs leading-relaxed mb-6 line-clamp-3">
+                      {item.description || "-"}
+                    </p>
 
-                  <div className="pt-4 border-t border-gray-50 flex justify-between items-center group-hover:border-[#0084BF]/20">
-                    <span className="text-[10px] font-black uppercase text-[#005075] tracking-widest">
-                      Read More
-                    </span>
-                    <ArrowRight
-                      size={14}
-                      className="text-[#0084BF] transition-transform group-hover:translate-x-1"
-                    />
-                  </div>
-                </motion.div>
-              ))
-            ) : (
-              <>
-                <div className="min-w-[75%] sm:min-w-[45%] md:min-w-0 snap-center bg-gray-100 rounded-lg h-72 flex items-center justify-center">
-                  <span className="text-gray-400 text-sm">Kosong</span>
-                </div>
-                <div className="min-w-[75%] sm:min-w-[45%] md:min-w-0 snap-center bg-gray-100 rounded-lg h-72 flex items-center justify-center">
-                  <span className="text-gray-400 text-sm">Kosong</span>
-                </div>
-                <div className="min-w-[75%] sm:min-w-[45%] md:min-w-0 snap-center bg-gray-100 rounded-lg h-72 flex items-center justify-center">
-                  <span className="text-gray-400 text-sm">Kosong</span>
-                </div>
-                <div className="min-w-[75%] sm:min-w-[45%] md:min-w-0 snap-center bg-gray-100 rounded-lg h-72 flex items-center justify-center">
-                  <span className="text-gray-400 text-sm">Kosong</span>
-                </div>
-              </>
-            )}
+                    <div className="pt-4 border-t border-slate-50 flex justify-between items-center group-hover:border-[#0084BF]/20">
+                      <span className="text-[10px] font-bold text-black ">
+                        Read more
+                      </span>
+                      <ArrowRight
+                        size={14}
+                        className="text-black transition-transform group-hover:translate-x-1"
+                      />
+                    </div>
+                  </motion.div>
+                ))}
           </motion.div>
         </div>
 
-        {/* --- SUB SECTION: EVENT --- */}
+        {/* Event Section */}
         <div>
           <div className="flex items-center gap-4 mb-12 justify-end text-right">
-            <h2 className="text-3xl font-black text-[#005075] uppercase tracking-tighter italic">
+            <h2 className="text-3xl font-bold text-[#005075] italic tracking-normal">
               Event
             </h2>
             <div className="w-1.5 h-10 bg-[#0084BF]"></div>
@@ -212,57 +182,43 @@ const MadingSection = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="flex md:grid md:grid-cols-4 gap-4 overflow-x-auto md:overflow-visible pb-8 md:pb-0 snap-x snap-mandatory scrollbar-hide"
+            className="flex md:grid md:grid-cols-4 gap-4 overflow-x-auto md:overflow-visible pb-8 scrollbar-hide snap-x snap-mandatory"
           >
-            {loading ? (
-              <>
-                <div className="min-w-[70%] sm:min-w-[40%] md:min-w-0 snap-center bg-gray-200 animate-pulse rounded-lg h-96" />
-                <div className="min-w-[70%] sm:min-w-[40%] md:min-w-0 snap-center bg-gray-200 animate-pulse rounded-lg h-96" />
-                <div className="min-w-[70%] sm:min-w-[40%] md:min-w-0 snap-center bg-gray-200 animate-pulse rounded-lg h-96" />
-                <div className="min-w-[70%] sm:min-w-[40%] md:min-w-0 snap-center bg-gray-200 animate-pulse rounded-lg h-96" />
-              </>
-            ) : eventData.length > 0 ? (
-              eventData.slice(0, 4).map((event) => (
-                <motion.div
-                  key={event.id}
-                  className="min-w-[70%] sm:min-w-[40%] md:min-w-0 snap-center relative bg-gray-900 overflow-hidden group aspect-4/5 border border-gray-100"
-                >
-                  <img
-                    src={event.image_url}
-                    alt={event.title}
-                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
+            {loading
+              ? [...Array(4)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="min-w-[70%] md:min-w-0 h-96 bg-slate-50 animate-pulse rounded-xl"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-[#005075] via-transparent to-transparent opacity-90"></div>
+                ))
+              : eventData.map((event) => (
+                  <motion.div
+                    key={event.id}
+                    className="min-w-[70%] sm:min-w-[40%] md:min-w-0 snap-center relative bg-slate-950 overflow-hidden group aspect-4/5 "
+                  >
+                    <img
+                      src={event.image_url}
+                      alt={event.title}
+                      className="w-full h-full object-cover opacity-60 group-hover:opacity-50 group-hover:scale-110 transition-all duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#002d42] via-[#002d42]/60 to-transparent opacity-90" />
 
-                  <div className="absolute bottom-0 left-0 p-6 w-full">
-                    <div className="w-10 h-1 bg-[#0084BF] mb-3 group-hover:w-full transition-all duration-500"></div>
-                    <h4 className="text-xs md:text-sm font-black text-white leading-tight uppercase tracking-tight">
-                      {event.title}
-                    </h4>
-                  </div>
-                </motion.div>
-              ))
-            ) : (
-              <>
-                <div className="min-w-[70%] sm:min-w-[40%] md:min-w-0 snap-center bg-gray-100 rounded-lg h-96 flex items-center justify-center">
-                  <span className="text-gray-400 text-sm">Kosong</span>
-                </div>
-                <div className="min-w-[70%] sm:min-w-[40%] md:min-w-0 snap-center bg-gray-100 rounded-lg h-96 flex items-center justify-center">
-                  <span className="text-gray-400 text-sm">Kosong</span>
-                </div>
-                <div className="min-w-[70%] sm:min-w-[40%] md:min-w-0 snap-center bg-gray-100 rounded-lg h-96 flex items-center justify-center">
-                  <span className="text-gray-400 text-sm">Kosong</span>
-                </div>
-                <div className="min-w-[70%] sm:min-w-[40%] md:min-w-0 snap-center bg-gray-100 rounded-lg h-96 flex items-center justify-center">
-                  <span className="text-gray-400 text-sm">Kosong</span>
-                </div>
-              </>
-            )}
+                    <div className="absolute inset-0 flex flex-col justify-end p-6">
+                      <p className="text-white/90 text-[10px] md:text-xs leading-relaxed mb-2 font-medium line-clamp-2 tracking-normal">
+                        {event.description ||
+                          "Informasi detail agenda RS Medika Lestari"}
+                      </p>
+                      <h4 className="text-white text-base md:text-lg font-bold leading-tight tracking-normal">
+                        {event.title}
+                      </h4>
+                      <div className="w-8 h-1 bg-white/20 mt-4 group-hover:w-full group-hover:bg-[#0084BF] transition-all duration-500 rounded-full" />
+                    </div>
+                  </motion.div>
+                ))}
           </motion.div>
         </div>
       </div>
 
-      {/* Tailwind Utility to hide scrollbar */}
       <style jsx global>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;

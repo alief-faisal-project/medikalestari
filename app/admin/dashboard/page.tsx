@@ -93,8 +93,8 @@ const AdminDashboard = () => {
       <AdminNavbar />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-12">
-        <header className="mb-12 flex items-center gap-4">
-          <h1 className="text-[] font-medium">Dashboard</h1>
+        <header className="mb-5 flex items-center gap-4">
+          <h1 className="text-[40px] font-medium">Dashboard</h1>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -111,7 +111,7 @@ const AdminDashboard = () => {
                     : stats.totalDoctors}
                 </p>
               </div>
-              <div className="p-4 bg-slate-50 rounded-xl group-hover:bg-black group-hover:text-white transition-all duration-500">
+              <div className="p-4 rounded-xl transition-all duration-500">
                 <Users size={24} />
               </div>
             </div>
@@ -137,7 +137,7 @@ const AdminDashboard = () => {
                     : stats.totalSchedules}
                 </p>
               </div>
-              <div className="p-4 bg-slate-50 rounded-xl group-hover:bg-black group-hover:text-white transition-all duration-500">
+              <div className="p-4  transition-all duration-500">
                 <Calendar size={24} />
               </div>
             </div>

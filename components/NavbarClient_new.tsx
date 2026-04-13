@@ -80,7 +80,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
         </div>
       </div>
 
-      {/* --- Main Bar (Biru) --- */}
+      {/* --- Main Bar  --- */}
       <div className="hidden md:block relative w-full bg-blue-600 text-white z-30">
         <div
           className="absolute right-0 top-0 h-full w-[38%] bg-blue-900 hidden lg:block"
