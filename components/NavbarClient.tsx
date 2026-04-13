@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useCallback } from "react";
 import Link from "next/link";
 import { Search, Menu, X, Globe, UserCircle } from "lucide-react";
@@ -34,12 +35,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
       "Asuransi & Rekanan",
       "Panduan Kunjungan",
     ],
-    "Tentang Kami": [
-      "Profil RS Medika Lestari",
-      "Visi & Misi",
-      "Manajemen",
-      "Berita & Artikel",
-    ],
+    // "Tentang Kami" dikeluarkan dari sini agar tidak menjadi dropdown
   };
 
   const languages = [
@@ -155,7 +151,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               ></div>
             </Link>
 
-            {/* --- Menus Dropdown --- */}
+            {/* --- Menus Dropdown (Fasilitas & Informasi) --- */}
             {Object.keys(menuData).map((item) => (
               <div
                 key={item}
@@ -175,6 +171,17 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                 </AnimatePresence>
               </div>
             ))}
+
+            {/* --- Menu Tentang Kami (Diletakkan di Paling Kanan link menu) --- */}
+            <Link
+              href="/tentang-kami"
+              className="flex items-center h-full px-6 transition-colors font-medium relative group"
+            >
+              Tentang Kami
+              <div
+                className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${pathname === "/tentang-kami" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+              ></div>
+            </Link>
           </div>
 
           <div className="flex items-center h-full gap-2 text-[15px]">
@@ -264,31 +271,32 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                         exit={{ height: 0 }}
                         className="overflow-hidden bg-gray-50"
                       >
-                        {menuData[item].map((subitem) => {
-                          const subitemHref =
-                            subitem === "Profil RS Medika Lestari" ||
-                            subitem === "Visi & Misi"
-                              ? "/tentang-kami"
-                              : "#";
-                          return (
-                            <Link
-                              key={subitem}
-                              href={subitemHref}
-                              onClick={() => {
-                                setIsMobileMenuOpen(false);
-                                setActiveMenu(null);
-                              }}
-                              className="block p-4 pl-8 text-gray-600 border-b text-sm"
-                            >
-                              {subitem}
-                            </Link>
-                          );
-                        })}
+                        {menuData[item].map((subitem) => (
+                          <Link
+                            key={subitem}
+                            href="#"
+                            onClick={() => {
+                              setIsMobileMenuOpen(false);
+                              setActiveMenu(null);
+                            }}
+                            className="block p-4 pl-8 text-gray-600 border-b text-sm"
+                          >
+                            {subitem}
+                          </Link>
+                        ))}
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
               ))}
+              {/* Menu Tentang Kami di Mobile (Link Langsung di paling bawah list) */}
+              <Link
+                href="/tentang-kami"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-left p-4 font-bold text-[#005075] border-b text-lg"
+              >
+                Tentang Kami
+              </Link>
             </div>
           </motion.div>
         )}

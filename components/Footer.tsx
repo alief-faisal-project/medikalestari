@@ -3,156 +3,181 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
 
 const Footer = () => {
+  const TOP_HEIGHT = 120;
+
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      e.preventDefault();
+      const yOffset = -100;
+      const y =
+        element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+      window.history.pushState(null, "", `#${id}`);
+    }
+  };
+
   const footerLinks = [
     {
-      title: "Layanan Unggulan",
+      title: "Medika Lestari",
       links: [
-        "Orthopedic Center",
-        "Spine Center",
-        "Heart Centre",
-        "Vascular Center",
-        "Stroke Center",
+        { name: "Dokter Kami", id: "DoctorSection" },
+        { name: "Tentang Kami", id: "section-tentang" },
+        { name: "Fasilitas & Layanan", id: "section-fasilitas" },
       ],
     },
     {
-      title: "Tentang Kami",
+      title: "Lainnya",
       links: [
-        "Visi & Misi",
-        "Akreditasi",
-        "Karir",
-        "Vendor Governance",
-        "Kebijakan Antisuap",
-      ],
-    },
-    {
-      title: "Informasi",
-      links: [
-        "Fasilitas Kamar",
-        "Medical Check Up",
-        "Promo & Paket",
-        "Hubungi Kami",
+        { name: "Syarat & Ketentuan", href: "#" },
+        { name: "Privasi", href: "#" },
+        { name: "Iklan", href: "#" },
+        { name: "Gabung di Tim Dokter", href: "#" },
+        { name: "Daftarkan Rumah Sakit Anda", href: "#" },
       ],
     },
   ];
 
-  const SocialIcons = [
+  // ✅ ICON SOSIAL (FIX)
+  const socialMedia = [
     {
       name: "Facebook",
-      path: "M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z",
+      href: "#",
+      icon: (
+        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
+      ),
     },
     {
-      name: "Instagram",
-      path: "M12.315 2c2.43 0 2.784.012 3.855.06 1.061.048 1.791.222 2.427.471.656.254 1.142.559 1.629 1.046.487.487.792.973 1.046 1.629.249.636.423 1.366.471 2.427.048 1.071.06 1.425.06 3.855 0 2.429-.012 2.783-.06 3.854-.048 1.062-.222 1.791-.471 2.428-.254.656-.559 1.142-1.046 1.629-.487.487-.973.792-1.629 1.046-.636.249-1.366.423-2.427.471-1.071.048-1.425.06-3.855.06-2.43 0-2.784-.012-3.854-.06-1.062-.048-1.791-.222-2.428-.471-.656-.254-1.142-.559-1.629-1.046-.487-.487-.792-.973-1.046-1.629-.249-.636-.423-1.366-.471-2.427-.048-1.071-.06-1.425-.06-3.855 0-2.43.012-2.784.06-3.854.048-1.062.222-1.791.471-2.428.254-.656.559-1.142 1.046-1.629.487-.487.973-.792 1.629-1.046.636-.249 1.366-.423 2.427-.471 1.07-.048 1.424-.06 3.854-.06zm0 2.25c-2.408 0-2.711.011-3.66.054-.882.04-1.362.188-1.68.312-.421.163-.721.358-1.037.674-.316.316-.511.616-.674 1.037-.124.318-.272.798-.312 1.68-.043.949-.054 1.252-.054 3.66s.011 2.711.054 3.66c.04.882.188 1.362.312 1.68.163.421.358.721.674 1.037.316.316.616.511 1.037.674.318.124.798.272 1.68.312.949.043 1.252.054 3.66.054s2.711-.011 3.66-.054c.882-.04 1.362-.188 1.68-.312.421-.163.721-.358 1.037-.674.316-.316.511-.616.674-1.037.124-.318.272-.798.312-1.68.043-.949.054-1.252.054-3.66s-.011-2.711-.054-3.66c-.04-.882-.188-1.362-.312-1.68-.163-.421-.358-.721-.674-1.037-.316-.316-.616-.511-1.037-.674-.318-.124-.798-.272-1.68-.312-.949-.043-1.252-.054-3.66-.054zM12 7.125A4.875 4.875 0 1012 16.875 4.875 4.875 0 0012 7.125zM12 14.625a2.625 2.625 0 110-5.25 2.625 2.625 0 010 5.25zm4.875-6.75a1.125 1.125 0 11-2.25 0 1.125 1.125 0 012.25 0z",
+      name: "Twitter",
+      href: "#",
+      icon: (
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" />
+      ),
     },
     {
-      name: "YouTube",
-      path: "M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z",
+      name: "LinkedIn",
+      href: "#",
+      icon: (
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+      ),
     },
   ];
 
   return (
-    <footer className="bg-white text-slate-900 border-t border-slate-100 relative pt-16 overflow-hidden">
-      {/* Moving Line Shadow Only (No Color Line) */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
-          {/* Brand Identity Section */}
-          <div className="md:col-span-4 pr-0 md:pr-20 pb-12 border-b md:border-b-0 border-slate-100">
-            <div className="space-y-8">
+    <footer className="w-full text-white font-sans">
+      {/* ===== TOP FOOTER (GRADIENT FIX) ===== */}
+      <div
+        className="relative w-full flex items-center"
+        style={{
+          height: TOP_HEIGHT,
+          background: "linear-gradient(90deg, #0084BF, #005075)",
+        }}
+      >
+        <div className="max-w-7xl mx-auto w-full px-6 flex flex-col md:flex-row items-center justify-between">
+          {/* HP */}
+          <div className="relative w-52 md:w-72 h-[260px] md:h-[340px] flex justify-center md:justify-start">
+            <div className="absolute bottom-27 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0">
               <Image
-                src="/logo.png"
-                alt="RS Medika Lestari"
-                width={190}
-                height={55}
-                className="h-11 w-auto object-contain"
+                src="/hp.png"
+                alt="App"
+                width={300}
+                height={400}
+                className="object-contain"
+                priority
               />
-              <p className="text-[15px] leading-relaxed text-slate-500 font-medium max-w-sm">
-                Rumah Sakit Medika Lestari adalah pusat layanan kesehatan terkemuka yang berada dikota tangerang...........
-              </p>
-
-              {/* Social Media - Bigger & Borderless */}
-              <div className="flex gap-8">
-                {SocialIcons.map((icon) => (
-                  <Link
-                    key={icon.name}
-                    href="#"
-                    className="text-slate-400 hover:text-[#0084BF] transition-all duration-300 transform hover:scale-110"
-                  >
-                    <svg className="w-7 h-7 fill-current" viewBox="0 0 24 24">
-                      <path d={icon.path} />
-                    </svg>
-                  </Link>
-                ))}
-              </div>
             </div>
           </div>
 
-          {/* Links Section */}
-          <div className="md:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-12 md:pl-20 pt-12 md:pt-0">
+          {/* TEXT */}
+          <div className="flex-1 text-center md:text-left md:ml-16 mt-6 md:mt-0">
+            <h2 className="text-2xl md:text-[20px] font-bold leading-tight">
+              Chat lebih dari 1.000 dokter di Aplikasi Medika Lestari!
+            </h2>
+            <p className="text-lg md:text-xl mt-2 opacity-90">
+              Respons Cepat, Jawaban Akurat!
+            </p>
+          </div>
+
+          {/* STORE */}
+          <div className="flex flex-col gap-2 mt-8 md:mt-0 items-center md:items-end">
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+              alt="Google Play"
+              width={150}
+              height={55}
+            />
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
+              alt="App Store"
+              width={150}
+              height={55}
+              className="bg-black rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* ===== BOTTOM FOOTER ===== */}
+      <div className="bg-[#137CA3] border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
             {footerLinks.map((section) => (
-              <div
-                key={section.title}
-                className="md:border-l border-slate-100 md:pl-10"
-              >
-                <h3 className="text-[14px] font-bold uppercase text-slate-900 mb-8 pb-2">
-                  {section.title}
-                </h3>
-                <ul className="space-y-4">
+              <div key={section.title} className="md:col-span-3">
+                <h3 className="text-lg font-bold mb-6">{section.title}</h3>
+                <ul className="space-y-3">
                   {section.links.map((link) => (
-                    <li key={link}>
+                    <li key={link.name}>
                       <Link
-                        href="#"
-                        className="group flex items-center text-[14px] text-slate-500 hover:text-[#0084BF] transition-all font-medium"
+                        href={link.id ? `/#${link.id}` : link.href || "#"}
+                        onClick={
+                          link.id ? (e) => handleScroll(e, link.id!) : undefined
+                        }
+                        className="text-sm opacity-90 hover:underline hover:opacity-100"
                       >
-                        <span className="w-0 opacity-0 group-hover:w-5 group-hover:opacity-100 transition-all duration-300 ease-out flex items-center">
-                          <svg
-                            width="12"
-                            height="12"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                          </svg>
-                        </span>
-                        <span className="group-hover:translate-x-1 transition-transform duration-300">
-                          {link}
-                        </span>
+                        {link.name}
                       </Link>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
+
+            {/* MEDIA SOSIAL FIX */}
+            <div className="md:col-span-6 md:pl-12">
+              <h3 className="text-lg font-bold mb-6">Media Sosial</h3>
+
+              <div className="flex gap-4">
+                {socialMedia.map((social) => (
+                  <Link
+                    key={social.name}
+                    href={social.href}
+                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center group hover:bg-blue-100 transition-all"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 fill-[#0084BF] group-hover:scale-110 transition-transform"
+                    >
+                      {social.icon}
+                    </svg>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="mt-10 pt-6 border-t border-white/10">
+                <p className="text-xs opacity-70 mb-2">
+                  Bagian dari Medika Lestari
+                </p>
+                <p className="font-bold">medikalestari.com</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* Bottom Copyright Section */}
-      <div className="mt-20 border-t border-slate-100 bg-slate-50/30">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="text-[12px] font-bold text-slate-400 ">
-              © 2026 RS MEDIKA LESTARI
-            </div>
-
-            <div className="flex gap-10">
-              {["Privacy", "Terms", "Compliance"].map((text) => (
-                <Link
-                  key={text}
-                  href="#"
-                  className="text-[11px] font-bold text-slate-400 uppercase hover:text-[#0084BF] transition-all relative group"
-                >
-                  {text}
-                  <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#0084BF] transition-all group-hover:w-full"></span>
-                </Link>
-              ))}
-            </div>
+          <div className="mt-16 pt-6 border-t border-white/10 text-center">
+            <p className="text-sm opacity-90">
+              Hak Cipta © 2026 RS Medika Lestari
+            </p>
           </div>
         </div>
       </div>
