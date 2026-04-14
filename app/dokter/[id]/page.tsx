@@ -75,21 +75,21 @@ const DoctorDetailPage = () => {
                 {/* WhatsApp */}
                 <a
                   href="#"
-                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-slate-400 hover:text-[#25D366] transition-all border border-slate-100 shadow-sm hover:shadow-md"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-[#25D366] transition-all border border-slate-100 shadow-sm hover:shadow-md"
                 >
                   <i className="fa-brands fa-whatsapp text-xl"></i>
                 </a>
                 {/* Instagram */}
                 <a
                   href="#"
-                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-slate-400 hover:text-[#E1306C] transition-all border border-slate-100 shadow-sm hover:shadow-md"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-[#E1306C] transition-all border border-slate-100 shadow-sm hover:shadow-md"
                 >
                   <i className="fa-brands fa-instagram text-xl"></i>
                 </a>
                 {/* Telegram */}
                 <a
                   href="#"
-                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-slate-400 hover:text-[#0088cc] transition-all border border-slate-100 shadow-sm hover:shadow-md"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-[#0088cc] transition-all border border-slate-100 shadow-sm hover:shadow-md"
                 >
                   <i className="fa-brands fa-telegram text-xl"></i>
                 </a>
