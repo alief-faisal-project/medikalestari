@@ -79,7 +79,9 @@ const ServicesSection = () => {
     }
 
     if (title === "Email") {
-      window.location.href = "mailto:marketing@rsmedikalestari.com";
+      const link = document.createElement('a');
+      link.href = "mailto:marketing@rsmedikalestari.com";
+      link.click();
     }
 
     if (title === "Telepon") {

@@ -15,11 +15,14 @@ const Footer = () => {
       const y =
         element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: "smooth" });
-      window.history.pushState(null, "", `#${id}`);
+      globalThis.history.pushState(null, "", `#${id}`);
     }
   };
 
-  const footerLinks = [
+  const footerLinks: Array<{
+    title: string;
+    links: Array<{ name: string; id?: string; href?: string }>;
+  }> = [
     {
       title: "Medika Lestari",
       links: [
@@ -160,14 +163,19 @@ const Footer = () => {
               </div>
 
               <div className="mt-5 pt-2 border-t border-white/10">
-                <p className="font-bold">marketing@rsmedikalestari.com</p>
+                <a
+                  href="mailto:marketing@rsmedikalestari.com"
+                  className="font-bold hover:underline"
+                >
+                  marketing@rsmedikalestari.com
+                </a>
               </div>
             </div>
           </div>
 
           <div className="mt-16 pt-6 border-t border-white/10 text-center">
             <p className="text-sm opacity-90">
-              Hak Cipta © 2026 RS Medika Lestari
+              Hak Cipta © {new Date().getFullYear()} RS Medika Lestari
             </p>
           </div>
         </div>
