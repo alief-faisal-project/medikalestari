@@ -55,7 +55,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
     <nav className="w-full font-sans sticky top-0 z-100 bg-white shadow-sm">
       {/* --- Top Bar --- */}
       <div className="bg-white py-4 relative z-40">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center">
+        <div className="max-w-[1220px] mx-auto px-4 md:px-8 flex justify-between items-center">
           <Link href="/" className="flex items-center">
             {logoNode}
           </Link>
@@ -87,7 +87,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
           style={{ clipPath: "polygon(40px 0, 100% 0, 100% 100%, 0% 100%)" }}
         />
 
-        <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center h-14 relative z-10">
+        <div className="max-w-[1220px] mx-auto px-4 md:px-8 flex justify-between items-center h-14 relative z-10">
           <div className="flex h-full text-[15px]">
             <button
               onClick={scrollToTop}

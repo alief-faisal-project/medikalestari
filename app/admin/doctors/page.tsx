@@ -155,7 +155,7 @@ const AdminDoctorsPage = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <AdminNavbar />
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
+      <div className="max-w-[1220px] mx-auto px-4 md:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800">Kelola Dokter</h1>
           <button

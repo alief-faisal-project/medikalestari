@@ -46,7 +46,7 @@ const DoctorDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-white text-[#1A1A1A]">
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-[1220px] mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mt-10">
           {/* KOLOM KIRI: STICKY IMAGE 
               - 'lg:sticky': Membuat kolom menempel saat scroll di layar besar.

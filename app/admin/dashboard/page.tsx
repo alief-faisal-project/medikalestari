@@ -92,7 +92,7 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-[#F2F2F2] text-black font-sans">
       <AdminNavbar />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-12">
+      <div className="max-w-[1220px] mx-auto px-6 md:px-12 py-12">
         <header className="mb-5 flex items-center gap-4">
           <h1 className="text-[40px] font-medium">Dashboard</h1>
         </header>
@@ -102,9 +102,7 @@ const AdminDashboard = () => {
           <div className="bg-white rounded-2xl p-8 shadow-[0_4px_25px_rgba(0,0,0,0.02)] border border-slate-100 group">
             <div className="flex justify-between items-start">
               <div>
-                <p className="text-slate-400 text-[12px] mb-2">
-                  Total Dokter
-                </p>
+                <p className="text-slate-400 text-[12px] mb-2">Total Dokter</p>
                 <p className="text-5xl font-light tracking-normal">
                   {stats.totalDoctors < 10
                     ? `0${stats.totalDoctors}`
@@ -153,8 +151,7 @@ const AdminDashboard = () => {
 
         {/* Quick Actions */}
         <div className="mt-12 bg-white rounded-2xl p-10 shadow-[0_4px_30px_rgba(0,0,0,0.03)] border border-slate-100">
-          <div className="flex items-center gap-3 mb-8">
-          </div>
+          <div className="flex items-center gap-3 mb-8"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <EmbossButton
               onClick={() => router.push("/admin/doctors?action=create")}

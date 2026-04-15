@@ -162,15 +162,15 @@ const DoctorSection = ({
       </AnimatePresence>
 
       <div className="sticky top-0 z-40 bg-white border-b border-gray-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
-          <h1 className="text-4xl font-bold text-[#005075] tracking-tight mb-1">
+        <div className="max-w-[1220px] mx-auto px-4 md:px-8 py-6">
+          <h1 className="text-5xl font-bold text-slate-950 tracking-tight mb-1">
             Dokter Kami
           </h1>
           <p className="text-gray-600">Temukan Dokter Spesialis Kami</p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
+      <div className="max-w-[1220px] mx-auto px-4 md:px-8 py-16">
         <div className="flex flex-col lg:flex-row gap-10 items-start">
           {/* SIDEBAR FILTER */}
           <aside className="w-full lg:w-1/3 xl:w-1/4 lg:sticky lg:top-40 z-30">

@@ -46,7 +46,7 @@ const DoctorSection = () => {
       className="w-full py-12 bg-white min-h-screen font-sans text-slate-800"
       id="section-dokter"
     >
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
+      <div className="max-w-[1220px] mx-auto px-4 md:px-8">
         {/* Breadcrumb & Title */}
         <div className="mb-10 text-left">
           <nav className="text-sm text-gray-400 mb-2">
