@@ -30,6 +30,8 @@ const AdminMadingPage = () => {
     description: "",
     image_url: "",
     date: "",
+    start_date: "",
+    end_date: "",
     order: 0,
   });
   const router = useRouter();
@@ -103,6 +105,12 @@ const AdminMadingPage = () => {
         image_url: imageUrl,
         date:
           contentType === "edukasi" ? formData.date || undefined : undefined,
+        start_date:
+          contentType === "event"
+            ? formData.start_date || undefined
+            : undefined,
+        end_date:
+          contentType === "event" ? formData.end_date || undefined : undefined,
         order: formData.order,
       };
 
@@ -134,6 +142,8 @@ const AdminMadingPage = () => {
       description: item.description || "",
       image_url: item.image_url,
       date: item.date || "",
+      start_date: item.start_date || "",
+      end_date: item.end_date || "",
       order: item.order,
     });
     setImagePreview(item.image_url);
@@ -159,6 +169,8 @@ const AdminMadingPage = () => {
       description: "",
       image_url: "",
       date: "",
+      start_date: "",
+      end_date: "",
       order: 0,
     });
     setImageFile(null);
@@ -288,6 +300,9 @@ const AdminMadingPage = () => {
                       Judul
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                      Tanggal
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                       Order
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
@@ -312,6 +327,16 @@ const AdminMadingPage = () => {
                       </td>
                       <td className="px-6 py-4 font-medium text-gray-800">
                         {item.title}
+                      </td>
+                      <td className="px-6 py-4 text-gray-600 text-sm">
+                        {item.start_date && (
+                          <div>
+                            {item.start_date}
+                            {item.end_date && item.end_date !== item.start_date
+                              ? ` s/d ${item.end_date}`
+                              : ""}
+                          </div>
+                        )}
                       </td>
                       <td className="px-6 py-4 text-gray-600">{item.order}</td>
                       <td className="px-6 py-4 flex gap-2">
@@ -504,8 +529,9 @@ const AdminMadingPage = () => {
                           "November",
                           "December",
                         ];
-                        const monthName = monthNames[parseInt(month) - 1];
-                        const formattedDate = `${monthName} ${parseInt(day)}, ${year}`;
+                        const monthName =
+                          monthNames[Number.parseInt(month) - 1];
+                        const formattedDate = `${monthName} ${Number.parseInt(day)}, ${year}`;
                         setFormData({ ...formData, date: formattedDate });
                       } else {
                         setFormData({ ...formData, date: "" });
@@ -517,6 +543,48 @@ const AdminMadingPage = () => {
                     Format yang disimpan: {formData.date || "Belum ada tanggal"}
                   </small>
                 </div>
+              )}
+
+              {/* Date Range untuk Event */}
+              {contentType === "event" && (
+                <>
+                  <div>
+                    <label
+                      htmlFor="start-date"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Tanggal Mulai Event
+                    </label>
+                    <input
+                      id="start-date"
+                      type="date"
+                      value={formData.start_date}
+                      onChange={(e) =>
+                        setFormData({ ...formData, start_date: e.target.value })
+                      }
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="end-date"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Tanggal Berakhir Event (Opsional)
+                    </label>
+                    <input
+                      id="end-date"
+                      type="date"
+                      value={formData.end_date}
+                      onChange={(e) =>
+                        setFormData({ ...formData, end_date: e.target.value })
+                      }
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                  </div>
+                </>
               )}
 
               {/* Order */}
@@ -534,7 +602,7 @@ const AdminMadingPage = () => {
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      order: parseInt(e.target.value) || 0,
+                      order: Number.parseInt(e.target.value) || 0,
                     })
                   }
                   placeholder="0"

@@ -115,7 +115,7 @@ const AboutUs = () => {
                     </p>
                   ) : (
                     <p className="text-black text-[18px] font-semibold italic leading-relaxed animate-in fade-in duration-500">
-                      "Kesembuhan Anda Kebahagiaan Kami"
+                     "Kesembuhan Anda Kebahagiaan Kami"
                     </p>
                   )}
                 </div>

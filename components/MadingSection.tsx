@@ -11,6 +11,14 @@ const MadingSection = () => {
   const [eventData, setEventData] = useState<MadingContent[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const getEventDateDisplay = (event: MadingContent): string => {
+    if (!event.start_date) return "Segera Hadir";
+    if (event.end_date && event.end_date !== event.start_date) {
+      return `${event.start_date} - ${event.end_date}`;
+    }
+    return event.start_date;
+  };
+
   useEffect(() => {
     const loadContent = async () => {
       try {
@@ -173,7 +181,7 @@ const MadingSection = () => {
                         {/* Badge Jadwal/Tanggal Event */}
                         <div className="flex items-center gap-1.5 text-[#0084BF] font-bold text-[11px] uppercase">
                           <Clock size={12} />
-                          {event.date || "Segera Hadir"}
+                          {getEventDateDisplay(event)}
                         </div>
 
                         <h4 className="text-sm font-bold text-slate-900 leading-snug group-hover:text-[#0084BF] transition-colors line-clamp-2">

@@ -42,7 +42,9 @@ export interface MadingContent {
   title: string;
   description: string;
   image_url: string;
-  date?: string;
+  date?: string; // Only for edukasi
+  start_date?: string; // For event - tanggal mulai event
+  end_date?: string; // For event - optional tanggal akhir event
   order: number;
   created_at: string;
 }
