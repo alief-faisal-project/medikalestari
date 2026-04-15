@@ -4,13 +4,55 @@ import { Doctor, Schedule, MadingContent, HeroBanner } from "./types";
 // API Gateway Base URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
+// Helper function untuk retry fetch
+async function fetchWithRetry(
+  url: string,
+  options?: RequestInit,
+  retries = 3,
+): Promise<Response> {
+  let lastError: Error | null = null;
+
+  for (let i = 0; i < retries; i++) {
+    try {
+      console.log(`[Attempt ${i + 1}/${retries}] Fetching ${url}`);
+
+      // Create abort controller dengan timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      return response;
+    } catch (error) {
+      lastError = error as Error;
+      console.warn(`Attempt ${i + 1} failed:`, lastError.message);
+
+      if (i < retries - 1) {
+        // Wait before retry
+        await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
+      }
+    }
+  }
+
+  throw lastError || new Error("Fetch failed after retries");
+}
+
 // DOCTOR OPERATIONS
 export async function fetchDoctors(
   specialty?: string,
   searchName?: string,
 ): Promise<Doctor[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/doctors`);
+    const response = await fetchWithRetry(`${API_BASE_URL}/api/doctors`);
     const { data } = await response.json();
 
     let doctors = data || [];
@@ -27,7 +69,9 @@ export async function fetchDoctors(
 
     return doctors;
   } catch (error) {
-    console.error("Error fetching doctors:", error);
+    console.error("Error fetching doctors from API Gateway:", error);
+    console.log("Falling back to Supabase...");
+
     // Fallback to Supabase
     let query = supabase.from("doctors").select("*");
 
@@ -52,11 +96,13 @@ export async function fetchDoctors(
 
 export async function fetchDoctorById(id: string): Promise<Doctor | null> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/doctors/${id}`);
+    const response = await fetchWithRetry(`${API_BASE_URL}/api/doctors/${id}`);
     const { data } = await response.json();
     return data || null;
   } catch (error) {
-    console.error("Error fetching doctor:", error);
+    console.error("Error fetching doctor from API Gateway:", error);
+    console.log("Falling back to Supabase...");
+
     // Fallback to Supabase
     const { data, error: supabaseError } = await supabase
       .from("doctors")
