@@ -46,7 +46,7 @@ const Footer = () => {
   const socialMedia = [
     {
       name: "WhatsApp",
-      href: "https://wa.me/628XXXXXXXXXX",
+      href: "https://wa.me/6282246232527",
       target: "_blank",
       rel: "noopener noreferrer",
       icon: (
