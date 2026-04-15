@@ -1,84 +1,153 @@
 import { supabase } from "./supabase";
 import { Doctor, Schedule, MadingContent, HeroBanner } from "./types";
 
+// API Gateway Base URL
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+
 // DOCTOR OPERATIONS
 export async function fetchDoctors(
   specialty?: string,
   searchName?: string,
 ): Promise<Doctor[]> {
-  let query = supabase.from("doctors").select("*");
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/doctors`);
+    const { data } = await response.json();
 
-  if (specialty && specialty !== "Semua Spesialis") {
-    query = query.eq("specialty", specialty);
-  }
+    let doctors = data || [];
 
-  if (searchName) {
-    query = query.ilike("name", `%${searchName}%`);
-  }
+    if (specialty && specialty !== "Semua Spesialis") {
+      doctors = doctors.filter((d: Doctor) => d.specialty === specialty);
+    }
 
-  const { data, error } = await query;
+    if (searchName) {
+      doctors = doctors.filter((d: Doctor) =>
+        d.name.toLowerCase().includes(searchName.toLowerCase()),
+      );
+    }
 
-  if (error) {
+    return doctors;
+  } catch (error) {
     console.error("Error fetching doctors:", error);
-    return [];
-  }
+    // Fallback to Supabase
+    let query = supabase.from("doctors").select("*");
 
-  return data || [];
+    if (specialty && specialty !== "Semua Spesialis") {
+      query = query.eq("specialty", specialty);
+    }
+
+    if (searchName) {
+      query = query.ilike("name", `%${searchName}%`);
+    }
+
+    const { data, error: supabaseError } = await query;
+
+    if (supabaseError) {
+      console.error("Error fetching doctors from Supabase:", supabaseError);
+      return [];
+    }
+
+    return data || [];
+  }
 }
 
 export async function fetchDoctorById(id: string): Promise<Doctor | null> {
-  const { data, error } = await supabase
-    .from("doctors")
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  if (error) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/doctors/${id}`);
+    const { data } = await response.json();
+    return data || null;
+  } catch (error) {
     console.error("Error fetching doctor:", error);
-    return null;
-  }
+    // Fallback to Supabase
+    const { data, error: supabaseError } = await supabase
+      .from("doctors")
+      .select("*")
+      .eq("id", id)
+      .single();
 
-  return data;
+    if (supabaseError) {
+      console.error("Error fetching doctor from Supabase:", supabaseError);
+      return null;
+    }
+
+    return data;
+  }
 }
 
 export async function createDoctor(doctor: Omit<Doctor, "id" | "created_at">) {
-  const { data, error } = await supabase
-    .from("doctors")
-    .insert([doctor])
-    .select();
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/doctors`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(doctor),
+    });
 
-  if (error) {
+    const { data } = await response.json();
+    return data;
+  } catch (error) {
     console.error("Error creating doctor:", error);
-    throw error;
-  }
+    // Fallback to Supabase
+    const { data, error: supabaseError } = await supabase
+      .from("doctors")
+      .insert([doctor])
+      .select();
 
-  return data[0];
+    if (supabaseError) {
+      console.error("Error creating doctor in Supabase:", supabaseError);
+      throw supabaseError;
+    }
+
+    return data[0];
+  }
 }
 
 export async function updateDoctor(
   id: string,
   doctor: Partial<Omit<Doctor, "id" | "created_at">>,
 ) {
-  const { data, error } = await supabase
-    .from("doctors")
-    .update(doctor)
-    .eq("id", id)
-    .select();
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/doctors/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(doctor),
+    });
 
-  if (error) {
+    const { data } = await response.json();
+    return data;
+  } catch (error) {
     console.error("Error updating doctor:", error);
-    throw error;
-  }
+    // Fallback to Supabase
+    const { data, error: supabaseError } = await supabase
+      .from("doctors")
+      .update(doctor)
+      .eq("id", id)
+      .select();
 
-  return data[0];
+    if (supabaseError) {
+      console.error("Error updating doctor in Supabase:", supabaseError);
+      throw supabaseError;
+    }
+
+    return data[0];
+  }
 }
 
 export async function deleteDoctor(id: string) {
-  const { error } = await supabase.from("doctors").delete().eq("id", id);
-
-  if (error) {
+  try {
+    await fetch(`${API_BASE_URL}/api/doctors/${id}`, {
+      method: "DELETE",
+    });
+  } catch (error) {
     console.error("Error deleting doctor:", error);
-    throw error;
+    // Fallback to Supabase
+    const { error: supabaseError } = await supabase
+      .from("doctors")
+      .delete()
+      .eq("id", id);
+
+    if (supabaseError) {
+      console.error("Error deleting doctor from Supabase:", supabaseError);
+      throw supabaseError;
+    }
   }
 }
 

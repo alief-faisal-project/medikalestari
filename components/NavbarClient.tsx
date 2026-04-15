@@ -80,6 +80,30 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
           let itemHref = "#";
           if (title === "Profil RS Medika Lestari" || title === "Visi & Misi") {
             itemHref = "/tentang-kami";
+          } else if (title === "Emergency") {
+            itemHref = "/services/emergency";
+          } else if (title === "Farmasi") {
+            itemHref = "/services/farmasi";
+          } else if (title === "Fisioterapi") {
+            itemHref = "/services/fisioterapi";
+          } else if (title === "Kamar Perawatan") {
+            itemHref = "/services/kamar-perawatan";
+          } else if (title === "Laboratory Testing") {
+            itemHref = "/services/laboratory-testing";
+          } else if (title === "Layanan gawat darurat") {
+            itemHref = "/services/layanan-gawat-darurat";
+          } else if (title === "Medical Checkup") {
+            itemHref = "/services/medical-checkup";
+          } else if (title === "Poli Klinik") {
+            itemHref = "/services/poli-klinik";
+          } else if (title === "Radiologi") {
+            itemHref = "/services/radiologi";
+          } else if (title === "Rawat Inap") {
+            itemHref = "/services/rawat-inap";
+          } else if (title === "Rehabilitasi Medik") {
+            itemHref = "/services/rehabilitasi-medik";
+          } else if (title === "Vaccination Services") {
+            itemHref = "/services/vaccination-services";
           }
 
           return (
