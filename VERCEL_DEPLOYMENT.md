@@ -1,9 +1,30 @@
 # Vercel Deployment Guide
 
+## Fix: ERR_PNPM_OUTDATED_LOCKFILE Error
+
+### Problem
+```
+ERR_PNPM_OUTDATED_LOCKFILE  Cannot install with "frozen-lockfile" because pnpm-lock.yaml is not up to date
+```
+
+### Solution
+Update `vercel.json` dengan:
+```json
+{
+  "buildCommand": "pnpm run build",
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "framework": "nextjs",
+  "outputDirectory": ".next"
+}
+```
+
+Key: Use `--no-frozen-lockfile` agar pnpm bisa install di CI environment Vercel.
+
 ## Prerequisites
 - GitHub repository synced
 - Environment variables configured in Vercel
 - pnpm workspace properly set up
+- Lock file updated: `pnpm install --no-frozen-lockfile`
 
 ## Environment Variables in Vercel
 
