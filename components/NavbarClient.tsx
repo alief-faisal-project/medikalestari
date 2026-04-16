@@ -344,7 +344,7 @@ function AuthArea() {
       <Link
         href="/admin/dashboard"
         className="flex items-center gap-2 text-sm font-medium"
-        title="Admin Dashboard"
+        title="Panel Admin"
       >
         <UserCircle size={20} />
       </Link>
