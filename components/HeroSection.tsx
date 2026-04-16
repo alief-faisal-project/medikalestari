@@ -13,7 +13,7 @@ const HeroSection = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [loading, setLoading] = useState(true);
 
-  // ✅ SEARCH STATE
+  // SEARCH STATE
   const [search, setSearch] = useState("");
   const [specialty, setSpecialty] = useState("");
   const [day, setDay] = useState("");
@@ -182,11 +182,21 @@ const HeroSection = () => {
         </AnimatePresence>
       </div>
 
-      {/* 🔥 SEARCH BAR (FINAL CLEAN TANPA LABEL KIRI) */}
-      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-40 w-full px-4">
-        <div className="max-w-5xl mx-auto bg-white rounded-full flex items-center overflow-hidden border border-white/40 shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
+      {/* SEARCH BAR */}
+      <div className="absolute bottom-10 md:bottom-24 left-1/2 -translate-x-1/2 z-40 w-full px-4">
+        <div
+          className="
+    max-w-5xl mx-auto 
+    bg-white 
+    md:rounded-full rounded-2xl 
+    flex flex-col md:flex-row 
+    overflow-hidden 
+    border border-white/40 
+    shadow-[0_20px_60px_rgba(0,0,0,0.25)]
+  "
+        >
           {/* NAMA DOKTER */}
-          <div className="flex-1 px-6 py-4 flex items-center gap-3">
+          <div className="flex-1 px-5 py-4 flex items-center gap-3 border-b md:border-b-0 md:border-r border-gray-200">
             <User size={18} className="text-[#005075]" />
             <div className="w-full">
               <p className="text-xs text-[#005075] font-semibold">
@@ -203,7 +213,7 @@ const HeroSection = () => {
           </div>
 
           {/* SPESIALIS */}
-          <div className="flex-1 px-5 border-l border-gray-200">
+          <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-200">
             <p className="text-xs text-[#005075] font-semibold mb-1">
               Spesialis
             </p>
@@ -224,7 +234,7 @@ const HeroSection = () => {
           </div>
 
           {/* HARI */}
-          <div className="flex-1 px-5 border-l border-gray-200">
+          <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-200">
             <p className="text-xs text-[#005075] font-semibold mb-1">
               Pilih Hari
             </p>
@@ -244,25 +254,35 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* BUTTON SEARCH */}
-          <button
-            onClick={() => {
-              const params = new URLSearchParams();
-              if (search) params.append("search", search);
-              if (specialty) params.append("specialty", specialty);
-              if (day) params.append("day", day);
+          {/* BUTTON */}
+          <div className="flex items-center justify-center p-3">
+            <button
+              onClick={() => {
+                const params = new URLSearchParams();
+                if (search) params.append("search", search);
+                if (specialty) params.append("specialty", specialty);
+                if (day) params.append("day", day);
 
-              window.location.href = `/dokter?${params.toString()}`;
-            }}
-            className="w-14 h-14 m-2 rounded-full bg-[#005075] flex items-center justify-center text-white hover:scale-105 transition"
-          >
-            <Search size={20} />
-          </button>
+                window.location.href = `/dokter?${params.toString()}`;
+              }}
+              className="
+          w-full md:w-14 
+          h-12 md:h-14 
+          rounded-xl md:rounded-full 
+          bg-[#005075] 
+          flex items-center justify-center 
+          text-white 
+          hover:scale-105 transition
+        "
+            >
+              <Search size={20} />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* INDICATOR + PREVIEW (UTUH) */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-4">
+      {/* INDICATOR */}
+      <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-3 md:gap-4">
         {slides.map((_, index) => (
           <div
             key={index}
@@ -276,7 +296,7 @@ const HeroSection = () => {
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: -70, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  className="absolute left-1/2 -translate-x-1/2 w-32 h-20 rounded-lg overflow-hidden shadow-2xl"
+                  className="absolute left-1/2 -translate-x-1/2 w-28 md:w-32 h-16 md:h-20 rounded-lg overflow-hidden shadow-2xl"
                 >
                   <Image
                     src={slides[index].image_url}
@@ -293,7 +313,7 @@ const HeroSection = () => {
                 const newDirection = index > currentSlide ? 1 : -1;
                 setPage([index, newDirection]);
               }}
-              className={`w-5 h-5 rounded-full ${
+              className={`w-3 h-3 md:w-5 md:h-5 rounded-full ${
                 currentSlide === index
                   ? "bg-white"
                   : "bg-white/30 hover:bg-white/60"

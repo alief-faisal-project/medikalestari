@@ -141,7 +141,7 @@ const DoctorSection = ({
   const handlePageChange = (newPage: number) => {
     setIsPaging(true);
     setCurrentPage(newPage);
-    // Langsung pindah ke atas secara instan
+    // jump to top
     jumpToTop();
     setTimeout(() => setIsPaging(false), 200);
   };
@@ -172,9 +172,9 @@ const DoctorSection = ({
         </div>
       </div>
 
-      <div className="max-w-[1220px] mx-auto px-4 md:px-8 py-10">
+      <div className="max-w-[1220px] mx-auto px-4 md:px-8 py-9">
         <div className="flex flex-col lg:flex-row gap-10 items-start">
-          {/* SIDEBAR FILTER - TETAP STICKY */}
+          {/* SIDEBAR FILTER STICKY */}
           <aside className="w-full lg:w-1/3 xl:w-1/4 lg:sticky lg:top-40 z-30">
             <div className="border border-gray-200 p-8 bg-white shadow-sm h-fit">
               <div className="flex items-center gap-3 mb-10 text-[#005075] border-b border-gray-100 pb-4">
