@@ -96,9 +96,7 @@ const ServicesSection = () => {
             viewport={{ once: true }}
             className="flex items-center gap-6 mb-16 lg:mb-10 justify-center md:justify-start text-center md:text-left"
           >
-            <h2 className="text-4xl font-light uppercase border-b-4 border-[#005075] pb-2">
-              Informasi
-            </h2>
+            <h2 className="text-4xl font-light uppercase pb-2">Informasi</h2>
             <div className="hidden md:block flex-1 h-[1px] bg-gray-200/50" />
           </motion.div>
 
@@ -111,7 +109,7 @@ const ServicesSection = () => {
                 onClick={() => handleInfoClick(item.title)}
                 className="flex flex-col items-center justify-center p-10 bg-white cursor-pointer transition-all duration-300 group shadow-sm hover:shadow-md"
               >
-                <div className="relative w-16 h-16 mb-6 ">
+                <div className="relative w-16 h-16 mb-6">
                   <Image
                     src={item.img}
                     alt={item.title}
@@ -136,9 +134,7 @@ const ServicesSection = () => {
             className="flex items-center gap-6 mb-16 lg:mb-10 justify-center md:justify-end text-center md:text-right"
           >
             <div className="hidden md:block flex-1 h-[1px] bg-gray-200/50" />
-            <h2 className="text-4xl font-light uppercase border-b-4 border-[#005075] pb-2">
-              Pelayanan
-            </h2>
+            <h2 className="text-4xl font-light uppercase pb-2">Pelayanan</h2>
           </motion.div>
 
           {/* Button Kotak Berjejer */}
@@ -151,7 +147,7 @@ const ServicesSection = () => {
                 onClick={() => handleServiceClick(item)}
                 className="aspect-square flex flex-col items-center justify-center text-center p-6 bg-white cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 group"
               >
-                <div className="relative w-14 h-14 mb-5 group-hover:scale-110 transition-transform duration-500">
+                <div className="relative w-14 h-14 mb-5 transition-transform duration-500">
                   <Image
                     src={item.img}
                     alt={item.title}
