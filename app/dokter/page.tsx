@@ -5,7 +5,7 @@ interface DoctorPageProps {
 }
 
 export const metadata = {
-  title: "Dokter Kami - RS Medika Lestari",
+  title: "Dokter Kami",
   description:
     "Lihat daftar dokter spesialis kami yang berpengalaman dan terpercaya",
 };

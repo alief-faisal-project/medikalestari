@@ -1,7 +1,7 @@
 import AboutUs from "@/components/AboutUs";
 
 export const metadata = {
-  title: "Tentang Kami | RS Medika Lestari",
+  title: "Tentang Kami",
   description: "Sejarah, Visi, Misi, dan Profil Lengkap RS Medika Lestari",
 };
 
