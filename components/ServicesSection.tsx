@@ -20,7 +20,7 @@ const ServicesSection = () => {
   };
 
   const infoData = [
-    { id: 1, img: "/icons/informasi/telephone.png", title: "Customer Service" },
+    { id: 1, img: "/icons/informasi/telephone.png", title: "Customer-Service" },
     { id: 2, img: "/icons/informasi/email.png", title: "Email" },
     { id: 3, img: "/icons/informasi/map.png", title: "Lokasi" },
   ];
@@ -80,7 +80,7 @@ const ServicesSection = () => {
       link.click();
     }
 
-    if (title === "Telepon") {
+    if (title === "Customer-Service") {
       window.open("https://wa.me/6282246232527", "_blank");
     }
   };
@@ -112,7 +112,7 @@ const ServicesSection = () => {
                 onClick={() => handleInfoClick(item.title)}
                 className="flex flex-col items-center justify-center p-10 bg-white cursor-pointer transition-all duration-300 group shadow-sm hover:shadow-md"
               >
-                <div className="relative w-16 h-16 mb-6 group-hover:scale-110 transition-transform duration-500">
+                <div className="relative w-16 h-16 mb-6 ">
                   <Image
                     src={item.img}
                     alt={item.title}

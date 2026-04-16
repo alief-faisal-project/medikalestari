@@ -1,21 +1,46 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 
 const AboutUs = () => {
-  // State untuk kontrol Card Visi / Motto
-  const [activeTab, setActiveTab] = useState(0);
-
   const partners = ["tomtom", "viatris", "zoetis", "rohto", "davita", "chewy"];
+
+  const cardData = [
+    {
+      title: "VISI",
+      img: "/misi.jpg",
+      content:
+        "Menjadikan Rumah Sakit yang terbaik dan terjangkau oleh seluruh lapisan masyarakat.",
+    },
+    {
+      title: "MISI",
+      img: "/misi.jpg",
+      content: (
+        <ul className="space-y-2 text-sm">
+          <li>1. Mengutamakan Pasien Safety.</li>
+          <li>2. Meningkatkan mutu pelayanan secara berkesinambungan.</li>
+          <li>3. Memberikan pelayanan yang efektif dan efisien.</li>
+        </ul>
+      ),
+    },
+    {
+      title: "MOTTO",
+      img: "/misi.jpg",
+      content: (
+        <span className="italic">
+          &quot;Kesembuhan Anda Kebahagiaan Kami&quot;
+        </span>
+      ),
+    },
+  ];
 
   return (
     <section className="bg-white text-slate-900 scroll -mt-10 pb-20">
       {/* 1. SECTION FOTO & JUDUL */}
       <div className="max-w-[1160px] mx-auto px-6 py-12 md:py-20">
-        {/* Penambahan Tulisan DI ATAS Gambar */}
         <div className="mb-8 md:mb-12 border-b border-slate-100 pb-6">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-950 ">
+          <h1 className="text-4xl md:text-4xl lg:text-4xl font-extrabold tracking-tight text-slate-950">
             RS Medika Lestari
           </h1>
           <p className="mt-3 text-lg text-slate-600 max-w-3xl">
@@ -25,13 +50,12 @@ const AboutUs = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
-          {/* Gambar Utama (Tanpa Overlay Teks) */}
           <div className="lg:col-span-8 relative aspect-[16/10] overflow-hidden border border-slate-200 shadow-sm group">
             <Image
               src="/tentangkami/hospital-building.jpg"
               alt="Gedung Utama RS Medika Lestari"
               fill
-              className="object-cover transition-transform duration-500 "
+              className="object-cover transition-transform duration-500"
               priority
             />
           </div>
@@ -63,7 +87,6 @@ const AboutUs = () => {
           <h2 className="text-3xl font-bold tracking-tight text-slate-950 uppercase mb-6">
             Sejarah Berdirinya RS Medika Lestari
           </h2>
-
           <div className="space-y-6 text-slate-700 leading-relaxed text-justify text-[16px]">
             <p>
               Berdiri tanggal 15 oktober 1994, berawal dari sebuah klinik yang
@@ -94,112 +117,47 @@ const AboutUs = () => {
         </div>
       </div>
 
-      {/* 3. VISI MISI  */}
+      {/* 3. VISI MISI & MOTTO */}
       <div className="bg-slate-50 border-y border-slate-200 py-24">
         <div className="max-w-[1160px] mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
-            <div className="bg-white shadow-xl shadow-slate-200/60 flex flex-col overflow-hidden border border-slate-100 min-h-[300px]">
-              <div className="bg-[#0084BF] p-6 flex justify-end items-center relative overflow-hidden">
-                <div className="absolute left-[-20px] top-[-20px] w-32 h-32 bg-white/10 rounded-full"></div>
-                <h3 className="text-white text-3xl font-bold relative z-10 uppercase">
-                  {activeTab === 0 ? "VISI" : "MOTTO"}
-                </h3>
-              </div>
-
-              <div className="p-10 flex flex-col justify-between flex-grow">
-                <div className="min-h-[80px]">
-                  {activeTab === 0 ? (
-                    <p className="text-black text-[16px] leading-relaxed animate-in fade-in duration-500">
-                      Menjadikan Rumah Sakit yang terbaik dan terjangkau oleh
-                      seluruh lapisan masyarakat.
-                    </p>
-                  ) : (
-                    <p className="text-black text-[18px] font-semibold italic leading-relaxed animate-in fade-in duration-500">
-                      &quot;Kesembuhan Anda Kebahagiaan Kami&quot;
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex justify-center gap-4 mt-8">
-                  <button
-                    onClick={() => setActiveTab(0)}
-                    className={`w-5 h-5 rounded-full transition-all duration-300 ${
-                      activeTab === 0
-                        ? "bg-[#0084BF]"
-                        : "bg-slate-300 hover:bg-slate-400"
-                    }`}
-                  />
-                  <button
-                    onClick={() => setActiveTab(1)}
-                    className={`w-5 h-5 rounded-full transition-all duration-300 ${
-                      activeTab === 1
-                        ? "bg-[#0084BF]"
-                        : "bg-slate-300 hover:bg-slate-400"
-                    }`}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white shadow-xl shadow-slate-200/60 flex flex-col overflow-hidden border border-slate-100 min-h-[300px]">
-              <div className="bg-[#005075] p-6 flex justify-end items-center relative overflow-hidden">
-                <div className="absolute left-[-20px] top-[-20px] w-32 h-32 bg-white/10 rounded-full"></div>
-                <h3 className="text-white text-3xl font-bold relative z-10">
-                  MISI
-                </h3>
-              </div>
-              <div className="p-10">
-                <ul className="text-black text-[15px] space-y-4 leading-relaxed">
-                  <li className="flex gap-2">
-                    <span>1.</span>
-                    <span>Misi Kami Mengutamakan Pasien Safety.</span>
-                  </li>
-                  <li className="flex gap-2 text-justify">
-                    <span>2.</span>
-                    <span>
-                      Meningkatkan mutu pelayanan secara berkesinambungan.
-                    </span>
-                  </li>
-                  <li className="flex gap-2 text-justify">
-                    <span>3.</span>
-                    <span>
-                      Serta memberikan pelayanan yang efektif dan efisien.
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 4. AKREDITASI  */}
-      <div className="max-w-max-w-[1160px] mx-auto px-6 py-24 md:py-32 border-b border-slate-100">
-        <div className="flex flex-col items-center text-center gap-10">
-          {/* Header Akreditasi */}
-          <div className="max-w-2xl">
-            <h3 className="text-3xl font-bold text-slate-900 uppercase mb-2">
-              Terakreditasi Paripurna
-            </h3>
-            <p className="text-slate-500 text-sm md:text-base leading-relaxed">
-              RS Medika Lestari telah memenuhi standar pelayanan kesehatan
-              nasional dengan kelulusan tingkat tertinggi (Paripurna) dari KARS.
-            </p>
-          </div>
-
-          {/* Gambar Sertifikat */}
-          <div className="w-full flex justify-center">
-            <div className="p-4 md:p-8">
-              <div className="bg-white p-2 overflow-hidden">
-                <Image
-                  src="/tentangkami/akreditas.png"
-                  alt="Sertifikat Akreditasi Paripurna KARS"
-                  width={600}
-                  height={600}
-                  className="w-full h-auto object-contain"
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {cardData.map((item, idx) => (
+              <div
+                key={idx}
+                className="group relative h-[420px] w-full overflow-hidden bg-[#005075] md:bg-white shadow-xl border border-slate-100 cursor-pointer"
+              >
+                {/* Background Image - Sembunyi di Mobile */}
+                <div
+                  className="hidden md:block absolute inset-0 z-0 bg-cover bg-center transition-transform duration-[800ms]"
+                  style={{ backgroundImage: `url('${item.img}')` }}
                 />
+
+                {/* Layer Poligon/Jajar Genjang - Hanya satu layer yang berubah bentuk */}
+                <div
+                  className="absolute inset-0 z-10 bg-[#005075]/80 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] 
+                             md:[clip-path:polygon(0_85%,100%_70%,100%_100%,0%_100%)] 
+                             group-hover:[clip-path:polygon(0_0,100%_0,100%_100%,0%_100%)]"
+                />
+
+                {/* Konten Teks */}
+                <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
+                  {/* Judul: Berada di area jajar genjang saat normal, naik sedikit saat hover */}
+                  <h3 className="text-white text-3xl font-bold transition-all duration-700 group-hover:-translate-y-2">
+                    {item.title}
+                  </h3>
+
+                  {/* Deskripsi: Slide up smooth dari bawah */}
+                  <div
+                    className="max-h-0 opacity-0 overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] 
+                                  group-hover:max-h-[200px] group-hover:opacity-100 group-hover:mt-4"
+                  >
+                    <div className="text-white/90 leading-relaxed pt-3 border-t border-white/20">
+                      {item.content}
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
