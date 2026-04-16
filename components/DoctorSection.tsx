@@ -260,7 +260,7 @@ const DoctorSection = ({
 
               <button
                 onClick={handleApplyFilter}
-                className="w-full bg-[#0084BF] text-white py-4 font-bold rounded-full cursor-pointer transition-all hover:bg-[#005075] active:scale-95"
+                className="w-full bg-[#005075] text-white py-4 font-bold rounded-full cursor-pointer transition-all hover:bg-[#005075] active:scale-95"
               >
                 Cari Dokter Spesialis
               </button>
@@ -305,7 +305,7 @@ const DoctorSection = ({
                           <h3 className="text-2xl font-bold text-[#005075] mb-1">
                             {doctor.name}
                           </h3>
-                          <p className="text-[#0084BF] font-semibold text-sm mb-4">
+                          <p className="text-gray-500 font-semibold text-sm mb-4">
                             {doctor.specialty}
                           </p>
                           {doctor.bio && (
@@ -317,14 +317,14 @@ const DoctorSection = ({
                           <div className="flex flex-wrap justify-center md:justify-start gap-3">
                             <Link
                               href={`/dokter/${doctor.id}`}
-                              className="px-8 py-3 bg-white text-[#0084BF] text-[12px] font-bold rounded-xs border border-[#0084BF]/20 transition-all hover:bg-gray-50 inline-block"
+                              className="px-8 py-3 bg-white text-[#005075] text-[12px] font-bold rounded-full border border-[#005075] transition-all active:scale-95 hover:bg-gray-50 inline-block"
                             >
                               Lihat Profil
                             </Link>
 
                             <button
                               onClick={() => setSelectedDoctor(doctor)}
-                              className="px-8 py-3 bg-[#0084BF] hover:bg-[#005075] text-white text-[12px] font-bold rounded-xs transition-all  active:scale-95 cursor-pointer"
+                              className="px-8 py-3 bg-[#005075] hover:bg-[#005075] text-white text-[12px] font-bold rounded-full transition-all  active:scale-95 cursor-pointer"
                             >
                               Buat Janji Temu
                             </button>
