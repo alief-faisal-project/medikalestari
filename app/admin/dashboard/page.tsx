@@ -12,8 +12,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-// Pindahkan ke luar agar tidak merah dan tidak re-render tidak perlu
-const EmbossButton = ({
+// Mengganti warna background ke [#005075] dan teks ke putih
+const ScaleButton = ({
   onClick,
   children,
   className = "",
@@ -26,10 +26,8 @@ const EmbossButton = ({
 }) => (
   <button
     onClick={onClick}
-    className={`group px-6 py-4 bg-white text-slate-700 rounded-xl transition-all duration-300 
-    shadow-[0_0_15px_rgba(0,0,0,0.06)] 
-    hover:shadow-[inset_0_0_15px_rgba(0,0,0,0.1)] 
-    active:scale-[0.97] cursor-pointer flex items-center justify-center gap-3 ${className}`}
+    className={`group px-6 py-4 bg-[#005075] text-white rounded-xl transition-all duration-300 
+    hover:scale-[1.02] cursor-pointer flex items-center justify-center gap-3 ${className}`}
   >
     {Icon && (
       <Icon size={18} className="transition-transform group-hover:scale-110" />
@@ -123,13 +121,13 @@ const AdminDashboard = () => {
                 <Users size={24} />
               </div>
             </div>
-            <EmbossButton
+            <ScaleButton
               onClick={() => router.push("/admin/doctors")}
-              className="mt-10 w-full border border-slate-100"
+              className="mt-10 w-full"
               icon={ChevronRight}
             >
               Kelola Data Dokter
-            </EmbossButton>
+            </ScaleButton>
           </div>
 
           {/* Card Jadwal */}
@@ -149,13 +147,13 @@ const AdminDashboard = () => {
                 <Calendar size={24} />
               </div>
             </div>
-            <EmbossButton
+            <ScaleButton
               onClick={() => router.push("/admin/schedules")}
-              className="mt-10 w-full border border-slate-100"
+              className="mt-10 w-full"
               icon={ChevronRight}
             >
               Atur Jadwal Praktik
-            </EmbossButton>
+            </ScaleButton>
           </div>
         </div>
 
@@ -163,20 +161,20 @@ const AdminDashboard = () => {
         <div className="mt-12 bg-white rounded-2xl p-10 shadow-[0_4px_30px_rgba(0,0,0,0.03)] border border-slate-100">
           <div className="flex items-center gap-3 mb-8"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <EmbossButton
+            <ScaleButton
               onClick={() => router.push("/admin/doctors?action=create")}
-              className="border border-slate-100"
+              className=""
               icon={Plus}
             >
               Tambah Tenaga Medis
-            </EmbossButton>
-            <EmbossButton
+            </ScaleButton>
+            <ScaleButton
               onClick={() => router.push("/admin/schedules?action=create")}
-              className="border border-slate-100"
+              className=""
               icon={Plus}
             >
               Buat Plotting Jadwal
-            </EmbossButton>
+            </ScaleButton>
           </div>
         </div>
       </div>

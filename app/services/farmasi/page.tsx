@@ -13,7 +13,7 @@ export default function Farmasi() {
   return (
     <div className="min-h-screen bg-gray-50 mb-20">
       {/* HERO */}
-      <div className="bg-gradient-to-r from-[#005075] to-[#0084BF] text-white">
+      <div className="bg-gradient-to-r from-[#005075] to-[#015A85] text-white">
         <div className="max-w-6xl mx-auto px-4 py-16">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Layanan Farmasi
@@ -42,7 +42,7 @@ export default function Farmasi() {
         {/* INFO UTAMA */}
         <div className="grid md:grid-cols-3 gap-6 mb-10">
           <div className="bg-white rounded-2xl shadow-sm p-6">
-            <Pill className="text-[#0084BF] mb-3" size={28} />
+            <Pill className="text-[#015A85] mb-3" size={28} />
             <h3 className="font-semibold text-gray-800 mb-1">Obat Lengkap</h3>
             <p className="text-sm text-gray-600">
               Menyediakan obat resep dan non-resep dengan kualitas terjamin.
@@ -50,7 +50,7 @@ export default function Farmasi() {
           </div>
 
           <div className="bg-white rounded-2xl shadow-sm p-6">
-            <ClipboardList className="text-[#0084BF] mb-3" size={28} />
+            <ClipboardList className="text-[#015A85] mb-3" size={28} />
             <h3 className="font-semibold text-gray-800 mb-1">
               Konsultasi Apoteker
             </h3>
@@ -60,7 +60,7 @@ export default function Farmasi() {
           </div>
 
           <div className="bg-white rounded-2xl shadow-sm p-6">
-            <ShieldCheck className="text-[#0084BF] mb-3" size={28} />
+            <ShieldCheck className="text-[#015A85] mb-3" size={28} />
             <h3 className="font-semibold text-gray-800 mb-1">
               Standar Keamanan
             </h3>

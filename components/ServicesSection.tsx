@@ -20,7 +20,7 @@ const ServicesSection = () => {
   };
 
   const infoData = [
-    { id: 1, img: "/icons/informasi/telephone.png", title: "Customer-Service" },
+    { id: 1, img: "/icons/informasi/telephone.png", title: "Customer service" },
     { id: 2, img: "/icons/informasi/email.png", title: "Email" },
     { id: 3, img: "/icons/informasi/map.png", title: "Lokasi" },
   ];
@@ -71,7 +71,7 @@ const ServicesSection = () => {
 
   const handleInfoClick = (title: string) => {
     if (title === "Lokasi") {
-      window.open("http://maps.google.com", "_blank");
+      window.open("https://maps.app.goo.gl/EP5qTWzim9XmoUbe6", "_blank");
     }
 
     if (title === "Email") {
@@ -80,7 +80,7 @@ const ServicesSection = () => {
       link.click();
     }
 
-    if (title === "Customer-Service") {
+    if (title === "Customer Service") {
       window.open("https://wa.me/6282246232527", "_blank");
     }
   };
@@ -90,7 +90,6 @@ const ServicesSection = () => {
       <div className="relative z-10">
         {/* INFORMASI SECTION */}
         <div className="max-w-[1160px] mx-auto px-4 md:px-8 mb-20">
-          {/* Judul Kode Awal */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -103,7 +102,7 @@ const ServicesSection = () => {
             <div className="hidden md:block flex-1 h-[1px] bg-gray-200/50" />
           </motion.div>
 
-          {/* Button Kotak Berjejer (Border Dihapus, Background White) */}
+          {/* Button Kotak Berjejer */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {infoData.map((item) => (
               <motion.div
@@ -130,7 +129,6 @@ const ServicesSection = () => {
 
         {/* PELAYANAN SECTION */}
         <div className="max-w-[1160px] mx-auto px-4 md:px-8">
-          {/* Judul Kode Awal */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -143,7 +141,7 @@ const ServicesSection = () => {
             </h2>
           </motion.div>
 
-          {/* Button Kotak Berjejer (Border Dihapus, Background White) */}
+          {/* Button Kotak Berjejer */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {serviceData.map((item) => (
               <motion.div

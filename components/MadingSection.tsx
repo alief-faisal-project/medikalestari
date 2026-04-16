@@ -127,19 +127,19 @@ const MadingSection = () => {
                           <span className="flex items-center gap-1">
                             <CalendarDays
                               size={14}
-                              className="text-[#0084BF]"
+                              className="text-[#015A85]"
                             />
                             {item.date}
                           </span>
                           <span>•</span>
-                          <span className="text-[#0084BF]">Tips Medis</span>
+                          <span className="text-[#015A85]">Tips Medis</span>
                         </div>
 
-                        <h3 className="text-xl font-bold text-slate-900 leading-tight group-hover:text-[#0084BF] transition-colors line-clamp-2">
+                        <h3 className="text-xl font-bold text-slate-900 leading-tight group-hover:text-[#015A85] transition-colors line-clamp-2">
                           {item.title}
                         </h3>
 
-                        <div className="pt-2 flex items-center gap-2 text-sm font-bold text-slate-900 group-hover:text-[#0084BF] transition-colors">
+                        <div className="pt-2 flex items-center gap-2 text-sm font-bold text-slate-900 group-hover:text-[#015A85] transition-colors">
                           BACA SELENGKAPNYA
                           <ArrowRight
                             size={16}
@@ -154,7 +154,9 @@ const MadingSection = () => {
 
           {/* Section Event */}
           <div className="lg:col-span-4 lg:border-l lg:border-gray-50 lg:pl-10 ">
-            <h2 className="text-2xl font-bold text-[#005075] mb-10">Jadwal Event</h2>
+            <h2 className="text-2xl font-bold text-[#005075] mb-10">
+              Jadwal Event
+            </h2>
 
             <div className="space-y-10">
               {loading
@@ -177,12 +179,12 @@ const MadingSection = () => {
 
                       <div className="flex flex-col gap-1.5">
                         {/* Badge Jadwal/Tanggal Event */}
-                        <div className="flex items-center gap-1.5 text-[#0084BF] font-bold text-[11px] uppercase">
+                        <div className="flex items-center gap-1.5 text-[#015A85] font-bold text-[11px] uppercase">
                           <Clock size={12} />
                           {getEventDateDisplay(event)}
                         </div>
 
-                        <h4 className="text-sm font-bold text-slate-900 leading-snug group-hover:text-[#0084BF] transition-colors line-clamp-2">
+                        <h4 className="text-sm font-bold text-slate-900 leading-snug group-hover:text-[#015A85] transition-colors line-clamp-2">
                           {event.title}
                         </h4>
 
@@ -190,7 +192,7 @@ const MadingSection = () => {
                           {event.description}
                         </p>
 
-                        <div className="mt-2 w-6 group-hover:w-full h-[2px] bg-[#0084BF] transition-all duration-500" />
+                        <div className="mt-2 w-6 group-hover:w-full h-[2px] bg-[#015A85] transition-all duration-500" />
                       </div>
                     </div>
                   ))}

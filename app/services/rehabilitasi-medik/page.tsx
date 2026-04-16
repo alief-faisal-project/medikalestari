@@ -8,7 +8,7 @@ export default function RehabilitasiMedik() {
       <div className="max-w-4xl mx-auto px-4">
         <Link
           href="/"
-          className="flex items-center gap-2 text-[#0084BF] hover:text-[#005075] mb-8"
+          className="flex items-center gap-2 text-[#015A85] hover:text-[#005075] mb-8"
         >
           <ArrowLeft size={20} />
           Kembali ke Beranda

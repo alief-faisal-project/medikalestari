@@ -128,7 +128,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ isOpen, onClose }) => {
                           onClick={() => handleDoctorClick(doctor.id)}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="group flex gap-4 p-4 bg-white hover:shadow-md transition-all rounded-lg text-left border border-gray-200 hover:border-[#0084BF]"
+                          className="group flex gap-4 p-4 bg-white hover:shadow-md transition-all rounded-lg text-left border border-gray-200 hover:border-[#015A85]"
                         >
                           <div className="w-16 h-16 rounded-full overflow-hidden shrink-0 bg-gray-200">
                             <Image
@@ -143,10 +143,10 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ isOpen, onClose }) => {
                             />
                           </div>
                           <div className="flex-1">
-                            <h4 className="text-sm font-bold text-[#003d79] group-hover:text-[#0084BF] transition-colors">
+                            <h4 className="text-sm font-bold text-[#003d79] group-hover:text-[#015A85] transition-colors">
                               {doctor.name}
                             </h4>
-                            <p className="text-xs text-[#0084BF] font-medium">
+                            <p className="text-xs text-[#015A85] font-medium">
                               {doctor.specialty}
                             </p>
                           </div>
@@ -176,12 +176,12 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ isOpen, onClose }) => {
                   <button
                     key={specialty}
                     onClick={() => handleSpecialtyClick(specialty)}
-                    className="group flex justify-between items-center text-[13px] text-[#002D44] font-medium hover:text-[#0084BF] transition-colors border-b border-transparent hover:border-[#0084BF] pb-1 text-left"
+                    className="group flex justify-between items-center text-[13px] text-[#002D44] font-medium hover:text-[#015A85] transition-colors border-b border-transparent hover:border-[#015A85] pb-1 text-left"
                   >
                     <span>{specialty}</span>
                     <ArrowRight
                       size={14}
-                      className="text-[#0084BF] opacity-0 group-hover:opacity-100 transition-all transform -translate-x-2 group-hover:translate-x-0"
+                      className="text-[#015A85] opacity-0 group-hover:opacity-100 transition-all transform -translate-x-2 group-hover:translate-x-0"
                     />
                   </button>
                 ),

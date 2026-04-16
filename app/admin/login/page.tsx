@@ -1,10 +1,13 @@
 "use client";
+
 import React, { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import Link from "next/link";
-import { AlertCircle, Eye, EyeOff } from "lucide-react";
+import { AlertCircle, Eye, EyeOff, Mail, Lock, Loader2 } from "lucide-react";
+// Import tipe AuthSession dari supabase-js
+import { Session } from "@supabase/supabase-js";
 
 const AdminLoginPage = () => {
   const [email, setEmail] = useState("");
@@ -31,105 +34,97 @@ const AdminLoginPage = () => {
       if (authError) {
         setError(authError.message);
       } else if (data.session) {
+        try {
+          // Menggunakan data.session secara langsung karena tipenya sudah valid (Session)
+          // Jika useAuth.login membutuhkan tipe yang spesifik, kita gunakan data.session
+          const session: Session = data.session;
+
+          await login(session.access_token, session.user, session);
+        } catch (err) {
+          // fallback jika ada error pada fungsi login context
+          console.error("Login context error:", err);
+        }
         router.push("/admin/dashboard");
       }
-      // persist session in our AuthProvider so it survives refresh
-      try {
-        await login(
-          // access token
-          (data.session as any).access_token,
-          // user
-          (data.session as any).user,
-          // full session object
-          data.session,
-        );
-      } catch {
-        // fallback: still continue
-      }
-      router.push("/admin/dashboard");
+    } catch (err) {
+      setError("Terjadi kesalahan koneksi.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-blue-100">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[#005075] mb-2">
-            Admin Panel
-          </h1>
-          <p className="text-gray-600">RS Medika Lestari</p>
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
+      <div className="w-full max-w-md bg-white rounded-xs shadow-xl p-10 border border-gray-200">
+        <div className="mb-10 text-center">
+          <h1 className="text-4xl font-bold text-[#015A85] mb-2">LOGIN</h1>
+          <p className="text-gray-400 font-medium text-lg">RS Medika Lestari</p>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex gap-3 items-start">
-            <AlertCircle className="text-red-500 mt-0.5 shrink-0" size={20} />
-            <p className="text-red-700 text-sm">{error}</p>
+          <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 animate-in fade-in">
+            <AlertCircle size={18} className="text-red-500 shrink-0" />
+            <p className="text-red-700 text-xs font-semibold">{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Email
-            </label>
+        <form onSubmit={handleLogin} className="space-y-5">
+          {/* Email Input */}
+          <div className="relative group">
+            <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#015A85] transition-colors">
+              <Mail size={20} />
+            </div>
             <input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Masukan email anda ..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+              placeholder="Email Address"
+              className="w-full pl-14 pr-6 py-4 bg-white border border-gray-200 rounded-xs text-sm focus:border-[#015A85] focus:ring-4 focus:ring-blue-50 outline-none transition-all placeholder:text-gray-300"
               required
             />
           </div>
 
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Password
-            </label>
-            <div className="relative">
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
+          {/* Password Input */}
+          <div className="relative group">
+            <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#015A85] transition-colors">
+              <Lock size={20} />
             </div>
+            <input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              className="w-full pl-14 pr-14 py-4 bg-white border border-gray-200 rounded-xs text-sm focus:border-[#015A85] focus:ring-4 focus:ring-blue-50 outline-none transition-all placeholder:text-gray-300"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors"
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#005075] text-white py-2 rounded-lg font-semibold hover:bg-[#0084BF] transition-colors disabled:bg-[#003050]"
+            className="w-full bg-[#015A85] text-white py-4 rounded-xs font-bold text-sm hover:bg-[#0073A6] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
           >
-            {loading ? "Sedang masuk..." : "Masuk"}
+            {loading ? <Loader2 size={18} className="animate-spin" /> : "Login"}
           </button>
         </form>
 
-        <Link
-          href="/"
-          className="block text-center mt-6 text-[#005075] hover:text-[#005075]"
-        >
-          Kembali ke Beranda
-        </Link>
+        <div className="mt-10 flex flex-col items-center gap-4">
+          <Link
+            href="/"
+            className="text-sm font-bold text-[#015A85] hover:underline"
+          >
+            Kembali ke beranda
+          </Link>
+        </div>
       </div>
     </div>
   );

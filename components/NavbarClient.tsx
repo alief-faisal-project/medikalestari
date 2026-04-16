@@ -151,7 +151,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
       </div>
 
       {/* --- Bottom Navbar --- */}
-      <div className="hidden md:block relative w-full bg-[#0084BF] text-white z-30">
+      <div className="hidden md:block relative w-full bg-[#015A85] text-white z-30">
         <div
           className="absolute right-0 top-0 h-full w-[38%] bg-[#005075] hidden lg:block"
           style={{ clipPath: "polygon(40px 0, 100% 0, 100% 100%, 0% 100%)" }}

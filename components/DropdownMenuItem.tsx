@@ -21,7 +21,7 @@ const DropdownMenuItem = ({ title, href }: DropdownItemProps) => {
         </div>
 
         {/* TEKS: Berubah warna saat HOVER */}
-        <span className="text-[14px] text-gray-700 group-hover:text-[#0084BF] group-hover:font-medium transition-colors duration-300">
+        <span className="text-[14px] text-gray-700 group-hover:text-[#015A85] group-hover:font-medium transition-colors duration-300">
           {title}
         </span>
       </div>

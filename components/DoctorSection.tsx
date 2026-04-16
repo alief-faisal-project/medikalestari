@@ -190,7 +190,7 @@ const DoctorSection = ({
                     onChange={(e) =>
                       setTempFilter({ ...tempFilter, name: e.target.value })
                     }
-                    className="w-full border-b border-slate-200 py-2 pl-7 outline-none focus:border-[#0084BF] text-sm bg-transparent rounded-none"
+                    className="w-full border-b border-slate-200 py-2 pl-7 outline-none focus:border-[#015A85] text-sm bg-transparent rounded-none"
                   />
                 </div>
               </div>

@@ -35,8 +35,7 @@ export default function Emergency() {
       <div className="relative border-b border-slate-200 bg-white">
         <div className="max-w-[1160px] mx-auto px-6 py-24 md:py-32 relative z-10">
           <div className="max-w-3xl">
-            <div className="flex items-center gap-3 mb-8">
-            </div>
+            <div className="flex items-center gap-3 mb-8"></div>
 
             <h1 className="text-5xl md:text-8xl font-black text-black mb-8 leading-[0.9] tracking-tighter">
               GAWAT <br />

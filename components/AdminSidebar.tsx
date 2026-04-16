@@ -102,7 +102,7 @@ const AdminSidebar = () => {
                   flex items-center gap-4 px-4 py-3 rounded-xl transition-all group
                   ${
                     Active
-                      ? "bg-slate-50 text-black shadow-[inset_0_0_10px_rgba(0,0,0,0.02)]"
+                      ? "bg-slate-50 text-black shadow-sm"
                       : "text-slate-500 hover:bg-slate-50 hover:text-black"
                   }
                 `}
@@ -131,12 +131,12 @@ const AdminSidebar = () => {
           {/* Button Kembali ke Beranda */}
           <button
             onClick={() => router.push("/")}
-            className="w-full flex items-center gap-4 px-4 py-3 bg-white text-black hover:text-black rounded-xl transition-all duration-300 
-            shadow-[0_0_15px_rgba(0,0,0,0.06)] 
-            hover:shadow-[inset_0_0_15px_rgba(0,0,0,0.1)] 
-            active:scale-[0.97] group border border-slate-50"
+            className="w-full flex items-center gap-4 px-4 py-3 bg-[#005075] text-white rounded-xl transition-all duration-300 
+            shadow-[0_4px_12px_rgba(0,0,0,0.05)] 
+            hover:scale-[1.02] hover:shadow-[0_6px_15px_rgba(0,0,0,0.08)] 
+            active:scale-[0.97] group border border-gray-100 cursor-pointer"
           >
-            <Home size={20} className="text-black group-hover:text-black" />
+            <Home size={20} className="text-whit" />
             {isOpen && <span className="text-[14px] font-bold">Beranda</span>}
           </button>
 
@@ -145,10 +145,11 @@ const AdminSidebar = () => {
             onClick={handleLogout}
             className={`
               w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300
-              bg-red-600 text-white font-bold active:scale-[0.97]
-              shadow-[0_4px_15px_rgba(239,68,68,0.4)] 
-              hover:shadow-[inset_0_0_20px_rgba(0,0,0,0.2)]
-              border border-red-500
+              bg-red-600 text-white font-bold cursor-pointer
+              shadow-[0_4px_15px_rgba(239,68,68,0.3)] 
+              hover:scale-[1.02] hover:shadow-[0_6px_20px_rgba(239,68,68,0.4)]
+              active:scale-[0.97]
+              border border-gray-100
             `}
           >
             <LogOut size={20} />
