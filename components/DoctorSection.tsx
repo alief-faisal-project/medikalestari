@@ -260,7 +260,7 @@ const DoctorSection = ({
 
               <button
                 onClick={handleApplyFilter}
-                className="w-full bg-[#0084BF] text-white py-4 font-bold rounded-xs cursor-pointer transition-all hover:bg-[#005075] active:scale-95"
+                className="w-full bg-[#0084BF] text-white py-4 font-bold rounded-full cursor-pointer transition-all hover:bg-[#005075] active:scale-95"
               >
                 Cari Dokter Spesialis
               </button>
@@ -341,7 +341,7 @@ const DoctorSection = ({
                     {currentPage > 1 && (
                       <button
                         onClick={() => handlePageChange(currentPage - 1)}
-                        className="px-4 py-2 text-sm font-semibold text-[#003d79] border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                        className="px-4 py-2 text-sm font-semibold text-[#003d79] border border-gray-200 rounded-xs hover:bg-gray-50 transition-colors cursor-pointer"
                       >
                         ← Sebelumnya
                       </button>
@@ -352,7 +352,7 @@ const DoctorSection = ({
                         <button
                           key={`page-${i + 1}`}
                           onClick={() => handlePageChange(i + 1)}
-                          className={`w-10 h-10 rounded-lg font-semibold text-sm transition-all cursor-pointer ${
+                          className={`w-10 h-10 rounded-xs font-semibold text-sm transition-all cursor-pointer ${
                             currentPage === i + 1
                               ? "bg-[#0084BF] text-white shadow-[#0084BF]/20  z-10"
                               : "text-[#003d79] border border-gray-200 hover:bg-gray-50 hover:border-gray-300"
@@ -366,7 +366,7 @@ const DoctorSection = ({
                     {currentPage < totalPages && (
                       <button
                         onClick={() => handlePageChange(currentPage + 1)}
-                        className="px-4 py-2 text-sm font-semibold text-[#003d79] border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                        className="px-4 py-2 text-sm font-semibold text-[#003d79] border border-gray-200 rounded-xs hover:bg-gray-50 transition-colors cursor-pointer"
                       >
                         Selanjutnya →
                       </button>

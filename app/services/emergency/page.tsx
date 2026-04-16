@@ -36,15 +36,11 @@ export default function Emergency() {
         <div className="max-w-[1160px] mx-auto px-6 py-24 md:py-32 relative z-10">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-8">
-              <span className="h-[1px] w-12 bg-red-600"></span>
-              <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-red-600">
-                Emergency System Active
-              </span>
             </div>
 
-            <h1 className="text-5xl md:text-8xl font-black text-slate-950 mb-8 leading-[0.9] tracking-tighter">
+            <h1 className="text-5xl md:text-8xl font-black text-black mb-8 leading-[0.9] tracking-tighter">
               GAWAT <br />
-              <span className="text-slate-300">DARURAT</span>
+              <span className="text-black">DARURAT</span>
             </h1>
 
             <p className="text-lg md:text-xl text-slate-500 leading-relaxed mb-12 max-w-xl border-l-2 border-[#005075] pl-6">

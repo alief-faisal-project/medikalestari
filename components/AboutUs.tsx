@@ -40,7 +40,7 @@ const AboutUs = () => {
       {/* 1. SECTION FOTO & JUDUL */}
       <div className="max-w-[1160px] mx-auto px-6 py-12 md:py-20">
         <div className="mb-8 md:mb-12 border-b border-slate-100 pb-6">
-          <h1 className="text-4xl md:text-4xl lg:text-4xl font-extrabold tracking-tight text-slate-950">
+          <h1 className="text-4xl md:text-4xl lg:text-4xl font-bold tracking-tight text-slate-950">
             RS Medika Lestari
           </h1>
           <p className="mt-3 text-lg text-slate-600 max-w-3xl">
