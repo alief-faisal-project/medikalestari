@@ -1,199 +1,84 @@
 import { supabase } from "./supabase";
 import { Doctor, Schedule, MadingContent, HeroBanner } from "./types";
 
-// API Gateway Base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-
-// Helper function untuk retry fetch
-async function fetchWithRetry(
-  url: string,
-  options?: RequestInit,
-  retries = 3,
-): Promise<Response> {
-  let lastError: Error | null = null;
-
-  for (let i = 0; i < retries; i++) {
-    try {
-      console.log(`[Attempt ${i + 1}/${retries}] Fetching ${url}`);
-
-      // Create abort controller dengan timeout
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
-
-      const response = await fetch(url, {
-        ...options,
-        signal: controller.signal,
-      });
-
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-
-      return response;
-    } catch (error) {
-      lastError = error as Error;
-      console.warn(`Attempt ${i + 1} failed:`, lastError.message);
-
-      if (i < retries - 1) {
-        // Wait before retry
-        await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
-      }
-    }
-  }
-
-  throw lastError || new Error("Fetch failed after retries");
-}
-
 // DOCTOR OPERATIONS
 export async function fetchDoctors(
   specialty?: string,
   searchName?: string,
 ): Promise<Doctor[]> {
-  try {
-    const response = await fetchWithRetry(`${API_BASE_URL}/api/doctors`);
-    const { data } = await response.json();
+  let query = supabase.from("doctors").select("*");
 
-    let doctors = data || [];
-
-    if (specialty && specialty !== "Semua Spesialis") {
-      doctors = doctors.filter((d: Doctor) => d.specialty === specialty);
-    }
-
-    if (searchName) {
-      doctors = doctors.filter((d: Doctor) =>
-        d.name.toLowerCase().includes(searchName.toLowerCase()),
-      );
-    }
-
-    return doctors;
-  } catch (error) {
-    console.error("Error fetching doctors from API Gateway:", error);
-    console.log("Falling back to Supabase...");
-
-    // Fallback to Supabase
-    let query = supabase.from("doctors").select("*");
-
-    if (specialty && specialty !== "Semua Spesialis") {
-      query = query.eq("specialty", specialty);
-    }
-
-    if (searchName) {
-      query = query.ilike("name", `%${searchName}%`);
-    }
-
-    const { data, error: supabaseError } = await query;
-
-    if (supabaseError) {
-      console.error("Error fetching doctors from Supabase:", supabaseError);
-      return [];
-    }
-
-    return data || [];
+  if (specialty && specialty !== "Semua Spesialis") {
+    query = query.eq("specialty", specialty);
   }
+
+  if (searchName) {
+    query = query.ilike("name", `%${searchName}%`);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error fetching doctors:", error);
+    return [];
+  }
+
+  return data || [];
 }
 
 export async function fetchDoctorById(id: string): Promise<Doctor | null> {
-  try {
-    const response = await fetchWithRetry(`${API_BASE_URL}/api/doctors/${id}`);
-    const { data } = await response.json();
-    return data || null;
-  } catch (error) {
-    console.error("Error fetching doctor from API Gateway:", error);
-    console.log("Falling back to Supabase...");
+  const { data, error } = await supabase
+    .from("doctors")
+    .select("*")
+    .eq("id", id)
+    .single();
 
-    // Fallback to Supabase
-    const { data, error: supabaseError } = await supabase
-      .from("doctors")
-      .select("*")
-      .eq("id", id)
-      .single();
-
-    if (supabaseError) {
-      console.error("Error fetching doctor from Supabase:", supabaseError);
-      return null;
-    }
-
-    return data;
+  if (error) {
+    console.error("Error fetching doctor:", error);
+    return null;
   }
+
+  return data;
 }
 
 export async function createDoctor(doctor: Omit<Doctor, "id" | "created_at">) {
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/doctors`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(doctor),
-    });
+  const { data, error } = await supabase
+    .from("doctors")
+    .insert([doctor])
+    .select();
 
-    const { data } = await response.json();
-    return data;
-  } catch (error) {
+  if (error) {
     console.error("Error creating doctor:", error);
-    // Fallback to Supabase
-    const { data, error: supabaseError } = await supabase
-      .from("doctors")
-      .insert([doctor])
-      .select();
-
-    if (supabaseError) {
-      console.error("Error creating doctor in Supabase:", supabaseError);
-      throw supabaseError;
-    }
-
-    return data[0];
+    throw error;
   }
+
+  return data[0];
 }
 
 export async function updateDoctor(
   id: string,
   doctor: Partial<Omit<Doctor, "id" | "created_at">>,
 ) {
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/doctors/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(doctor),
-    });
+  const { data, error } = await supabase
+    .from("doctors")
+    .update(doctor)
+    .eq("id", id)
+    .select();
 
-    const { data } = await response.json();
-    return data;
-  } catch (error) {
+  if (error) {
     console.error("Error updating doctor:", error);
-    // Fallback to Supabase
-    const { data, error: supabaseError } = await supabase
-      .from("doctors")
-      .update(doctor)
-      .eq("id", id)
-      .select();
-
-    if (supabaseError) {
-      console.error("Error updating doctor in Supabase:", supabaseError);
-      throw supabaseError;
-    }
-
-    return data[0];
+    throw error;
   }
+
+  return data[0];
 }
 
 export async function deleteDoctor(id: string) {
-  try {
-    await fetch(`${API_BASE_URL}/api/doctors/${id}`, {
-      method: "DELETE",
-    });
-  } catch (error) {
-    console.error("Error deleting doctor:", error);
-    // Fallback to Supabase
-    const { error: supabaseError } = await supabase
-      .from("doctors")
-      .delete()
-      .eq("id", id);
+  const { error } = await supabase.from("doctors").delete().eq("id", id);
 
-    if (supabaseError) {
-      console.error("Error deleting doctor from Supabase:", supabaseError);
-      throw supabaseError;
-    }
+  if (error) {
+    console.error("Error deleting doctor:", error);
+    throw error;
   }
 }
 

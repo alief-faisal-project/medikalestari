@@ -6,13 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "dev:services": "pnpm -F api-gateway dev & pnpm -F service-doctors dev & pnpm -F service-services dev & pnpm -F service-auth dev",
-    "build:all": "pnpm -F shared-types build && pnpm -F api-gateway build && pnpm -F service-doctors build && pnpm -F service-services build && pnpm -F service-auth build && next build",
-    "start:gateway": "pnpm -F api-gateway start",
-    "start:doctors": "pnpm -F service-doctors start",
-    "start:services": "pnpm -F service-services start",
-    "start:auth": "pnpm -F service-auth start"
+    "lint": "eslint"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.1",
