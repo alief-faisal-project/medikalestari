@@ -31,7 +31,7 @@ const AboutUs = () => {
               src="/tentangkami/hospital-building.jpg"
               alt="Gedung Utama RS Medika Lestari"
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover transition-transform duration-500 "
               priority
             />
           </div>
