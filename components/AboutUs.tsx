@@ -124,7 +124,7 @@ const AboutUs = () => {
             {cardData.map((item, idx) => (
               <div
                 key={idx}
-                className="group relative h-[420px] w-full overflow-hidden bg-[#005075] md:bg-white shadow-xl border border-slate-100 cursor-pointer"
+                className="group relative h-[420px] w-full overflow-hidden bg-[#005075] md:bg-white shadow-xl border border-slate-100 "
               >
                 {/* Background Image - Sembunyi di Mobile */}
                 <div

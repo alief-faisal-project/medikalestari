@@ -1,106 +1,176 @@
 "use client";
 
 import React from "react";
-import { PhoneCall, Clock, ShieldCheck, Stethoscope } from "lucide-react";
+import {
+  PhoneCall,
+  Clock,
+  ShieldCheck,
+  Stethoscope,
+  ChevronRight,
+  Plus,
+} from "lucide-react";
 
 export default function Emergency() {
-  return (
-    <div className="min-h-screen bg-gray-50 mb-20">
-      {/* HERO */}
-      <div className="bg-gradient-to-r from-[#005075] to-[#0084BF] text-white">
-        <div className="max-w-6xl mx-auto px-4 py-16">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Layanan Gawat Darurat
-          </h1>
-          <p className="max-w-2xl text-white/90 leading-relaxed">
-            RS Medika Lestari siap memberikan penanganan cepat dan tepat untuk
-            kondisi darurat medis selama 24 jam dengan dukungan tim profesional
-            dan fasilitas modern.
-          </p>
+  const emergencyCards = [
+    {
+      icon: <Clock size={32} strokeWidth={1.5} />,
+      title: "OPERASIONAL 24/7",
+      desc: "Kesiagaan penuh tanpa jeda untuk penanganan kritis pasien.",
+    },
+    {
+      icon: <Stethoscope size={32} strokeWidth={1.5} />,
+      title: "UNIT SPESIALIS",
+      desc: "Tim dokter ahli dengan standar sertifikasi gawat darurat internasional.",
+    },
+    {
+      icon: <ShieldCheck size={32} strokeWidth={1.5} />,
+      title: "PRESISI MEDIS",
+      desc: "Diagnosis akurat dengan dukungan peralatan otomasi medis terbaru.",
+    },
+  ];
 
-          {/* CTA */}
-          <div className="mt-6 flex flex-wrap gap-4">
-            <a
-              href="https://wa.me/6282246232527"
-              target="_blank"
-              className="flex items-center gap-2 bg-white text-[#005075] px-5 py-3 rounded-full font-semibold hover:bg-gray-100 transition"
-            >
-              <PhoneCall size={18} />
-              Hubungi Sekarang
-            </a>
+  return (
+    <div className="min-h-screen bg-white mb-20 text-slate-900 font-sans">
+      {/* HERO - Industrial Minimalist */}
+      <div className="relative border-b border-slate-200 bg-white">
+        <div className="max-w-[1160px] mx-auto px-6 py-24 md:py-32 relative z-10">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 mb-8">
+              <span className="h-[1px] w-12 bg-red-600"></span>
+              <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-red-600">
+                Emergency System Active
+              </span>
+            </div>
+
+            <h1 className="text-5xl md:text-8xl font-black text-slate-950 mb-8 leading-[0.9] tracking-tighter">
+              GAWAT <br />
+              <span className="text-slate-300">DARURAT</span>
+            </h1>
+
+            <p className="text-lg md:text-xl text-slate-500 leading-relaxed mb-12 max-w-xl border-l-2 border-[#005075] pl-6">
+              Respon cepat medis RS Medika Lestari. Terintegrasi dengan
+              teknologi mutakhir dan tim ahli yang siap menangani kondisi kritis
+              secara instan.
+            </p>
+
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="https://wa.me/6282246232527"
+                target="_blank"
+                className="bg-slate-950 text-white px-10 py-5 rounded-none font-bold tracking-widest uppercase text-xs hover:bg-[#005075] transition-colors duration-300"
+              >
+                Hubungi Sekarang
+              </a>
+            </div>
           </div>
         </div>
+        <div
+          className="absolute inset-0 opacity-[0.02] pointer-events-none z-0"
+          style={{
+            backgroundImage: "radial-gradient(#000 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        />
       </div>
 
-      {/* CONTENT */}
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        {/* INFO UTAMA */}
-        <div className="grid md:grid-cols-3 gap-6 mb-10">
-          <div className="bg-white rounded-2xl shadow-sm p-6">
-            <Clock className="text-[#0084BF] mb-3" size={28} />
-            <h3 className="font-semibold text-gray-800 mb-1">Layanan 24 Jam</h3>
-            <p className="text-sm text-gray-600">
-              Siap melayani pasien darurat kapan saja tanpa henti.
-            </p>
-          </div>
+      {/* CONTENT AREA */}
+      <div className="max-w-[1160px] mx-auto px-6 py-24">
+        {/* CARD DENGAN EFEK POLYGON */}
+        <div className="grid md:grid-cols-3 gap-6 mb-32">
+          {emergencyCards.map((item, index) => (
+            <div
+              key={index}
+              className="group relative h-[300px] w-full overflow-hidden border border-slate-200 bg-white cursor-pointer"
+            >
+              {/* Background State (Normal) */}
+              <div className="absolute inset-0 p-10 z-10 flex flex-col justify-between transition-opacity duration-500 group-hover:opacity-0">
+                <div className="text-slate-400">{item.icon}</div>
+                <div>
+                  <h3 className="text-xs font-black tracking-[0.2em] text-slate-950 mb-2">
+                    {item.title}
+                  </h3>
+                  <div className="h-1 w-8 bg-slate-200" />
+                </div>
+              </div>
 
-          <div className="bg-white rounded-2xl shadow-sm p-6">
-            <Stethoscope className="text-[#0084BF] mb-3" size={28} />
-            <h3 className="font-semibold text-gray-800 mb-1">
-              Tim Medis Profesional
-            </h3>
-            <p className="text-sm text-gray-600">
-              Ditangani oleh dokter dan perawat berpengalaman di bidangnya.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-sm p-6">
-            <ShieldCheck className="text-[#0084BF] mb-3" size={28} />
-            <h3 className="font-semibold text-gray-800 mb-1">
-              Peralatan Modern
-            </h3>
-            <p className="text-sm text-gray-600">
-              Didukung teknologi medis terkini untuk diagnosis cepat dan akurat.
-            </p>
-          </div>
+              {/* Polygon Hover State (Overlay yang naik) */}
+              <div
+                className="absolute inset-0 z-20 bg-[#005075]/90 flex flex-col justify-center p-10 transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] translate-y-full group-hover:translate-y-0"
+                style={{
+                  clipPath: "polygon(0 15%, 100% 0, 100% 100%, 0% 100%)",
+                }}
+              >
+                <div className="text-white mb-4">{item.icon}</div>
+                <h3 className="text-white text-sm font-black tracking-[0.2em] mb-4">
+                  {item.title}
+                </h3>
+                <p className="text-white/80 text-xs leading-relaxed uppercase tracking-wider">
+                  {item.desc}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* DESKRIPSI */}
-        <div className="bg-white rounded-2xl shadow-sm p-8 mb-10">
-          <h2 className="text-2xl font-bold text-[#005075] mb-4">
-            Penanganan Cepat dan Tepat
-          </h2>
-          <p className="text-gray-600 leading-relaxed">
-            Instalasi Gawat Darurat (IGD) RS Medika Lestari dirancang untuk
-            memberikan penanganan cepat terhadap berbagai kondisi darurat
-            seperti kecelakaan, serangan jantung, stroke, dan kondisi kritis
-            lainnya. Kami mengutamakan kecepatan, ketepatan diagnosis, dan
-            keselamatan pasien dalam setiap tindakan medis.
-          </p>
-        </div>
-
-        {/* LAYANAN */}
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-blue-50 rounded-2xl p-6">
-            <h3 className="font-semibold text-[#005075] mb-3">
-              Layanan yang Tersedia
-            </h3>
-            <ul className="text-sm text-gray-700 space-y-2">
-              <li>✓ Penanganan trauma & kecelakaan</li>
-              <li>✓ Serangan jantung & stroke</li>
-              <li>✓ Kondisi kritis & resusitasi</li>
-              <li>✓ Observasi pasien darurat</li>
-            </ul>
+        {/* SECTION DETAIL - Two Column Layout */}
+        <div className="grid lg:grid-cols-2 gap-24 items-start">
+          <div>
+            <div className="flex items-center gap-4 mb-8">
+              <Plus className="text-[#005075]" size={24} strokeWidth={3} />
+              <h2 className="text-4xl font-black tracking-tighter uppercase">
+                Protokol Triase
+              </h2>
+            </div>
+            <p className="text-slate-500 text-lg leading-relaxed border-t border-slate-100 pt-8">
+              Sistem klasifikasi medis kami menjamin pasien dengan tingkat
+              kegawatan tertinggi mendapatkan intervensi tanpa penundaan.
+              Kecepatan adalah parameter utama dalam setiap keputusan klinis
+              yang kami ambil.
+            </p>
           </div>
 
-          <div className="bg-blue-50 rounded-2xl p-6">
-            <h3 className="font-semibold text-[#005075] mb-3">Komitmen Kami</h3>
-            <ul className="text-sm text-gray-700 space-y-2">
-              <li>✓ Respon cepat tanpa antre panjang</li>
-              <li>✓ Prioritas keselamatan pasien</li>
-              <li>✓ Pelayanan ramah & profesional</li>
-              <li>✓ Koordinasi cepat antar tim medis</li>
-            </ul>
+          <div className="grid gap-4">
+            <div className="border-l-4 border-slate-900 p-8 bg-slate-50">
+              <h4 className="font-black text-[10px] tracking-[0.3em] uppercase mb-6 text-slate-400 flex items-center justify-between">
+                Layanan Inti <ChevronRight size={14} />
+              </h4>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  "TRAUMA CARE",
+                  "CARDIAC ARREST",
+                  "STROKE UNIT",
+                  "CRITICAL CARE",
+                ].map((text) => (
+                  <div
+                    key={text}
+                    className="text-[11px] font-bold text-slate-900 flex items-center gap-3"
+                  >
+                    <span className="w-1.5 h-1.5 bg-red-600" /> {text}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="border-l-4 border-[#005075] p-8 bg-slate-50">
+              <h4 className="font-black text-[10px] tracking-[0.3em] uppercase mb-6 text-slate-400 flex items-center justify-between">
+                Standarisasi <ChevronRight size={14} />
+              </h4>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  "ZERO QUEUE",
+                  "RAPID RESPONSE",
+                  "SYNC-COORD",
+                  "PARIPURNA",
+                ].map((text) => (
+                  <div
+                    key={text}
+                    className="text-[11px] font-bold text-slate-900 flex items-center gap-3"
+                  >
+                    <span className="w-1.5 h-1.5 bg-[#005075]" /> {text}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

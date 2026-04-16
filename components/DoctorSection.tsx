@@ -260,9 +260,9 @@ const DoctorSection = ({
 
               <button
                 onClick={handleApplyFilter}
-                className="w-full bg-gradient-to-r from-[#0084BF] to-[#005075] text-white py-4 font-bold rounded-full cursor-pointer transition-all hover:shadow-lg active:scale-95"
+                className="w-full bg-[#0084BF] text-white py-4 font-bold rounded-xs cursor-pointer transition-all hover:bg-[#005075] active:scale-95"
               >
-                Cari Dokter
+                Cari Dokter Spesialis
               </button>
             </div>
           </aside>
@@ -317,14 +317,14 @@ const DoctorSection = ({
                           <div className="flex flex-wrap justify-center md:justify-start gap-3">
                             <Link
                               href={`/dokter/${doctor.id}`}
-                              className="px-8 py-3 bg-white text-[#0084BF] text-[12px] font-bold rounded-full border border-[#0084BF]/20 transition-all hover:bg-gray-50 shadow-sm inline-block"
+                              className="px-8 py-3 bg-white text-[#0084BF] text-[12px] font-bold rounded-xs border border-[#0084BF]/20 transition-all hover:bg-gray-50 inline-block"
                             >
                               Lihat Profil
                             </Link>
 
                             <button
                               onClick={() => setSelectedDoctor(doctor)}
-                              className="px-8 py-3 bg-gradient-to-r from-[#0084BF] to-[#005075] text-white text-[12px] font-bold rounded-full transition-all hover:shadow-lg active:scale-95 cursor-pointer"
+                              className="px-8 py-3 bg-[#0084BF] hover:bg-[#005075] text-white text-[12px] font-bold rounded-xs transition-all  active:scale-95 cursor-pointer"
                             >
                               Buat Janji Temu
                             </button>
