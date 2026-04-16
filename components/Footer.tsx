@@ -76,36 +76,8 @@ const Footer = () => {
 
   return (
     <footer className="w-full text-white font-sans">
-      {/* TOP tetap */}
-      <div
-        className="relative w-full flex items-center"
-        style={{
-          height: TOP_HEIGHT,
-          background: "linear-gradient(90deg, #0084BF, #005075)",
-        }}
-      >
-        <div className="max-w-[1140px] mx-auto w-full -px-1 flex flex-col md:flex-row items-center justify-between">
-          <div className="relative w-52 md:w-72 h-[260px] md:h-[340px] flex justify-center md:justify-start">
-            <div className="absolute bottom-28 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0">
-              <Image src="/hp.png" alt="App" width={300} height={400} />
-            </div>
-          </div>
-
-          <div className="flex-1 text-center md:text-left md:ml-16 mt-6 md:mt-0">
-            <h2 className="text-2xl md:text-[20px] font-bold">
-              Hubungi CS Kami Untuk Mendapatkan Info Lebih Lanjut!
-            </h2>
-            <p className="text-lg md:text-xl mt-2 opacity-90">
-              Respons Cepat, Buka 24 Jam
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-2 mt-8 md:mt-0 items-center md:items-end"></div>
-        </div>
-      </div>
-
       {/* ===== BOTTOM ===== */}
-      <div className="bg-[#137CA3] border-t border-white/10">
+      <div className="bg-[#005075] border-t border-white/10">
         <div className="max-w-[1140px] mx-auto px-6 py-12 md:py-16">
           <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-12">
             {/* LINK */}
