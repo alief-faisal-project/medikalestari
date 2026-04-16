@@ -137,7 +137,7 @@ const Footer = () => {
 
           <div className="mt-12 md:mt-16 pt-6 border-t border-white/10 text-center">
             <p className="text-sm opacity-90">
-              Hak Cipta © {new Date().getFullYear()} RS Medika Lestari
+              © 1994-{new Date().getFullYear()} RS Medika Lestari. Semua Hak Cipta Dilindungi
             </p>
           </div>
         </div>
