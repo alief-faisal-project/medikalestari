@@ -76,8 +76,8 @@ const Footer = () => {
 
   return (
     <footer className="w-full text-white font-sans">
-      {/* ===== BOTTOM ===== */}
-      <div className="bg-[#015A85] border-t border-white/10">
+      {/* ===== Main Navbar ===== */}
+      <div className="bg-[#0084BF] border-t border-white/10">
         <div className="max-w-[1140px] mx-auto px-6 py-12 md:py-16">
           <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-12">
             {/* LINK */}
@@ -135,7 +135,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="mt-12 md:mt-16 pt-6 border-t border-white/10 text-center">
+          <div className="mt-12 md:mt-16 pt-6 border-t border-white/10 text-left">
             <p className="text-sm opacity-90">
               © 1994-{new Date().getFullYear()} RS Medika Lestari. Semua Hak
               Cipta Dilindungi

@@ -70,17 +70,20 @@ const ServicesSection = () => {
   };
 
   const handleInfoClick = (title: string) => {
-    if (title === "Lokasi") {
+    // Menggunakan toLowerCase agar tidak error karena perbedaan huruf besar/kecil
+    const checkTitle = title.toLowerCase();
+
+    if (checkTitle === "lokasi") {
       window.open("https://maps.app.goo.gl/EP5qTWzim9XmoUbe6", "_blank");
     }
 
-    if (title === "Email") {
+    if (checkTitle === "email") {
       const link = document.createElement("a");
       link.href = "mailto:marketing@rsmedikalestari.com";
       link.click();
     }
 
-    if (title === "Customer Service") {
+    if (checkTitle === "customer service") {
       window.open("https://wa.me/6282246232527", "_blank");
     }
   };
@@ -100,7 +103,6 @@ const ServicesSection = () => {
             <div className="hidden md:block flex-1 h-[1px] bg-gray-200/50" />
           </motion.div>
 
-          {/* Button Kotak Berjejer */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {infoData.map((item) => (
               <motion.div
@@ -137,7 +139,6 @@ const ServicesSection = () => {
             <h2 className="text-4xl font-light uppercase pb-2">Pelayanan</h2>
           </motion.div>
 
-          {/* Button Kotak Berjejer */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {serviceData.map((item) => (
               <motion.div
@@ -147,7 +148,7 @@ const ServicesSection = () => {
                 onClick={() => handleServiceClick(item)}
                 className="aspect-square flex flex-col items-center justify-center text-center p-6 bg-white cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 group"
               >
-                <div className="relative w-14 h-14 mb-5 transition-transform duration-500">
+                <div className="relative w-14 h-14 mb-5">
                   <Image
                     src={item.img}
                     alt={item.title}
