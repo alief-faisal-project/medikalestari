@@ -45,7 +45,7 @@ const Footer = () => {
     },
   ];
 
-  // ICON SOSIAL (FIXED SVG)
+  // ICON SOSIAL (TIDAK DIUBAH)
   const socialMedia = [
     {
       name: "WhatsApp",
@@ -78,7 +78,7 @@ const Footer = () => {
 
   return (
     <footer className="w-full text-white font-sans">
-      {/* ===== TOP FOOTER (GRADIENT FIX) ===== */}
+      {/* TOP tetap */}
       <div
         className="relative w-full flex items-center"
         style={{
@@ -87,23 +87,14 @@ const Footer = () => {
         }}
       >
         <div className="max-w-[1140px] mx-auto w-full -px-1 flex flex-col md:flex-row items-center justify-between">
-          {/* HP */}
           <div className="relative w-52 md:w-72 h-[260px] md:h-[340px] flex justify-center md:justify-start">
             <div className="absolute bottom-28 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0">
-              <Image
-                src="/hp.png"
-                alt="App"
-                width={300}
-                height={400}
-                className="object-contain"
-                priority
-              />
+              <Image src="/hp.png" alt="App" width={300} height={400} />
             </div>
           </div>
 
-          {/* TEXT */}
           <div className="flex-1 text-center md:text-left md:ml-16 mt-6 md:mt-0">
-            <h2 className="text-2xl md:text-[20px] font-bold leading-tight">
+            <h2 className="text-2xl md:text-[20px] font-bold">
               Hubungi CS Kami Untuk Mendapatkan Info Lebih Lanjut!
             </h2>
             <p className="text-lg md:text-xl mt-2 opacity-90">
@@ -111,19 +102,21 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* STORE */}
           <div className="flex flex-col gap-2 mt-8 md:mt-0 items-center md:items-end"></div>
         </div>
       </div>
 
-      {/* ===== BOTTOM FOOTER ===== */}
+      {/* ===== BOTTOM ===== */}
       <div className="bg-[#137CA3] border-t border-white/10">
-        <div className="max-w-[1140px] mx-auto px-6 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+        <div className="max-w-[1140px] mx-auto px-6 py-12 md:py-16">
+          <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-12">
+            {/* LINK */}
             {footerLinks.map((section) => (
               <div key={section.title} className="md:col-span-3">
-                <h3 className="text-lg font-bold mb-6">{section.title}</h3>
-                <ul className="space-y-3">
+                <h3 className="text-base md:text-lg font-bold mb-4 md:mb-6">
+                  {section.title}
+                </h3>
+                <ul className="space-y-2 md:space-y-3">
                   {section.links.map((link) => (
                     <li key={link.name}>
                       <Link
@@ -131,7 +124,7 @@ const Footer = () => {
                         onClick={
                           link.id ? (e) => handleScroll(e, link.id!) : undefined
                         }
-                        className="text-sm opacity-90 hover:underline hover:opacity-100"
+                        className="text-xs md:text-sm opacity-90 hover:underline"
                       >
                         {link.name}
                       </Link>
@@ -141,21 +134,20 @@ const Footer = () => {
               </div>
             ))}
 
-            {/* MEDIA SOSIAL FIX */}
-            <div className="md:col-span-6 md:pl-12">
-              <h3 className="text-lg font-bold mb-6">Media Sosial</h3>
+            {/* SOCIAL */}
+            <div className="col-span-2 md:col-span-6 md:pl-12 text-center md:text-left">
+              <h3 className="text-base md:text-lg font-bold mb-4 md:mb-6">
+                Media Sosial
+              </h3>
 
-              <div className="flex gap-4">
+              <div className="flex justify-center md:justify-start gap-4">
                 {socialMedia.map((social) => (
                   <Link
                     key={social.name}
                     href={social.href}
-                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center grou transition-all"
+                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center"
                   >
-                    <svg
-                      viewBox="0 0 24 24"
-                      className="w-5 h-5 fill-[#0084BF] transition-transform"
-                    >
+                    <svg viewBox="0 0 24 24" className="w-5 h-5 fill-[#0084BF]">
                       {social.icon}
                     </svg>
                   </Link>
@@ -173,7 +165,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="mt-16 pt-6 border-t border-white/10 text-center">
+          <div className="mt-12 md:mt-16 pt-6 border-t border-white/10 text-center">
             <p className="text-sm opacity-90">
               Hak Cipta © {new Date().getFullYear()} RS Medika Lestari
             </p>
@@ -182,6 +174,6 @@ const Footer = () => {
       </div>
     </footer>
   );
-};;
+};
 
 export default Footer;
