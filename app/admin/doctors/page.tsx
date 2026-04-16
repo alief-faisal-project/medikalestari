@@ -26,6 +26,8 @@ const AdminDoctorsPage = () => {
     specialty: "",
     bio: "",
     image_url: "",
+    phone: "",
+    email: "",
   });
   const router = useRouter();
   const { loading: authLoading, isAuthenticated } = useAuth();
@@ -112,6 +114,8 @@ const AdminDoctorsPage = () => {
       specialty: doctor.specialty,
       bio: doctor.bio,
       image_url: doctor.image_url,
+      phone: doctor.phone,
+      email: doctor.email,
     });
     setImagePreview(doctor.image_url);
     setShowModal(true);
@@ -135,6 +139,8 @@ const AdminDoctorsPage = () => {
       specialty: "",
       bio: "",
       image_url: "",
+      phone: "",
+      email: "",
     });
     setImageFile(null);
     setImagePreview("");
@@ -378,6 +384,48 @@ const AdminDoctorsPage = () => {
                   placeholder="Deskripsi singkat dokter"
                   rows={3}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Nomor Telepon
+                </label>
+                <input
+                  id="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
+                  placeholder="contoh: 08123456789"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  required
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  placeholder="dokter@example.com"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  required
                 />
               </div>
 
