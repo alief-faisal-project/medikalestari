@@ -160,7 +160,7 @@ const DoctorSection = ({
 
       {/* HEADER SECTION */}
       <div className="max-w-[1220px] mx-auto px-4 md:px-8 pt-16 pb-12">
-        <h1 className="text-4xl font-bold text-black mb-2">Dokter Kami</h1>
+        <h1 className="text-4xl font-bold text-black mb-2 ">Dokter Kami</h1>
         <p>Temukan dokter spesialis terbaik untuk kebutuhan kesehatan Anda.</p>
       </div>
 
@@ -274,7 +274,7 @@ const DoctorSection = ({
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="group flex flex-col md:flex-row items-center md:items-start gap-8 p-6 md:p-8 bg-white border border-slate-100 shadow-sm h-fit rounded-none transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,80,117,0.12)] hover:border-slate-100"
+                      className="group flex flex-col md:flex-row items-center md:items-start gap-8 p-6 md:p-8 bg-white border border-slate-100 shadow-sm h-fit rounded-none transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-slate-100"
                     >
                       {/* Foto tetap bulat sesuai permintaan */}
                       <div className="relative w-40 h-40 md:w-44 md:h-44 shrink-0 rounded-full overflow-hidden border-4 border-slate-50 group-hover:border-blue-50 transition-colors shadow-sm">
@@ -332,7 +332,7 @@ const DoctorSection = ({
                         onClick={() => handlePageChange(currentPage - 1)}
                         className="px-5 py-3 text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
                       >
-                        SEBELUMNYA
+                        PREV
                       </button>
                     )}
                     <div className="flex items-center gap-2">
@@ -355,7 +355,7 @@ const DoctorSection = ({
                         onClick={() => handlePageChange(currentPage + 1)}
                         className="px-5 py-3 text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
                       >
-                        SELANJUTNYA
+                        NEXT
                       </button>
                     )}
                   </div>
