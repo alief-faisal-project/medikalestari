@@ -177,7 +177,7 @@ const ServicesSection = () => {
                 key={item.id}
                 whileHover={{ y: -12 }}
                 onClick={() => handleServiceClick(item)}
-                className="min-w-[33.33%] md:min-w-0 aspect-square flex flex-col items-center justify-center text-center p-4 md:p-6 transition-all duration-500 rounded-full cursor-pointer group"
+                className="min-w-[33.33%] md:min-w-0 aspect-square flex flex-col items-center justify-center text-center p-4 md:p-6 border border-gray-100 transition-all duration-500 rounded-full cursor-pointer group"
               >
                 <div className="w-24 h-24 md:w-28 md:h-28 flex items-center justify-center mb-4 md:mb-6 rounded-full bg-[#f8fafc] shadow-[8px_8px_16px_#d1d9e6,-8px_-8px_16px_#ffffff] group-hover:scale-110 transition-transform duration-500 relative">
                   <div className="relative w-14 h-14 md:w-16 md:h-16">

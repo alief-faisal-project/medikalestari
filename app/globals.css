@@ -24,3 +24,11 @@ body {
   /* Memastikan lebar container konsisten di semua section */
   @apply max-w-6xl mx-auto px-6;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

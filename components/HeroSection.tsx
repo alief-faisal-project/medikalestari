@@ -197,7 +197,7 @@ const HeroSection = () => {
         >
           {/* NAMA DOKTER */}
           <div className="flex-1 px-5 py-4 flex items-center gap-3 border-b md:border-b-0 md:border-r border-gray-200">
-            <User size={18} className="text-[#005075]" />
+            <User size={18} className="text-gray-400" />
             <div className="w-full">
               <p className="text-xs text-[#005075] font-semibold">
                 Nama Dokter
@@ -255,7 +255,7 @@ const HeroSection = () => {
           </div>
 
           {/* BUTTON */}
-          <div className="flex items-center justify-center p-3">
+          <div className="flex items-center justify-center p-3 ">
             <button
               onClick={() => {
                 const params = new URLSearchParams();
@@ -272,7 +272,7 @@ const HeroSection = () => {
           bg-[#005075] 
           flex items-center justify-center 
           text-white 
-          hover:scale-105 transition
+          hover:scale-105 transition cursor-pointer
         "
             >
               <Search size={20} />
