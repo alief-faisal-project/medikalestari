@@ -1,8 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
+import { motion, AnimatePresence, cubicBezier } from "framer-motion";
 import { fetchHeroBanners } from "@/lib/api";
 import { HeroBanner } from "@/lib/types";
 
@@ -135,7 +134,7 @@ const HeroSection = () => {
       opacity: 1,
       scale: 1,
       zIndex: 20,
-      transition: { duration: 0.8, ease: [0.4, 0, 0.2, 1] },
+      transition: { duration: 0.8, ease: cubicBezier(0.4, 0, 0.2, 1) },
     },
     exit: {
       zIndex: 10,
