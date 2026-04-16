@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useEffect } from "react";
 import AdminNavbar from "@/components/AdminSidebar";
 import { useRouter } from "next/navigation";
@@ -13,7 +11,17 @@ import {
 } from "lucide-react";
 
 // Pindahkan ke luar agar tidak merah dan tidak re-render tidak perlu
-const EmbossButton = ({ onClick, children, className = "", icon: Icon }) => (
+const EmbossButton = ({
+  onClick,
+  children,
+  className = "",
+  icon: Icon,
+}: {
+  onClick?: () => void;
+  children: React.ReactNode;
+  className?: string;
+  icon?: React.ComponentType<{ size: number; className?: string }>;
+}) => (
   <button
     onClick={onClick}
     className={`group px-6 py-4 bg-white text-slate-700 rounded-xl transition-all duration-300 
