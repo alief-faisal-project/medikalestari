@@ -79,7 +79,7 @@ const MadingSection = () => {
       <div className="max-w-[1110px] mx-auto">
         {/* Header - Minimalist */}
         <header className="mb-16 border-b border-gray-100 pb-10">
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#005075] mb-3">
             Mading Medika Lestari
           </h1>
           <p className="text-slate-500 text-lg">
@@ -91,8 +91,8 @@ const MadingSection = () => {
           {/* Section Edukasi */}
           <div className="lg:col-span-8">
             <div className="flex items-center justify-between mb-10">
-              <h2 className="text-2xl font-bold text-slate-900">Edukasi</h2>
-              <button className="text-sm font-semibold text-[#0084BF] hover:opacity-80 transition-opacity flex items-center gap-1">
+              <h2 className="text-2xl font-bold text-[#005075]">Edukasi</h2>
+              <button className="text-sm font-semibold text-[#005075] hover:opacity-80 transition-opacity flex items-center gap-1">
                 Semua Artikel <ChevronRight size={18} />
               </button>
             </div>
@@ -153,10 +153,8 @@ const MadingSection = () => {
           </div>
 
           {/* Section Event */}
-          <div className="lg:col-span-4 lg:border-l lg:border-gray-50 lg:pl-10">
-            <h2 className="text-2xl font-bold text-slate-900 mb-10">
-              Jadwal Event
-            </h2>
+          <div className="lg:col-span-4 lg:border-l lg:border-gray-50 lg:pl-10 ">
+            <h2 className="text-2xl font-bold text-[#005075] mb-10">Jadwal Event</h2>
 
             <div className="space-y-10">
               {loading
