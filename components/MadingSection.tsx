@@ -167,7 +167,7 @@ const MadingSection = () => {
                       className="group flex gap-5 items-start cursor-pointer"
                     >
                       {/* Thumbnail Event */}
-                      <div className="w-20 h-20 shrink-0 bg-gray-100 overflow-hidden rounded-md">
+                      <div className="w-20 h-20 shrink-0 bg-gray-100 overflow-hidden">
                         <img
                           src={event.image_url}
                           alt={event.title}

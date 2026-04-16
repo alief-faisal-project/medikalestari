@@ -39,8 +39,6 @@ const Footer = () => {
         { name: "Syarat & Ketentuan", href: "#" },
         { name: "Privasi", href: "#" },
         { name: "Iklan", href: "#" },
-        { name: "Gabung di Tim Dokter", href: "#" },
-        { name: "Daftarkan Rumah Sakit Anda", href: "#" },
       ],
     },
   ];

@@ -71,6 +71,7 @@ const DoctorSection = ({
 
   const sectionRef = useRef<HTMLDivElement>(null);
 
+  // Fungsi scroll instan ke atas section
   const jumpToTop = () => {
     if (sectionRef.current) {
       const yOffset = -150;
@@ -78,7 +79,9 @@ const DoctorSection = ({
         sectionRef.current.getBoundingClientRect().top +
         window.pageYOffset +
         yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
+
+      // Menggunakan behavior: "auto" agar langsung pindah tanpa animasi scroll
+      window.scrollTo({ top: y, behavior: "auto" });
     }
   };
 
@@ -89,7 +92,6 @@ const DoctorSection = ({
         const data = await fetchDoctors();
 
         if (data) {
-          // ANTI-DUPLIKAT: Memastikan ID unik agar tidak ada error key
           const uniqueData = data.filter(
             (v, i, a) => v.id && a.findIndex((t) => t.id === v.id) === i,
           );
@@ -104,7 +106,6 @@ const DoctorSection = ({
     load();
   }, []);
 
-  // Sync pencarian jika input kosong
   useEffect(() => {
     if (tempFilter.name === "" && activeFilter.name !== "") {
       setActiveFilter((prev) => ({ ...prev, name: "" }));
@@ -140,8 +141,9 @@ const DoctorSection = ({
   const handlePageChange = (newPage: number) => {
     setIsPaging(true);
     setCurrentPage(newPage);
+    // Langsung pindah ke atas secara instan
     jumpToTop();
-    setTimeout(() => setIsPaging(false), 400);
+    setTimeout(() => setIsPaging(false), 200);
   };
 
   return (
@@ -163,7 +165,7 @@ const DoctorSection = ({
 
       <div className="sticky top-0 z-40 bg-white border-b border-gray-100 shadow-sm">
         <div className="max-w-[1220px] mx-auto px-4 md:px-8 py-6">
-          <h1 className="text-5xl font-bold text-slate-950 tracking-tight mb-1">
+          <h1 className="text-5xl font-bold text-[#005075] tracking-tight mb-1">
             Dokter Kami
           </h1>
           <p className="text-gray-600">Temukan Dokter Spesialis Kami</p>
@@ -172,7 +174,7 @@ const DoctorSection = ({
 
       <div className="max-w-[1220px] mx-auto px-4 md:px-8 py-16">
         <div className="flex flex-col lg:flex-row gap-10 items-start">
-          {/* SIDEBAR FILTER */}
+          {/* SIDEBAR FILTER - TETAP STICKY */}
           <aside className="w-full lg:w-1/3 xl:w-1/4 lg:sticky lg:top-40 z-30">
             <div className="border border-gray-200 p-8 bg-white shadow-sm h-fit rounded-xl">
               <div className="flex items-center gap-3 mb-10 text-[#005075] border-b border-gray-100 pb-4">
@@ -313,7 +315,6 @@ const DoctorSection = ({
                           )}
 
                           <div className="flex flex-wrap justify-center md:justify-start gap-3">
-                            {/* FIX: Gunakan Link agar state tidak hilang saat 'Back' */}
                             <Link
                               href={`/dokter/${doctor.id}`}
                               className="px-8 py-3 bg-white text-[#0084BF] text-[12px] font-bold rounded-full border border-[#0084BF]/20 transition-all hover:bg-gray-50 shadow-sm inline-block"
@@ -346,7 +347,6 @@ const DoctorSection = ({
                       </button>
                     )}
 
-                    {/* Ubah gap-1 menjadi gap-3 untuk memberi ruang ekstra */}
                     <div className="flex items-center gap-3">
                       {[...Array(totalPages)].map((_, i) => (
                         <button
