@@ -38,8 +38,7 @@ const MadingSection = () => {
         setAllData(content);
       } catch (error) {
         console.error("Error loading content:", error);
-        setAllData([
-        ]);
+        setAllData([]);
       } finally {
         setLoading(false);
       }
@@ -86,7 +85,6 @@ const MadingSection = () => {
           onMouseMove={handleMouseMove}
           className="overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing pb-6"
         >
-          {/* GRID: Desktop maksa 4 kolom (grid-cols-4), Mobile 2 kolom (auto-cols) */}
           <div className="grid grid-flow-col auto-cols-[calc(50%-10px)] lg:grid-cols-4 lg:auto-cols-fr gap-5">
             {loading
               ? [...Array(4)].map((_, i) => (
@@ -96,16 +94,19 @@ const MadingSection = () => {
                   />
                 ))
               : filteredData.map((item) => (
+                  /* TAMBAHAN: Class 'group' pada card utama agar elemen di dalamnya 
+                    bisa bereaksi saat card ini di-hover 
+                  */
                   <div
                     key={item.id}
-                    className="bg-white overflow-hidden border border-gray-100 flex flex-col group transition-all hover:shadow-md h-full"
+                    className="bg-white overflow-hidden border border-gray-100 flex flex-col group transition-all hover:shadow-md h-full cursor-pointer"
                   >
                     {/* Image */}
                     <div className="aspect-[16/10] overflow-hidden">
                       <img
                         src={item.image_url}
                         alt=""
-                        className="w-full h-full object-cover transition-transform "
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>
 
@@ -115,7 +116,7 @@ const MadingSection = () => {
                         {item.type === "edukasi" ? "Artikel" : "Event"}
                       </span>
 
-                      <h3 className="text-sm font-bold text-slate-900 mb-2 line-clamp-2 h-10 leading-snug group-hover:text-[#005075]">
+                      <h3 className="text-sm font-bold text-slate-900 mb-2 line-clamp-2 h-10 leading-snug group-hover:text-[#005075] transition-colors">
                         {item.title}
                       </h3>
 
@@ -136,12 +137,12 @@ const MadingSection = () => {
                       </div>
 
                       {/* Action Button */}
-                      <button className="flex items-center gap-2 text-[#005075] font-bold text-[12px] group/btn">
+                      <div className="flex items-center gap-2 text-gray-500 font-bold text-[12px] transition-all duration-300 group-hover:text-[#005075]">
                         <span>Baca Selengkapnya</span>
-                        <div className="w-6 h-6 rounded-full border border-[#005075] flex items-center justify-center transition-all group-hover/btn:bg-[#005075] group-hover/btn:text-white">
+                        <div className="w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-125">
                           <ChevronRight size={20} />
                         </div>
-                      </button>
+                      </div>
                     </div>
                   </div>
                 ))}
