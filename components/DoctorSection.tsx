@@ -309,12 +309,12 @@ const DoctorSection = ({
                       {/* Text alignment diubah menjadi text-left secara permanen */}
                       <div className="flex-1 text-left">
                         <div className="mb-2 md:mb-4">
-                          <p className="text-gray-500 font-bold text-[10px] md:text-xs mb-1 uppercase tracking-wide">
-                            {doctor.specialty}
-                          </p>
                           <h3 className="text-lg md:text-2xl font-bold text-slate-800">
                             {doctor.name}
                           </h3>
+                          <p className="text-gray-400 font-semibold text-[10px] md:text-xs mb-1">
+                            {doctor.specialty}
+                          </p>
                         </div>
 
                         {doctor.bio && (

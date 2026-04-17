@@ -41,7 +41,7 @@ export default function DoctorRecommendation({
       animate={{ opacity: 1 }}
       className="mt-12 pt-8 border-t border-slate-100"
     >
-      <h2 className="text-lg font-bold text-slate-800 mb-6 tracking-tight">
+      <h2 className="text-lg font-bold text-slate-800 mb-4 tracking-tight">
         Rekomendasi {specialty} lainnya
       </h2>
 
@@ -54,7 +54,7 @@ export default function DoctorRecommendation({
         {recommendedDoctors.map((doctor) => (
           <motion.div key={doctor.id} variants={itemVariants}>
             <Link href={`/dokter/${doctor.id}`}>
-              <div className="group flex items-center p-3 bg-white border border-slate-100 rounded-xl hover:border-blue-200 hover:shadow-md hover:shadow-blue-500/5 transition-all duration-200 -mt-6">
+              <div className="group flex items-center p-3 bg-white border border-slate-100 rounded-xl hover:border-blue-200 hover:shadow-md hover:shadow-blue-500/5 transition-all duration-200 -mt-2">
                 {/* Avatar Bulat di Kiri */}
                 <div className="relative flex-shrink-0 w-16 h-16 rounded-full overflow-hidden bg-slate-50 border border-slate-50">
                   <Image
