@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { ImageSkeleton } from "./ImageSkeleton";
 
 const AboutUs = () => {
@@ -45,19 +47,27 @@ const AboutUs = () => {
   ];
 
   return (
-    <section className="bg-white text-slate-900 scroll -mt-10 pb-20">
+    <section className="bg-white text-slate-900 scroll -mt-12 pb-20">
       {/* 1. SECTION FOTO & JUDUL */}
       <div className="max-w-[1160px] mx-auto px-6 py-12 md:py-20">
+        {/* BREADCRUMB & TITLE SECTION */}
         <div className="mb-8 md:mb-12 border-b border-slate-100 pb-6">
-          <h1 className="text-4xl md:text-4xl lg:text-4xl font-bold tracking-tight text-slate-950">
-            RS Medika Lestari
-          </h1>
-          <p className="mt-3 text-lg text-slate-600 max-w-3xl">
+          <nav className="flex items-center gap-1 text-[14px] text-gray-300 mb-4">
+            <Link
+              href="/"
+              className="text-black hover:text-gray-300 transition-colors"
+            >
+              Beranda
+            </Link>
+            <ChevronRight size={12} className="text-gray-400" />
+            <span className="font-normal">Tentang Kami</span>
+          </nav>
+          <h1 className="text-4xl font-bold text-black mb-2">Tentang Kami</h1>
+          <p className="text-slate-600">
             Mengabdi untuk kesehatan masyarakat sejak 1994 dengan pelayanan
             prima dan terakreditasi Paripurna.
           </p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
           <div className="lg:col-span-8 relative aspect-[16/10] overflow-hidden border border-slate-200 shadow-sm group">
             {!isImageLoaded("hospital-building") && (

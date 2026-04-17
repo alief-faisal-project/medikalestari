@@ -68,7 +68,7 @@ const DoctorDetailPage = () => {
         {/* Kontainer Grid Utama */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mt-6">
           {/* KOLOM KIRI: STICKY IMAGE & SOCIALS */}
-          <div className="lg:col-span-4 lg:sticky lg:top-60 flex flex-col items-center">
+          <div className="lg:col-span-4 lg:sticky lg:top-50 flex flex-col items-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}

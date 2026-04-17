@@ -9,6 +9,7 @@ import {
   Stethoscope,
   CalendarDays,
   FilterIcon,
+  ChevronRight,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchDoctors } from "@/lib/api";
@@ -110,6 +111,10 @@ const DoctorSection = ({
     }
   }, [tempFilter.name, activeFilter.name]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, []);
+
   const filteredDoctors = doctors.filter((doc) => {
     const matchSpecialty =
       activeFilter.specialty === "Semua Spesialis" ||
@@ -145,7 +150,7 @@ const DoctorSection = ({
   return (
     <section
       ref={sectionRef}
-      className="w-full bg-white min-h-screen font-sans text-slate-800 relative mb-20"
+      className="w-full bg-white min-h-screen  text-slate-800 relative mb-20"
       id="section-dokter"
     >
       <AnimatePresence>
@@ -158,16 +163,27 @@ const DoctorSection = ({
         )}
       </AnimatePresence>
 
-      {/* HEADER SECTION */}
-      <div className="max-w-[1220px] mx-auto px-4 md:px-8 pt-16 pb-12">
-        <h1 className="text-4xl font-bold text-black mb-2 ">Dokter Kami</h1>
-        <p>Temukan dokter spesialis terbaik untuk kebutuhan kesehatan Anda.</p>
-      </div>
+      <div className="max-w-[1175px] mx-auto px-4 md:px-8 -mt-8">
+        {/* BREADCRUMB & TITLE SECTION */}
+        <div className="pt-16 pb-12">
+          <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
+            <Link
+              href="/"
+              className="text-black hover:text-gray-300 transition-colors"
+            >
+              Beranda
+            </Link>
+            <ChevronRight size={12} className="text-gray-400" />
+            <span className="font-normal">Dokter Kami</span>
+          </nav>
+          <h1 className="text-3xl md:text-4xl font-bold text-black border-b border-slate-100 pb-4">
+            Dokter Kami
+          </h1>
+        </div>
 
-      <div className="max-w-[1220px] mx-auto px-4 md:px-8">
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* SIDEBAR FILTER - SHARP EDGES */}
-          <aside className="w-full lg:w-1/3 xl:w-1/4 lg:sticky lg:top-40 z-30">
+          <aside className="w-full lg:w-1/3 xl:w-1/4 lg:sticky lg:top-60 z-30">
             <div className="border border-slate-200 p-8 bg-white rounded-none shadow-sm h-fit">
               <div className="flex items-center gap-3 mb-8 text-[#0084BF] border-b border-slate-50 pb-4">
                 <FilterIcon size={18} />
@@ -274,10 +290,11 @@ const DoctorSection = ({
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="group flex flex-col md:flex-row items-center md:items-start gap-8 p-6 md:p-8 bg-white border border-slate-100 shadow-sm h-fit rounded-none transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-slate-100"
+                      // Mengubah flex-col menjadi flex-row agar selalu menyamping
+                      className="group flex flex-row items-start gap-4 md:gap-8 p-4 md:p-8 bg-white border border-slate-100 shadow-sm h-fit rounded-none transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-slate-100"
                     >
-                      {/* Foto tetap bulat sesuai permintaan */}
-                      <div className="relative w-40 h-40 md:w-44 md:h-44 shrink-0 rounded-full overflow-hidden border-4 border-slate-50 group-hover:border-blue-50 transition-colors shadow-sm">
+                      {/* Foto disesuaikan ukurannya agar tidak terlalu besar di mobile */}
+                      <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44 shrink-0 rounded-full overflow-hidden border-4 border-slate-50 group-hover:border-blue-50 transition-colors shadow-sm">
                         <Image
                           src={
                             doctor.image_url ||
@@ -289,32 +306,34 @@ const DoctorSection = ({
                         />
                       </div>
 
-                      <div className="flex-1 text-center md:text-left">
-                        <div className="mb-4">
-                          <p className="text-gray-500 font-bold text-xs mb-1 uppercase tracking-wide">
+                      {/* Text alignment diubah menjadi text-left secara permanen */}
+                      <div className="flex-1 text-left">
+                        <div className="mb-2 md:mb-4">
+                          <p className="text-gray-500 font-bold text-[10px] md:text-xs mb-1 uppercase tracking-wide">
                             {doctor.specialty}
                           </p>
-                          <h3 className="text-2xl font-bold text-slate-800">
+                          <h3 className="text-lg md:text-2xl font-bold text-slate-800">
                             {doctor.name}
                           </h3>
                         </div>
 
                         {doctor.bio && (
-                          <p className="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-2 max-w-xl">
+                          <p className="text-slate-500 text-xs md:text-sm leading-relaxed mb-4 md:mb-6 line-clamp-2 max-w-xl">
                             {doctor.bio}
                           </p>
                         )}
 
-                        <div className="flex flex-wrap justify-center md:justify-start gap-3">
+                        {/* Tombol dipastikan justify-start agar konsisten menyamping ke kiri */}
+                        <div className="flex flex-wrap justify-start gap-2 md:gap-3">
                           <button
                             onClick={() => setSelectedDoctor(doctor)}
-                            className="px-8 py-3 bg-[#0084BF] text-white text-[12px] font-bold rounded-full transition-all hover:bg-[#0084BF]/90 active:scale-95 shadow-md shadow-blue-900/5 cursor-pointer"
+                            className="px-4 py-2 md:px-8 md:py-3 bg-[#0084BF] text-white text-[10px] md:text-[12px] font-bold rounded-full transition-all hover:bg-[#0084BF]/90 active:scale-95 shadow-md shadow-blue-900/5 cursor-pointer"
                           >
                             Buat Janji Temu
                           </button>
                           <Link
                             href={`/dokter/${doctor.id}`}
-                            className="px-8 py-3 bg-white text-slate-600 text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-slate-50 "
+                            className="px-4 py-2 md:px-8 md:py-3 bg-white text-slate-600 text-[10px] md:text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-slate-50 "
                           >
                             Lihat Profil
                           </Link>
