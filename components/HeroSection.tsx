@@ -93,15 +93,6 @@ const HeroSection = () => {
 
   const currentSlide = Math.abs(page % (slides.length || 1));
 
-  const currentTransitionType =
-    slides.length > 0
-      ? currentSlide === 0
-        ? "slide"
-        : currentSlide === 1
-          ? "fade-scale"
-          : "slide-up"
-      : "slide";
-
   const paginate = useCallback(
     (newDirection: number) => {
       setPage([page + newDirection, newDirection]);
@@ -109,80 +100,56 @@ const HeroSection = () => {
     [page],
   );
 
-  // AUTOPLAY
+  // AUTOPLAY: 4 Detik
   useEffect(() => {
     let slideInterval: NodeJS.Timeout;
     if (isPlaying && slides.length > 0) {
       slideInterval = setInterval(() => {
         paginate(1);
-      }, 10000);
+      }, 4000);
     }
     return () => clearInterval(slideInterval);
   }, [paginate, isPlaying, slides.length]);
 
   if (loading || slides.length === 0) {
     return (
-      <section className="relative w-full bg-white overflow-hidden">
+      <section className="relative w-full bg-black overflow-hidden">
         <div className="relative w-full aspect-[1900/720] min-h-[350px] md:min-h-[450px] bg-gray-800 animate-pulse" />
       </section>
     );
   }
 
-  // VARIANTS (UTUH)
-  const slideVariants = {
-    enter: (custom: { direction: number; type: string }) => {
-      if (custom.type === "slide")
-        return {
-          x: custom.direction > 0 ? "100%" : "-100%",
-          opacity: 0,
-          zIndex: 20,
-        };
-      if (custom.type === "fade-scale")
-        return { opacity: 0, scale: 1.1, zIndex: 20 };
-      if (custom.type === "slide-up")
-        return { y: "100%", opacity: 0, zIndex: 20 };
-      return { opacity: 0, zIndex: 20 };
-    },
-    center: {
-      x: 0,
-      y: 0,
-      opacity: 1,
-      scale: 1,
-      zIndex: 20,
-      transition: { duration: 0.8, ease: cubicBezier(0.4, 0, 0.2, 1) },
-    },
-    exit: {
-      zIndex: 10,
-      opacity: 0,
-      transition: { duration: 0.8 },
-    },
-  };
-
   return (
-    <section className="relative w-full bg-white overflow-hidden group">
-      {/* IMAGE */}
+    <section className="relative w-full bg-black overflow-hidden group">
       <div className="relative w-full aspect-[1900/720] min-h-[350px] md:min-h-[450px]">
-        <AnimatePresence
-          initial={false}
-          custom={{ direction, type: currentTransitionType }}
-        >
+        <AnimatePresence initial={false}>
           <motion.div
             key={page}
-            custom={{ direction, type: currentTransitionType }}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            className="absolute inset-0 w-full h-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0 w-full h-full overflow-hidden"
           >
-            <Image
-              src={slides[currentSlide].image_url}
-              alt={`Slide ${currentSlide}`}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover object-center"
-            />
+            {/* Animasi Zoom Langsung pada Gambar (Ken Burns) */}
+            <motion.div
+              initial={{ scale: 1 }}
+              animate={{ scale: 1.15 }}
+              transition={{
+                duration: 4,
+                ease: "linear",
+              }}
+              className="relative w-full h-full"
+            >
+              <Image
+                src={slides[currentSlide].image_url}
+                alt={`Slide ${currentSlide}`}
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-center"
+              />
+            </motion.div>
           </motion.div>
         </AnimatePresence>
 
