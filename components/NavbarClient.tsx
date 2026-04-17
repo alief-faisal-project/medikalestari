@@ -126,18 +126,25 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
     <nav className="w-full font-sans sticky top-0 z-[100] bg-white shadow-sm">
       {/* --- Bagian Atas: Logo & Top Links --- */}
       <div className="bg-white py-4 relative z-40">
-        <div className="max-w-[1220px] mx-auto px-4 md:px-8 flex justify-between items-center">
+        <div className="max-w-[1200px] mx-auto px-4 md:px-8 flex justify-between items-center">
           <Link href="/" className="flex items-center">
             {logoNode}
           </Link>
 
           <div className="hidden md:flex gap-4 items-center text-[15px] font-normal text-gray-700">
-            <Link href="/kontak-kami" className="hover:text-[#005075]">
-              Kontak Kami
+            <Link
+              href="/kontak-kami"
+              className="hover:text-[#005075] hover:underline"
+            >
+              Contact
             </Link>
             <span className="text-gray-300">|</span>
-            <Link href="#" className="hover:text-[#005075]">
-              Jenjang Karir
+            <Link href="#" className="hover:text-[#005075] hover:underline">
+              Careers
+            </Link>
+            <span className="text-gray-300">|</span>
+            <Link href="#" className="hover:text-[#005075] hover:underline">
+              Newsroom
             </Link>
           </div>
 
