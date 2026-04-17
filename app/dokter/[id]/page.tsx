@@ -111,7 +111,7 @@ const DoctorDetailPage = () => {
                   href="#"
                   className="w-11 h-11 flex items-center justify-center rounded-full bg-[#0088cc] text-white transition-all border border-slate-100 shadow-sm hover:shadow-md"
                 >
-                  <i className="fa-brands fa-twitter text-3xl"></i>
+                  <i className="fa-brands fa-linkedin text-2xl"></i>
                 </a>
               </div>
             </div>
