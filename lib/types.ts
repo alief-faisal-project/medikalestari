@@ -57,3 +57,29 @@ export interface HeroBanner {
   is_active: boolean;
   created_at: string;
 }
+
+export interface CareersBannerConfig {
+  id: string;
+  banner_image_url: string;
+  is_form_active: boolean;
+  form_title: string;
+  form_description: string;
+  criteria: string[]; // JSON array stored as string
+  phone_number: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CareerRegistration {
+  id: string;
+  full_name: string;
+  email: string;
+  phone: string;
+  position: string;
+  education: string;
+  experience_years: number;
+  criteria_fields: Record<string, string>; // JSON object for dynamic criteria
+  resume_url: string;
+  whatsapp_link?: string;
+  created_at: string;
+}

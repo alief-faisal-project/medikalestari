@@ -139,7 +139,10 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               Contact
             </Link>
             <span className="text-gray-300">|</span>
-            <Link href="#" className="hover:text-[#005075] hover:underline">
+            <Link
+              href="/careers"
+              className="hover:text-[#005075] hover:underline"
+            >
               Careers
             </Link>
             <span className="text-gray-300">|</span>
