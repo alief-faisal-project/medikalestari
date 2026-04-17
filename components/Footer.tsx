@@ -26,11 +26,11 @@ const Footer = () => {
     {
       title: "Medika Lestari",
       links: [
-        { name: "Beranda", id: "Beranda" },
-        { name: "Dokter Kami", id: "DoctorSection" },
+        { name: "Beranda", href: "/" },
+        { name: "Dokter Kami", href: "/dokter" },
         { name: "Fasilitas & Layanan", id: "section-fasilitas" },
         { name: "Informasi Pasien", id: "section-informasi" },
-        { name: "Tentang Kami", id: "section-tentang" },
+        { name: "Tentang Kami", href: "/tentang-kami" },
       ],
     },
     {
