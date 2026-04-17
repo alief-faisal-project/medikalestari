@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, cubicBezier } from "framer-motion";
+import { Play, Pause } from "lucide-react";
 import { fetchHeroBanners } from "@/lib/api";
 import { HeroBanner } from "@/lib/types";
 import {
@@ -120,8 +121,9 @@ const HeroSection = () => {
   }
 
   return (
-    <section className="relative w-full bg-black overflow-hidden group">
-      <div className="relative w-full aspect-[1900/720] min-h-[350px] md:min-h-[450px]">
+    <section className="relative w-full bg-black overflow-hidden">
+      {/* Group diletakkan di pembungkus gambar agar hover tidak terpicu saat di searchbar */}
+      <div className="relative w-full aspect-[1900/720] min-h-[350px] md:min-h-[450px] group">
         <AnimatePresence initial={false}>
           <motion.div
             key={page}
@@ -153,12 +155,20 @@ const HeroSection = () => {
           </motion.div>
         </AnimatePresence>
 
-        {/* INDICATOR - CHEVRON (Desktop Only) */}
+        {/* TOMBOL PLAY/PAUSE - Tengah & Muncul saat Hover di area gambar saja */}
         <button
-          onClick={() => paginate(-1)}
-          className="hidden md:flex absolute left-8 top-1/2 -translate-y-1/2 z-30 items-center justify-center w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 text-white transition"
+          onClick={() => setIsPlaying(!isPlaying)}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 
+             flex items-center justify-center w-16 h-16 rounded-full 
+             bg-black/30 backdrop-blur-sm text-white 
+             opacity-0 group-hover:opacity-100 transition-all duration-300
+             hover:scale-110 border border-white/20"
         >
-          <ChevronLeft size={28} />
+          {isPlaying ? (
+            <Pause size={32} fill="currentColor" />
+          ) : (
+            <Play size={32} className="ml-1" fill="currentColor" />
+          )}
         </button>
       </div>
 
