@@ -46,6 +46,7 @@ export interface MadingContent {
   start_date?: string; // For event - tanggal mulai event
   end_date?: string; // For event - optional tanggal akhir event
   order: number;
+  link?: string; // Optional link for artikel/event
   created_at: string;
 }
 

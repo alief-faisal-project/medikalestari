@@ -1,17 +1,27 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { ChevronRight, Clock, Calendar } from "lucide-react";
+import {
+  ChevronRight,
+  Clock,
+  Calendar,
+  MoreHorizontal,
+  Heart,
+  MessageCircle,
+  Send,
+  Bookmark,
+} from "lucide-react";
 import { fetchMadingContent } from "@/lib/api";
 import { MadingContent } from "@/lib/types";
 
 const MadingSection = () => {
-  const [activeTab, setActiveTab] = useState("Artikel");
+  const [activeTab, setActiveTab] = useState("Informasi");
   const [allData, setAllData] = useState<MadingContent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [likedItems, setLikedItems] = useState<Record<string, boolean>>({});
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Mouse Drag Scroll Logic
+  // Mouse Drag Scroll Logic (Tetap Utuh)
   const [isDown, setIsDown] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -31,6 +41,10 @@ const MadingSection = () => {
     if (scrollRef.current) scrollRef.current.scrollLeft = scrollLeft - walk;
   };
 
+  const toggleLike = (id: string) => {
+    setLikedItems((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
   useEffect(() => {
     const loadContent = async () => {
       try {
@@ -47,7 +61,7 @@ const MadingSection = () => {
   }, []);
 
   const filteredData = allData.filter((item) =>
-    activeTab === "Artikel" ? item.type === "edukasi" : item.type === "event",
+    activeTab === "Informasi" ? item.type === "edukasi" : item.type === "event",
   );
 
   return (
@@ -55,15 +69,15 @@ const MadingSection = () => {
       <div className="max-w-[1110px] mx-auto">
         {/* Header Navigation */}
         <div className="flex items-center justify-between mb-8 border-b border-gray-100">
-          <h2 className="text-3xl font-bold text-slate-800 pb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-800 pb-4">
             Informasi & Artikel
           </h2>
-          <div className="flex gap-8">
-            {["Artikel", "Event"].map((tab) => (
+          <div className="flex gap-6 md:gap-8">
+            {["Informasi", "Event"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`pb-4 px-1 text-sm font-bold transition-all relative ${
+                className={`pb-4 px-1 text-xs md:text-sm font-bold transition-all relative ${
                   activeTab === tab ? "text-[#0084BF]" : "text-gray-400"
                 }`}
               >
@@ -76,7 +90,7 @@ const MadingSection = () => {
           </div>
         </div>
 
-        {/* Scrollable Container */}
+        {/* Scrollable Container - Mobile 2 Cards */}
         <div
           ref={scrollRef}
           onMouseDown={handleMouseDown}
@@ -85,7 +99,7 @@ const MadingSection = () => {
           onMouseMove={handleMouseMove}
           className="overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing pb-6"
         >
-          <div className="grid grid-flow-col auto-cols-[calc(50%-10px)] lg:grid-cols-4 lg:auto-cols-fr gap-5">
+          <div className="grid grid-flow-col auto-cols-[calc(50%-10px)] md:auto-cols-[calc(45%)] lg:grid-cols-4 lg:auto-cols-fr gap-3 md:gap-5">
             {loading
               ? [...Array(4)].map((_, i) => (
                   <div
@@ -94,56 +108,141 @@ const MadingSection = () => {
                   />
                 ))
               : filteredData.map((item) => (
-                  /* TAMBAHAN: Class 'group' pada card utama agar elemen di dalamnya 
-                    bisa bereaksi saat card ini di-hover 
-                  */
-                  <div
-                    key={item.id}
-                    className="bg-white overflow-hidden border border-gray-100 flex flex-col group transition-all hover:shadow-md h-full cursor-pointer"
-                  >
-                    {/* Image */}
-                    <div className="aspect-[16/10] overflow-hidden">
-                      <img
-                        src={item.image_url}
-                        alt=""
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    </div>
+                  <div key={item.id} className="h-full">
+                    {activeTab === "Informasi" ? (
+                      /* --- TAMPILAN GAYA INSTAGRAM (Informasi) --- */
+                      <div className="bg-white border border-gray-200 rounded-sm flex flex-col h-full overflow-hidden shadow-sm">
+                        {/* Header Nickname & Tanggal */}
+                        <div className="p-2 md:p-3 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="w-7 h-7 md:w-9 md:h-9 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 p-[1.5px]">
+                              <div className="w-full h-full rounded-full bg-white p-[1px] md:p-[1.5px]">
+                                <img
+                                  src="/instagram.png"
+                                  alt="Profile"
+                                  className="w-full h-full rounded-full object-cover"
+                                />
+                              </div>
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-[11px] md:text-[13px] font-bold text-slate-900 leading-tight">
+                                rsmedika.lestari
+                              </span>
+                              <span className="text-[9px] md:text-[10px] text-slate-500 leading-tight">
+                                {item.date}
+                              </span>
+                            </div>
+                          </div>
+                          <MoreHorizontal size={14} className="text-gray-500" />
+                        </div>
 
-                    {/* Body */}
-                    <div className="p-4 flex flex-col flex-grow">
-                      <span className="text-slate-500 text-[10px] font-bold uppercase mb-2 tracking-widest">
-                        {item.type === "edukasi" ? "Artikel" : "Event"}
-                      </span>
+                        {/* Image Body (Link Aktif) */}
+                        <a
+                          href={item.link || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="aspect-square overflow-hidden bg-gray-100 block"
+                        >
+                          <img
+                            src={item.image_url}
+                            alt=""
+                            className="w-full h-full object-cover"
+                          />
+                        </a>
 
-                      <h3 className="text-sm font-bold text-slate-900 mb-2 line-clamp-2 h-10 leading-snug group-hover:text-[#0084BF] transition-colors">
-                        {item.title}
-                      </h3>
+                        {/* Interaction Bar */}
+                        <div className="p-2 md:p-3 pb-1 flex items-center justify-between">
+                          <div className="flex items-center gap-3 md:gap-4">
+                            <Heart
+                              size={20}
+                              onClick={() => toggleLike(item.id.toString())}
+                              className={`cursor-pointer transition-all active:scale-125 ${likedItems[item.id] ? "fill-red-500 text-red-500" : "text-slate-800"}`}
+                            />
+                            <MessageCircle
+                              size={20}
+                              className="text-slate-800"
+                            />
+                            <Send size={20} className="text-slate-800" />
+                          </div>
+                          <Bookmark size={20} className="text-slate-800" />
+                        </div>
 
-                      <p className="text-[11px] text-slate-500 line-clamp-3 mb-4 flex-grow leading-relaxed">
-                        {item.description}
-                      </p>
+                        {/* Caption Section */}
+                        <div className="px-2 md:px-3 pb-3 md:pb-4 flex flex-col flex-grow font-sans">
+                          <span className="text-[11px] md:text-[13px] font-bold text-slate-900 mb-1">
+                            {likedItems[item.id]
+                              ? "1,001 likes"
+                              : "1,000 likes"}
+                          </span>
 
-                      {/* Date Section */}
-                      <div className="flex items-center gap-2 text-gray-500 font-bold text-[10px] mb-4 uppercase tracking-tight">
-                        {item.type === "event" ? (
-                          <Calendar size={12} />
-                        ) : (
-                          <Clock size={12} />
-                        )}
-                        {item.type === "event"
-                          ? item.start_date || item.date
-                          : item.date}
-                      </div>
+                          <div className="text-[11px] md:text-[13px] leading-snug mb-2 flex-grow">
+                            <span className="font-bold text-slate-900 mr-2">
+                              rsmedika.lestari
+                            </span>
+                            <span className="font-bold text-slate-900 block mb-1">
+                              {item.title}
+                            </span>
+                            <span className="text-slate-800 whitespace-pre-line line-clamp-3 md:line-clamp-none">
+                              {item.description}
+                            </span>
+                          </div>
 
-                      {/* Action Button */}
-                      <div className="flex items-center gap-2 text-gray-500 font-bold text-[12px] transition-all duration-300 group-hover:text-[#0084BF]">
-                        <span>Baca Selengkapnya</span>
-                        <div className="w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-125">
-                          <ChevronRight size={20} />
+                          <div className="mt-auto">
+                            <a
+                              href={item.link || "#"}
+                              target="_blank"
+                              className="text-[11px] md:text-[13px] font-semibold text-[#0084BF] hover:underline"
+                            >
+                              Selengkapnya...
+                            </a>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      /* --- Event --- */
+                      <div className="bg-white overflow-hidden border border-gray-100 flex flex-col group transition-all hover:shadow-md h-full">
+                        <a
+                          href={item.link || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="aspect-[16/10] overflow-hidden block"
+                        >
+                          <img
+                            src={item.image_url}
+                            alt=""
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        </a>
+
+                        <div className="p-3 md:p-4 flex flex-col flex-grow">
+                          <span className="text-slate-500 text-[8px] md:text-[10px] font-bold uppercase mb-1 md:mb-2 tracking-widest">
+                            EVENT
+                          </span>
+                          <h3 className="text-xs md:text-sm font-bold text-slate-900 mb-1 md:mb-2 leading-snug group-hover:text-[#0084BF] transition-colors line-clamp-2">
+                            {item.title}
+                          </h3>
+                          <p className="text-[10px] md:text-[11px] text-slate-500 mb-3 md:mb-4 flex-grow leading-relaxed line-clamp-2 md:line-clamp-none">
+                            {item.description}
+                          </p>
+                          <div className="flex items-center gap-1 md:gap-2 text-gray-500 font-bold text-[8px] md:text-[10px] mb-3 md:mb-4 uppercase">
+                            <Calendar size={10} />{" "}
+                            {item.start_date || item.date}
+                          </div>
+
+                          <a
+                            href={item.link || "#"}
+                            target="_blank"
+                            className="flex items-center gap-1 md:gap-2 text-gray-500 font-bold text-[10px] md:text-[12px] group-hover:text-[#0084BF]"
+                          >
+                            <span>Baca Selengkapnya</span>
+                            <ChevronRight
+                              size={16}
+                              className="transition-all group-hover:scale-125"
+                            />
+                          </a>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
           </div>

@@ -33,6 +33,7 @@ const AdminMadingPage = () => {
     start_date: "",
     end_date: "",
     order: 0,
+    link: "",
   });
   const router = useRouter();
   const { loading: authLoading, isAuthenticated } = useAuth();
@@ -112,6 +113,7 @@ const AdminMadingPage = () => {
         end_date:
           contentType === "event" ? formData.end_date || undefined : undefined,
         order: formData.order,
+        link: formData.link || undefined,
       };
 
       if (editingId) {
@@ -145,6 +147,7 @@ const AdminMadingPage = () => {
       start_date: item.start_date || "",
       end_date: item.end_date || "",
       order: item.order,
+      link: item.link || "",
     });
     setImagePreview(item.image_url);
     setShowModal(true);
@@ -172,6 +175,7 @@ const AdminMadingPage = () => {
       start_date: "",
       end_date: "",
       order: 0,
+      link: "",
     });
     setImageFile(null);
     setImagePreview("");
@@ -609,6 +613,29 @@ const AdminMadingPage = () => {
                   min="0"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                 />
+              </div>
+
+              {/* Link */}
+              <div>
+                <label
+                  htmlFor="link"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Link (Opsional)
+                </label>
+                <input
+                  id="link"
+                  type="url"
+                  value={formData.link}
+                  onChange={(e) =>
+                    setFormData({ ...formData, link: e.target.value })
+                  }
+                  placeholder="https://example.com"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+                <small className="text-gray-500 block mt-1">
+                  Masukkan URL lengkap (contoh: https://example.com)
+                </small>
               </div>
 
               {/* Submit Button */}
