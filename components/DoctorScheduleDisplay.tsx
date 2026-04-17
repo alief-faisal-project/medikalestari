@@ -29,7 +29,7 @@ export default function DoctorScheduleDisplay({
       <div className="overflow-x-auto border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.05)] bg-white">
         <table className="w-full border-collapse table-fixed min-w-[650px]">
           <thead>
-            <tr className="bg-[#f8fdff]">
+            <tr className="bg-[#0084BF]/10">
               {DAYS.map((day) => (
                 <th
                   key={day}

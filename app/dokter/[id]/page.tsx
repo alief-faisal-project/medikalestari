@@ -73,27 +73,27 @@ const DoctorDetailPage = () => {
 
             {/* Social Share Section */}
             <div className="mt-10 flex flex-col items-center gap-4">
-              <p className="text-[12px] font-bold text-slate-400 uppercase tracking-widest">
+              <p className="text-[12px] font-bold text-slate-600 uppercase">
                 Bagikan Profil Dokter
               </p>
               <div className="flex gap-4">
                 <a
                   href="#"
-                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-[#25D366] transition-all border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-[#25D366] text-white transition-all border border-slate-100 shadow-sm hover:shadow-md "
                 >
-                  <i className="fa-brands fa-whatsapp text-xl"></i>
+                  <i className="fa-brands fa-whatsapp text-2xl"></i>
                 </a>
                 <a
                   href="#"
-                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-[#E1306C] transition-all border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white transition-all"
                 >
-                  <i className="fa-brands fa-instagram text-xl"></i>
+                  <i className="fa-brands fa-instagram text-2xl"></i>
                 </a>
                 <a
                   href="#"
-                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-[#0088cc] transition-all border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-[#0088cc] text-white transition-all border border-slate-100 shadow-sm hover:shadow-md"
                 >
-                  <i className="fa-brands fa-telegram text-xl"></i>
+                  <i className="fa-brands fa-telegram text-2xl"></i>
                 </a>
               </div>
             </div>
@@ -112,7 +112,7 @@ const DoctorDetailPage = () => {
                   {doctor.name}
                 </h1>
                 <p className="text-xl text-slate-400 font-medium">
-                  Spesialis {doctor.specialty}
+                 {doctor.specialty}
                 </p>
               </div>
 
