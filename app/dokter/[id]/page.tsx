@@ -1,6 +1,7 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { fetchDoctorById, fetchSchedulesByDoctor } from "@/lib/api";
@@ -16,6 +17,11 @@ const DoctorDetailPage = () => {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState(true);
   const [showBookingForm, setShowBookingForm] = useState(false);
+
+  // Efek untuk memastikan scroll ke paling atas saat halaman diakses
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const loadData = async () => {
@@ -47,12 +53,10 @@ const DoctorDetailPage = () => {
   return (
     <div className="min-h-screen bg-white text-[#1A1A1A]">
       <div className="max-w-[1220px] mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mt-10">
-          {/* KOLOM KIRI: STICKY IMAGE 
-              - 'lg:sticky': Membuat kolom menempel saat scroll di layar besar.
-              - 'lg:top-24': Mengatur jarak dari atas layar saat sticky aktif.
-          */}
-          <div className="lg:col-span-4 lg:sticky lg:top-70 flex flex-col items-center">
+        {/* Kontainer Grid Utama */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mt-6">
+          {/* KOLOM KIRI: STICKY IMAGE & SOCIALS */}
+          <div className="lg:col-span-4 lg:sticky lg:top-60 flex flex-col items-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -67,29 +71,27 @@ const DoctorDetailPage = () => {
               />
             </motion.div>
 
+            {/* Social Share Section */}
             <div className="mt-10 flex flex-col items-center gap-4">
-              <p className="text-[12px] font-bold text-slate-400 uppercase">
+              <p className="text-[12px] font-bold text-slate-400 uppercase tracking-widest">
                 Bagikan Profil Dokter
               </p>
               <div className="flex gap-4">
-                {/* WhatsApp */}
                 <a
                   href="#"
-                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-[#25D366] transition-all border border-slate-100 shadow-sm hover:shadow-md"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-[#25D366] transition-all border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1"
                 >
                   <i className="fa-brands fa-whatsapp text-xl"></i>
                 </a>
-                {/* Instagram */}
                 <a
                   href="#"
-                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-[#E1306C] transition-all border border-slate-100 shadow-sm hover:shadow-md"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-[#E1306C] transition-all border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1"
                 >
                   <i className="fa-brands fa-instagram text-xl"></i>
                 </a>
-                {/* Telegram */}
                 <a
                   href="#"
-                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-[#0088cc] transition-all border border-slate-100 shadow-sm hover:shadow-md"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-[#0088cc] transition-all border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1"
                 >
                   <i className="fa-brands fa-telegram text-xl"></i>
                 </a>
@@ -97,11 +99,12 @@ const DoctorDetailPage = () => {
             </div>
           </div>
 
-          {/* KOLOM KANAN: INFO & JADWAL */}
+          {/* KOLOM KANAN: INFO, BIODATA & JADWAL */}
           <div className="lg:col-span-8">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
             >
               {/* Identitas Dokter */}
               <div className="mb-10">
@@ -113,7 +116,7 @@ const DoctorDetailPage = () => {
                 </p>
               </div>
 
-              {/* SECTION 1: BIODATA (Berada di atas Jadwal) */}
+              {/* SECTION 1: BIODATA */}
               <div className="mb-12">
                 <h2 className="text-xl font-bold text-[#005075] mb-4">
                   Biodata
@@ -135,6 +138,7 @@ const DoctorDetailPage = () => {
         </div>
       </div>
 
+      {/* MODAL BOOKING */}
       {showBookingForm && (
         <BookingForm
           doctorName={doctor.name}
