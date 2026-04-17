@@ -70,7 +70,7 @@ const MadingSection = () => {
         {/* Header Navigation */}
         <div className="flex items-center justify-between mb-8 border-b border-gray-100">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-800 pb-4">
-            Informasi & Artikel
+            Informasi & Event
           </h2>
           <div className="flex gap-6 md:gap-8">
             {["Informasi", "Event"].map((tab) => (
