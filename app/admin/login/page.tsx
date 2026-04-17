@@ -36,13 +36,22 @@ const AdminLoginPage = () => {
       } else if (data.session) {
         try {
           // Menggunakan data.session secara langsung karena tipenya sudah valid (Session)
-          // Jika useAuth.login membutuhkan tipe yang spesifik, kita gunakan data.session
           const session: Session = data.session;
 
-          await login(session.access_token, session.user, session);
-        } catch (err) {
+          // Convert Supabase user to AdminUser type
+          const adminUser = session.user
+            ? {
+                id: session.user.id,
+                email: session.user.email || "",
+                role: "admin",
+                created_at: session.user.created_at || new Date().toISOString(),
+              }
+            : null;
+
+          await login(session.access_token, adminUser, session);
+        } catch (error) {
           // fallback jika ada error pada fungsi login context
-          console.error("Login context error:", err);
+          console.error("Login context error:", error);
         }
         router.push("/admin/dashboard");
       }
