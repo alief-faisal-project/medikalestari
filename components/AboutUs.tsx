@@ -157,13 +157,13 @@ const AboutUs = () => {
                 key={item.title}
                 className="group relative h-[420px] w-full overflow-hidden bg-[#005075] md:bg-white shadow-xl border border-slate-100 "
               >
-                {/* Background Image - Sembunyi di Mobile */}
+                {/* Background Image desktop */}
                 <div
                   className="hidden md:block absolute inset-0 z-0 bg-cover bg-center transition-transform duration-[800ms]"
                   style={{ backgroundImage: `url('${item.img}')` }}
                 />
 
-                {/* Layer Poligon/Jajar Genjang - Hanya satu layer yang berubah bentuk */}
+                {/* Layer Poligon/Jajar Genjang */}
                 <div
                   className="absolute inset-0 z-10 bg-[#005075]/80 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] 
                              md:[clip-path:polygon(0_85%,100%_70%,100%_100%,0%_100%)] 
@@ -172,12 +172,12 @@ const AboutUs = () => {
 
                 {/* Konten Teks */}
                 <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
-                  {/* Judul: Berada di area jajar genjang saat normal, naik sedikit saat hover */}
+                  {/* Judul */}
                   <h3 className="text-white text-3xl font-bold transition-all duration-700 group-hover:-translate-y-2">
                     {item.title}
                   </h3>
 
-                  {/* Deskripsi: Slide up smooth dari bawah */}
+                  {/* Deskripsi */}
                   <div
                     className="max-h-0 opacity-0 overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] 
                                   group-hover:max-h-[200px] group-hover:opacity-100 group-hover:mt-4"

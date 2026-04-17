@@ -78,7 +78,7 @@ export default function DoctorRecommendation({
                   </p>
                 </div>
 
-                {/* Arrow Icon (Optional for Clean Look) */}
+                {/* Arrow Icon */}
                 <div className="ml-2 text-slate-300 group-hover:text-[#0084BF] transition-colors">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

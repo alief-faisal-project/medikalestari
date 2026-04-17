@@ -306,7 +306,7 @@ const DoctorSection = ({
                         />
                       </div>
 
-                      {/* Text alignment diubah menjadi text-left secara permanen */}
+                      {/* Text alignment left */}
                       <div className="flex-1 text-left">
                         <div className="mb-2 md:mb-4">
                           <h3 className="text-lg md:text-2xl font-bold text-slate-800">
@@ -323,7 +323,7 @@ const DoctorSection = ({
                           </p>
                         )}
 
-                        {/* Tombol dipastikan justify-start agar konsisten menyamping ke kiri */}
+                        {/* Button Buat Janji Temu */}
                         <div className="flex flex-wrap justify-start gap-2 md:gap-3">
                           <button
                             onClick={() => setSelectedDoctor(doctor)}

@@ -217,7 +217,7 @@ const AdminMadingPage = () => {
 
         {/* Edukasi Section */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Edukasi</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Konten Instagram</h2>
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">

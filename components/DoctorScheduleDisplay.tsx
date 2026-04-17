@@ -16,7 +16,7 @@ export default function DoctorScheduleDisplay({
   const getScheduleForCell = (day: string, row: number) => {
     const daySchedules = schedules.filter((s) => s.day_of_week === day);
     if (row === 1) return daySchedules.slice(0, 1); // Jam pertama
-    if (row === 2) return daySchedules.slice(1, 2); // Jam kedua (jika ada)
+    if (row === 2) return daySchedules.slice(1, 2); // Jam kedua 
     return [];
   };
 
