@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from "react"; // Menambahkan useState
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Phone, Mail, MapPin, Clock, Send, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 const KontakKami = () => {
-  // State untuk menangkap input form
+  // State untuk menangkap input form dengan TypeScript
   const [formData, setFormData] = useState({
     nama: "",
     email: "",
@@ -49,8 +49,19 @@ const KontakKami = () => {
     { name: "Farmasi", phone: "(021) 1234-5683" },
   ];
 
+  // Fungsi untuk menangani perubahan input
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   // Fungsi untuk menangani pengiriman form via mailto
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const mailtoUrl = `mailto:marketing@rsmedikalestari?subject=${encodeURIComponent(
       formData.subjek,
@@ -114,10 +125,9 @@ const KontakKami = () => {
                   <input
                     required
                     type="text"
+                    name="nama"
                     value={formData.nama}
-                    onChange={(e) =>
-                      setFormData({ ...formData, nama: e.target.value })
-                    }
+                    onChange={handleChange}
                     className="w-full bg-white border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-[#0084BF] transition-colors rounded-sm"
                     placeholder="Contoh: Budi Santoso"
                   />
@@ -129,10 +139,9 @@ const KontakKami = () => {
                   <input
                     required
                     type="email"
+                    name="email"
                     value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
+                    onChange={handleChange}
                     className="w-full bg-white border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-[#0084BF] transition-colors rounded-sm"
                     placeholder="nama@email.com"
                   />
@@ -146,10 +155,9 @@ const KontakKami = () => {
                 <input
                   required
                   type="text"
+                  name="subjek"
                   value={formData.subjek}
-                  onChange={(e) =>
-                    setFormData({ ...formData, subjek: e.target.value })
-                  }
+                  onChange={handleChange}
                   className="w-full bg-white border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-[#0084BF] transition-colors rounded-sm"
                   placeholder="Keluhan medis, pendaftaran, dll."
                 />
@@ -162,10 +170,9 @@ const KontakKami = () => {
                 <textarea
                   required
                   rows={5}
+                  name="pesan"
                   value={formData.pesan}
-                  onChange={(e) =>
-                    setFormData({ ...formData, pesan: e.target.value })
-                  }
+                  onChange={handleChange}
                   className="w-full bg-white border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-[#0084BF] transition-colors rounded-sm resize-none"
                   placeholder="Tuliskan pesan Anda di sini..."
                 />
