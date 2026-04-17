@@ -122,7 +122,6 @@ const HeroSection = () => {
 
   return (
     <section className="relative w-full bg-black overflow-hidden">
-      {/* Group diletakkan di pembungkus gambar agar hover tidak terpicu saat di searchbar */}
       <div className="relative w-full aspect-[1900/720] min-h-[350px] md:min-h-[450px] group">
         <AnimatePresence initial={false}>
           <motion.div
@@ -133,7 +132,7 @@ const HeroSection = () => {
             transition={{ duration: 1 }}
             className="absolute inset-0 w-full h-full overflow-hidden"
           >
-            {/* Animasi Zoom Langsung pada Gambar (Ken Burns) */}
+            {/* Animasi Zoom (Ken Burns) */}
             <motion.div
               initial={{ scale: 1 }}
               animate={{ scale: 1.15 }}
@@ -155,12 +154,12 @@ const HeroSection = () => {
           </motion.div>
         </AnimatePresence>
 
-        {/* TOMBOL PLAY/PAUSE - Tengah & Muncul saat Hover di area gambar saja */}
+        {/* TOMBOL PLAY/PAUSE */}
         <button
           onClick={() => setIsPlaying(!isPlaying)}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 
              flex items-center justify-center w-16 h-16 rounded-full 
-             bg-black/30 backdrop-blur-sm text-white 
+             bg-white/30 backdrop-blur-sm text-white 
              opacity-0 group-hover:opacity-100 transition-all duration-300
              hover:scale-110 border border-white/20"
         >
@@ -172,7 +171,7 @@ const HeroSection = () => {
         </button>
       </div>
 
-      {/* INDICATOR - Dots (Mobile Only) */}
+      {/* Indikator Mobile  */}
       <div className="md:hidden flex justify-center gap-3 py-4 bg-white border-t border-gray-200">
         {slides.map((slide, index) => (
           <button
@@ -189,7 +188,7 @@ const HeroSection = () => {
           />
         ))}
       </div>
-      {/* SEARCH BAR - Mobile Below Banner, Desktop Absolute */}
+      {/* SEARCH BAR */}
       <div className="md:absolute md:bottom-10 md:left-1/2 md:-translate-x-1/2 md:z-40 w-full px-4 py-6 md:py-0 md:bg-transparent bg-white">
         <div
           className="
@@ -284,10 +283,10 @@ const HeroSection = () => {
     px-4 md:px-0 
   "
             >
-              {/* Ikon dengan ukuran responsif */}
+              {/* Ikon Search*/}
               <Search className="w-5 h-5 md:w-10 md:h-8 " />
 
-              {/* Teks ini hanya muncul di mobile */}
+              {/* Teks Mobile */}
               <span className="font-semibold md:hidden">Cari Dokter</span>
             </button>
           </div>
