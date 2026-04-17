@@ -303,12 +303,12 @@ const HeroSection = () => {
     flex items-center justify-center 
     gap-2 
     text-white 
-    hover:scale-100 transition cursor-pointer
-    px-4 md:px-0
+    hover:scale-95 transition cursor-pointer
+    px-4 md:px-0 
   "
             >
               {/* Ikon dengan ukuran responsif */}
-              <Search className="w-5 h-5 md:w-10 md:h-10" />
+              <Search className="w-5 h-5 md:w-10 md:h-8 " />
 
               {/* Teks ini hanya muncul di mobile */}
               <span className="font-semibold md:hidden">Cari Dokter</span>
