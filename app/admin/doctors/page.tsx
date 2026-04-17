@@ -169,7 +169,7 @@ const AdminDoctorsPage = () => {
               resetForm();
               setShowModal(true);
             }}
-            className="flex items-center gap-2 bg-[#005075] text-white px-6 py-3 rounded-lg hover:[#005075] transition-colors cursor-pointer"
+            className="flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg hover:[#005075] transition-colors cursor-pointer"
           >
             <Plus size={20} />
             Tambah Dokter

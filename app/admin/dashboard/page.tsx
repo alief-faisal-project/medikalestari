@@ -26,7 +26,7 @@ const ScaleButton = ({
 }) => (
   <button
     onClick={onClick}
-    className={`group px-6 py-4 bg-[#005075] text-white rounded-xl transition-all duration-300 
+    className={`group px-6 py-4 bg-black text-white rounded-xl transition-all duration-300 
     hover:scale-[1.02] cursor-pointer flex items-center justify-center gap-3 ${className}`}
   >
     {Icon && (
@@ -160,20 +160,23 @@ const AdminDashboard = () => {
         {/* Quick Actions */}
         <div className="mt-12 bg-white rounded-2xl p-10 shadow-[0_4px_30px_rgba(0,0,0,0.03)] border border-slate-100">
           <div className="flex items-center gap-3 mb-8"></div>
+          <p className="text-slate-400 font-semibold text-[30px] mb-10 -mt-10">
+            Tambah Data
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <ScaleButton
               onClick={() => router.push("/admin/doctors?action=create")}
-              className=""
+              className="bg-green-600 hover:bg-green-700"
               icon={Plus}
             >
-              Tambah Tenaga Medis
+              Tambah Dokter
             </ScaleButton>
             <ScaleButton
               onClick={() => router.push("/admin/schedules?action=create")}
-              className=""
+              className="bg-green-600 hover:bg-green-700"
               icon={Plus}
             >
-              Buat Plotting Jadwal
+              Tambah Jadwal Dokter
             </ScaleButton>
           </div>
         </div>
