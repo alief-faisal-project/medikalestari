@@ -95,7 +95,7 @@ export default function DoctorScheduleDisplay({
       <div className="mt-10">
         <button
           onClick={onBooking}
-          className="bg-[#015A85] hover:bg-[#006694] text-white px-10 py-4 rounded-xs font-bold 
+          className="bg-[#0084BF] hover:bg-[#006694] text-white px-10 py-4 rounded-xs font-bold 
              transition-all duration-300 text-sm uppercase tracking-wide cursor-pointer
              active:scale-95"
         >

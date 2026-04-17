@@ -169,13 +169,13 @@ const DoctorSection = ({
           {/* SIDEBAR FILTER - SHARP EDGES */}
           <aside className="w-full lg:w-1/3 xl:w-1/4 lg:sticky lg:top-40 z-30">
             <div className="border border-slate-200 p-8 bg-white rounded-none shadow-sm h-fit">
-              <div className="flex items-center gap-3 mb-8 text-[#005075] border-b border-slate-50 pb-4">
+              <div className="flex items-center gap-3 mb-8 text-[#0084BF] border-b border-slate-50 pb-4">
                 <FilterIcon size={18} />
                 <span className="text-lg font-bold">Filter Pencarian</span>
               </div>
 
               <div className="mb-6">
-                <label className="block text-sm font-bold text-slate-700 mb-2">
+                <label className="block text-sm font-bold text-[#0084BF] mb-2">
                   Nama Dokter
                 </label>
                 <div className="relative">
@@ -190,13 +190,13 @@ const DoctorSection = ({
                     onChange={(e) =>
                       setTempFilter({ ...tempFilter, name: e.target.value })
                     }
-                    className="w-full border-b border-slate-200 py-2 pl-7 outline-none focus:border-[#015A85] text-sm bg-transparent rounded-none"
+                    className="w-full border-b border-slate-200 py-2 pl-7 outline-none focus:border-[#0084BF] text-sm bg-transparent rounded-none"
                   />
                 </div>
               </div>
 
               <div className="mb-6">
-                <label className="block text-sm font-bold text-slate-700 mb-2">
+                <label className="block text-sm font-bold text-[#0084BF] mb-2">
                   Spesialis
                 </label>
                 <div className="relative">
@@ -224,7 +224,7 @@ const DoctorSection = ({
               </div>
 
               <div className="mb-10">
-                <label className="block text-sm font-bold text-slate-700 mb-2">
+                <label className="block text-sm font-bold text-[#0084BF] mb-2">
                   Pilih Hari
                 </label>
                 <div className="relative">
@@ -250,7 +250,7 @@ const DoctorSection = ({
 
               <button
                 onClick={handleApplyFilter}
-                className="w-full bg-[#005075] text-white py-4 font-bold rounded-full cursor-pointer transition-all hover:bg-[#003d5a] active:scale-[0.98]"
+                className="w-full bg-[#0084BF] text-white py-4 font-bold rounded-full cursor-pointer transition-all hover:bg-[#003d5a] active:scale-[0.98]"
               >
                 Cari Dokter Spesialis
               </button>
@@ -308,13 +308,13 @@ const DoctorSection = ({
                         <div className="flex flex-wrap justify-center md:justify-start gap-3">
                           <button
                             onClick={() => setSelectedDoctor(doctor)}
-                            className="px-8 py-3 bg-[#005075] text-white text-[12px] font-bold rounded-full transition-all hover:bg-[#003d5a] active:scale-95 shadow-md shadow-blue-900/5 cursor-pointer"
+                            className="px-8 py-3 bg-[#0084BF] text-white text-[12px] font-bold rounded-full transition-all hover:bg-[#003d5a] active:scale-95 shadow-md shadow-blue-900/5 cursor-pointer"
                           >
                             Buat Janji Temu
                           </button>
                           <Link
                             href={`/dokter/${doctor.id}`}
-                            className="px-8 py-3 bg-white text-slate-600 text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-slate-50 hover:border-slate-300"
+                            className="px-8 py-3 bg-white text-slate-600 text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-slate-50 hover:border-[#0084BF]"
                           >
                             Lihat Profil
                           </Link>
