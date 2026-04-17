@@ -126,7 +126,7 @@ const MadingSection = () => {
                             </div>
                             <div className="flex flex-col">
                               <span className="text-[11px] md:text-[13px] font-bold text-slate-900 leading-tight">
-                                rsmedika.lestari
+                                rsmedikalestari
                               </span>
                               <span className="text-[9px] md:text-[10px] text-slate-500 leading-tight">
                                 {item.date}
@@ -177,7 +177,7 @@ const MadingSection = () => {
 
                           <div className="text-[11px] md:text-[13px] leading-snug mb-2 flex-grow">
                             <span className="font-bold text-slate-900 mr-2">
-                              rsmedika.lestari
+                              rsmedikalestari
                             </span>
                             <span className="font-bold text-slate-900 block mb-1">
                               {item.title}

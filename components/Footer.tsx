@@ -104,7 +104,7 @@ const Footer = () => {
               </div>
             ))}
 
-            {/* SOCIAL */}
+            {/* Sosmed */}
             <div className="col-span-2 md:col-span-6 md:pl-12 text-center md:text-left">
               <h3 className="text-base md:text-lg font-bold mb-4 md:mb-6">
                 Media Sosial
