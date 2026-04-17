@@ -132,7 +132,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
           </Link>
 
           <div className="hidden md:flex gap-4 items-center text-[15px] font-normal text-gray-700">
-            <Link href="/kontak-kami" className="hover:text-[#005075]">
+            <Link href="#" className="hover:text-[#005075]">
               Kontak Kami
             </Link>
             <span className="text-gray-300">|</span>

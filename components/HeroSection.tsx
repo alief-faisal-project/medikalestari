@@ -158,15 +158,15 @@ const HeroSection = () => {
         <button
           onClick={() => setIsPlaying(!isPlaying)}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 
-             flex items-center justify-center w-16 h-16 rounded-full 
-             bg-white/30 backdrop-blur-sm text-white 
+             flex items-center justify-center w-10 h-10 rounded-full 
+             bg-white/20 backdrop-blur-sm text-white 
              opacity-0 group-hover:opacity-100 transition-all duration-300
              hover:scale-110 border border-white/20"
         >
           {isPlaying ? (
-            <Pause size={32} fill="currentColor" />
+            <Pause size={20} fill="currentColor" />
           ) : (
-            <Play size={32} className="ml-1" fill="currentColor" />
+            <Play size={20} className="ml-1" fill="currentColor" />
           )}
         </button>
       </div>
