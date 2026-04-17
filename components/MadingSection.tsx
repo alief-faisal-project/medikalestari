@@ -64,12 +64,12 @@ const MadingSection = () => {
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`pb-4 px-1 text-sm font-bold transition-all relative ${
-                  activeTab === tab ? "text-[#005075]" : "text-gray-400"
+                  activeTab === tab ? "text-[#0084BF]" : "text-gray-400"
                 }`}
               >
                 {tab.toUpperCase()}
                 {activeTab === tab && (
-                  <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#005075]" />
+                  <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#0084BF]" />
                 )}
               </button>
             ))}
@@ -116,7 +116,7 @@ const MadingSection = () => {
                         {item.type === "edukasi" ? "Artikel" : "Event"}
                       </span>
 
-                      <h3 className="text-sm font-bold text-slate-900 mb-2 line-clamp-2 h-10 leading-snug group-hover:text-[#005075] transition-colors">
+                      <h3 className="text-sm font-bold text-slate-900 mb-2 line-clamp-2 h-10 leading-snug group-hover:text-[#0084BF] transition-colors">
                         {item.title}
                       </h3>
 
@@ -125,7 +125,7 @@ const MadingSection = () => {
                       </p>
 
                       {/* Date Section */}
-                      <div className="flex items-center gap-2 text-[#005075] font-bold text-[10px] mb-4 uppercase tracking-tight">
+                      <div className="flex items-center gap-2 text-gray-500 font-bold text-[10px] mb-4 uppercase tracking-tight">
                         {item.type === "event" ? (
                           <Calendar size={12} />
                         ) : (
@@ -137,7 +137,7 @@ const MadingSection = () => {
                       </div>
 
                       {/* Action Button */}
-                      <div className="flex items-center gap-2 text-gray-500 font-bold text-[12px] transition-all duration-300 group-hover:text-[#005075]">
+                      <div className="flex items-center gap-2 text-gray-500 font-bold text-[12px] transition-all duration-300 group-hover:text-[#0084BF]">
                         <span>Baca Selengkapnya</span>
                         <div className="w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-125">
                           <ChevronRight size={20} />

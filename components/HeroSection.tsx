@@ -4,12 +4,17 @@ import Image from "next/image";
 import { motion, AnimatePresence, cubicBezier } from "framer-motion";
 import { fetchHeroBanners } from "@/lib/api";
 import { HeroBanner } from "@/lib/types";
-import { Search, User, Stethoscope, CalendarDays } from "lucide-react";
+import {
+  Search,
+  User,
+  Stethoscope,
+  CalendarDays,
+  ChevronLeft,
+} from "lucide-react";
 
 const HeroSection = () => {
   const [slides, setSlides] = useState<HeroBanner[]>([]);
   const [[page, direction], setPage] = useState([0, 0]);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [loading, setLoading] = useState(true);
 
@@ -117,7 +122,7 @@ const HeroSection = () => {
 
   if (loading || slides.length === 0) {
     return (
-      <section className="relative w-full bg-black overflow-hidden">
+      <section className="relative w-full bg-white overflow-hidden">
         <div className="relative w-full aspect-[1900/720] min-h-[350px] md:min-h-[450px] bg-gray-800 animate-pulse" />
       </section>
     );
@@ -154,7 +159,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative w-full bg-black overflow-hidden group">
+    <section className="relative w-full bg-white overflow-hidden group">
       {/* IMAGE */}
       <div className="relative w-full aspect-[1900/720] min-h-[350px] md:min-h-[450px]">
         <AnimatePresence
@@ -180,10 +185,35 @@ const HeroSection = () => {
             />
           </motion.div>
         </AnimatePresence>
+
+        {/* INDICATOR - CHEVRON (Desktop Only) */}
+        <button
+          onClick={() => paginate(-1)}
+          className="hidden md:flex absolute left-8 top-1/2 -translate-y-1/2 z-30 items-center justify-center w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 text-white transition"
+        >
+          <ChevronLeft size={28} />
+        </button>
       </div>
 
-      {/* SEARCH BAR */}
-      <div className="absolute bottom-10 md:bottom-24 left-1/2 -translate-x-1/2 z-40 w-full px-4">
+      {/* INDICATOR - Dots (Mobile Only) */}
+      <div className="md:hidden flex justify-center gap-3 py-4 bg-white border-t border-gray-200">
+        {slides.map((slide, index) => (
+          <button
+            key={slide.id}
+            onClick={() => {
+              const newDirection = index > currentSlide ? 1 : -1;
+              setPage([index, newDirection]);
+            }}
+            className={`w-5 h-2 rounded-full ${
+              currentSlide === index
+                ? "bg-[#0084BF]"
+                : "bg-gray-300 hover:bg-gray-400"
+            }`}
+          />
+        ))}
+      </div>
+      {/* SEARCH BAR - Mobile Below Banner, Desktop Absolute */}
+      <div className="md:absolute md:bottom-10 md:left-1/2 md:-translate-x-1/2 md:z-40 w-full px-4 py-6 md:py-0 md:bg-transparent bg-white">
         <div
           className="
     max-w-5xl mx-auto 
@@ -191,17 +221,17 @@ const HeroSection = () => {
     md:rounded-full rounded-2xl 
     flex flex-col md:flex-row 
     overflow-hidden 
-    border border-white/40 
-    shadow-[0_20px_60px_rgba(0,0,0,0.25)]
+    border border-gray-200
+    shadow-xl]
   "
         >
           {/* NAMA DOKTER */}
-          <div className="flex-1 px-5 py-4 flex items-center gap-3 border-b md:border-b-0 md:border-r border-gray-200">
-            <User size={18} className="text-gray-400" />
-            <div className="w-full">
-              <p className="text-xs text-[#005075] font-semibold">
-                Nama Dokter
-              </p>
+          <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-200">
+            <p className="text-xs text-[#0084BF] font-semibold mb-1">
+              Nama Dokter
+            </p>
+            <div className="flex items-center gap-2">
+              <User size={18} className="text-gray-400" />
               <input
                 type="text"
                 placeholder="Cari nama dokter..."
@@ -214,7 +244,7 @@ const HeroSection = () => {
 
           {/* SPESIALIS */}
           <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-200">
-            <p className="text-xs text-[#005075] font-semibold mb-1">
+            <p className="text-xs text-[#0084BF] font-semibold mb-1">
               Spesialis
             </p>
             <div className="flex items-center gap-2">
@@ -235,7 +265,7 @@ const HeroSection = () => {
 
           {/* HARI */}
           <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-200">
-            <p className="text-xs text-[#005075] font-semibold mb-1">
+            <p className="text-xs text-[#0084BF] font-semibold mb-1">
               Pilih Hari
             </p>
             <div className="flex items-center gap-2">
@@ -255,7 +285,7 @@ const HeroSection = () => {
           </div>
 
           {/* BUTTON */}
-          <div className="flex items-center justify-center p-3 ">
+          <div className="flex items-center justify-center p-3">
             <button
               onClick={() => {
                 const params = new URLSearchParams();
@@ -266,61 +296,25 @@ const HeroSection = () => {
                 window.location.href = `/dokter?${params.toString()}`;
               }}
               className="
-          w-full md:w-14 
-          h-12 md:h-14 
-          rounded-xl md:rounded-full 
-          bg-[#005075] 
-          flex items-center justify-center 
-          text-white 
-          hover:scale-105 transition cursor-pointer
-        "
+    w-full md:w-14 
+    h-12 md:h-14 
+    rounded-full md:rounded-full 
+    bg-[#0084BF] 
+    flex items-center justify-center 
+    gap-2 
+    text-white 
+    hover:scale-100 transition cursor-pointer
+    px-4 md:px-0
+  "
             >
-              <Search size={20} />
+              {/* Ikon dengan ukuran responsif */}
+              <Search className="w-5 h-5 md:w-10 md:h-10" />
+
+              {/* Teks ini hanya muncul di mobile */}
+              <span className="font-semibold md:hidden">Cari Dokter</span>
             </button>
           </div>
         </div>
-      </div>
-
-      {/* INDICATOR */}
-      <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-3 md:gap-4">
-        {slides.map((_, index) => (
-          <div
-            key={index}
-            className="relative"
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            <AnimatePresence>
-              {hoveredIndex === index && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: -70, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  className="absolute left-1/2 -translate-x-1/2 w-28 md:w-32 h-16 md:h-20 rounded-lg overflow-hidden shadow-2xl"
-                >
-                  <Image
-                    src={slides[index].image_url}
-                    alt="Preview"
-                    fill
-                    className="object-cover"
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <button
-              onClick={() => {
-                const newDirection = index > currentSlide ? 1 : -1;
-                setPage([index, newDirection]);
-              }}
-              className={`w-3 h-3 md:w-5 md:h-5 rounded-full ${
-                currentSlide === index
-                  ? "bg-white"
-                  : "bg-white/30 hover:bg-white/60"
-              }`}
-            />
-          </div>
-        ))}
       </div>
     </section>
   );
