@@ -41,6 +41,22 @@ export async function fetchDoctorById(id: string): Promise<Doctor | null> {
   return data;
 }
 
+export async function fetchDoctorsBySpecialty(
+  specialty: string,
+): Promise<Doctor[]> {
+  const { data, error } = await supabase
+    .from("doctors")
+    .select("*")
+    .eq("specialty", specialty);
+
+  if (error) {
+    console.error("Error fetching doctors by specialty:", error);
+    return [];
+  }
+
+  return data || [];
+}
+
 export async function createDoctor(doctor: Omit<Doctor, "id" | "created_at">) {
   const { data, error } = await supabase
     .from("doctors")

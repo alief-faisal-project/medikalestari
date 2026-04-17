@@ -4,9 +4,14 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { fetchDoctorById, fetchSchedulesByDoctor } from "@/lib/api";
+import {
+  fetchDoctorById,
+  fetchSchedulesByDoctor,
+  fetchDoctorsBySpecialty,
+} from "@/lib/api";
 import { Doctor, Schedule } from "@/lib/types";
 import DoctorScheduleDisplay from "@/components/DoctorScheduleDisplay";
+import DoctorRecommendation from "@/components/DoctorRecommendation";
 import BookingForm from "@/components/BookingForm";
 
 const DoctorDetailPage = () => {
@@ -15,6 +20,7 @@ const DoctorDetailPage = () => {
 
   const [doctor, setDoctor] = useState<Doctor | null>(null);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [recommendedDoctors, setRecommendedDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(true);
   const [showBookingForm, setShowBookingForm] = useState(false);
 
@@ -31,6 +37,12 @@ const DoctorDetailPage = () => {
           setDoctor(doctorData);
           const schedulesData = await fetchSchedulesByDoctor(doctorId);
           setSchedules(schedulesData);
+
+          // Fetch recommended doctors with same specialty
+          const recommendedData = await fetchDoctorsBySpecialty(
+            doctorData.specialty,
+          );
+          setRecommendedDoctors(recommendedData);
         }
       } catch (error) {
         console.error("Error loading doctor data:", error);
@@ -139,6 +151,15 @@ const DoctorDetailPage = () => {
                   onBooking={() => setShowBookingForm(true)}
                 />
               </div>
+
+              {/* SECTION 3: REKOMENDASI DOKTER */}
+              {recommendedDoctors.length > 0 && (
+                <DoctorRecommendation
+                  doctors={recommendedDoctors}
+                  currentDoctorId={doctorId}
+                  specialty={doctor.specialty}
+                />
+              )}
             </motion.div>
           </div>
         </div>
