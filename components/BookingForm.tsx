@@ -181,8 +181,6 @@ export default function BookingForm({
                       type="submit"
                       disabled={loading}
                       className="w-full py-4 bg-[#0084BF] text-white font-bold rounded-full transition-all duration-300
-                      shadow-[0_4px_10px_rgba(0,0,0,0.2) ] 
-                      hover:shadow-[inset_0_4px_8px_rgba(0,0,0,0.3)]
                       active:scale-95 flex items-center justify-center gap-3 text-sm cursor-pointer"
                     >
                       {loading ? (
