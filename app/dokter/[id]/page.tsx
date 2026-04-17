@@ -66,7 +66,7 @@ const DoctorDetailPage = () => {
                 stiffness: 300,
                 damping: 25,
               }}
-              className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-8 border-white shadow-[0_10px_50px_rgba(0,0,0,0.1)] bg-slate-50 cursor-zoom-in"
+              className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-8 border-white shadow-[0_10px_50px_rgba(0,0,0,0.1)] bg-slate-50 cursor-crosshair"
             >
               <Image
                 src={doctor.image_url || "/placeholder-doctor.jpg"}
@@ -87,19 +87,19 @@ const DoctorDetailPage = () => {
                   href="#"
                   className="w-11 h-11 flex items-center justify-center rounded-full bg-[#25D366] text-white transition-all border border-slate-100 shadow-sm hover:shadow-md "
                 >
-                  <i className="fa-brands fa-whatsapp text-2xl"></i>
+                  <i className="fa-brands fa-whatsapp text-3xl"></i>
                 </a>
                 <a
                   href="#"
                   className="w-11 h-11 flex items-center justify-center rounded-full bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white transition-all"
                 >
-                  <i className="fa-brands fa-instagram text-2xl"></i>
+                  <i className="fa-brands fa-instagram text-3xl"></i>
                 </a>
                 <a
                   href="#"
                   className="w-11 h-11 flex items-center justify-center rounded-full bg-[#0088cc] text-white transition-all border border-slate-100 shadow-sm hover:shadow-md"
                 >
-                  <i className="fa-brands fa-telegram text-2xl"></i>
+                  <i className="fa-brands fa-twitter text-3xl"></i>
                 </a>
               </div>
             </div>
