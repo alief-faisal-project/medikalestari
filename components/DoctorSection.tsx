@@ -327,22 +327,25 @@ const DoctorSection = ({
                 {/* PAGINATION - SHARP EDGES */}
                 {totalPages > 1 && (
                   <div className="flex items-center justify-center gap-2 mt-12 pt-8">
+                    {/* Button PREV */}
                     {currentPage > 1 && (
                       <button
                         onClick={() => handlePageChange(currentPage - 1)}
-                        className="px-5 py-3 text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
+                        className="w-16 h-11 flex items-center justify-center text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
                       >
-                        PREV
+                        ← PREV
                       </button>
                     )}
+
+                    {/* Page Numbers */}
                     <div className="flex items-center gap-2">
                       {[...Array(totalPages)].map((_, i) => (
                         <button
                           key={`page-${i + 1}`}
                           onClick={() => handlePageChange(i + 1)}
-                          className={`w-11 h-11 rounded-none font-bold text-xs transition-all ${
+                          className={`w-11 h-11 flex items-center justify-center rounded-none font-bold text-xs transition-all ${
                             currentPage === i + 1
-                              ? "bg-[#005075] text-white"
+                              ? "bg-[#0084BF] text-white border border-[#0084BF]"
                               : "text-slate-500 border border-slate-200 hover:bg-slate-50"
                           }`}
                         >
@@ -350,12 +353,14 @@ const DoctorSection = ({
                         </button>
                       ))}
                     </div>
+
+                    {/* Button NEXT */}
                     {currentPage < totalPages && (
                       <button
                         onClick={() => handlePageChange(currentPage + 1)}
-                        className="px-5 py-3 text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
+                        className="w-16 h-11 flex items-center justify-center text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
                       >
-                        NEXT
+                        NEXT →
                       </button>
                     )}
                   </div>
