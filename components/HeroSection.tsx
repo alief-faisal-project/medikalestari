@@ -193,7 +193,7 @@ const HeroSection = () => {
   "
         >
           {/* NAMA DOKTER */}
-          <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-200">
+          <div className="flex-1 px-5 py-4 border-b md:px-8 md:border-b-0 md:border-r border-gray-200">
             <p className="text-xs text-[#0084BF] font-semibold mb-1">
               Nama Dokter
             </p>
