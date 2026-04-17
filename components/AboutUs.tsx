@@ -1,9 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import { ImageSkeleton } from "./ImageSkeleton";
 
 const AboutUs = () => {
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+
+  const handleImageLoad = (imageName: string) => {
+    setLoadedImages((prev) => new Set(prev).add(imageName));
+  };
+
+  const isImageLoaded = (imageName: string) => loadedImages.has(imageName);
+
   const partners = ["tomtom", "viatris", "zoetis", "rohto", "davita", "chewy"];
 
   const cardData = [
@@ -51,30 +60,42 @@ const AboutUs = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
           <div className="lg:col-span-8 relative aspect-[16/10] overflow-hidden border border-slate-200 shadow-sm group">
+            {!isImageLoaded("hospital-building") && (
+              <ImageSkeleton width="w-full" height="h-full" />
+            )}
             <Image
               src="/tentangkami/hospital-building.jpg"
               alt="Gedung Utama RS Medika Lestari"
               fill
               className="object-cover transition-transform duration-500"
               priority
+              onLoad={() => handleImageLoad("hospital-building")}
             />
           </div>
 
           <div className="lg:col-span-4 flex flex-col gap-6 md:gap-8">
             <div className="relative flex-1 aspect-[16/9] lg:aspect-auto overflow-hidden border border-slate-200 shadow-sm">
+              {!isImageLoaded("room") && (
+                <ImageSkeleton width="w-full" height="h-full" />
+              )}
               <Image
                 src="/tentangkami/room.jpg"
                 alt="Fasilitas Kamar"
                 fill
                 className="object-cover"
+                onLoad={() => handleImageLoad("room")}
               />
             </div>
             <div className="relative flex-1 aspect-[16/9] lg:aspect-auto overflow-hidden border border-slate-200 shadow-sm">
+              {!isImageLoaded("lobby") && (
+                <ImageSkeleton width="w-full" height="h-full" />
+              )}
               <Image
                 src="/tentangkami/lobby.jpg"
                 alt="Lobby Rumah Sakit"
                 fill
                 className="object-cover"
+                onLoad={() => handleImageLoad("lobby")}
               />
             </div>
           </div>
@@ -121,9 +142,9 @@ const AboutUs = () => {
       <div className="bg-slate-50 border-y border-slate-200 py-24">
         <div className="max-w-[1160px] mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {cardData.map((item, idx) => (
+            {cardData.map((item) => (
               <div
-                key={idx}
+                key={item.title}
                 className="group relative h-[420px] w-full overflow-hidden bg-[#005075] md:bg-white shadow-xl border border-slate-100 "
               >
                 {/* Background Image - Sembunyi di Mobile */}
@@ -180,11 +201,15 @@ const AboutUs = () => {
               key={item}
               className="flex items-center justify-center p-4 border border-slate-100 rounded-xl bg-white shadow-sm h-32 relative"
             >
+              {!isImageLoaded(`partner-${item}`) && (
+                <ImageSkeleton width="w-24" height="h-24" />
+              )}
               <Image
                 src={`/tentangkami/${item}.webp`}
                 alt={item}
                 fill
                 className="object-contain p-4"
+                onLoad={() => handleImageLoad(`partner-${item}`)}
               />
             </div>
           ))}
