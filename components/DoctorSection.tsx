@@ -250,7 +250,7 @@ const DoctorSection = ({
 
               <button
                 onClick={handleApplyFilter}
-                className="w-full bg-[#0084BF] text-white py-4 font-bold rounded-full cursor-pointer transition-all hover:bg-[#003d5a] active:scale-[0.98]"
+                className="w-full bg-[#0084BF] text-white py-4 font-bold rounded-full cursor-pointer transition-all hover:bg-[#0084BF]/90 active:scale-[0.98]"
               >
                 Cari Dokter Spesialis
               </button>
@@ -308,13 +308,13 @@ const DoctorSection = ({
                         <div className="flex flex-wrap justify-center md:justify-start gap-3">
                           <button
                             onClick={() => setSelectedDoctor(doctor)}
-                            className="px-8 py-3 bg-[#0084BF] text-white text-[12px] font-bold rounded-full transition-all hover:bg-[#003d5a] active:scale-95 shadow-md shadow-blue-900/5 cursor-pointer"
+                            className="px-8 py-3 bg-[#0084BF] text-white text-[12px] font-bold rounded-full transition-all hover:bg-[#0084BF]/90 active:scale-95 shadow-md shadow-blue-900/5 cursor-pointer"
                           >
                             Buat Janji Temu
                           </button>
                           <Link
                             href={`/dokter/${doctor.id}`}
-                            className="px-8 py-3 bg-white text-slate-600 text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-slate-50 hover:border-[#0084BF]"
+                            className="px-8 py-3 bg-white text-slate-600 text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-slate-50 "
                           >
                             Lihat Profil
                           </Link>
