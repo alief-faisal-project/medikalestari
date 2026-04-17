@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -52,11 +52,13 @@ const DoctorSection = ({
   initialSearch?: string;
   initialSpecialty?: string;
 }) => {
+  // --- STATES ---
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(true);
   const [isPaging, setIsPaging] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   const [tempFilter, setTempFilter] = useState({
     name: initialSearch || "",
@@ -72,23 +74,20 @@ const DoctorSection = ({
 
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  const jumpToTop = () => {
-    if (sectionRef.current) {
-      const yOffset = -150;
-      const y =
-        sectionRef.current.getBoundingClientRect().top +
-        window.pageYOffset +
-        yOffset;
-      window.scrollTo({ top: y, behavior: "auto" });
+  // --- HYDRATION & INITIAL SCROLL ---
+  useEffect(() => {
+    // Memastikan halaman mulai dari atas sebelum komponen tampil
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "instant" });
     }
-  };
+    setIsMounted(true);
+  }, []);
 
+  // --- DATA LOADING ---
   useEffect(() => {
     const load = async () => {
       try {
-        setLoading(true);
         const data = await fetchDoctors();
-
         if (data) {
           const uniqueData = data.filter(
             (v, i, a) => v.id && a.findIndex((t) => t.id === v.id) === i,
@@ -98,12 +97,16 @@ const DoctorSection = ({
       } catch (error) {
         console.error("Error loading doctors:", error);
       } finally {
-        setLoading(false);
+        // Gunakan requestAnimationFrame agar state update tidak bentrok dengan paint browser
+        requestAnimationFrame(() => {
+          setLoading(false);
+        });
       }
     };
     load();
   }, []);
 
+  // --- FILTER SYNC ---
   useEffect(() => {
     if (tempFilter.name === "" && activeFilter.name !== "") {
       setActiveFilter((prev) => ({ ...prev, name: "" }));
@@ -111,19 +114,27 @@ const DoctorSection = ({
     }
   }, [tempFilter.name, activeFilter.name]);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "auto" });
-  }, []);
+  // --- LOGIC HELPER ---
+  const jumpToTop = () => {
+    if (sectionRef.current) {
+      const yOffset = -150;
+      const elementTop =
+        sectionRef.current.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({ top: elementTop + yOffset, behavior: "smooth" });
+    }
+  };
 
-  const filteredDoctors = doctors.filter((doc) => {
-    const matchSpecialty =
-      activeFilter.specialty === "Semua Spesialis" ||
-      doc.specialty === activeFilter.specialty;
-    const matchName =
-      activeFilter.name === "" ||
-      doc.name.toLowerCase().includes(activeFilter.name.toLowerCase());
-    return matchSpecialty && matchName;
-  });
+  const filteredDoctors = useMemo(() => {
+    return doctors.filter((doc) => {
+      const matchSpecialty =
+        activeFilter.specialty === "Semua Spesialis" ||
+        doc.specialty === activeFilter.specialty;
+      const matchName =
+        activeFilter.name === "" ||
+        doc.name.toLowerCase().includes(activeFilter.name.toLowerCase());
+      return matchSpecialty && matchName;
+    });
+  }, [doctors, activeFilter]);
 
   const totalPages = Math.ceil(filteredDoctors.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -137,22 +148,28 @@ const DoctorSection = ({
     setActiveFilter(tempFilter);
     setCurrentPage(1);
     jumpToTop();
-    setTimeout(() => setIsPaging(false), 500);
+    setTimeout(() => setIsPaging(false), 400);
   };
 
   const handlePageChange = (newPage: number) => {
     setIsPaging(true);
     setCurrentPage(newPage);
     jumpToTop();
-    setTimeout(() => setIsPaging(false), 500);
+    setTimeout(() => setIsPaging(false), 400);
   };
+
+  // Mencegah flash konten saat server-side rendering
+  if (!isMounted) {
+    return <div className="min-h-screen bg-white" />;
+  }
 
   return (
     <section
       ref={sectionRef}
-      className="w-full bg-white min-h-screen  text-slate-800 relative mb-20"
+      className="w-full bg-white min-h-screen text-slate-800 relative mb-20"
       id="section-dokter"
     >
+      {/* MODAL BOOKING */}
       <AnimatePresence>
         {selectedDoctor && (
           <BookingForm
@@ -182,14 +199,15 @@ const DoctorSection = ({
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 items-start">
-          {/* SIDEBAR FILTER - SHARP EDGES */}
-          <aside className="w-full lg:w-1/3 xl:w-1/4 lg:sticky lg:top-60 z-30">
+          {/* SIDEBAR FILTER */}
+          <aside className="w-full lg:w-1/3 xl:w-1/4 lg:sticky lg:top-45 z-30">
             <div className="border border-slate-200 p-8 bg-white rounded-none shadow-sm h-fit">
               <div className="flex items-center gap-3 mb-8 text-[#0084BF] border-b border-slate-50 pb-4">
                 <FilterIcon size={18} />
                 <span className="text-lg font-bold">Filter Pencarian</span>
               </div>
 
+              {/* Input Nama */}
               <div className="mb-6">
                 <label className="block text-sm font-bold text-[#0084BF] mb-2">
                   Nama Dokter
@@ -211,6 +229,7 @@ const DoctorSection = ({
                 </div>
               </div>
 
+              {/* Select Spesialis */}
               <div className="mb-6">
                 <label className="block text-sm font-bold text-[#0084BF] mb-2">
                   Spesialis
@@ -239,6 +258,7 @@ const DoctorSection = ({
                 </div>
               </div>
 
+              {/* Pilih Hari */}
               <div className="mb-10">
                 <label className="block text-sm font-bold text-[#0084BF] mb-2">
                   Pilih Hari
@@ -273,28 +293,38 @@ const DoctorSection = ({
             </div>
           </aside>
 
-          {/* MAIN CONTENT */}
-          <main className="w-full lg:w-2/3 xl:w-3/4 relative z-20">
-            {loading || isPaging ? (
-              <div className="space-y-6">
-                {[...Array(3)].map((_, i) => (
-                  <DoctorSkeleton key={`skeleton-${i}`} />
-                ))}
-              </div>
-            ) : filteredDoctors.length > 0 ? (
-              <div className="grid grid-cols-1 gap-6">
-                <AnimatePresence mode="wait">
+          {/* MAIN CONTENT AREA */}
+          <main className="w-full lg:w-2/3 xl:w-3/4 relative z-20 min-h-[600px]">
+            <AnimatePresence mode="wait" initial={false}>
+              {loading || isPaging ? (
+                <motion.div
+                  key="skeleton-view"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="space-y-6"
+                >
+                  {[...Array(3)].map((_, i) => (
+                    <DoctorSkeleton key={`skeleton-${i}`} />
+                  ))}
+                </motion.div>
+              ) : filteredDoctors.length > 0 ? (
+                <motion.div
+                  key="list-view"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="grid grid-cols-1 gap-6"
+                >
                   {paginatedDoctors.map((doctor, index) => (
-                    <motion.div
+                    <div
                       key={doctor.id || `doc-${index}`}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      // Mengubah flex-col menjadi flex-row agar selalu menyamping
                       className="group flex flex-row items-start gap-4 md:gap-8 p-4 md:p-8 bg-white border border-slate-100 shadow-sm h-fit rounded-none transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-slate-100"
                     >
-                      {/* Foto disesuaikan ukurannya agar tidak terlalu besar di mobile */}
-                      <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44 shrink-0 rounded-full overflow-hidden border-4 border-slate-50 group-hover:border-blue-50 transition-colors shadow-sm">
+                      {/* Foto Dokter */}
+                      <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44 shrink-0 rounded-full overflow-hidden border-4 border-slate-50 group-hover:border-blue-50 transition-colors shadow-sm bg-slate-100">
                         <Image
                           src={
                             doctor.image_url ||
@@ -303,10 +333,12 @@ const DoctorSection = ({
                           alt={doctor.name}
                           fill
                           className="object-cover"
+                          priority={index < 3}
+                          sizes="(max-width: 768px) 96px, 176px"
                         />
                       </div>
 
-                      {/* Text alignment left */}
+                      {/* Detail Dokter */}
                       <div className="flex-1 text-left">
                         <div className="mb-2 md:mb-4">
                           <h3 className="text-lg md:text-2xl font-bold text-slate-800">
@@ -323,7 +355,6 @@ const DoctorSection = ({
                           </p>
                         )}
 
-                        {/* Button Buat Janji Temu */}
                         <div className="flex flex-wrap justify-start gap-2 md:gap-3">
                           <button
                             onClick={() => setSelectedDoctor(doctor)}
@@ -333,66 +364,69 @@ const DoctorSection = ({
                           </button>
                           <Link
                             href={`/dokter/${doctor.id}`}
-                            className="px-4 py-2 md:px-8 md:py-3 bg-white text-slate-600 text-[10px] md:text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-slate-50 "
+                            className="px-4 py-2 md:px-8 md:py-3 bg-white text-slate-600 text-[10px] md:text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-slate-50"
                           >
                             Lihat Profil
                           </Link>
                         </div>
                       </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-
-                {/* PAGINATION - SHARP EDGES */}
-                {totalPages > 1 && (
-                  <div className="flex items-center justify-center gap-2 mt-12 pt-8">
-                    {/* Button PREV */}
-                    {currentPage > 1 && (
-                      <button
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        className="w-16 h-11 flex items-center justify-center text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
-                      >
-                        ← PREV
-                      </button>
-                    )}
-
-                    {/* Page Numbers */}
-                    <div className="flex items-center gap-2">
-                      {[...Array(totalPages)].map((_, i) => (
-                        <button
-                          key={`page-${i + 1}`}
-                          onClick={() => handlePageChange(i + 1)}
-                          className={`w-11 h-11 flex items-center justify-center rounded-none font-bold text-xs transition-all ${
-                            currentPage === i + 1
-                              ? "bg-[#0084BF] text-white border border-[#0084BF]"
-                              : "text-slate-500 border border-slate-200 hover:bg-slate-50"
-                          }`}
-                        >
-                          {i + 1}
-                        </button>
-                      ))}
                     </div>
+                  ))}
 
-                    {/* Button NEXT */}
-                    {currentPage < totalPages && (
-                      <button
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        className="w-16 h-11 flex items-center justify-center text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
-                      >
-                        NEXT →
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-96 bg-slate-50/50 rounded-none border border-dashed border-slate-200">
-                <Search size={40} className="text-slate-300 mb-4" />
-                <h3 className="text-slate-500 font-bold">
-                  Dokter tidak ditemukan
-                </h3>
-              </div>
-            )}
+                  {/* PAGINATION */}
+                  {totalPages > 1 && (
+                    <div className="flex items-center justify-center gap-2 mt-12 pt-8">
+                      {currentPage > 1 && (
+                        <button
+                          onClick={() => handlePageChange(currentPage - 1)}
+                          className="w-16 h-11 flex items-center justify-center text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
+                        >
+                          ← PREV
+                        </button>
+                      )}
+
+                      <div className="flex items-center gap-2">
+                        {[...Array(totalPages)].map((_, i) => (
+                          <button
+                            key={`page-${i + 1}`}
+                            onClick={() => handlePageChange(i + 1)}
+                            className={`w-11 h-11 flex items-center justify-center rounded-none font-bold text-xs transition-all ${
+                              currentPage === i + 1
+                                ? "bg-[#0084BF] text-white border border-[#0084BF]"
+                                : "text-slate-500 border border-slate-200 hover:bg-slate-50"
+                            }`}
+                          >
+                            {i + 1}
+                          </button>
+                        ))}
+                      </div>
+
+                      {currentPage < totalPages && (
+                        <button
+                          onClick={() => handlePageChange(currentPage + 1)}
+                          className="w-16 h-11 flex items-center justify-center text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
+                        >
+                          NEXT →
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="empty-view"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex flex-col items-center justify-center h-96 bg-slate-50/50 rounded-none border border-dashed border-slate-200"
+                >
+                  <Search size={40} className="text-slate-300 mb-4" />
+                  <h3 className="text-slate-500 font-bold">
+                    Dokter tidak ditemukan
+                  </h3>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </main>
         </div>
       </div>
