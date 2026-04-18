@@ -120,7 +120,7 @@ const DoctorSection = ({
       const yOffset = -150;
       const elementTop =
         sectionRef.current.getBoundingClientRect().top + window.pageYOffset;
-      window.scrollTo({ top: elementTop + yOffset, behavior: "smooth" });
+      window.scrollTo({ top: elementTop + yOffset });
     }
   };
 
