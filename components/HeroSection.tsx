@@ -190,13 +190,13 @@ const HeroSection = () => {
       </div>
 
       {/* SEARCH BAR SECTION */}
-      <div className="relative w-full px-4 py-8 md:py-0 md:-mt-20 md:z-50 bg-white md:bg-transparent">
+      <div className="relative w-full px-4 py-8 md:py-0 md:-mt-22 md:z-50 bg-white md:bg-transparent">
         <div className="max-w-5xl mx-auto">
           <div
             className="
               max-w-5xl mx-auto 
-              bg-white 
-              md:rounded-full rounded-2xl 
+              bg-transparent 
+              md:rounded-full rounded-none 
               flex flex-col md:flex-row 
               overflow-hidden 
               border border-gray-200
@@ -272,7 +272,7 @@ const HeroSection = () => {
                   if (day) params.append("day", day);
                   window.location.href = `/dokter?${params.toString()}`;
                 }}
-                className="w-full md:w-14 h-12 md:h-14 rounded-xl md:rounded-full bg-[#005cb3] flex items-center justify-center gap-2 text-white hover:scale-95 transition cursor-pointer"
+                className="w-full md:w-14 h-12 md:h-14 rounded-none md:rounded-full bg-[#005cb3] flex items-center justify-center gap-2 text-white hover:scale-95 transition cursor-pointer"
               >
                 <Search className="w-5 h-5 md:w-10 md:h-8" />
                 <span className="font-semibold md:hidden">Cari Dokter</span>

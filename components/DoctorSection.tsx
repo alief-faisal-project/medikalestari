@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -74,13 +80,25 @@ const DoctorSection = ({
 
   const sectionRef = useRef<HTMLDivElement>(null);
 
+  // --- LOGIC HELPER ---
+  const getUniqueDoctors = useCallback((doctors: Doctor[]): Doctor[] => {
+    const seen = new Set<string | number>();
+    return doctors.filter((v) => {
+      if (!v.id || seen.has(v.id)) return false;
+      seen.add(v.id);
+      return true;
+    });
+  }, []);
+
   // --- HYDRATION & INITIAL SCROLL ---
   useEffect(() => {
     // Memastikan halaman mulai dari atas sebelum komponen tampil
-    if (typeof window !== "undefined") {
-      window.scrollTo({ top: 0, behavior: "instant" });
+    if (globalThis.window) {
+      globalThis.window.scrollTo({ top: 0, behavior: "instant" });
     }
-    setIsMounted(true);
+    return () => {
+      setIsMounted(true);
+    };
   }, []);
 
   // --- DATA LOADING ---
@@ -89,9 +107,7 @@ const DoctorSection = ({
       try {
         const data = await fetchDoctors();
         if (data) {
-          const uniqueData = data.filter(
-            (v, i, a) => v.id && a.findIndex((t) => t.id === v.id) === i,
-          );
+          const uniqueData = getUniqueDoctors(data);
           setDoctors(uniqueData);
         }
       } catch (error) {
@@ -104,17 +120,19 @@ const DoctorSection = ({
       }
     };
     load();
-  }, []);
+  }, [getUniqueDoctors]);
 
   // --- FILTER SYNC ---
   useEffect(() => {
     if (tempFilter.name === "" && activeFilter.name !== "") {
-      setActiveFilter((prev) => ({ ...prev, name: "" }));
-      setCurrentPage(1);
+      setTimeout(() => {
+        setActiveFilter((prev) => ({ ...prev, name: "" }));
+        setCurrentPage(1);
+      }, 0);
     }
   }, [tempFilter.name, activeFilter.name]);
 
-  // --- LOGIC HELPER ---
+  // --- HELPER FUNCTIONS ---
   const jumpToTop = () => {
     if (sectionRef.current) {
       const yOffset = -150;
@@ -163,6 +181,148 @@ const DoctorSection = ({
     return <div className="min-h-screen bg-white" />;
   }
 
+  // --- RENDER CONTENT ---
+  const renderContent = () => {
+    if (loading || isPaging) {
+      return (
+        <motion.div
+          key="skeleton-view"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="space-y-6"
+        >
+          {new Array(3).fill(null).map((_, i) => (
+            <React.Fragment key={`skeleton-${i}-${loading ? "load" : "page"}`}>
+              <DoctorSkeleton />
+            </React.Fragment>
+          ))}
+        </motion.div>
+      );
+    }
+
+    if (filteredDoctors.length > 0) {
+      return (
+        <motion.div
+          key="list-view"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="grid grid-cols-1 gap-6"
+        >
+          {paginatedDoctors.map((doctor, index) => (
+            <div
+              key={doctor.id || `doc-${index}`}
+              className="group flex flex-row items-start gap-4 md:gap-8 p-4 md:p-8 bg-white border border-slate-100 shadow-sm h-fit rounded-none transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-slate-100"
+            >
+              {/* Foto Dokter */}
+              <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44 shrink-0 rounded-full overflow-hidden border-4 border-slate-50 group-hover:border-blue-50 transition-colors shadow-sm bg-slate-100">
+                <Image
+                  src={
+                    doctor.image_url ||
+                    "https://images.unsplash.com/photo-1612349317150-e539c59dc62a?w=500&h=500&fit=crop"
+                  }
+                  alt={doctor.name}
+                  fill
+                  className="object-cover"
+                  priority={index < 3}
+                  sizes="(max-width: 768px) 96px, 176px"
+                />
+              </div>
+
+              {/* Detail Dokter */}
+              <div className="flex-1 text-left">
+                <div className="mb-2 md:mb-4">
+                  <h3 className="text-lg md:text-2xl font-bold text-slate-800">
+                    {doctor.name}
+                  </h3>
+                  <p className="text-gray-400 font-semibold text-[10px] md:text-xs mb-1">
+                    {doctor.specialty}
+                  </p>
+                </div>
+
+                {doctor.bio && (
+                  <p className="text-slate-500 text-xs md:text-sm leading-relaxed mb-4 md:mb-6 line-clamp-2 max-w-xl">
+                    {doctor.bio}
+                  </p>
+                )}
+
+                <div className="flex flex-wrap justify-start gap-2 md:gap-3">
+                  <button
+                    onClick={() => setSelectedDoctor(doctor)}
+                    className="px-4 py-2 md:px-8 md:py-3 bg-[#005cb3] text-white text-[10px] md:text-[12px] font-bold rounded-full transition-all hover:bg-[#005cb3]/90 active:scale-95 shadow-md shadow-blue-900/5 cursor-pointer"
+                  >
+                    Buat Janji Temu
+                  </button>
+                  <Link
+                    href={`/dokter/${doctor.id}`}
+                    className="px-4 py-2 md:px-8 md:py-3 bg-white text-slate-600 text-[10px] md:text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-slate-50 active:scale-95"
+                  >
+                    Lihat Profil
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* PAGINATION */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-12 pt-8">
+              {currentPage > 1 && (
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  className="w-16 h-11 flex items-center justify-center text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
+                >
+                  ← PREV
+                </button>
+              )}
+
+              <div className="flex flex-wrap justify-start gap-2 md:gap-3">
+                {new Array(totalPages).fill(null).map((_, i) => (
+                  <button
+                    key={`page-${i + 1}`}
+                    onClick={() => handlePageChange(i + 1)}
+                    className={`w-11 h-11 flex items-center justify-center rounded-none font-bold text-xs transition-all ${
+                      currentPage === i + 1
+                        ? "bg-[#005cb3] text-white border border-[#005cb3]"
+                        : "text-slate-500 border border-slate-200 hover:bg-slate-50"
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+
+              {currentPage < totalPages && (
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  className="w-16 h-11 flex items-center justify-center text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
+                >
+                  NEXT →
+                </button>
+              )}
+            </div>
+          )}
+        </motion.div>
+      );
+    }
+
+    return (
+      <motion.div
+        key="empty-view"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="flex flex-col items-center justify-center h-96 bg-slate-50/50 rounded-none border border-dashed border-slate-200"
+      >
+        <Search size={40} className="text-slate-300 mb-4" />
+        <h3 className="text-slate-500 font-bold">Dokter tidak ditemukan</h3>
+      </motion.div>
+    );
+  };
+
   return (
     <section
       ref={sectionRef}
@@ -180,7 +340,7 @@ const DoctorSection = ({
         )}
       </AnimatePresence>
 
-      <div className="max-w-[1175px] mx-auto px-4 md:px-8 -mt-8">
+      <div className="max-w-293.75 mx-auto px-4 md:px-8 -mt-8">
         {/* BREADCRUMB & TITLE SECTION */}
         <div className="pt-16 pb-12">
           <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
@@ -209,7 +369,10 @@ const DoctorSection = ({
 
               {/* Input Nama */}
               <div className="mb-6">
-                <label className="block text-sm font-bold text-[#005cb3] mb-2">
+                <label
+                  htmlFor="doctor-name"
+                  className="block text-sm font-bold text-[#005cb3] mb-2"
+                >
                   Nama Dokter
                 </label>
                 <div className="relative">
@@ -218,6 +381,7 @@ const DoctorSection = ({
                     size={16}
                   />
                   <input
+                    id="doctor-name"
                     type="text"
                     placeholder="Nama Dokter"
                     value={tempFilter.name}
@@ -231,7 +395,10 @@ const DoctorSection = ({
 
               {/* Select Spesialis */}
               <div className="mb-6">
-                <label className="block text-sm font-bold text-[#005cb3] mb-2">
+                <label
+                  htmlFor="specialty-select"
+                  className="block text-sm font-bold text-[#005cb3] mb-2"
+                >
                   Spesialis
                 </label>
                 <div className="relative">
@@ -240,6 +407,7 @@ const DoctorSection = ({
                     size={16}
                   />
                   <select
+                    id="specialty-select"
                     value={tempFilter.specialty}
                     onChange={(e) =>
                       setTempFilter({
@@ -260,7 +428,10 @@ const DoctorSection = ({
 
               {/* Pilih Hari */}
               <div className="mb-10">
-                <label className="block text-sm font-bold text-[#005cb3] mb-2">
+                <label
+                  htmlFor="day-select"
+                  className="block text-sm font-bold text-[#005cb3] mb-2"
+                >
                   Pilih Hari
                 </label>
                 <div className="relative">
@@ -269,6 +440,7 @@ const DoctorSection = ({
                     size={16}
                   />
                   <select
+                    id="day-select"
                     value={tempFilter.day}
                     onChange={(e) =>
                       setTempFilter({ ...tempFilter, day: e.target.value })
@@ -294,138 +466,9 @@ const DoctorSection = ({
           </aside>
 
           {/* MAIN CONTENT AREA */}
-          <main className="w-full lg:w-2/3 xl:w-3/4 relative z-20 min-h-[600px]">
+          <main className="w-full lg:w-2/3 xl:w-3/4 relative z-20 min-h-150">
             <AnimatePresence mode="wait" initial={false}>
-              {loading || isPaging ? (
-                <motion.div
-                  key="skeleton-view"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="space-y-6"
-                >
-                  {[...Array(3)].map((_, i) => (
-                    <DoctorSkeleton key={`skeleton-${i}`} />
-                  ))}
-                </motion.div>
-              ) : filteredDoctors.length > 0 ? (
-                <motion.div
-                  key="list-view"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="grid grid-cols-1 gap-6"
-                >
-                  {paginatedDoctors.map((doctor, index) => (
-                    <div
-                      key={doctor.id || `doc-${index}`}
-                      className="group flex flex-row items-start gap-4 md:gap-8 p-4 md:p-8 bg-white border border-slate-100 shadow-sm h-fit rounded-none transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-slate-100"
-                    >
-                      {/* Foto Dokter */}
-                      <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44 shrink-0 rounded-full overflow-hidden border-4 border-slate-50 group-hover:border-blue-50 transition-colors shadow-sm bg-slate-100">
-                        <Image
-                          src={
-                            doctor.image_url ||
-                            "https://images.unsplash.com/photo-1612349317150-e539c59dc62a?w=500&h=500&fit=crop"
-                          }
-                          alt={doctor.name}
-                          fill
-                          className="object-cover"
-                          priority={index < 3}
-                          sizes="(max-width: 768px) 96px, 176px"
-                        />
-                      </div>
-
-                      {/* Detail Dokter */}
-                      <div className="flex-1 text-left">
-                        <div className="mb-2 md:mb-4">
-                          <h3 className="text-lg md:text-2xl font-bold text-slate-800">
-                            {doctor.name}
-                          </h3>
-                          <p className="text-gray-400 font-semibold text-[10px] md:text-xs mb-1">
-                            {doctor.specialty}
-                          </p>
-                        </div>
-
-                        {doctor.bio && (
-                          <p className="text-slate-500 text-xs md:text-sm leading-relaxed mb-4 md:mb-6 line-clamp-2 max-w-xl">
-                            {doctor.bio}
-                          </p>
-                        )}
-
-                        <div className="flex flex-wrap justify-start gap-2 md:gap-3">
-                          <button
-                            onClick={() => setSelectedDoctor(doctor)}
-                            className="px-4 py-2 md:px-8 md:py-3 bg-[#005cb3] text-white text-[10px] md:text-[12px] font-bold rounded-full transition-all hover:bg-[#005cb3]/90 active:scale-95 shadow-md shadow-blue-900/5 cursor-pointer"
-                          >
-                            Buat Janji Temu
-                          </button>
-                          <Link
-                            href={`/dokter/${doctor.id}`}
-                            className="px-4 py-2 md:px-8 md:py-3 bg-white text-slate-600 text-[10px] md:text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-slate-50 active:scale-95"
-                          >
-                            Lihat Profil
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-
-                  {/* PAGINATION */}
-                  {totalPages > 1 && (
-                    <div className="flex items-center justify-center gap-2 mt-12 pt-8">
-                      {currentPage > 1 && (
-                        <button
-                          onClick={() => handlePageChange(currentPage - 1)}
-                          className="w-16 h-11 flex items-center justify-center text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
-                        >
-                          ← PREV
-                        </button>
-                      )}
-
-                      <div className="flex items-center gap-2">
-                        {[...Array(totalPages)].map((_, i) => (
-                          <button
-                            key={`page-${i + 1}`}
-                            onClick={() => handlePageChange(i + 1)}
-                            className={`w-11 h-11 flex items-center justify-center rounded-none font-bold text-xs transition-all ${
-                              currentPage === i + 1
-                                ? "bg-[#005cb3] text-white border border-[#005cb3]"
-                                : "text-slate-500 border border-slate-200 hover:bg-slate-50"
-                            }`}
-                          >
-                            {i + 1}
-                          </button>
-                        ))}
-                      </div>
-
-                      {currentPage < totalPages && (
-                        <button
-                          onClick={() => handlePageChange(currentPage + 1)}
-                          className="w-16 h-11 flex items-center justify-center text-slate-600 border border-slate-200 rounded-none hover:bg-slate-50 transition-all font-bold text-xs"
-                        >
-                          NEXT →
-                        </button>
-                      )}
-                    </div>
-                  )}
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="empty-view"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex flex-col items-center justify-center h-96 bg-slate-50/50 rounded-none border border-dashed border-slate-200"
-                >
-                  <Search size={40} className="text-slate-300 mb-4" />
-                  <h3 className="text-slate-500 font-bold">
-                    Dokter tidak ditemukan
-                  </h3>
-                </motion.div>
-              )}
+              {renderContent()}
             </AnimatePresence>
           </main>
         </div>
