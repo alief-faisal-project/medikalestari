@@ -34,7 +34,7 @@ const Footer = () => {
       ],
     },
     {
-      title: "Lainnya",
+      title: "Layanan",
       links: [
         { name: "Syarat & Ketentuan", href: "#" },
         { name: "Privasi", href: "#" },
