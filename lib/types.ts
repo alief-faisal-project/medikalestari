@@ -83,3 +83,30 @@ export interface CareerRegistration {
   whatsapp_link?: string;
   created_at: string;
 }
+
+export interface RoomType {
+  id: string;
+  name: string;
+  price: string;
+  image_url: string; // primary image (deprecated, kept for compatibility)
+  description: string;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RoomFacility {
+  id: string;
+  room_id: string;
+  facility_name: string;
+  display_order: number;
+  created_at: string;
+}
+
+export interface RoomImage {
+  id: string;
+  room_id: string;
+  image_url: string;
+  display_order: number;
+  created_at: string;
+}

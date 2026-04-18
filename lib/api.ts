@@ -381,3 +381,269 @@ export async function uploadContentImage(
     throw message;
   }
 }
+
+// ROOM TYPE OPERATIONS
+export async function fetchRoomTypes() {
+  const { data: rooms, error } = await supabase
+    .from("room_types")
+    .select("*")
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching room types:", error);
+    return [];
+  }
+
+  // Fetch facilities and images for each room
+  const roomsWithData = await Promise.all(
+    (rooms || []).map(async (room) => {
+      const [{ data: facilities }, { data: images }] = await Promise.all([
+        supabase
+          .from("room_facilities")
+          .select("facility_name")
+          .eq("room_id", room.id)
+          .order("display_order", { ascending: true }),
+        supabase
+          .from("room_images")
+          .select("id, image_url, display_order")
+          .eq("room_id", room.id)
+          .order("display_order", { ascending: true }),
+      ]);
+
+      return {
+        ...room,
+        facilities: (facilities || []).map((f) => f.facility_name),
+        room_images: images || [],
+      };
+    }),
+  );
+
+  return roomsWithData;
+}
+
+export async function createRoomType(room: {
+  name: string;
+  price: string;
+  image_url: string;
+  description: string;
+  display_order: number;
+  facilities: string[];
+  room_images?: Array<{ image_url: string; display_order: number }>;
+}) {
+  const { facilities, room_images, ...roomData } = room;
+
+  const { data, error } = await supabase
+    .from("room_types")
+    .insert([roomData])
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error creating room type:", error);
+    throw error;
+  }
+
+  // Add facilities
+  if (facilities.length > 0) {
+    const facilitiesData = facilities.map(
+      (facility: string, index: number) => ({
+        room_id: data.id,
+        facility_name: facility,
+        display_order: index,
+      }),
+    );
+
+    const { error: facilitiesError } = await supabase
+      .from("room_facilities")
+      .insert(facilitiesData);
+
+    if (facilitiesError) {
+      console.error("Error adding facilities:", facilitiesError);
+    }
+  }
+
+  // Add images
+  if (room_images && room_images.length > 0) {
+    const imagesData = room_images.map((img) => ({
+      room_id: data.id,
+      image_url: img.image_url,
+      display_order: img.display_order,
+    }));
+
+    const { error: imagesError } = await supabase
+      .from("room_images")
+      .insert(imagesData);
+
+    if (imagesError) {
+      console.error("Error adding images:", imagesError);
+    }
+  }
+
+  return {
+    ...data,
+    facilities,
+    room_images: room_images || [],
+  };
+}
+
+export async function updateRoomType(
+  id: string,
+  room: Partial<{
+    name: string;
+    price: string;
+    image_url: string;
+    description: string;
+    display_order: number;
+    facilities: string[];
+    room_images?: Array<{
+      id?: string;
+      image_url: string;
+      display_order: number;
+    }>;
+  }>,
+) {
+  const { facilities, room_images, ...roomData } = room;
+
+  const { data, error } = await supabase
+    .from("room_types")
+    .update({ ...roomData, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating room type:", error);
+    throw error;
+  }
+
+  // Update facilities if provided
+  if (facilities !== undefined) {
+    // Delete old facilities
+    await supabase.from("room_facilities").delete().eq("room_id", id);
+
+    // Add new facilities
+    if (facilities.length > 0) {
+      const facilitiesData = facilities.map(
+        (facility: string, index: number) => ({
+          room_id: id,
+          facility_name: facility,
+          display_order: index,
+        }),
+      );
+
+      const { error: facilitiesError } = await supabase
+        .from("room_facilities")
+        .insert(facilitiesData);
+
+      if (facilitiesError) {
+        console.error("Error updating facilities:", facilitiesError);
+      }
+    }
+  }
+
+  // Update images if provided
+  if (room_images !== undefined) {
+    // Delete old images
+    await supabase.from("room_images").delete().eq("room_id", id);
+
+    // Add new images
+    if (room_images.length > 0) {
+      const imagesData = room_images.map((img) => ({
+        room_id: id,
+        image_url: img.image_url,
+        display_order: img.display_order,
+      }));
+
+      const { error: imagesError } = await supabase
+        .from("room_images")
+        .insert(imagesData);
+
+      if (imagesError) {
+        console.error("Error updating images:", imagesError);
+      }
+    }
+  }
+
+  return {
+    ...data,
+    facilities: facilities || [],
+    room_images: room_images || [],
+  };
+}
+
+export async function deleteRoomType(id: string) {
+  // Delete facilities first
+  await supabase.from("room_facilities").delete().eq("room_id", id);
+
+  // Delete images
+  await supabase.from("room_images").delete().eq("room_id", id);
+
+  // Delete room
+  const { error } = await supabase.from("room_types").delete().eq("id", id);
+
+  if (error) {
+    console.error("Error deleting room type:", error);
+    throw error;
+  }
+}
+
+export async function deleteRoomImages(imageIds: string[]) {
+  if (imageIds.length === 0) return;
+
+  const { error } = await supabase
+    .from("room_images")
+    .delete()
+    .in("id", imageIds);
+
+  if (error) {
+    console.error("Error deleting images:", error);
+    throw error;
+  }
+}
+
+export async function uploadRoomImage(file: File): Promise<string> {
+  const fileExt = file.name.split(".").pop();
+  const fileName = `${Math.random()}.${fileExt}`;
+  const filePath = `room-images/${fileName}`;
+
+  try {
+    const { error: uploadError } = await supabase.storage
+      .from("content")
+      .upload(filePath, file);
+
+    if (uploadError) {
+      console.error("Error uploading image:", uploadError);
+      throw new Error(uploadError.message || "Upload error");
+    }
+
+    interface GetPublicUrlResponse {
+      data?: {
+        publicUrl?: string;
+        public_url?: string;
+      };
+      publicUrl?: string;
+      public_url?: string;
+    }
+    const publicData = (await supabase.storage
+      .from("content")
+      .getPublicUrl(filePath)) as GetPublicUrlResponse;
+    const publicUrl =
+      publicData?.data?.publicUrl ||
+      publicData?.data?.public_url ||
+      publicData?.publicUrl ||
+      publicData?.public_url;
+
+    if (!publicUrl) {
+      console.error("Public URL missing", publicData);
+      throw new Error(
+        "Public URL not available. Check bucket permissions and that the bucket exists.",
+      );
+    }
+
+    return publicUrl;
+  } catch (err) {
+    const message =
+      (err && (err as Error).message) || String(err) || "Unknown upload error";
+    throw message;
+  }
+}
