@@ -25,29 +25,17 @@ export async function POST(request: NextRequest) {
     const buffer = await file.arrayBuffer();
     const uint8Array = new Uint8Array(buffer);
 
-    console.log("Uploading file to bucket 'content' with path:", path);
-
     const { data, error } = await supabase.storage
-      .from("content")
+      .from("uploads")
       .upload(path, uint8Array, {
         contentType: file.type,
-        upsert: true, // changed to true untuk overwrite jika sudah ada
+        upsert: false,
       });
 
     if (error) {
-      console.error("Upload error details:", {
-        message: error.message,
-        status: (error as any).status,
-        statusCode: (error as any).statusCode,
-      });
-
-      // Return detailed error untuk debugging
+      console.error("Upload error:", error);
       return NextResponse.json(
-        {
-          error: "Failed to upload file to storage bucket",
-          details: error.message,
-          hint: "Pastikan bucket 'content' sudah dibuat di Supabase Storage dengan setting PUBLIC",
-        },
+        { error: "Failed to upload file" },
         { status: 500 },
       );
     }
@@ -55,23 +43,13 @@ export async function POST(request: NextRequest) {
     // Get public URL
     const {
       data: { publicUrl },
-    } = supabase.storage.from("content").getPublicUrl(data.path);
-
-    console.log("File uploaded successfully:", {
-      path: data.path,
-      publicUrl: publicUrl,
-    });
+    } = supabase.storage.from("uploads").getPublicUrl(data.path);
 
     return NextResponse.json({ url: publicUrl, path: data.path });
   } catch (error) {
-    console.error("Upload error:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error";
+    console.error("Error:", error);
     return NextResponse.json(
-      {
-        error: "Internal server error",
-        details: errorMessage,
-      },
+      { error: "Internal server error" },
       { status: 500 },
     );
   }

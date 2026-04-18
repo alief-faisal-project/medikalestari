@@ -22,8 +22,10 @@ export async function GET() {
     }
 
     // Test registrations table
-    const { data: registrationsData, error: registrationsError } =
-      await supabase.from("career_registrations").select("*").limit(1);
+    const { data: registrationsData, error: registrationsError } = await supabase
+      .from("career_registrations")
+      .select("*")
+      .limit(1);
 
     if (registrationsError) {
       return NextResponse.json(
