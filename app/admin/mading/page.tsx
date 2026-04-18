@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import AdminNavbar from "@/components/AdminSidebar";
+import { AdminPageSkeleton } from "@/components/AdminSkeleton";
 import {
   fetchMadingContent,
   createMadingContent,
@@ -184,14 +185,7 @@ const AdminMadingPage = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-100">
-        <AdminNavbar />
-        <div className="flex items-center justify-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-      </div>
-    );
+    return <AdminPageSkeleton title="Kelola Mading" />;
   }
 
   const edukasiContent = content.filter((c) => c.type === "edukasi");
@@ -217,7 +211,9 @@ const AdminMadingPage = () => {
 
         {/* Edukasi Section */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Konten Instagram</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Konten Instagram
+          </h2>
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">

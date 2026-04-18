@@ -104,8 +104,10 @@ const MadingSection = () => {
               ? [...Array(4)].map((_, i) => (
                   <div
                     key={i}
-                    className="aspect-[3/4] bg-gray-50 animate-pulse rounded-xl"
-                  />
+                    className="aspect-[3/4] bg-white border border-slate-100 rounded-xl overflow-hidden shadow-sm relative"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-300/30 to-transparent animate-shimmer" />
+                  </div>
                 ))
               : filteredData.map((item) => (
                   <div key={item.id} className="h-full">

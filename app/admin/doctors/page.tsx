@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import AdminNavbar from "@/components/AdminSidebar";
 import { supabase } from "@/lib/supabase";
+import { AdminPageSkeleton } from "@/components/AdminSkeleton";
 import {
   uploadDoctorImage,
   createDoctor,
@@ -148,14 +149,7 @@ const AdminDoctorsPage = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-100">
-        <AdminNavbar />
-        <div className="flex items-center justify-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-      </div>
-    );
+    return <AdminPageSkeleton title="Kelola Dokter" />;
   }
 
   return (

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import AdminNavbar from "@/components/AdminSidebar";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthProvider";
+import { AdminPageSkeleton } from "@/components/AdminSkeleton";
 import {
   Users,
   Calendar,
@@ -86,14 +87,7 @@ const AdminDashboard = () => {
   }, [authLoading, isAuthenticated, router]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-[#F9F9F9]">
-        <AdminNavbar />
-        <div className="flex items-center justify-center h-96">
-          <div className="animate-spin rounded-full h-10 w-10 border-[3px] border-slate-200 border-t-black"></div>
-        </div>
-      </div>
-    );
+    return <AdminPageSkeleton title="Dashboard" />;
   }
 
   return (

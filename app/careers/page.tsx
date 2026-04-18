@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Upload, Loader2, AlertCircle, CheckCircle } from "lucide-react";
 import { CareersBannerConfig } from "@/lib/types";
+import CareersFormSkeleton from "@/components/CareersFormSkeleton";
 
 const CareersPage = () => {
   const [config, setConfig] = useState<CareersBannerConfig | null>(null);
@@ -199,11 +200,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-[3px] border-slate-200 border-t-[#005075]"></div>
-      </div>
-    );
+    return <CareersFormSkeleton />;
   }
 
   if (!config?.is_form_active) {
