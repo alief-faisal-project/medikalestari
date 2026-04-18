@@ -2,8 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Share2, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ArrowLeft,
+  Share2,
+  ChevronLeft,
+  ChevronRight,
+  Link as LinkIcon,
+} from "lucide-react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import { fetchRoomTypes } from "@/lib/api";
 
 interface RoomImage {
@@ -39,6 +46,7 @@ export default function KamarPerawatan() {
   const [activeTab, setActiveTab] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
 
   useEffect(() => {
     const loadRooms = async () => {
@@ -57,7 +65,6 @@ export default function KamarPerawatan() {
         setRooms(roomsData);
         if (roomsData.length > 0) {
           setActiveTab(roomsData[0].name);
-          setCurrentImageIndex(0);
         }
       } catch (error) {
         console.error("Error loading rooms:", error);
@@ -69,198 +76,227 @@ export default function KamarPerawatan() {
     loadRooms();
   }, []);
 
-  const currentKamar = rooms.find((r: RoomData) => r.name === activeTab);
-  const displayImages =
-    currentKamar?.room_images && currentKamar.room_images.length > 0
-      ? currentKamar.room_images
-      : currentKamar?.image_url
-        ? [
-            {
-              id: "default",
-              image_url: currentKamar.image_url,
-              display_order: 0,
-            },
-          ]
-        : [];
+  // Reset index saat pindah tab agar tidak out of bounds
+  useEffect(() => {
+    setCurrentImageIndex(0);
+  }, [activeTab]);
 
-  const socialMedia = [
-    {
-      name: "Facebook",
-      path: "M22.675 0h-21.35C.595 0 0 .595 0 1.326v21.348C0 23.405.595 24 1.326 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.595 1.323-1.326V1.326C24 .595 23.405 0 22.675 0z",
+  const currentKamar = rooms.find((r: RoomData) => r.name === activeTab);
+
+  const displayImages = React.useMemo(() => {
+    if (!currentKamar) return [];
+    if (currentKamar.room_images && currentKamar.room_images.length > 0) {
+      return currentKamar.room_images;
+    }
+    return currentKamar.image_url
+      ? [{ id: "default", image_url: currentKamar.image_url, display_order: 0 }]
+      : [];
+  }, [currentKamar]);
+
+  const paginate = (newDirection: number) => {
+    if (displayImages.length <= 1) return;
+    setDirection(newDirection);
+    setCurrentImageIndex((prevIndex) => {
+      let nextIndex = prevIndex + newDirection;
+      if (nextIndex < 0) nextIndex = displayImages.length - 1;
+      if (nextIndex >= displayImages.length) nextIndex = 0;
+      return nextIndex;
+    });
+  };
+
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 500 : -500,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
     },
-    {
-      name: "Linkedin",
-      path: "M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z",
-    },
-    {
-      name: "Twitter",
-      path: "M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z",
-    },
-  ];
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 500 : -500,
+      opacity: 0,
+    }),
+  };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8 font-sans flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-gray-300 border-t-[#015A85] rounded-full animate-spin mx-auto"></div>
-          <p className="text-gray-600 mt-4">Memuat data kamar...</p>
-        </div>
+      <div className="min-h-screen bg-white py-8 flex items-center justify-center font-sans">
+        <div className="w-10 h-10 border-4 border-gray-200 border-t-[#005cb3] rounded-full animate-spin"></div>
       </div>
     );
   }
 
-  if (!currentKamar) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-8 font-sans">
-        <div className="max-w-6xl mx-auto px-4">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-[#015A85] hover:text-[#005075] mb-6 transition-colors"
-          >
-            <ArrowLeft size={20} /> Kembali ke Beranda
-          </Link>
-          <div className="text-center text-gray-600">
-            <p>Tidak ada data kamar yang tersedia.</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  if (!currentKamar) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 font-sans">
+    <div className="min-h-screen bg-white py-8 font-sans">
       <div className="max-w-6xl mx-auto px-4">
-        {/* Kembali */}
+        {/* Navigasi Kembali */}
         <Link
           href="/"
-          className="flex items-center gap-2 text-[#015A85] hover:text-[#005075] mb-6 transition-colors"
+          className="flex items-center gap-2 text-gray-500 font-medium mb-8 hover:opacity-90 transition-opacity"
         >
           <ArrowLeft size={20} /> Kembali ke Beranda
         </Link>
 
-        {/* Tab Navigasi Dinamis */}
-        <div className="flex flex-wrap border-b border-gray-200 mb-8 justify-center md:justify-start gap-4 md:gap-8">
+        {/* Tab Navigasi */}
+        <div className="flex flex-wrap border-b border-gray-100 mb-8 justify-center gap-2 md:gap-12">
           {rooms.map((room) => (
             <button
               key={room.id}
               onClick={() => setActiveTab(room.name)}
-              className={`pb-2 text-sm md:text-base font-medium transition-all ${
+              className={`pb-4 text-sm md:text-base font-medium transition-all relative ${
                 activeTab === room.name
-                  ? "text-[#015A85] border-b-2 border-[#015A85]"
+                  ? "text-[#004585]"
                   : "text-gray-400 hover:text-gray-600"
               }`}
             >
               {room.name}
+              {activeTab === room.name && (
+                <motion.div
+                  layoutId="activeTabUnderline"
+                  className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#004585]"
+                />
+              )}
             </button>
           ))}
         </div>
 
-        {/* Konten Utama */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        {/* Card Utama */}
+        <div className="bg-white rounded-2xl shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
           <div className="flex flex-col md:flex-row">
-            {/* Bagian Gambar - Carousel */}
-            <div className="md:w-1/2 relative p-4">
-              <div className="aspect-4/3 rounded-xl overflow-hidden bg-gray-200 relative">
-                {currentKamar && displayImages.length > 0 ? (
-                  <>
-                    <Image
-                      src={displayImages[currentImageIndex].image_url}
-                      alt={currentKamar.name}
-                      fill
-                      className="object-cover transition-opacity duration-500"
-                    />
-                    {displayImages.length > 1 && (
-                      <>
-                        <button
-                          onClick={() =>
-                            setCurrentImageIndex(
-                              (prev) =>
-                                (prev - 1 + displayImages.length) %
-                                displayImages.length,
-                            )
-                          }
-                          className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
-                        >
-                          <ChevronLeft size={24} />
-                        </button>
-                        <button
-                          onClick={() =>
-                            setCurrentImageIndex(
-                              (prev) => (prev + 1) % displayImages.length,
-                            )
-                          }
-                          className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
-                        >
-                          <ChevronRight size={24} />
-                        </button>
-                      </>
+            {/* Sisi Kiri: Smooth Slider */}
+            <div className="md:w-1/2 relative bg-[#f8f9fa] overflow-hidden">
+              <div className="relative aspect-[4/3] w-full h-full overflow-hidden md:rounded-tl-2xl">
+                <AnimatePresence
+                  initial={false}
+                  custom={direction}
+                  mode="popLayout"
+                >
+                  <motion.div
+                    key={currentImageIndex}
+                    custom={direction}
+                    variants={variants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{
+                      x: { type: "spring", stiffness: 300, damping: 32 },
+                      opacity: { duration: 0.25 },
+                    }}
+                    className="absolute inset-0 w-full h-full"
+                  >
+                    {displayImages[currentImageIndex] && (
+                      <Image
+                        src={displayImages[currentImageIndex].image_url}
+                        alt={currentKamar.name}
+                        fill
+                        className="object-cover"
+                        priority
+                      />
                     )}
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Tombol Navigasi Slider */}
+                {displayImages.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => paginate(-1)}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center bg-black/10 hover:bg-black/30 text-white rounded-full backdrop-blur-md transition-all"
+                    >
+                      <ChevronLeft size={24} />
+                    </button>
+                    <button
+                      onClick={() => paginate(1)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center bg-black/10 hover:bg-black/30 text-white rounded-full backdrop-blur-md transition-all"
+                    >
+                      <ChevronRight size={24} />
+                    </button>
                   </>
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-400">
-                    Tidak ada gambar
-                  </div>
                 )}
-              </div>
-              {displayImages.length > 1 && (
-                <div className="flex justify-center gap-2 mt-4">
+
+                {/* Indikator Slider */}
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-2">
                   {displayImages.map((_, index) => (
                     <button
                       key={index}
-                      onClick={() => setCurrentImageIndex(index)}
-                      className={`w-2.5 h-2.5 rounded-full transition ${
+                      onClick={() => {
+                        setDirection(index > currentImageIndex ? 1 : -1);
+                        setCurrentImageIndex(index);
+                      }}
+                      className={`w-2 h-2 rounded-full transition-all ${
                         index === currentImageIndex
-                          ? "bg-[#015A85]"
-                          : "bg-gray-300 hover:bg-gray-400"
+                          ? "bg-white w-5"
+                          : "bg-white/40 hover:bg-white/60"
                       }`}
                     />
                   ))}
                 </div>
-              )}
+              </div>
             </div>
 
-            {/* Bagian Detail */}
-            <div className="md:w-1/2 p-8 md:pl-4">
-              <h1 className="text-3xl font-bold text-[#015A85] mb-1">
-                {currentKamar.name}
-              </h1>
-              <p className="text-2xl font-semibold text-[#4CAF50] mb-6">
-                {currentKamar.price}
-              </p>
-
-              <p className="text-gray-600 text-sm leading-relaxed mb-8">
-                {currentKamar.description}
-              </p>
-
-              <h2 className="text-lg font-bold text-gray-800 mb-4">
-                Fasilitas Kamar
-              </h2>
-
-              <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-8 min-h-30">
-                {currentKamar.facilities.map((item, index) => (
-                  <div key={index} className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#015A85] mt-2 shrink-0"></div>
-                    <span className="text-sm text-gray-600">{item}</span>
-                  </div>
-                ))}
+            {/* Sisi Kanan: Detail Kamar */}
+            <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+              <div className="mb-6">
+                <h1 className="text-3xl font-bold text-[#004585] mb-2 leading-tight">
+                  {currentKamar.name}
+                </h1>
+                <p className="text-2xl font-bold text-[#005cb3]">
+                  {currentKamar.price}
+                </p>
               </div>
 
-              {/* Social Media Share */}
-              <div className="flex gap-4 border-t pt-6 items-center">
-                {socialMedia.map((social) => (
-                  <svg
-                    key={social.name}
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-5 h-5 text-gray-400 cursor-pointer hover:text-[#015A85] transition-colors"
-                  >
-                    <path d={social.path} />
+              <div className="mb-8">
+                <p className="text-gray-600 text-[15px] leading-relaxed">
+                  {currentKamar.description}
+                </p>
+              </div>
+
+              <div className="mb-10">
+                <h2 className="text-lg font-bold text-gray-800 mb-5">
+                  Fasilitas Kamar
+                </h2>
+                <div className="grid grid-cols-2 gap-y-4 gap-x-6">
+                  {currentKamar.facilities.map((facility, idx) => (
+                    <div key={idx} className="flex items-center gap-3">
+                      <div className="w-[7px] h-[7px] rounded-full bg-[#004585] shrink-0" />
+                      <span className="text-[14px] text-gray-600 font-medium leading-tight">
+                        {facility}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bagian Share */}
+              <div className="pt-8 border-t border-gray-100 flex items-center gap-6">
+                <button className="text-gray-400 hover:text-[#005cb3] transition-colors">
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M22.675 0h-21.35C.595 0 0 .595 0 1.326v21.348C0 23.405.595 24 1.326 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.595 1.323-1.326V1.326C24 .595 23.405 0 22.675 0z" />
                   </svg>
-                ))}
-                <Share2
-                  size={20}
-                  className="text-gray-400 cursor-pointer hover:text-gray-600 transition-colors"
-                />
+                </button>
+                <button className="text-gray-400 hover:text-[#005cb3] transition-colors">
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                  </svg>
+                </button>
+                <button className="text-gray-400 hover:text-[#005cb3] transition-colors">
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </button>
+                <button className="text-gray-400 hover:text-[#005cb3] transition-colors">
+                  <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                    <path d="M12.011 2c-5.511 0-9.989 4.478-9.989 9.989 0 1.758.463 3.459 1.342 4.975l-1.364 5.036 5.151-1.351c1.45.787 3.085 1.202 4.86 1.202 5.511 0 9.989-4.478 9.989-9.989 0-5.511-4.478-9.989-9.989-9.989z" />
+                  </svg>
+                </button>
+                <button className="text-gray-400 hover:text-[#005cb3] transition-colors">
+                  <LinkIcon size={20} />
+                </button>
               </div>
             </div>
           </div>
