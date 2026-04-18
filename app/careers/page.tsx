@@ -31,6 +31,19 @@ const CareersPage = () => {
       try {
         const res = await fetch("/api/careers/config");
         const data = await res.json();
+
+        // Parse criteria if it's a JSON string
+        if (data.criteria && typeof data.criteria === "string") {
+          try {
+            data.criteria = JSON.parse(data.criteria);
+          } catch (e) {
+            console.error("Error parsing criteria:", e);
+            data.criteria = [];
+          }
+        } else if (!Array.isArray(data.criteria)) {
+          data.criteria = [];
+        }
+
         setConfig(data);
       } catch (err) {
         console.error("Error loading config:", err);
@@ -208,23 +221,15 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Banner */}
       {config?.banner_image_url && (
-        <div className="relative h-[400px] md:h-[500px] overflow-hidden">
+        <div className="relative w-full max-w-2xl mx-auto mt-20">
           <img
             src={config.banner_image_url}
             alt="Careers Banner"
-            className="w-full h-full object-cover"
+            className="w-full h-auto object-contain"
           />
-          <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-            <div className="text-center text-white">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                {config.form_title}
-              </h1>
-              <p className="text-lg md:text-xl">{config.form_description}</p>
-            </div>
-          </div>
         </div>
       )}
 
@@ -345,31 +350,33 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
           </div>
 
           {/* Dynamic Criteria Fields */}
-          {config?.criteria && config.criteria.length > 0 && (
-            <div className="mb-6 pb-6 border-b">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                Kriteria Tambahan
-              </h3>
-              <div className="space-y-4">
-                {config.criteria.map((criterion, index) => (
-                  <div key={index}>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {criterion}
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.criteria_fields[criterion] || ""}
-                      onChange={(e) =>
-                        handleCriteriaChange(criterion, e.target.value)
-                      }
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
-                      placeholder={`Masukkan ${criterion.toLowerCase()}`}
-                    />
-                  </div>
-                ))}
+          {config?.criteria &&
+            Array.isArray(config.criteria) &&
+            config.criteria.length > 0 && (
+              <div className="mb-6 pb-6 border-b">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  Kriteria Tambahan
+                </h3>
+                <div className="space-y-4">
+                  {config.criteria.map((criterion, index) => (
+                    <div key={index}>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        {criterion}
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.criteria_fields[criterion] || ""}
+                        onChange={(e) =>
+                          handleCriteriaChange(criterion, e.target.value)
+                        }
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+                        placeholder={`Masukkan ${criterion.toLowerCase()}`}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
           {/* Resume Upload */}
           <div className="mb-6">
