@@ -27,7 +27,7 @@ const ScaleButton = ({
 }) => (
   <button
     onClick={onClick}
-    className={`group px-6 py-4 bg-black text-white rounded-xl transition-all duration-300 
+    className={`group px-6 py-4 bg-blue-600 text-white rounded-xl transition-all duration-300 
     hover:scale-[1.02] cursor-pointer flex items-center justify-center gap-3 ${className}`}
   >
     {Icon && (
@@ -160,14 +160,14 @@ const AdminDashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <ScaleButton
               onClick={() => router.push("/admin/doctors?action=create")}
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-green-600"
               icon={Plus}
             >
               Tambah Dokter
             </ScaleButton>
             <ScaleButton
               onClick={() => router.push("/admin/schedules?action=create")}
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-green-600"
               icon={Plus}
             >
               Tambah Jadwal Dokter

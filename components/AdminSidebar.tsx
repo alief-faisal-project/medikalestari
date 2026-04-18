@@ -132,7 +132,7 @@ const AdminSidebar = () => {
           {/* Button Kembali ke Beranda */}
           <button
             onClick={() => router.push("/")}
-            className="w-full flex items-center gap-4 px-4 py-3 bg-black text-white rounded-xl transition-all duration-300 
+            className="w-full flex items-center gap-4 px-4 py-3 bg-blue-600 text-white rounded-xl transition-all duration-300 
             shadow-[0_4px_12px_rgba(0,0,0,0.05)] 
             hover:scale-[1.02] hover:shadow-[0_6px_15px_rgba(0,0,0,0.08)] 
             active:scale-[0.97] group border border-gray-100 cursor-pointer"
