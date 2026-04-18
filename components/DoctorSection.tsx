@@ -64,7 +64,6 @@ const DoctorSection = ({
   const [isPaging, setIsPaging] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
-  const [isMounted, setIsMounted] = useState(false);
 
   const [tempFilter, setTempFilter] = useState({
     name: initialSearch || "",
@@ -96,9 +95,6 @@ const DoctorSection = ({
     if (globalThis.window) {
       globalThis.window.scrollTo({ top: 0, behavior: "instant" });
     }
-    return () => {
-      setIsMounted(true);
-    };
   }, []);
 
   // --- DATA LOADING ---
@@ -177,10 +173,7 @@ const DoctorSection = ({
   };
 
   // Mencegah flash konten saat server-side rendering
-  if (!isMounted) {
-    return <div className="min-h-screen bg-white" />;
-  }
-
+  // Render langsung tanpa pengecekan isMounted
   // --- RENDER CONTENT ---
   const renderContent = () => {
     if (loading || isPaging) {
