@@ -89,7 +89,7 @@ const ServicesSection = () => {
   };
 
   return (
-    <section className="w-full bg-gradient-to-br from-white to-slate-100 font-sans text-[#0084BF] relative py-16 overflow-hidden">
+    <section className="w-full bg-gradient-to-br from-white to-slate-100 font-sans text-[#005cb3] relative py-16 overflow-hidden">
       <div className="relative z-10">
         {/* INFORMASI SECTION */}
         <div className="max-w-[1160px] mx-auto px-4 md:px-8 mb-20">

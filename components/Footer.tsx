@@ -77,7 +77,7 @@ const Footer = () => {
   return (
     <footer className="w-full text-white font-sans">
       {/* ===== Main Footer ===== */}
-      <div className="bg-[#0084BF] border-t border-white/10 mt-30">
+      <div className="bg-[#005cb3] border-t border-white/10 mt-30">
         <div className="max-w-[1140px] mx-auto px-6 py-12 md:py-16">
           <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-12">
             {/* LINK */}

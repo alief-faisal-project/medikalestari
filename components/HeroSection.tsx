@@ -1,17 +1,17 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, cubicBezier } from "framer-motion";
-import { Play, Pause } from "lucide-react";
-import { fetchHeroBanners } from "@/lib/api";
-import { HeroBanner } from "@/lib/types";
+import { motion } from "framer-motion";
 import {
+  Play,
+  Pause,
   Search,
   User,
   Stethoscope,
   CalendarDays,
-  ChevronLeft,
 } from "lucide-react";
+import { fetchHeroBanners } from "@/lib/api";
+import { HeroBanner } from "@/lib/types";
 
 const HeroSection = () => {
   const [slides, setSlides] = useState<HeroBanner[]>([]);
@@ -51,7 +51,6 @@ const HeroSection = () => {
     "Minggu",
   ];
 
-  // LOAD DATA
   useEffect(() => {
     const loadBanners = async () => {
       try {
@@ -65,21 +64,21 @@ const HeroSection = () => {
               image_url: "/hero1.jpg",
               order: 1,
               is_active: true,
-              created_at: new Date().toISOString(),
+              created_at: "",
             },
             {
               id: "2",
               image_url: "/hero2.jpg",
               order: 2,
               is_active: true,
-              created_at: new Date().toISOString(),
+              created_at: "",
             },
             {
               id: "3",
               image_url: "/hero3.jpg",
               order: 3,
               is_active: true,
-              created_at: new Date().toISOString(),
+              created_at: "",
             },
           ]);
         }
@@ -101,194 +100,184 @@ const HeroSection = () => {
     [page],
   );
 
-  // AUTOPLAY: 4 Detik
   useEffect(() => {
     let slideInterval: NodeJS.Timeout;
     if (isPlaying && slides.length > 0) {
       slideInterval = setInterval(() => {
         paginate(1);
-      }, 4000);
+      }, 5000);
     }
     return () => clearInterval(slideInterval);
   }, [paginate, isPlaying, slides.length]);
 
   if (loading || slides.length === 0) {
     return (
-      <section className="relative w-full bg-black overflow-hidden">
-        <div className="relative w-full aspect-[1900/720] min-h-[350px] md:min-h-[450px] bg-gray-800 animate-pulse" />
-      </section>
+      <section className="relative w-full aspect-[1900/720] bg-gray-100 animate-pulse" />
     );
   }
 
   return (
-    <section className="relative w-full bg-black overflow-hidden">
-      <div className="relative w-full aspect-[1900/720] min-h-[350px] md:min-h-[450px] group">
-        <AnimatePresence initial={false}>
-          <motion.div
-            key={page}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-            className="absolute inset-0 w-full h-full overflow-hidden"
+    <section className="relative w-full bg-white overflow-hidden">
+      {/* BANNER AREA */}
+      <div className="relative w-full aspect-[1900/720] bg-black">
+        {slides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
           >
-            {/* Animasi Zoom (Ken Burns) */}
-            <motion.div
-              initial={{ scale: 1 }}
-              animate={{ scale: 1.15 }}
-              transition={{
-                duration: 4,
-                ease: "linear",
-              }}
-              className="relative w-full h-full"
+            <Image
+              src={slide.image_url}
+              alt={`Slide ${index}`}
+              fill
+              priority={index === 0}
+              className="object-cover object-center"
+            />
+          </div>
+        ))}
+
+        {/* PREVIEW INDICATORS (Desktop Only) */}
+        <div className="hidden md:flex absolute bottom-22 left-1/2 -translate-x-1/2 z-40 gap-4 opacity-40 hover:opacity-100 transition-opacity duration-500 p-4">
+          {slides.map((slide, index) => (
+            <div
+              key={slide.id}
+              className={`relative w-28 h-16 rounded-lg overflow-hidden border-2 transition-all duration-300 cursor-pointer shadow-lg ${
+                currentSlide === index
+                  ? "border-[#005cb3] scale-110"
+                  : "border-white/50"
+              }`}
+              onClick={() => setPage([index, index > currentSlide ? 1 : -1])}
             >
               <Image
-                src={slides[currentSlide].image_url}
-                alt={`Slide ${currentSlide}`}
+                src={slide.image_url}
+                alt="preview"
                 fill
-                priority
-                sizes="100vw"
-                className="object-cover object-center"
+                className="object-cover"
               />
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
 
-        {/* TOMBOL PLAY/PAUSE */}
-        <button
-          onClick={() => setIsPlaying(!isPlaying)}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 
-             flex items-center justify-center w-10 h-10 rounded-full 
-             bg-white/20 backdrop-blur-sm text-white 
-             opacity-0 group-hover:opacity-100 transition-all duration-300
-             hover:scale-110 border border-white/20"
-        >
-          {isPlaying ? (
-            <Pause size={20} fill="currentColor" />
-          ) : (
-            <Play size={20} className="ml-1" fill="currentColor" />
-          )}
-        </button>
+              {/* Tombol Pause/Play hanya muncul di thumbnail yang aktif */}
+              {currentSlide === index && (
+                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // Agar tidak trigger ganti banner saat klik pause
+                      setIsPlaying(!isPlaying);
+                    }}
+                    className="w-8 h-8 flex items-center justify-center rounded-full bg-white/40 backdrop-blur-sm text-white hover:bg-white/30 transition-colors"
+                  >
+                    {isPlaying ? (
+                      <Pause size={14} fill="currentColor" />
+                    ) : (
+                      <Play size={14} className="ml-0.5" fill="currentColor" />
+                    )}
+                  </button>
+                </div>
+              )}
+
+              {/* Progress Bar */}
+              {currentSlide === index && isPlaying && (
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 5, ease: "linear" }}
+                  className="absolute bottom-0 left-0 h-1 bg-[#005cb3]"
+                />
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Indikator Mobile  */}
-      <div className="md:hidden flex justify-center gap-3 py-4 bg-white border-t border-gray-200">
-        {slides.map((slide, index) => (
-          <button
-            key={slide.id}
-            onClick={() => {
-              const newDirection = index > currentSlide ? 1 : -1;
-              setPage([index, newDirection]);
-            }}
-            className={`w-5 h-2 rounded-full ${
-              currentSlide === index
-                ? "bg-[#0084BF]"
-                : "bg-gray-300 hover:bg-gray-400"
-            }`}
-          />
-        ))}
-      </div>
-      {/* SEARCH BAR */}
-      <div className="md:absolute md:bottom-10 md:left-1/2 md:-translate-x-1/2 md:z-40 w-full px-4 py-6 md:py-0 md:bg-transparent bg-white">
-        <div
-          className="
-    max-w-5xl mx-auto 
-    bg-white 
-    md:rounded-full rounded-2xl 
-    flex flex-col md:flex-row 
-    overflow-hidden 
-    border border-gray-200
-    shadow-xl]
-  "
-        >
-          {/* NAMA DOKTER */}
-          <div className="flex-1 px-5 py-4 border-b md:px-8 md:border-b-0 md:border-r border-gray-200">
-            <p className="text-xs text-[#0084BF] font-semibold mb-1">
-              Nama Dokter
-            </p>
-            <div className="flex items-center gap-2">
-              <User size={18} className="text-gray-400" />
-              <input
-                type="text"
-                placeholder="Cari nama dokter..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full outline-none text-sm bg-transparent"
-              />
+      {/* SEARCH BAR SECTION */}
+      <div className="relative w-full px-4 py-8 md:py-0 md:-mt-20 md:z-50 bg-white md:bg-transparent">
+        <div className="max-w-5xl mx-auto">
+          <div
+            className="
+              max-w-5xl mx-auto 
+              bg-white 
+              md:rounded-full rounded-2xl 
+              flex flex-col md:flex-row 
+              overflow-hidden 
+              border border-gray-200
+                ]
+            "
+          >
+            {/* NAMA DOKTER */}
+            <div className="flex-1 px-5 py-4 border-b md:px-8 md:border-b-0 md:border-r border-gray-100">
+              <p className="text-xs text-[#005cb3] font-semibold mb-1">
+                Nama Dokter
+              </p>
+              <div className="flex items-center gap-2">
+                <User size={18} className="text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Cari nama dokter..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full outline-none text-sm bg-transparent"
+                />
+              </div>
             </div>
-          </div>
 
-          {/* SPESIALIS */}
-          <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-200">
-            <p className="text-xs text-[#0084BF] font-semibold mb-1">
-              Spesialis
-            </p>
-            <div className="flex items-center gap-2">
-              <Stethoscope size={16} className="text-gray-400" />
-              <select
-                value={specialty}
-                onChange={(e) => setSpecialty(e.target.value)}
-                className="w-full outline-none text-sm bg-transparent cursor-pointer"
+            {/* SPESIALIS */}
+            <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-100">
+              <p className="text-xs text-[#005cb3] font-semibold mb-1">
+                Spesialis
+              </p>
+              <div className="flex items-center gap-2">
+                <Stethoscope size={16} className="text-gray-400" />
+                <select
+                  value={specialty}
+                  onChange={(e) => setSpecialty(e.target.value)}
+                  className="w-full outline-none text-sm bg-transparent cursor-pointer"
+                >
+                  {SPECIALTY_CATEGORIES.map((s) => (
+                    <option key={s} value={s === "Semua Spesialis" ? "" : s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* HARI */}
+            <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-100">
+              <p className="text-xs text-[#005cb3] font-semibold mb-1">
+                Pilih Hari
+              </p>
+              <div className="flex items-center gap-2">
+                <CalendarDays size={16} className="text-gray-400" />
+                <select
+                  value={day}
+                  onChange={(e) => setDay(e.target.value)}
+                  className="w-full outline-none text-sm bg-transparent cursor-pointer"
+                >
+                  {DAYS.map((d) => (
+                    <option key={d} value={d === "Semua Hari" ? "" : d}>
+                      {d}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* BUTTON SEARCH */}
+            <div className="flex items-center justify-center p-3">
+              <button
+                onClick={() => {
+                  const params = new URLSearchParams();
+                  if (search) params.append("search", search);
+                  if (specialty) params.append("specialty", specialty);
+                  if (day) params.append("day", day);
+                  window.location.href = `/dokter?${params.toString()}`;
+                }}
+                className="w-full md:w-14 h-12 md:h-14 rounded-xl md:rounded-full bg-[#005cb3] flex items-center justify-center gap-2 text-white hover:scale-95 transition cursor-pointer"
               >
-                {SPECIALTY_CATEGORIES.map((s) => (
-                  <option key={s} value={s === "Semua Spesialis" ? "" : s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
+                <Search className="w-5 h-5 md:w-10 md:h-8" />
+                <span className="font-semibold md:hidden">Cari Dokter</span>
+              </button>
             </div>
-          </div>
-
-          {/* HARI */}
-          <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-200">
-            <p className="text-xs text-[#0084BF] font-semibold mb-1">
-              Pilih Hari
-            </p>
-            <div className="flex items-center gap-2">
-              <CalendarDays size={16} className="text-gray-400" />
-              <select
-                value={day}
-                onChange={(e) => setDay(e.target.value)}
-                className="w-full outline-none text-sm bg-transparent cursor-pointer"
-              >
-                {DAYS.map((d) => (
-                  <option key={d} value={d === "Semua Hari" ? "" : d}>
-                    {d}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* BUTTON */}
-          <div className="flex items-center justify-center p-3">
-            <button
-              onClick={() => {
-                const params = new URLSearchParams();
-                if (search) params.append("search", search);
-                if (specialty) params.append("specialty", specialty);
-                if (day) params.append("day", day);
-
-                window.location.href = `/dokter?${params.toString()}`;
-              }}
-              className="
-    w-full md:w-14 
-    h-12 md:h-14 
-    rounded-full md:rounded-full 
-    bg-[#0084BF] 
-    flex items-center justify-center 
-    gap-2 
-    text-white 
-    hover:scale-95 transition cursor-pointer
-    px-4 md:px-0 
-  "
-            >
-              {/* Ikon Search*/}
-              <Search className="w-5 h-5 md:w-10 md:h-8 " />
-
-              {/* Teks Mobile */}
-              <span className="font-semibold md:hidden">Cari Dokter</span>
-            </button>
           </div>
         </div>
       </div>
