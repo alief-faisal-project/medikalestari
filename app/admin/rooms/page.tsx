@@ -8,7 +8,6 @@ import {
   updateRoomType,
   deleteRoomType,
   fetchRoomTypes,
-  deleteRoomImages,
 } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthProvider";
@@ -69,23 +68,7 @@ const AdminRoomsPage = () => {
   const router = useRouter();
   const { loading: authLoading, isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    let mounted = true;
-    const init = async () => {
-      if (!mounted) return;
-      if (authLoading) return;
-      if (!isAuthenticated) {
-        router.push("/admin/login");
-        return;
-      }
-      fetchRooms();
-    };
-    init();
-    return () => {
-      mounted = false;
-    };
-  }, [authLoading, isAuthenticated, router]);
-
+  // Fetch rooms helper (hoisted so it can be used in effects)
   const fetchRooms = async () => {
     try {
       const data = await fetchRoomTypes();
@@ -96,6 +79,23 @@ const AdminRoomsPage = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    let mounted = true;
+    const init = async () => {
+      if (!mounted) return;
+      if (authLoading) return;
+      if (!isAuthenticated) {
+        router.push("/admin/login");
+        return;
+      }
+      await fetchRooms();
+    };
+    init();
+    return () => {
+      mounted = false;
+    };
+  }, [authLoading, isAuthenticated, router]);
 
   const handleAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;

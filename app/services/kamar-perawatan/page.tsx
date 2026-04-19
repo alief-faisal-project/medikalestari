@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
-  Share2,
   ChevronLeft,
   ChevronRight,
   Link as LinkIcon,
@@ -65,6 +64,7 @@ export default function KamarPerawatan() {
         setRooms(roomsData);
         if (roomsData.length > 0) {
           setActiveTab(roomsData[0].name);
+          setCurrentImageIndex(0);
         }
       } catch (error) {
         console.error("Error loading rooms:", error);
@@ -76,10 +76,8 @@ export default function KamarPerawatan() {
     loadRooms();
   }, []);
 
-  // Reset index saat pindah tab agar tidak out of bounds
-  useEffect(() => {
-    setCurrentImageIndex(0);
-  }, [activeTab]);
+  // Avoid calling setState synchronously inside an effect: reset index when activeTab is set
+  // (we reset currentImageIndex when we initialize the active tab below)
 
   const currentKamar = rooms.find((r: RoomData) => r.name === activeTab);
 
