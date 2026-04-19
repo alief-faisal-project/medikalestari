@@ -133,7 +133,7 @@ export default function DoctorScheduleGrid({
                   router.push(`/dokter/${doctor.id}`);
                 }
               }}
-              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-all hover:shadow-lg border border-slate-200 hover:border-[#005cb3] text-left"
+              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-all hover:shadow-lg border border-slate-200 hover:border-blue-200 hover:shadow-md hover:shadow-[#005cb3] text-left"
             >
               {/* Doctor Header */}
               <div className="bg-slate-50 p-4 border-b border-slate-200">
