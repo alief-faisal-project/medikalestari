@@ -1,8 +1,15 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { Search, Menu, X, Globe, UserCircle } from "lucide-react";
+import {
+  Search,
+  Menu,
+  X,
+  Globe,
+  UserCircle,
+  LayoutDashboard,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthProvider";
 import SearchDropdown from "./SearchDropdown";
@@ -41,7 +48,6 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
       "Asuransi & Rekanan",
       "Panduan Kunjungan",
     ],
-    // "Tentang Kami" dikeluarkan dari sini agar tidak menjadi dropdown
   };
 
   const languages = [
@@ -49,7 +55,6 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
     { label: "English", code: "EN", active: false },
   ];
 
-  // --- Logika Kembali ke Beranda ---
   const handleHomeClick = (e: React.MouseEvent) => {
     if (pathname === "/") {
       e.preventDefault();
@@ -57,9 +62,9 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
     } else {
       router.push("/");
     }
+    setIsMobileMenuOpen(false);
   };
 
-  // --- Helper Render Dropdown ---
   const renderDropdownContent = (
     items: Array<string | { label: string; code?: string; active?: boolean }>,
     widthClass: string = "w-72",
@@ -75,36 +80,28 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
       <div className="py-2">
         {items.map((item) => {
           const title = typeof item === "string" ? item : item.label;
+          let itemHref = "/";
 
-          // LOGIKA NAVIGASI KE HALAMAN BARU
-          let itemHref = "#";
-          if (title === "Profil RS Medika Lestari" || title === "Visi & Misi") {
+          if (title === "Profil RS Medika Lestari" || title === "Visi & Misi")
             itemHref = "/tentang-kami";
-          } else if (title === "Emergency") {
-            itemHref = "/services/emergency";
-          } else if (title === "Farmasi") {
-            itemHref = "/services/farmasi";
-          } else if (title === "Fisioterapi") {
-            itemHref = "/services/fisioterapi";
-          } else if (title === "Kamar Perawatan") {
+          else if (title === "Emergency") itemHref = "/services/emergency";
+          else if (title === "Farmasi") itemHref = "/services/farmasi";
+          else if (title === "Fisioterapi") itemHref = "/services/fisioterapi";
+          else if (title === "Kamar Perawatan")
             itemHref = "/services/kamar-perawatan";
-          } else if (title === "Laboratory Testing") {
+          else if (title === "Laboratory Testing")
             itemHref = "/services/laboratory-testing";
-          } else if (title === "Layanan gawat darurat") {
+          else if (title === "Layanan gawat darurat")
             itemHref = "/services/layanan-gawat-darurat";
-          } else if (title === "Medical Checkup") {
+          else if (title === "Medical Checkup")
             itemHref = "/services/medical-checkup";
-          } else if (title === "Poli Klinik") {
-            itemHref = "/services/poli-klinik";
-          } else if (title === "Radiologi") {
-            itemHref = "/services/radiologi";
-          } else if (title === "Rawat Inap") {
-            itemHref = "/services/rawat-inap";
-          } else if (title === "Rehabilitasi Medik") {
+          else if (title === "Poli Klinik") itemHref = "/services/poli-klinik";
+          else if (title === "Radiologi") itemHref = "/services/radiologi";
+          else if (title === "Rawat Inap") itemHref = "/services/rawat-inap";
+          else if (title === "Rehabilitasi Medik")
             itemHref = "/services/rehabilitasi-medik";
-          } else if (title === "Vaccination Services") {
+          else if (title === "Vaccination Services")
             itemHref = "/services/vaccination-services";
-          }
 
           return (
             <div
@@ -124,10 +121,10 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 
   return (
     <nav className="w-full font-sans sticky top-0 z-[100] bg-white shadow-sm">
-      {/* --- Bagian Atas: Logo & Top Links --- */}
-      <div className="bg-white py-4 relative z-40">
+      {/* --- Top Navbar --- */}
+      <div className="bg-white py-2 relative z-[101]">
         <div className="max-w-[1200px] mx-auto px-4 md:px-8 flex justify-between items-center">
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center scale-92 origin-left">
             {logoNode}
           </Link>
 
@@ -152,7 +149,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
           </div>
 
           <button
-            className="md:hidden p-2 text-gray-700"
+            className="md:hidden p-2 text-gray-700 relative z-[110]"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -160,7 +157,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
         </div>
       </div>
 
-      {/* --- Bottom Navbar --- */}
+      {/* --- Bottom Navbar (h-14 Tetap Sesuai Asli) --- */}
       <div className="hidden md:block relative w-full bg-[#005cb3] text-white z-30">
         <div
           className="absolute right-0 top-0 h-full w-[38%] bg-[#004585] hidden lg:block"
@@ -169,7 +166,6 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 
         <div className="max-w-[1220px] mx-auto px-4 md:px-8 flex justify-between items-center h-14 relative z-10">
           <div className="flex h-full text-[15px]">
-            {/* --- Menu Beranda --- */}
             <button
               onClick={handleHomeClick}
               className="flex items-center h-full px-6 transition-colors font-medium relative group cursor-pointer"
@@ -177,10 +173,9 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               Beranda
               <div
                 className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${pathname === "/" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
-              ></div>
+              />
             </button>
 
-            {/* --- Menu Dokter Kami --- */}
             <Link
               href="/dokter#section-dokter"
               className="flex items-center h-full px-6 transition-colors font-medium relative group"
@@ -188,10 +183,9 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               Dokter Kami
               <div
                 className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${pathname === "/dokter" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
-              ></div>
+              />
             </Link>
 
-            {/* --- Menus Dropdown (Fasilitas & Informasi) --- */}
             {Object.keys(menuData).map((item) => (
               <div
                 key={item}
@@ -203,7 +197,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                   {item}
                   <div
                     className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${activeMenu === item ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
-                  ></div>
+                  />
                 </button>
                 <AnimatePresence>
                   {activeMenu === item &&
@@ -212,7 +206,6 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               </div>
             ))}
 
-            {/* --- Menu Tentang Kami (Diletakkan di Paling Kanan link menu) --- */}
             <Link
               href="/tentang-kami"
               className="flex items-center h-full px-6 transition-colors font-medium relative group"
@@ -220,12 +213,11 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               Tentang Kami
               <div
                 className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${pathname === "/tentang-kami" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
-              ></div>
+              />
             </Link>
           </div>
 
           <div className="flex items-center h-full gap-2 text-[15px]">
-            {/* --- Search Bar --- */}
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
               className="flex items-center gap-2 transition-all h-full px-3 relative group"
@@ -234,10 +226,9 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               <span className="font-medium">Cari Dokter Kami</span>
               <div
                 className={`absolute bottom-0 left-3 right-3 h-1 bg-white rounded-t-full transition-transform duration-300 ${isSearchOpen ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
-              ></div>
+              />
             </button>
 
-            {/* --- Pemilih Bahasa --- */}
             <div
               className="relative h-full flex items-center px-3 cursor-pointer group"
               onMouseEnter={() => setActiveMenu("Lang")}
@@ -249,14 +240,13 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               </div>
               <div
                 className={`absolute bottom-0 left-3 right-3 h-1 bg-white rounded-t-full transition-transform duration-300 ${activeMenu === "Lang" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
-              ></div>
+              />
               <AnimatePresence>
                 {activeMenu === "Lang" &&
                   renderDropdownContent(languages, "right-0 w-48")}
               </AnimatePresence>
             </div>
 
-            {/* --- Login Admin  --- */}
             <div className="flex items-center px-3 h-full transition-colors">
               <AuthArea />
             </div>
@@ -269,76 +259,101 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
         />
       </div>
 
-      {/* --- Mobile Menu --- */}
+      {/* --- Mobile Menu  --- */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ x: "-100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
-            className="fixed inset-0 top-[72px] bg-white z-[99] md:hidden overflow-y-auto"
-          >
-            <div className="flex flex-col p-4">
-              <button
-                onClick={handleHomeClick}
-                className="text-left p-4 font-bold text-[#005075] border-b text-lg"
-              >
-                Beranda
-              </button>
-              <Link
-                href="/dokter#section-dokter"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-left p-4 font-bold text-[#005075] border-b text-lg"
-              >
-                Dokter Kami
-              </Link>
-              {Object.keys(menuData).map((item) => (
-                <div key={item} className="border-b">
-                  <button
-                    onClick={() =>
-                      setActiveMenu(activeMenu === item ? null : item)
-                    }
-                    className="w-full text-left p-4 font-semibold text-gray-700 flex justify-between items-center"
-                  >
-                    {item}
-                    <span>{activeMenu === item ? "−" : "+"}</span>
-                  </button>
-                  <AnimatePresence>
-                    {activeMenu === item && (
-                      <motion.div
-                        initial={{ height: 0 }}
-                        animate={{ height: "auto" }}
-                        exit={{ height: 0 }}
-                        className="overflow-hidden bg-gray-50"
+          <>
+            {/* Backdrop Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[99] md:hidden"
+            />
+
+            {/* Menu Panel */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 right-0 w-[85%] bg-white z-[100] md:hidden overflow-y-auto shadow-2xl pt-16"
+            >
+              <div className="flex flex-col p-4">
+                <button
+                  onClick={handleHomeClick}
+                  className="text-left p-4 font-bold text-[#005075] border-b text-lg"
+                >
+                  Beranda
+                </button>
+                <Link
+                  href="/dokter#section-dokter"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-left p-4 font-bold text-[#005075] border-b text-lg"
+                >
+                  Dokter Kami
+                </Link>
+
+                {Object.keys(menuData).map((item) => (
+                  <div key={item} className="border-b">
+                    <button
+                      onClick={() =>
+                        setActiveMenu(activeMenu === item ? null : item)
+                      }
+                      className="w-full text-left p-4 font-semibold text-gray-700 flex justify-between items-center"
+                    >
+                      {item}
+                      <motion.span
+                        animate={{ rotate: activeMenu === item ? 180 : 0 }}
                       >
-                        {menuData[item].map((subitem) => (
-                          <Link
-                            key={subitem}
-                            href="#"
-                            onClick={() => {
-                              setIsMobileMenuOpen(false);
-                              setActiveMenu(null);
-                            }}
-                            className="block p-4 pl-8 text-gray-600 border-b text-sm"
-                          >
-                            {subitem}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                        ▼
+                      </motion.span>
+                    </button>
+                    <AnimatePresence>
+                      {activeMenu === item && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="overflow-hidden bg-gray-50"
+                        >
+                          {menuData[item].map((subitem) => (
+                            <Link
+                              key={subitem}
+                              href="#"
+                              onClick={() => {
+                                setIsMobileMenuOpen(false);
+                                setActiveMenu(null);
+                              }}
+                              className="block p-4 pl-8 text-gray-600 border-b text-sm"
+                            >
+                              {subitem}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ))}
+
+                <Link
+                  href="/tentang-kami"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-left p-4 font-bold text-[#005075] border-b text-lg"
+                >
+                  Tentang Kami
+                </Link>
+
+                <div className="mt-6 px-4">
+                  <AuthArea
+                    isMobile
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  />
                 </div>
-              ))}
-              {/* Menu Tentang Kami di Mobile (Link Langsung di paling bawah list) */}
-              <Link
-                href="/tentang-kami"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-left p-4 font-bold text-[#005075] border-b text-lg"
-              >
-                Tentang Kami
-              </Link>
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </nav>
@@ -347,16 +362,25 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 
 export default NavbarClient;
 
-function AuthArea() {
+function AuthArea({
+  isMobile,
+  onClick,
+}: {
+  isMobile?: boolean;
+  onClick?: () => void;
+}) {
   const { isAuthenticated } = useAuth();
+
   if (isAuthenticated) {
     return (
       <Link
         href="/admin/dashboard"
-        className="flex items-center gap-2 text-sm font-medium"
+        onClick={onClick}
+        className={`flex items-center gap-2 font-medium ${isMobile ? "text-[#005075] text-lg" : "text-white text-sm"}`}
         title="Panel Admin"
       >
-        <UserCircle size={20} />
+        <LayoutDashboard size={isMobile ? 24 : 20} />
+        {isMobile && <span>Dashboard Admin</span>}
       </Link>
     );
   }
@@ -364,9 +388,11 @@ function AuthArea() {
   return (
     <Link
       href="/admin/login"
-      className="flex items-center gap-2 text-sm font-medium"
+      onClick={onClick}
+      className={`flex items-center gap-2 font-medium ${isMobile ? "text-gray-600 text-lg" : "text-white text-sm"}`}
     >
-      <UserCircle size={22} />
+      <UserCircle size={isMobile ? 24 : 22} />
+      {isMobile && <span>Login Admin</span>}
     </Link>
   );
 }

@@ -76,9 +76,6 @@ export default function KamarPerawatan() {
     loadRooms();
   }, []);
 
-  // Avoid calling setState synchronously inside an effect: reset index when activeTab is set
-  // (we reset currentImageIndex when we initialize the active tab below)
-
   const currentKamar = rooms.find((r: RoomData) => r.name === activeTab);
 
   const displayImages = React.useMemo(() => {
@@ -123,10 +120,7 @@ export default function KamarPerawatan() {
     return (
       <div className="min-h-screen bg-white py-8 font-sans">
         <div className="max-w-6xl mx-auto px-4">
-          {/* Back Navigation Skeleton */}
           <div className="h-5 w-32 bg-gray-200 rounded mb-8 animate-pulse"></div>
-
-          {/* Tab Navigation Skeleton */}
           <div className="flex flex-wrap border-b border-gray-100 mb-8 justify-center gap-2 md:gap-12">
             {Array(3)
               .fill(0)
@@ -136,56 +130,15 @@ export default function KamarPerawatan() {
                 </div>
               ))}
           </div>
-
-          {/* Main Card Skeleton */}
-          <div className="bg-white rounded-2xl shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
-            <div className="flex flex-col md:flex-row">
-              {/* Left Side - Image Skeleton */}
-              <div className="md:w-1/2 relative bg-gray-200">
-                <div className="relative aspect-4/3 w-full h-full overflow-hidden md:rounded-tl-2xl animate-pulse"></div>
-              </div>
-
-              {/* Right Side - Details Skeleton */}
-              <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center space-y-6">
-                <div className="space-y-3">
-                  <div className="h-8 w-40 bg-gray-200 rounded animate-pulse"></div>
-                  <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
-                </div>
-
-                <div className="space-y-2">
-                  {Array(3)
-                    .fill(0)
-                    .map((_, i) => (
-                      <div
-                        key={i}
-                        className="h-4 w-full bg-gray-200 rounded animate-pulse"
-                      ></div>
-                    ))}
-                </div>
-
-                <div className="space-y-3 pt-4">
-                  <div className="h-5 w-32 bg-gray-200 rounded animate-pulse"></div>
-                  <div className="grid grid-cols-2 gap-y-3 gap-x-3">
-                    {Array(4)
-                      .fill(0)
-                      .map((_, i) => (
-                        <div
-                          key={i}
-                          className="h-4 w-full bg-gray-200 rounded animate-pulse"
-                        ></div>
-                      ))}
-                  </div>
-                </div>
-
-                <div className="pt-8 border-t border-gray-100 flex items-center gap-6">
-                  {Array(5)
-                    .fill(0)
-                    .map((_, i) => (
-                      <div
-                        key={i}
-                        className="w-5 h-5 bg-gray-200 rounded-full animate-pulse"
-                      ></div>
-                    ))}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="flex flex-col md:flex-row md:min-h-[600px]">
+              <div className="md:w-1/2 relative bg-gray-200 animate-pulse"></div>
+              <div className="md:w-1/2 p-8 md:p-12 space-y-6">
+                <div className="h-8 w-48 bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
+                <div className="space-y-2 pt-4">
+                  <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse"></div>
                 </div>
               </div>
             </div>
@@ -203,7 +156,7 @@ export default function KamarPerawatan() {
         {/* Navigasi Kembali */}
         <Link
           href="/"
-          className="flex items-center gap-2 text-gray-500 font-medium mb-8 hover:opacity-90 transition-opacity"
+          className="flex items-center gap-2 text-gray-500 font-medium mb-8 hover:opacity-90 transition-opacity w-fit"
         >
           <ArrowLeft size={20} /> Kembali ke Beranda
         </Link>
@@ -213,7 +166,10 @@ export default function KamarPerawatan() {
           {rooms.map((room) => (
             <button
               key={room.id}
-              onClick={() => setActiveTab(room.name)}
+              onClick={() => {
+                setActiveTab(room.name);
+                setCurrentImageIndex(0);
+              }}
               className={`pb-4 text-sm md:text-base font-medium transition-all relative ${
                 activeTab === room.name
                   ? "text-[#004585]"
@@ -233,113 +189,116 @@ export default function KamarPerawatan() {
 
         {/* Card Utama */}
         <div className="bg-white rounded-2xl shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
-          <div className="flex flex-col md:flex-row">
-            {/* Sisi Kiri: Smooth Slider */}
-            <div className="md:w-1/2 relative bg-[#f8f9fa] overflow-hidden">
-              <div className="relative aspect-[4/3] w-full h-full overflow-hidden md:rounded-tl-2xl">
-                <AnimatePresence
-                  initial={false}
+          {/* md:min-h-[600px] menjaga agar ukuran card tetap konsisten di desktop */}
+          <div className="flex flex-col md:flex-row md:min-h-[600px] items-stretch">
+            {/* Sisi Kiri: Slider Gambar */}
+            <div className="md:w-1/2 relative bg-[#f8f9fa] overflow-hidden min-h-[350px] md:min-h-full">
+              <AnimatePresence
+                initial={false}
+                custom={direction}
+                mode="popLayout"
+              >
+                <motion.div
+                  key={currentImageIndex + activeTab} // Key unik per tab dan per gambar
                   custom={direction}
-                  mode="popLayout"
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    x: { type: "spring", stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.2 },
+                  }}
+                  className="absolute inset-0 w-full h-full"
                 >
-                  <motion.div
-                    key={currentImageIndex}
-                    custom={direction}
-                    variants={variants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      x: { type: "spring", stiffness: 300, damping: 32 },
-                      opacity: { duration: 0.25 },
-                    }}
-                    className="absolute inset-0 w-full h-full"
-                  >
-                    {displayImages[currentImageIndex] && (
-                      <Image
-                        src={displayImages[currentImageIndex].image_url}
-                        alt={currentKamar.name}
-                        fill
-                        className="object-cover"
-                        priority
-                      />
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* Tombol Navigasi Slider */}
-                {displayImages.length > 1 && (
-                  <>
-                    <button
-                      onClick={() => paginate(-1)}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center bg-black/10 hover:bg-black/30 text-white rounded-full backdrop-blur-md transition-all"
-                    >
-                      <ChevronLeft size={24} />
-                    </button>
-                    <button
-                      onClick={() => paginate(1)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center bg-black/10 hover:bg-black/30 text-white rounded-full backdrop-blur-md transition-all"
-                    >
-                      <ChevronRight size={24} />
-                    </button>
-                  </>
-                )}
-
-                {/* Indikator Slider */}
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-2">
-                  {displayImages.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        setDirection(index > currentImageIndex ? 1 : -1);
-                        setCurrentImageIndex(index);
-                      }}
-                      className={`w-2 h-2 rounded-full transition-all ${
-                        index === currentImageIndex
-                          ? "bg-white w-5"
-                          : "bg-white/40 hover:bg-white/60"
-                      }`}
+                  {displayImages[currentImageIndex] && (
+                    <Image
+                      src={displayImages[currentImageIndex].image_url}
+                      alt={currentKamar.name}
+                      fill
+                      className="object-cover"
+                      priority
                     />
-                  ))}
-                </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Tombol Navigasi Slider */}
+              {displayImages.length > 1 && (
+                <>
+                  <button
+                    onClick={() => paginate(-1)}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-sm transition-all"
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                  <button
+                    onClick={() => paginate(1)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-sm transition-all"
+                  >
+                    <ChevronRight size={24} />
+                  </button>
+                </>
+              )}
+
+              {/* Indikator Dots */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+                {displayImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setDirection(index > currentImageIndex ? 1 : -1);
+                      setCurrentImageIndex(index);
+                    }}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === currentImageIndex
+                        ? "bg-white w-5"
+                        : "bg-white/40 hover:bg-white/60"
+                    }`}
+                  />
+                ))}
               </div>
             </div>
 
             {/* Sisi Kanan: Detail Kamar */}
-            <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-              <div className="mb-6">
-                <h1 className="text-3xl font-bold text-[#004585] mb-2 leading-tight">
-                  {currentKamar.name}
-                </h1>
-                <p className="text-2xl font-bold text-[#005cb3]">
-                  {currentKamar.price}
-                </p>
-              </div>
+            {/* justify-between memastikan konten atas dan share bar tetap pada posisinya */}
+            <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-between bg-white">
+              <div>
+                <div className="mb-6">
+                  <h1 className="text-3xl font-bold text-[#004585] mb-2 leading-tight">
+                    {currentKamar.name}
+                  </h1>
+                  <p className="text-2xl font-bold text-[#005cb3]">
+                    {currentKamar.price}
+                  </p>
+                </div>
 
-              <div className="mb-8">
-                <p className="text-gray-600 text-[15px] leading-relaxed">
-                  {currentKamar.description}
-                </p>
-              </div>
+                <div className="mb-8">
+                  <p className="text-gray-600 text-[15px] leading-relaxed">
+                    {currentKamar.description}
+                  </p>
+                </div>
 
-              <div className="mb-10">
-                <h2 className="text-lg font-bold text-gray-800 mb-5">
-                  Fasilitas Kamar
-                </h2>
-                <div className="grid grid-cols-2 gap-y-4 gap-x-6">
-                  {currentKamar.facilities.map((facility, idx) => (
-                    <div key={idx} className="flex items-center gap-3">
-                      <div className="w-[7px] h-[7px] rounded-full bg-[#004585] shrink-0" />
-                      <span className="text-[14px] text-gray-600 font-medium leading-tight">
-                        {facility}
-                      </span>
-                    </div>
-                  ))}
+                <div className="mb-6">
+                  <h2 className="text-lg font-bold text-gray-800 mb-5">
+                    Fasilitas Kamar
+                  </h2>
+                  {/* Grid dengan min-height atau penataan stabil */}
+                  <div className="grid grid-cols-2 gap-y-4 gap-x-6">
+                    {currentKamar.facilities.map((facility, idx) => (
+                      <div key={idx} className="flex items-start gap-3">
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#004585] mt-1.5 shrink-0" />
+                        <span className="text-[14px] text-gray-600 font-medium leading-snug">
+                          {facility}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Bagian Share */}
-              <div className="pt-8 border-t border-gray-100 flex items-center gap-6">
+              {/* Bagian Share - Selalu menempel di bawah karena justify-between */}
+              <div className="pt-8 border-t border-gray-100 flex items-center gap-6 mt-auto">
                 <button className="text-gray-400 hover:text-[#005cb3] transition-colors">
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                     <path d="M22.675 0h-21.35C.595 0 0 .595 0 1.326v21.348C0 23.405.595 24 1.326 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.595 1.323-1.326V1.326C24 .595 23.405 0 22.675 0z" />
@@ -353,11 +312,6 @@ export default function KamarPerawatan() {
                 <button className="text-gray-400 hover:text-[#005cb3] transition-colors">
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
-                </button>
-                <button className="text-gray-400 hover:text-[#005cb3] transition-colors">
-                  <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                    <path d="M12.011 2c-5.511 0-9.989 4.478-9.989 9.989 0 1.758.463 3.459 1.342 4.975l-1.364 5.036 5.151-1.351c1.45.787 3.085 1.202 4.86 1.202 5.511 0 9.989-4.478 9.989-9.989 0-5.511-4.478-9.989-9.989-9.989z" />
                   </svg>
                 </button>
                 <button className="text-gray-400 hover:text-[#005cb3] transition-colors">
