@@ -79,7 +79,6 @@ const ServicesSection = () => {
   };
 
   const handleInfoClick = (title: string) => {
-    // Menggunakan toLowerCase agar tidak error karena perbedaan huruf besar/kecil
     const checkTitle = title.toLowerCase();
 
     if (checkTitle === "lokasi") {
@@ -87,9 +86,17 @@ const ServicesSection = () => {
     }
 
     if (checkTitle === "email") {
-      const link = document.createElement("a");
-      link.href = "mailto:marketing@rsmedikalestari.com";
-      link.click();
+      const emailRecipient = "marketing@rsmedikalestari.com";
+      // Membuka Gmail di tab baru
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${emailRecipient}`;
+      const newWindow = window.open(gmailUrl, "_blank");
+
+      // Fallback jika window.open diblokir atau gagal
+      if (!newWindow || newWindow.closed || newWindow.closed === undefined) {
+        const link = document.createElement("a");
+        link.href = `mailto:${emailRecipient}`;
+        link.click();
+      }
     }
 
     if (checkTitle === "customer service") {
@@ -98,27 +105,79 @@ const ServicesSection = () => {
   };
 
   return (
-    <section className="w-full bg-gradient-to-br from-white to-slate-100 font-sans text-[#005cb3] relative py-16 overflow-hidden">
+    <section className="w-full bg-slate-50 font-sans text-[#005cb3] relative py-20 overflow-hidden">
+      {/* --- BACKGROUND DECORATION --- */}
+      <div className="absolute inset-0 z-0 opacity-40">
+        {/* Garis Grid Halus */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(#005cb3 0.5px, transparent 0.5px)`,
+            backgroundSize: "30px 30px",
+          }}
+        />
+
+        {/* Garis Diagonal Dekoratif */}
+        <svg
+          className="absolute top-0 left-0 w-full h-full"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <line
+            x1="0"
+            y1="10%"
+            x2="100%"
+            y2="40%"
+            stroke="#005cb3"
+            strokeWidth="0.5"
+            strokeOpacity="0.2"
+          />
+          <line
+            x1="0"
+            y1="60%"
+            x2="100%"
+            y2="90%"
+            stroke="#005cb3"
+            strokeWidth="0.5"
+            strokeOpacity="0.2"
+          />
+          <line
+            x1="100%"
+            y1="0%"
+            x2="0%"
+            y2="100%"
+            stroke="#005cb3"
+            strokeWidth="0.5"
+            strokeOpacity="0.1"
+          />
+        </svg>
+
+        {/* Lingkaran blur untuk kedalaman */}
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-50" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50" />
+      </div>
+
       <div className="relative z-10">
         {/* INFORMASI SECTION */}
-        <div className="max-w-[1160px] mx-auto px-4 md:px-8 mb-20">
+        <div className="max-w-290 mx-auto px-4 md:px-8 mb-20">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="flex items-center gap-6 mb-16 lg:mb-10 justify-center md:justify-start text-center md:text-left"
           >
-            <h2 className="text-4xl font-light uppercase pb-2">Informasi</h2>
-            <div className="hidden md:block flex-1 h-[1px] bg-gray-200/50" />
+            <h2 className="text-4xl font-light uppercase pb-2 tracking-widest">
+              Informasi
+            </h2>
+            <div className="hidden md:block flex-1 h-0.5 bg-linear-to-r from-[#005cb3]/30 to-transparent" />
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {infoData.map((item) => (
               <motion.div
                 key={item.id}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -8 }}
                 onClick={() => handleInfoClick(item.title)}
-                className="flex flex-col items-center justify-center p-10 bg-white cursor-pointer transition-all duration-300 group shadow-sm hover:shadow-md"
+                className="flex flex-col items-center justify-center p-10 bg-white/80 backdrop-blur-sm border border-white cursor-pointer transition-all duration-300 shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:bg-white"
               >
                 <div className="relative w-16 h-16 mb-6">
                   <Image
@@ -137,25 +196,27 @@ const ServicesSection = () => {
         </div>
 
         {/* PELAYANAN SECTION */}
-        <div className="max-w-[1160px] mx-auto px-4 md:px-8">
+        <div className="max-w-290 mx-auto px-4 md:px-8">
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="flex items-center gap-6 mb-16 lg:mb-10 justify-center md:justify-end text-center md:text-right"
           >
-            <div className="hidden md:block flex-1 h-[1px] bg-gray-200/50" />
-            <h2 className="text-4xl font-light uppercase pb-2">Pelayanan</h2>
+            <div className="hidden md:block flex-1 h-0.5 bg-linear-to-l from-[#005cb3]/30 to-transparent" />
+            <h2 className="text-4xl font-light uppercase pb-2 tracking-widest">
+              Pelayanan
+            </h2>
           </motion.div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {serviceData.map((item) => (
               <motion.div
                 key={item.id}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -8 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleServiceClick(item)}
-                className="aspect-square flex flex-col items-center justify-center text-center p-6 bg-white cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 group"
+                className="aspect-square flex flex-col items-center justify-center text-center p-6 bg-white/80 backdrop-blur-sm border border-white cursor-pointer shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:bg-white transition-all duration-300"
               >
                 <div className="relative w-14 h-14 mb-5">
                   <Image
