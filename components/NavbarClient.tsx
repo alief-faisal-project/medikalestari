@@ -318,19 +318,53 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                           exit={{ height: 0, opacity: 0 }}
                           className="overflow-hidden bg-gray-50"
                         >
-                          {menuData[item].map((subitem) => (
-                            <Link
-                              key={subitem}
-                              href="#"
-                              onClick={() => {
-                                setIsMobileMenuOpen(false);
-                                setActiveMenu(null);
-                              }}
-                              className="block p-4 pl-8 text-gray-600 border-b text-sm"
-                            >
-                              {subitem}
-                            </Link>
-                          ))}
+                          {menuData[item].map((subitem) => {
+                            let itemHref = "/";
+
+                            if (
+                              subitem === "Profil RS Medika Lestari" ||
+                              subitem === "Visi & Misi"
+                            )
+                              itemHref = "/tentang-kami";
+                            else if (subitem === "Emergency")
+                              itemHref = "/services/emergency";
+                            else if (subitem === "Farmasi")
+                              itemHref = "/services/farmasi";
+                            else if (subitem === "Fisioterapi")
+                              itemHref = "/services/fisioterapi";
+                            else if (subitem === "Kamar Perawatan")
+                              itemHref = "/services/kamar-perawatan";
+                            else if (subitem === "Laboratory Testing")
+                              itemHref = "/services/laboratory-testing";
+                            else if (subitem === "Layanan gawat darurat")
+                              itemHref = "/services/layanan-gawat-darurat";
+                            else if (subitem === "Medical Checkup")
+                              itemHref = "/services/medical-checkup";
+                            else if (subitem === "Poli Klinik")
+                              itemHref = "/services/poli-klinik";
+                            else if (subitem === "Radiologi")
+                              itemHref = "/services/radiologi";
+                            else if (subitem === "Rawat Inap")
+                              itemHref = "/services/rawat-inap";
+                            else if (subitem === "Rehabilitasi Medik")
+                              itemHref = "/services/rehabilitasi-medik";
+                            else if (subitem === "Vaccination Services")
+                              itemHref = "/services/vaccination-services";
+
+                            return (
+                              <Link
+                                key={subitem}
+                                href={itemHref}
+                                onClick={() => {
+                                  setIsMobileMenuOpen(false);
+                                  setActiveMenu(null);
+                                }}
+                                className="block p-4 pl-8 text-gray-600 border-b text-sm hover:bg-blue-50 hover:text-[#005075] transition-colors"
+                              >
+                                {subitem}
+                              </Link>
+                            );
+                          })}
                         </motion.div>
                       )}
                     </AnimatePresence>
