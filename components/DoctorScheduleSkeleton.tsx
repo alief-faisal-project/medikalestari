@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 
 export default function DoctorScheduleSkeleton() {
-  // Generate stable keys for skeleton items
+
   const filterIds = useMemo(
     () => Array.from({ length: 5 }, (_, i) => `filter-${i}`),
     [],

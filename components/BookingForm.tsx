@@ -175,7 +175,7 @@ export default function BookingForm({
                     />
                   </div>
 
-                  {/* Button Kirim via WhatsApp */}
+                  {/* Button Kirim Pendaftaran */}
                   <div className="pt-6">
                     <button
                       type="submit"

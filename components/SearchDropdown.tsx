@@ -113,7 +113,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ isOpen, onClose }) => {
               </button>
             </form>
 
-            {/* Search Results */}
+            {/* Hasil Pencarian */}
             {searchQuery.trim() && (
               <div className="mb-8">
                 {searchResults.length > 0 ? (
@@ -169,7 +169,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ isOpen, onClose }) => {
               </div>
             )}
 
-            {/* Quick Specialty Links */}
+            {/* Tautan Khusus */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-4">
               {SPECIALTY_CATEGORIES.filter((s) => s !== "Semua Spesialis").map(
                 (specialty) => (

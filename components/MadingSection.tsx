@@ -112,7 +112,7 @@ const MadingSection = () => {
               : filteredData.map((item) => (
                   <div key={item.id} className="h-full">
                     {activeTab === "Informasi" ? (
-                      /* --- TAMPILAN GAYA INSTAGRAM (Informasi) --- */
+                      /* --- Informasi --- */
                       <div className="bg-white border border-gray-200 rounded-sm flex flex-col h-full overflow-hidden shadow-sm">
                         {/* Header Nickname & Tanggal */}
                         <div className="p-2 md:p-3 flex items-center justify-between">
@@ -138,7 +138,7 @@ const MadingSection = () => {
                           <MoreHorizontal size={14} className="text-gray-500" />
                         </div>
 
-                        {/* Image Body (Link Aktif) */}
+                        {/* Image Body */}
                         <a
                           href={item.link || "#"}
                           target="_blank"

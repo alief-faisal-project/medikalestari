@@ -172,8 +172,7 @@ const DoctorSection = ({
     setTimeout(() => setIsPaging(false), 400);
   };
 
-  // Mencegah flash konten saat server-side rendering
-  // Render langsung tanpa pengecekan isMounted
+
   // --- RENDER CONTENT ---
   const renderContent = () => {
     if (loading || isPaging) {

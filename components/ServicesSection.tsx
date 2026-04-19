@@ -87,7 +87,7 @@ const ServicesSection = () => {
 
     if (checkTitle === "email") {
       const emailRecipient = "marketing@rsmedikalestari.com";
-      // Membuka Gmail di tab baru
+
       const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${emailRecipient}`;
       const newWindow = window.open(gmailUrl, "_blank");
 

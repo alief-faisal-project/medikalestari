@@ -156,12 +156,12 @@ const HeroSection = () => {
                 className="object-cover"
               />
 
-              {/* Tombol Pause/Play hanya muncul di thumbnail yang aktif */}
+              {/* Tombol Pause/Play */}
               {currentSlide === index && (
                 <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                   <button
                     onClick={(e) => {
-                      e.stopPropagation(); // Agar tidak trigger ganti banner saat klik pause
+                      e.stopPropagation(); 
                       setIsPlaying(!isPlaying);
                     }}
                     className="w-8 h-8 flex items-center justify-center rounded-full bg-white/40 backdrop-blur-sm text-white hover:bg-white/30 transition-colors"

@@ -99,7 +99,7 @@ const AdminSidebar = () => {
 
   const isActive = (path: string) => pathname === path;
 
-  // hindari flicker SSR hydration
+
   if (!mounted) return null;
 
   return (
