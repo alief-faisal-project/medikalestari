@@ -115,6 +115,50 @@ export async function fetchSchedulesByDoctor(
   return data || [];
 }
 
+export async function fetchAllDoctorsWithSchedules() {
+  try {
+    // Fetch all doctors
+    const { data: doctors, error: doctorsError } = await supabase
+      .from("doctors")
+      .select("*");
+
+    if (doctorsError) {
+      console.error("Error fetching doctors:", doctorsError);
+      return [];
+    }
+
+    if (!doctors || doctors.length === 0) {
+      return [];
+    }
+
+    // Fetch all schedules
+    const { data: schedules, error: schedulesError } = await supabase
+      .from("schedules")
+      .select("*");
+
+    if (schedulesError) {
+      console.error("Error fetching schedules:", schedulesError);
+      return doctors.map((doctor) => ({
+        ...doctor,
+        schedules: [],
+      }));
+    }
+
+    // Combine doctors with their schedules
+    const doctorsWithSchedules = doctors.map((doctor) => ({
+      ...doctor,
+      schedules: (schedules || []).filter(
+        (schedule) => schedule.doctor_id === doctor.id,
+      ),
+    }));
+
+    return doctorsWithSchedules;
+  } catch (error) {
+    console.error("Error in fetchAllDoctorsWithSchedules:", error);
+    return [];
+  }
+}
+
 export async function createSchedule(
   schedule: Omit<Schedule, "id" | "created_at">,
 ) {

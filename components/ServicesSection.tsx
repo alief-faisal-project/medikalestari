@@ -37,18 +37,21 @@ const ServicesSection = () => {
       img: "/icons/pelayanan/doctor.png",
       title: "Dokter Kami",
       targetId: "section-dokter",
+      href: null,
     },
     {
       id: 3,
       img: "/icons/pelayanan/calendar.png",
       title: "Jadwal Dokter",
       targetId: null,
+      href: "/jadwal-dokter",
     },
     {
       id: 4,
       img: "/icons/pelayanan/clock.png",
       title: "Jam Operasional",
       targetId: null,
+      href: null,
     },
   ];
 
@@ -57,7 +60,13 @@ const ServicesSection = () => {
     img: string;
     title: string;
     targetId: string | null;
+    href?: string | null;
   }) => {
+    if (item.href) {
+      router.push(item.href);
+      return;
+    }
+
     if (!item.targetId) return;
 
     const el = document.getElementById(item.targetId);
