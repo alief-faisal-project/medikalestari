@@ -121,8 +121,76 @@ export default function KamarPerawatan() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white py-8 flex items-center justify-center font-sans">
-        <div className="w-10 h-10 border-4 border-gray-200 border-t-[#005cb3] rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-white py-8 font-sans">
+        <div className="max-w-6xl mx-auto px-4">
+          {/* Back Navigation Skeleton */}
+          <div className="h-5 w-32 bg-gray-200 rounded mb-8 animate-pulse"></div>
+
+          {/* Tab Navigation Skeleton */}
+          <div className="flex flex-wrap border-b border-gray-100 mb-8 justify-center gap-2 md:gap-12">
+            {Array(3)
+              .fill(0)
+              .map((_, i) => (
+                <div key={i} className="pb-4">
+                  <div className="h-5 w-24 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+              ))}
+          </div>
+
+          {/* Main Card Skeleton */}
+          <div className="bg-white rounded-2xl shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
+            <div className="flex flex-col md:flex-row">
+              {/* Left Side - Image Skeleton */}
+              <div className="md:w-1/2 relative bg-gray-200">
+                <div className="relative aspect-4/3 w-full h-full overflow-hidden md:rounded-tl-2xl animate-pulse"></div>
+              </div>
+
+              {/* Right Side - Details Skeleton */}
+              <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center space-y-6">
+                <div className="space-y-3">
+                  <div className="h-8 w-40 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+
+                <div className="space-y-2">
+                  {Array(3)
+                    .fill(0)
+                    .map((_, i) => (
+                      <div
+                        key={i}
+                        className="h-4 w-full bg-gray-200 rounded animate-pulse"
+                      ></div>
+                    ))}
+                </div>
+
+                <div className="space-y-3 pt-4">
+                  <div className="h-5 w-32 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="grid grid-cols-2 gap-y-3 gap-x-3">
+                    {Array(4)
+                      .fill(0)
+                      .map((_, i) => (
+                        <div
+                          key={i}
+                          className="h-4 w-full bg-gray-200 rounded animate-pulse"
+                        ></div>
+                      ))}
+                  </div>
+                </div>
+
+                <div className="pt-8 border-t border-gray-100 flex items-center gap-6">
+                  {Array(5)
+                    .fill(0)
+                    .map((_, i) => (
+                      <div
+                        key={i}
+                        className="w-5 h-5 bg-gray-200 rounded-full animate-pulse"
+                      ></div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
