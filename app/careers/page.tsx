@@ -401,7 +401,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
           <button
             type="submit"
             disabled={submitting || !config?.is_form_active}
-            className="w-full bg-[#005075] text-white py-3 rounded-lg font-semibold hover:bg-[#003d55] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-[#005cb3] text-white py-3 rounded-lg font-semibold hover:bg-[#005cb3]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 cursor-pointer"
           >
             {submitting ? (
               <>
@@ -414,8 +414,8 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
           </button>
 
           <p className="text-xs text-gray-500 text-center mt-4">
-            Dengan mengirim formulir ini, Anda akan dialihkan ke WhatsApp untuk
-            melanjutkan proses seleksi.
+            Dengan mengirim formulir ini, Anda setuju untuk
+            melanjutkan proses pendaftaran.
           </p>
         </form>
       </div>

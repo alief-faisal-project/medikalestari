@@ -45,17 +45,6 @@ const AdminCareersPage = () => {
     useState<CareerRegistration | null>(null);
   const [showDetail, setShowDetail] = useState(false);
 
-  // Load initial data
-  useEffect(() => {
-    if (authLoading) return;
-    if (!isAuthenticated) {
-      router.push("/admin/login");
-      return;
-    }
-
-    loadData();
-  }, [authLoading, isAuthenticated, router]);
-
   const loadData = async () => {
     try {
       const [configRes, regsRes] = await Promise.all([
@@ -81,7 +70,8 @@ const AdminCareersPage = () => {
         const regsData = await regsRes.json();
         setRegistrations(regsData);
       }
-    } catch {
+    } catch (err) {
+      console.error("Error loading data:", err);
       setMessage({
         type: "error",
         text: "Gagal memuat data",
@@ -90,6 +80,17 @@ const AdminCareersPage = () => {
       setLoading(false);
     }
   };
+
+  // Load initial data
+  useEffect(() => {
+    if (authLoading) return;
+    if (!isAuthenticated) {
+      router.push("/admin/login");
+      return;
+    }
+
+    loadData();
+  }, [authLoading, isAuthenticated, router]);
 
   const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -133,16 +134,28 @@ const AdminCareersPage = () => {
         formData.append("file", bannerFile);
         formData.append("path", `careers/${Date.now()}-${bannerFile.name}`);
 
-        const uploadRes = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
+        try {
+          const uploadRes = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          });
 
-        if (uploadRes.ok) {
+          if (!uploadRes.ok) {
+            const errorData = await uploadRes.json();
+            throw new Error(errorData.error || "Gagal upload gambar");
+          }
+
           const uploadData = await uploadRes.json();
-          bannerUrl = uploadData.url || bannerUrl;
-        } else {
-          console.warn("Banner upload failed, continuing with existing banner");
+          if (!uploadData.url) {
+            throw new Error("URL gambar tidak diterima dari server");
+          }
+          bannerUrl = uploadData.url;
+        } catch (uploadErr) {
+          const uploadErrorMsg =
+            uploadErr instanceof Error
+              ? uploadErr.message
+              : "Gagal upload gambar";
+          throw new Error(`Upload gambar gagal: ${uploadErrorMsg}`);
         }
       }
 
@@ -165,6 +178,7 @@ const AdminCareersPage = () => {
       if (res.ok) {
         setConfig(responseData);
         setBannerFile(null);
+        setBannerPreview(responseData.banner_image_url || "");
         setMessage({
           type: "success",
           text: "Konfigurasi berhasil disimpan",
