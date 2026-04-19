@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Suspense } from "react";
 import DoctorScheduleGrid from "@/components/DoctorScheduleGrid";
+import DoctorScheduleSkeleton from "@/components/DoctorScheduleSkeleton";
 import { fetchAllDoctorsWithSchedules } from "@/lib/api";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -10,13 +11,21 @@ export const metadata = {
     "Lihat jadwal praktek lengkap semua dokter spesialis yang sedang anda cari.",
 };
 
-export default async function DoctorSchedulePage() {
+async function DoctorScheduleContent() {
   const doctorsWithSchedules = await fetchAllDoctorsWithSchedules();
+  return (
+    <DoctorScheduleGrid
+      doctorsWithSchedules={doctorsWithSchedules}
+      loading={false}
+    />
+  );
+}
 
+export default function DoctorSchedulePage() {
   return (
     <div className="w-full min-h-screen bg-white">
       {/* MAIN CONTENT AREA */}
-      <main className="max-w-[1176px] mx-auto px-6 md:px-8 py-12">
+      <main className="max-w-[1175px] mx-auto px-6 md:px-8 py-12">
         {/* BREADCRUMB */}
         <div className="mb-8 md:mb-12 border-b border-slate-100 pb-6 -mt-4">
           <nav className="flex items-center gap-1 text-[14px] text-gray-300 mb-4">
@@ -38,10 +47,9 @@ export default async function DoctorSchedulePage() {
 
         {/* The Grid Component */}
         <div className="mb-20">
-          <DoctorScheduleGrid
-            doctorsWithSchedules={doctorsWithSchedules}
-            loading={false}
-          />
+          <Suspense fallback={<DoctorScheduleSkeleton />}>
+            <DoctorScheduleContent />
+          </Suspense>
         </div>
 
         {/* MINIMALIST FOOTER NOTE */}

@@ -12,6 +12,7 @@ import {
 import { Doctor, Schedule } from "@/lib/types";
 import DoctorScheduleDisplay from "@/components/DoctorScheduleDisplay";
 import DoctorRecommendation from "@/components/DoctorRecommendation";
+import DoctorDetailSkeleton from "@/components/DoctorDetailSkeleton";
 import BookingForm from "@/components/BookingForm";
 
 const DoctorDetailPage = () => {
@@ -53,18 +54,13 @@ const DoctorDetailPage = () => {
     if (doctorId) loadData();
   }, [doctorId]);
 
-  if (loading)
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin h-8 w-8 border-4 border-cyan-500 border-t-transparent rounded-full"></div>
-      </div>
-    );
+  if (loading) return <DoctorDetailSkeleton />;
 
   if (!doctor) return null;
 
   return (
     <div className="min-h-screen bg-white text-[#1A1A1A]">
-      <div className="max-w-[1220px] mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Kontainer Grid Utama */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mt-6">
           {/* KOLOM KIRI: STICKY IMAGE & SOCIALS */}

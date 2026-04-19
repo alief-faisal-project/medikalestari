@@ -84,7 +84,7 @@ export default function DoctorScheduleGrid({
             placeholder="Cari nama dokter..."
             value={searchDoctor}
             onChange={(e) => setSearchDoctor(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 rounded-full border border-slate-300 focus:outline-none focus:border-[#005cb3] focus:ring-2 focus:ring-[#005cb3]/20 transition text-slate-900 placeholder-slate-500"
+            className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-[#005cb3] focus:ring-2 focus:ring-[#005cb3]/20 transition text-slate-900 placeholder-slate-500"
           />
         </div>
 
@@ -121,10 +121,118 @@ export default function DoctorScheduleGrid({
         </div>
       </div>
 
-      {/* TABLE VIEW */}
-      {filteredDoctors.length > 0 ? (
-        <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
-          <table className="w-full border-collapse min-w-full">
+      {/* GRID VIEW - DESKTOP */}
+      {filteredDoctors.length > 0 && (
+        <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredDoctors.map((doctor) => (
+            <button
+              key={doctor.id}
+              onClick={() => router.push(`/dokter/${doctor.id}`)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  router.push(`/dokter/${doctor.id}`);
+                }
+              }}
+              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-all hover:shadow-lg border border-slate-200 hover:border-[#005cb3] text-left"
+            >
+              {/* Doctor Header */}
+              <div className="bg-slate-50 p-4 border-b border-slate-200">
+                <div className="flex gap-4 items-center">
+                  {doctor.image_url && (
+                    <div className="relative w-14 h-14 rounded-full overflow-hidden shrink-0 bg-slate-200">
+                      <Image
+                        src={doctor.image_url}
+                        alt={doctor.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-slate-800 text-sm line-clamp-2">
+                      {doctor.name}
+                    </h3>
+                    <p className="text-xs text-[#005cb3] font-semibold">
+                      {doctor.specialty}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Schedule Table */}
+              <div className="p-4 overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="bg-[#005cb3]/10">
+                      {DAYS.map((day) => (
+                        <th
+                          key={day}
+                          className="py-2 px-1 font-semibold text-slate-700 border-b border-slate-200"
+                        >
+                          {day.substring(0, 3)}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {DAYS.map((day) => {
+                        const schedule = getScheduleForCell(
+                          day,
+                          1,
+                          doctor.schedules,
+                        );
+                        return (
+                          <td
+                            key={`${doctor.id}-${day}-1`}
+                            className="py-2 px-1 border-b border-r border-slate-200 last:border-r-0 text-center h-12 align-middle"
+                          >
+                            {schedule.length > 0 ? (
+                              <div className="text-[10px] font-medium text-slate-700 whitespace-normal">
+                                {schedule[0].start_time.substring(0, 5)}
+                              </div>
+                            ) : (
+                              <span className="text-slate-300">-</span>
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                    <tr>
+                      {DAYS.map((day) => {
+                        const schedule = getScheduleForCell(
+                          day,
+                          2,
+                          doctor.schedules,
+                        );
+                        return (
+                          <td
+                            key={`${doctor.id}-${day}-2`}
+                            className="py-2 px-1 border-r border-slate-200 last:border-r-0 text-center h-12 align-middle"
+                          >
+                            {schedule.length > 0 ? (
+                              <div className="text-[10px] font-medium text-slate-700 whitespace-normal">
+                                {schedule[0].start_time.substring(0, 5)}
+                              </div>
+                            ) : (
+                              <span className="text-slate-300">-</span>
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* TABLE VIEW - MOBILE/TABLET */}
+      {filteredDoctors.length > 0 && (
+        <div className="lg:hidden overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
+          <table className="w-full border-collapse min-w-80">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200">
                 <th className="py-4 px-6 text-left font-bold text-slate-800 text-sm">
@@ -245,7 +353,10 @@ export default function DoctorScheduleGrid({
             </tbody>
           </table>
         </div>
-      ) : (
+      )}
+
+      {/* EMPTY STATE */}
+      {filteredDoctors.length === 0 && (
         <div className="text-center py-16 bg-slate-50 rounded-lg border border-dashed border-slate-300">
           <p className="text-slate-500 text-lg font-medium">
             {searchDoctor
@@ -256,16 +367,20 @@ export default function DoctorScheduleGrid({
       )}
 
       {/* LEGEND */}
-      <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-        <p className="text-sm font-semibold text-slate-800 mb-2">Keterangan:</p>
-        <ul className="text-xs text-slate-700 space-y-1">
-          <li>• Jam praktek ditampilkan dalam format 24 jam (HH:mm)</li>
-          <li>
-            • Baris kedua menampilkan sesi praktek kedua jika tersedia pada hari
-            yang sama
-          </li>
-        </ul>
-      </div>
+      {filteredDoctors.length > 0 && (
+        <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <p className="text-sm font-semibold text-slate-800 mb-2">
+            Keterangan:
+          </p>
+          <ul className="text-xs text-slate-700 space-y-1">
+            <li>• Jam praktek ditampilkan dalam format 24 jam (HH:mm)</li>
+            <li>
+              • Baris kedua menampilkan sesi praktek kedua jika tersedia pada
+              hari yang sama
+            </li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
