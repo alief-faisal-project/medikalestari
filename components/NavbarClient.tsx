@@ -121,10 +121,10 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 
   return (
     <nav className="w-full font-sans sticky top-0 z-[100] bg-white shadow-sm">
-      {/* --- Top Navbar --- */}
+      {/* --- Top Navbar (Dikecilkan py-4 -> py-2) --- */}
       <div className="bg-white py-2 relative z-[101]">
         <div className="max-w-[1200px] mx-auto px-4 md:px-8 flex justify-between items-center">
-          <Link href="/" className="flex items-center scale-92 origin-left">
+          <Link href="/" className="flex items-center">
             {logoNode}
           </Link>
 
