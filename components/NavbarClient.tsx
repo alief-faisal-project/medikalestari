@@ -143,8 +143,11 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               Careers
             </Link>
             <span className="text-gray-300">|</span>
-            <Link href="#" className="hover:text-[#005075] hover:underline">
-              Newsroom
+            <Link
+              href="/tentang-kami"
+              className="hover:text-[#005075] hover:underline"
+            >
+              Tentang Kami
             </Link>
           </div>
 
@@ -186,6 +189,16 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               />
             </Link>
 
+            <Link
+              href="/jadwal-dokter"
+              className="flex items-center h-full px-6 transition-colors font-medium relative group"
+            >
+              Jadwal Dokter
+              <div
+                className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${pathname === "/jadwal-dokter" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+              />
+            </Link>
+
             {Object.keys(menuData).map((item) => (
               <div
                 key={item}
@@ -205,16 +218,6 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                 </AnimatePresence>
               </div>
             ))}
-
-            <Link
-              href="/tentang-kami"
-              className="flex items-center h-full px-6 transition-colors font-medium relative group"
-            >
-              Tentang Kami
-              <div
-                className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${pathname === "/tentang-kami" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
-              />
-            </Link>
           </div>
 
           <div className="flex items-center h-full gap-2 text-[15px]">
@@ -293,6 +296,14 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                   className="text-left p-4 font-bold text-[#005075] border-b text-lg"
                 >
                   Dokter Kami
+                </Link>
+
+                <Link
+                  href="/jadwal-dokter"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-left p-4 font-bold text-[#005075] border-b text-lg"
+                >
+                  Jadwal Dokter
                 </Link>
 
                 {Object.keys(menuData).map((item) => (
