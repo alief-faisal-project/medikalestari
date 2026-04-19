@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AdminSidebar from "@/components/AdminSidebar"; // Import Sidebar baru
+import EmergencyWA from "@/components/EmergencyWA";
 import { AuthProvider } from "@/context/AuthProvider";
 import { usePathname } from "next/navigation";
 
@@ -60,6 +61,7 @@ export default function RootLayout({
             <div className="flex flex-col min-h-screen">
               {!isAdminPage && <Navbar />}
               <main className="flex-1">{children}</main>
+              <EmergencyWA />
               {!isAdminPage && <Footer />}
               {/* Jika halaman login admin, tetap tampilkan children tanpa navbar publik */}
               {isLoginPage && children}

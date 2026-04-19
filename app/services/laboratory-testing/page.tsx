@@ -1,51 +1,50 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, PhoneCall } from "lucide-react";
 
 export default function LaboratoryTesting() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-4xl mx-auto px-4">
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-[#015A85] hover:text-[#005075] mb-8"
-        >
-          <ArrowLeft size={20} />
-          Kembali ke Beranda
-        </Link>
+    <div className="min-h-screen bg-white flex items-center justify-center font-sans text-slate-900">
+      <div className="max-w-md w-full px-8 text-center">
+        {/* Breadcrumb / Navigasi */}
+        <div className="mb-8 flex justify-center">
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-slate-400 hover:text-slate-600 text-sm transition-colors"
+          >
+            <ArrowLeft size={16} /> Kembali ke Beranda
+          </Link>
+        </div>
 
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-4xl font-bold text-[#005075] mb-4">
-            Laboratory Testing
-          </h1>
+        {/* Konten Utama */}
+        <h1 className="text-3xl font-semibold mb-4">
+          Sedang dalam pengembangan
+        </h1>
+        <p className="text-slate-500 text-base leading-relaxed mb-8">
+          Halaman Laboratory Testing RS Medika Lestari sedang diperbarui untuk
+          sistem pelaporan hasil diagnosa yang lebih cepat dan akurat.
+        </p>
 
-          <div className="mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-              Pemeriksaan Laboratorium Akurat
-            </h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Laboratorium kami dilengkapi dengan teknologi diagnostik terkini
-              dan tenaga ahli bersertifikat untuk memberikan hasil pemeriksaan
-              yang akurat dan cepat untuk mendukung diagnosis klinis.
+        {/* Garis Pemisah */}
+        <div className="h-px bg-slate-200 w-full mb-8" />
+
+        {/* Footer & Kontak */}
+        <div className="flex flex-col gap-4">
+          <a
+            href="tel:+622112345678"
+            className="text-slate-400 hover:text-slate-600 text-sm flex items-center justify-center gap-2 transition-colors"
+          >
+            <PhoneCall size={14} /> Hubungi Laboratorium
+          </a>
+          <div className="flex flex-col gap-1">
+            <p className="text-slate-400 text-xs">
+              Unit Diagnostik & Laboratorium Klinik
             </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-[#005075] mb-2">Pemeriksaan</h3>
-              <ul className="text-sm text-gray-700 space-y-1">
-                <li>✓ Tes darah lengkap</li>
-                <li>✓ Kimia klinis</li>
-                <li>✓ Mikrobiologi</li>
-              </ul>
-            </div>
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-[#005075] mb-2">
-                Kecepatan Hasil
-              </h3>
-              <p className="text-sm text-gray-700">Hasil dalam 24 jam</p>
-              <p className="text-sm text-gray-700">Urgent: 2-3 jam</p>
-            </div>
+            <span className="text-slate-400 text-xs font-medium">
+              RS Medika Lestari &copy; 2026
+            </span>
           </div>
         </div>
       </div>
