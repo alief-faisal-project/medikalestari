@@ -338,11 +338,11 @@ const DoctorSection = ({
           <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
             <Link
               href="/"
-              className="text-black hover:text-gray-300 transition-colors"
+              className="text-black/60 hover:text-gray-300 transition-colors"
             >
               Beranda
             </Link>
-            <ChevronRight size={12} className="text-gray-400" />
+            <ChevronRight size={12} className="text-black/60" />
             <span className="font-normal">Dokter Kami</span>
           </nav>
           <h1 className="text-3xl md:text-4xl font-bold text-black border-b border-slate-100 pb-4">
