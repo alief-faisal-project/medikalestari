@@ -151,15 +151,21 @@ export default function KamarPerawatan() {
   if (!currentKamar) return null;
 
   return (
-    <div className="min-h-screen bg-white py-8 font-sans">
+    <div className="min-h-screen bg-white py-8">
       <div className="max-w-6xl mx-auto px-4">
         {/* Navigasi Kembali */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-gray-500 font-medium mb-8 hover:opacity-90 transition-opacity w-fit"
-        >
-          <ArrowLeft size={20} /> Kembali ke Beranda
-        </Link>
+        <div className="pt-16 pb-12 -mt-16">
+          <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
+            <Link
+              href="/"
+              className="text-black/60 hover:text-gray-300 transition-colors"
+            >
+              Beranda
+            </Link>
+            <ChevronRight size={12} className="text-black/60" />
+            <span className="font-normal">Kamar Perawatan</span>
+          </nav>
+        </div>
 
         {/* Tab Navigasi */}
         <div className="flex flex-wrap border-b border-gray-100 mb-8 justify-center gap-2 md:gap-12">
