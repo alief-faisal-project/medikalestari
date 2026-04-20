@@ -2,6 +2,7 @@
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 
 // Ikon Industrial SVG (Minimalis & Hitam)
 const Icons = {
@@ -78,20 +79,6 @@ const Icons = {
       <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z" />
     </svg>
   ),
-  Panah: () => (
-    <svg
-      width="8"
-      height="8"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="black"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="9 18 15 12 9 6" />
-    </svg>
-  ),
 };
 
 const KontakKami = () => {
@@ -152,29 +139,32 @@ const KontakKami = () => {
   };
 
   return (
-    <main className="min-h-screen bg-white text-black font-sans">
-      {/* Header */}
-      <section className="max-w-[1100px] mx-auto px-6 pt-16 pb-12">
-        <nav className="flex items-center gap-2 text-xs font-semibold mb-6">
-          <Link
-            href="/"
-            className="text-black hover:opacity-60 transition-opacity"
-          >
-            Beranda
-          </Link>
-          <Icons.Panah />
-          <span>Kontak Kami</span>
-        </nav>
-        <h1 className="text-4xl font-bold mb-4">Kontak & Informasi</h1>
-        <p className="text-black leading-relaxed max-w-2xl opacity-80">
+    <main className="min-h-screen bg-white text-black">
+      {/* BREADCRUMB & TITLE SECTION */}
+      <div className="max-w-[1175px] mx-auto px-4 md:px-8 -mt-8">
+        <div className="pt-16 pb-12">
+          <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
+            <Link
+              href="/"
+              className="text-black hover:text-gray-300 transition-colors"
+            >
+              Beranda
+            </Link>
+            <ChevronRight size={12} className="text-gray-400" />
+            <span className="font-normal">Kontak Kami</span>
+          </nav>
+          <h1 className="text-3xl md:text-4xl font-bold text-black border-b border-slate-100 pb-4">
+            Kontak & Informasi
+          </h1>
+        </div>
+
+        <p className="text-black leading-relaxed max-w-2xl opacity-80 mb-12 -mt-10">
           Silakan hubungi pusat layanan Rumah Sakit Medika Lestari untuk bantuan
           medis, jadwal dokter, atau informasi fasilitas kesehatan lainnya.
         </p>
-      </section>
 
-      {/* Grid Informasi Utama */}
-      <section className="max-w-[1100px] mx-auto px-6 pb-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-black border border-black">
+        {/* Grid Informasi Utama */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-black border border-black mb-20">
           {contactInfo.map((info, index) => (
             <div
               key={index}
@@ -192,7 +182,7 @@ const KontakKami = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mt-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           {/* Form */}
           <div className="lg:col-span-7">
             <h2 className="text-xl font-bold mb-8 underline underline-offset-8 decoration-2">
@@ -257,7 +247,7 @@ const KontakKami = () => {
               </div>
               <button
                 type="submit"
-                className="bg-black text-white px-8 py-4 text-xs font-bold uppercase hover:bg-zinc-800 transition-all flex items-center gap-3"
+                className="bg-[#005cb3] text-white px-8 py-4 text-xs font-bold uppercase hover:bg-[#005cb3]/90 hover:scale-95 transition-all flex items-center gap-3 cursor-pointer"
               >
                 Kirim Sekarang <Icons.Kirim />
               </button>
@@ -297,7 +287,7 @@ const KontakKami = () => {
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </main>
   );
 };

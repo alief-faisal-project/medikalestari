@@ -109,7 +109,7 @@ const DoctorSection = ({
       } catch (error) {
         console.error("Error loading doctors:", error);
       } finally {
-        // Gunakan requestAnimationFrame agar state update tidak bentrok dengan paint browser
+        // logic requestAnimationFrame agar state update tidak bentrok dengan paint browser
         requestAnimationFrame(() => {
           setLoading(false);
         });
