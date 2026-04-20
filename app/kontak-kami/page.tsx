@@ -2,84 +2,9 @@
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-
-// Ikon Industrial SVG (Minimalis & Hitam)
-const Icons = {
-  Telepon: () => (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="black"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-    </svg>
-  ),
-  Email: () => (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="black"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="2" y="4" width="20" height="16" rx="1" />
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-    </svg>
-  ),
-  Lokasi: () => (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="black"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
-  ),
-  Jam: () => (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="black"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
-    </svg>
-  ),
-  Kirim: () => (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="white"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z" />
-    </svg>
-  ),
-};
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { ChevronRight, Send } from "lucide-react";
 
 const KontakKami = () => {
   const [formData, setFormData] = useState({
@@ -91,28 +16,31 @@ const KontakKami = () => {
 
   const contactInfo = [
     {
-      icon: Icons.Telepon,
+      id: 1,
+      img: "/icons/informasi/telephone.png",
       title: "Telepon",
       details: "(021) 585 4858",
       subtitle: "Layanan Umum",
+      action: () => window.open("https://wa.me/6282246232527", "_blank"),
     },
     {
-      icon: Icons.Email,
+      id: 2,
+      img: "/icons/informasi/email.png",
       title: "Email",
       details: "marketing@rsmedikalestari.com",
       subtitle: "Korespondensi",
+      action: () => {
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=marketing@rsmedikalestari.com`;
+        window.open(gmailUrl, "_blank");
+      },
     },
     {
-      icon: Icons.Lokasi,
+      id: 3,
+      img: "/icons/informasi/map.png",
       title: "Lokasi",
       details: "Jl. HOS Cokroaminoto No.1",
       subtitle: "Ciledug, Tangerang",
-    },
-    {
-      icon: Icons.Jam,
-      title: "Jam Kerja",
-      details: "Buka 24 Jam",
-      subtitle: "Senin - Minggu",
+      action: () => window.open("https://maps.google.com", "_blank"),
     },
   ];
 
@@ -139,10 +67,23 @@ const KontakKami = () => {
   };
 
   return (
-    <main className="min-h-screen bg-white text-black">
-      {/* BREADCRUMB & TITLE SECTION */}
-      <div className="max-w-[1175px] mx-auto px-4 md:px-8 -mt-8">
-        <div className="pt-16 pb-12">
+    <main className="min-h-screen bg-slate-50 text-[#005cb3] relative overflow-hidden pb-20">
+      {/* --- BACKGROUND DECORATION --- */}
+      <div className="absolute inset-0 z-0 opacity-40">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(#005cb3 0.5px, transparent 0.5px)`,
+            backgroundSize: "30px 30px",
+          }}
+        />
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-50" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50" />
+      </div>
+
+      <div className="relative z-10 max-w-[1175px] mx-auto px-4 md:px-8">
+        {/* BREADCRUMB (ASLI) */}
+        <div className="pt-16 pb-12 -mt-8">
           <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
             <Link
               href="/"
@@ -151,7 +92,7 @@ const KontakKami = () => {
               Beranda
             </Link>
             <ChevronRight size={12} className="text-gray-400" />
-            <span className="font-normal">Kontak Kami</span>
+            <span className="font-normal text-black/60">Kontak Kami</span>
           </nav>
           <h1 className="text-3xl md:text-4xl font-bold text-black border-b border-slate-100 pb-4">
             Kontak & Informasi
@@ -163,35 +104,43 @@ const KontakKami = () => {
           medis, jadwal dokter, atau informasi fasilitas kesehatan lainnya.
         </p>
 
-        {/* Grid Informasi Utama */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-black border border-black mb-20">
-          {contactInfo.map((info, index) => (
-            <div
-              key={index}
-              className="bg-white p-8 hover:bg-zinc-50 transition-colors"
+        {/* INFO CARDS */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+          {contactInfo.map((item) => (
+            <motion.div
+              key={item.id}
+              whileHover={{ y: -8 }}
+              onClick={item.action}
+              className="flex flex-col items-center justify-center p-10 bg-white/80 backdrop-blur-sm border border-white cursor-pointer transition-all duration-300 shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:bg-white text-center"
             >
-              <div className="mb-6">
-                <info.icon />
+              <div className="relative w-14 h-14 mb-6">
+                <Image
+                  src={item.img}
+                  alt={item.title}
+                  fill
+                  className="object-contain"
+                />
               </div>
-              <h3 className="text-[11px] font-bold uppercase mb-2 italic">
-                {info.title}
+              <h3 className="text-xs font-bold uppercase mb-2 text-slate-500">
+                {item.title}
               </h3>
-              <p className="text-sm font-bold mb-1">{info.details}</p>
-              <p className="text-xs opacity-70">{info.subtitle}</p>
-            </div>
+              <p className="text-lg font-bold text-black">{item.details}</p>
+              <p className="text-xs text-black/60">{item.subtitle}</p>
+            </motion.div>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-          {/* Form */}
-          <div className="lg:col-span-7">
-            <h2 className="text-xl font-bold mb-8 underline underline-offset-8 decoration-2">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          {/* FORM KIRIM PESAN */}
+          <div className="lg:col-span-7 bg-white p-8 md:p-10 border border-slate-100 shadow-sm">
+            <h2 className="text-xl font-bold text-black mb-8 underline underline-offset-8 decoration-2">
               Kirim Pesan
             </h2>
+
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
-                  <label className="text-[11px] font-bold uppercase">
+                  <label className="text-[11px] font-bold uppercase text-black">
                     Nama Lengkap
                   </label>
                   <input
@@ -200,12 +149,12 @@ const KontakKami = () => {
                     name="nama"
                     value={formData.nama}
                     onChange={handleChange}
-                    className="w-full bg-white border border-black p-3 text-sm focus:bg-zinc-50 outline-none"
+                    className="w-full bg-white border border-slate-200 p-3 text-sm focus:border-[#005cb3] outline-none"
                     placeholder="Nama anda"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[11px] font-bold uppercase">
+                  <label className="text-[11px] font-bold uppercase text-black">
                     Email
                   </label>
                   <input
@@ -214,13 +163,13 @@ const KontakKami = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full bg-white border border-black p-3 text-sm focus:bg-zinc-50 outline-none"
+                    className="w-full bg-white border border-slate-200 p-3 text-sm focus:border-[#005cb3] outline-none"
                     placeholder="email@domain.com"
                   />
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-[11px] font-bold uppercase">
+                <label className="text-[11px] font-bold uppercase text-black">
                   Subjek
                 </label>
                 <input
@@ -229,57 +178,63 @@ const KontakKami = () => {
                   name="subjek"
                   value={formData.subjek}
                   onChange={handleChange}
-                  className="w-full bg-white border border-black p-3 text-sm focus:bg-zinc-50 outline-none"
+                  className="w-full bg-white border border-slate-200 p-3 text-sm focus:border-[#005cb3] outline-none"
                   placeholder="Tujuan pesan"
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-[11px] font-bold uppercase">Pesan</label>
+                <label className="text-[11px] font-bold uppercase text-black">
+                  Pesan
+                </label>
                 <textarea
                   required
                   rows={5}
                   name="pesan"
                   value={formData.pesan}
                   onChange={handleChange}
-                  className="w-full bg-white border border-black p-3 text-sm focus:bg-zinc-50 outline-none resize-none"
+                  className="w-full bg-white border border-slate-200 p-3 text-sm focus:border-[#005cb3] outline-none resize-none"
                   placeholder="Tulis pesan anda..."
                 />
               </div>
+
               <button
                 type="submit"
-                className="bg-[#005cb3] text-white px-8 py-4 text-xs font-bold uppercase hover:bg-[#005cb3]/90 hover:scale-95 transition-all flex items-center gap-3 cursor-pointer"
+                className="bg-[#005cb3] text-white px-8 py-4 text-xs font-bold uppercase hover:bg-[#005cb3]/90 transition-all flex items-center gap-3 cursor-pointer hover:scale-95"
               >
-                Kirim Sekarang <Icons.Kirim />
+                Kirim Sekarang <Send size={14} />
               </button>
             </form>
           </div>
 
-          {/* Departemen */}
+          {/* DAFTAR EKSTENSI (DESAIN MODERN DIPERTAHANKAN) */}
           <div className="lg:col-span-5">
-            <div className="border border-black p-8">
-              <h2 className="text-lg font-bold mb-6 uppercase tracking-tight">
+            <div className="bg-[#005cb3] text-white p-10 shadow-2xl relative overflow-hidden">
+              {/* Overlay dekorasi lingkaran */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 -mr-16 -mt-16 rounded-full" />
+
+              <h2 className="text-xl font-bold uppercase mb-8 border-b border-white/20 pb-4">
                 Daftar Ekstensi
               </h2>
-              <div className="divide-y divide-black/10">
+              <div className="divide-y divide-white/10">
                 {departments.map((dept, index) => (
                   <div
                     key={index}
                     className="flex justify-between items-center py-4 group"
                   >
-                    <span className="text-xs font-medium group-hover:font-bold transition-all">
+                    <span className="text-xs font-medium opacity-90 group-hover:opacity-100 transition-all">
                       {dept.name}
                     </span>
                     <a
                       href={`tel:${dept.phone.replace(/\D/g, "")}`}
-                      className="text-xs font-bold hover:underline"
+                      className="text-sm font-bold hover:underline transition-all"
                     >
                       {dept.phone}
                     </a>
                   </div>
                 ))}
               </div>
-              <div className="mt-8 pt-6 border-t border-black">
-                <p className="text-[10px] leading-relaxed font-bold uppercase italic">
+              <div className="mt-10 p-4 bg-black/10 border-l-4 border-white">
+                <p className="text-[10px] leading-relaxed font-bold uppercase">
                   * Untuk keadaan darurat, segera hubungi nomor IGD (021) 584
                   4521.
                 </p>
