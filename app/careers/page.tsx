@@ -1,8 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Upload, Loader2, AlertCircle, CheckCircle } from "lucide-react";
+import Link from "next/link";
+import {
+  Upload,
+  Loader2,
+  AlertCircle,
+  CheckCircle,
+  ChevronRight,
+} from "lucide-react";
 import { CareersBannerConfig } from "@/lib/types";
 import CareersFormSkeleton from "@/components/CareersFormSkeleton";
 
@@ -12,7 +18,6 @@ const CareersPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const router = useRouter();
 
   // Form state
   const [formData, setFormData] = useState({
@@ -219,6 +224,20 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
 
   return (
     <div className="min-h-screen bg-white">
+      {/* BREADCRUMB & TITLE SECTION */}
+      <div className="max-w-293.75 mx-auto px-4 md:px-8 pt-16 pb-12 -mt-8">
+        <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
+          <Link
+            href="/"
+            className="text-black hover:text-gray-300 transition-colors"
+          >
+            Beranda
+          </Link>
+          <ChevronRight size={12} className="text-black/60" />
+          <span className="font-normal">Karir</span>
+        </nav>
+      </div>
+
       {/* Banner */}
       {config?.banner_image_url && (
         <div className="relative w-full max-w-2xl mx-auto mt-20">
@@ -414,8 +433,8 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
           </button>
 
           <p className="text-xs text-gray-500 text-center mt-4">
-            Dengan mengirim formulir ini, Anda setuju untuk
-            melanjutkan proses pendaftaran.
+            Dengan mengirim formulir ini, Anda setuju untuk melanjutkan proses
+            pendaftaran.
           </p>
         </form>
       </div>
