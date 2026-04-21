@@ -196,7 +196,7 @@ const HeroSection = () => {
             className="
               max-w-5xl mx-auto 
               bg-white 
-              md:rounded-full rounded-none 
+              md:rounded-full rounded-3xl 
               flex flex-col md:flex-row 
               overflow-hidden 
               border border-gray-200
@@ -272,7 +272,7 @@ const HeroSection = () => {
                   if (day) params.append("day", day);
                   window.location.href = `/dokter?${params.toString()}`;
                 }}
-                className="w-full md:w-14 h-12 md:h-14 rounded-none md:rounded-full bg-[#005cb3] flex items-center justify-center gap-2 text-white hover:scale-95 transition cursor-pointer"
+                className="w-full md:w-14 h-12 md:h-14 rounded-full md:rounded-full bg-[#005cb3] flex items-center justify-center gap-2 text-white active:scale-95 transition cursor-pointer"
               >
                 <Search className="w-5 h-5 md:w-10 md:h-8" />
                 <span className="font-semibold md:hidden">Cari Dokter</span>
