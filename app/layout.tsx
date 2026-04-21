@@ -29,6 +29,32 @@ export default function RootLayout({
   const isAdminPage = pathname?.startsWith("/admin");
   const isLoginPage = pathname === "/admin/login";
 
+  // Schema Markup untuk Sitelinks (Menu di bawah pencarian Google)
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Hospital",
+    name: "RS Medika Lestari",
+    url: "https://www.rsmedikalestari.com",
+    logo: "https://www.rsmedikalestari.com/icons/icon-512x512.png",
+    hasPart: [
+      {
+        "@type": "WebPage",
+        name: "Cari Dokter",
+        url: "https://www.rsmedikalestari.com/admin/doctors",
+      },
+      {
+        "@type": "WebPage",
+        name: "Jadwal Dokter",
+        url: "https://www.rsmedikalestari.com/admin/schedules",
+      },
+      {
+        "@type": "WebPage",
+        name: "Layanan Farmasi",
+        url: "https://www.rsmedikalestari.com/farmasi",
+      },
+    ],
+  };
+
   return (
     <html
       lang="en"
@@ -36,14 +62,25 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        {/* PWA Settings */}
+        {/* SEO Metadata */}
+        <title>RS Medika Lestari | Layanan Medis Terpercaya 2026</title>
+        <meta
+          name="description"
+          content="RS Medika Lestari menyediakan layanan kesehatan profesional, farmasi 24 jam, dan tim dokter spesialis."
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+
+        {/* PWA & iOS Settings */}
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#ffffff" />
-
-        {/* iOS Specific Tags */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="RSML" />
+
+        {/* Link  */}
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
 
         <link
