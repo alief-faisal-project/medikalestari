@@ -29,8 +29,9 @@ const ServicesSection = () => {
     {
       id: 1,
       img: "/icons/pelayanan/hospital.png",
-      title: "Fasilitas & Layanan",
+      title: "Kamar Perawatan",
       targetId: null,
+      href: "/services/kamar-perawatan",
     },
     {
       id: 2,
