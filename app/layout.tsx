@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AdminSidebar from "@/components/AdminSidebar";
 import EmergencyWA from "@/components/EmergencyWA";
+import MobileBottomNavbar from "@/components/MobileBottomNavbar";
 import { AuthProvider } from "@/context/AuthProvider";
 import { usePathname } from "next/navigation";
 
@@ -105,6 +106,7 @@ export default function RootLayout({
               {!isAdminPage && <Navbar />}
               <main className="flex-1">{children}</main>
               <EmergencyWA />
+              {!isAdminPage && <MobileBottomNavbar />}
               {!isAdminPage && <Footer />}
               {isLoginPage && children}
             </div>
