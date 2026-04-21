@@ -1,13 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  X,
-  Phone,
-  MessageCircle,
-  CheckCircle,
-  AlertCircle,
-} from "lucide-react";
+import { X, CheckCircle, AlertCircle } from "lucide-react";
 import { sendWhatsAppBooking } from "@/lib/whatsapp";
 
 interface BookingFormProps {
@@ -69,7 +63,7 @@ export default function BookingForm({
         onClose();
         setSubmitted(false);
       }, 3000);
-    } catch (err) {
+    } catch {
       setError("Terjadi kesalahan. Silakan coba lagi.");
     } finally {
       setLoading(false);
@@ -79,6 +73,7 @@ export default function BookingForm({
   return (
     <AnimatePresence>
       <motion.div
+        key="booking-backdrop"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -87,6 +82,7 @@ export default function BookingForm({
       />
 
       <motion.div
+        key="booking-modal"
         initial={{ opacity: 0, scale: 0.98, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.98, y: 10 }}

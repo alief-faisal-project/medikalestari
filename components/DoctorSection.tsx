@@ -224,7 +224,7 @@ const DoctorSection = ({
         >
           {paginatedDoctors.map((doctor, index) => (
             <div
-              key={doctor.id || `doc-${index}`}
+              key={`doctor-${doctor.id || index}-${startIndex + index}`}
               className="group flex flex-row items-start gap-4 md:gap-8 p-4 md:p-8 bg-white border border-slate-100 shadow-sm h-fit rounded-none transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-slate-100"
             >
               {/* Foto Dokter */}
