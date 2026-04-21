@@ -9,11 +9,11 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-cabot: var(--cabot-red);
+  --color-primary: var(--primary-blue);
 }
 
-/* Menyembunyikan scrollbar secara global (Desktop & Mobile)
-   Berlaku untuk Chrome, Safari, Edge, Firefox, dan IE 
+/* Menyembunyikan scrollbar 
+   Chrome, Safari, Edge, Firefox, dan IE 
 */
 * {
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
@@ -32,11 +32,10 @@ body {
 }
 
 .container-custom {
-  /*container konsisten */
+  /*container  */
   @apply max-w-6xl mx-auto px-6;
 }
 
-/* Utas utilitas tetap dipertahankan jika ingin digunakan secara spesifik */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
