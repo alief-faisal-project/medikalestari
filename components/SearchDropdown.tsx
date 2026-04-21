@@ -82,7 +82,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ isOpen, onClose }) => {
           transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
           className="absolute top-full left-0 w-full bg-[#f4f4f4] z-[-1] overflow-hidden hidden md:block border-b border-gray-200 shadow-2xl"
         >
-          <div className="max-w-[1220px] mx-auto px-4 md:px-8 py-10">
+          <div className="max-w-[1180px] mx-auto px-4 md:px-8 py-10">
             {/* Input Section */}
             <form
               onSubmit={handleSearch}
