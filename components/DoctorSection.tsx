@@ -18,8 +18,12 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { fetchDoctors } from "@/lib/api";
-import { Doctor } from "@/lib/types";
+import { fetchAllDoctorsWithSchedules } from "@/lib/api";
+import { Doctor, Schedule } from "@/lib/types";
+
+interface DoctorWithSchedules extends Doctor {
+  schedules?: Schedule[];
+}
 import DoctorSkeleton from "./DoctorSkeleton";
 import BookingForm from "./BookingForm";
 
@@ -54,30 +58,43 @@ const ITEMS_PER_PAGE = 10;
 const DoctorSection = ({
   initialSearch = "",
   initialSpecialty = "",
+  initialDay = "",
 }: {
   initialSearch?: string;
   initialSpecialty?: string;
+  initialDay?: string;
 }) => {
   // --- STATES ---
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [doctors, setDoctors] = useState<DoctorWithSchedules[]>([]);
   const [loading, setLoading] = useState(true);
   const [isPaging, setIsPaging] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+  const [selectedDoctor, setSelectedDoctor] =
+    useState<DoctorWithSchedules | null>(null);
 
   const [tempFilter, setTempFilter] = useState({
     name: initialSearch || "",
     specialty: initialSpecialty || "Semua Spesialis",
-    day: "Semua Hari",
+    day: initialDay || "Semua Hari",
   });
 
   const [activeFilter, setActiveFilter] = useState({
     name: initialSearch || "",
     specialty: initialSpecialty || "Semua Spesialis",
-    day: "Semua Hari",
+    day: initialDay || "Semua Hari",
   });
 
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // --- HELPER FUNCTIONS ---
+  const jumpToTop = useCallback(() => {
+    if (sectionRef.current) {
+      const yOffset = -150;
+      const elementTop =
+        sectionRef.current.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({ top: elementTop + yOffset });
+    }
+  }, []);
 
   // --- LOGIC HELPER ---
   const getUniqueDoctors = useCallback((doctors: Doctor[]): Doctor[] => {
@@ -101,9 +118,9 @@ const DoctorSection = ({
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await fetchDoctors();
+        const data = await fetchAllDoctorsWithSchedules();
         if (data) {
-          const uniqueData = getUniqueDoctors(data);
+          const uniqueData = getUniqueDoctors(data as DoctorWithSchedules[]);
           setDoctors(uniqueData);
         }
       } catch (error) {
@@ -128,16 +145,6 @@ const DoctorSection = ({
     }
   }, [tempFilter.name, activeFilter.name]);
 
-  // --- HELPER FUNCTIONS ---
-  const jumpToTop = () => {
-    if (sectionRef.current) {
-      const yOffset = -150;
-      const elementTop =
-        sectionRef.current.getBoundingClientRect().top + window.pageYOffset;
-      window.scrollTo({ top: elementTop + yOffset });
-    }
-  };
-
   const filteredDoctors = useMemo(() => {
     return doctors.filter((doc) => {
       const matchSpecialty =
@@ -146,7 +153,19 @@ const DoctorSection = ({
       const matchName =
         activeFilter.name === "" ||
         doc.name.toLowerCase().includes(activeFilter.name.toLowerCase());
-      return matchSpecialty && matchName;
+
+      // Filter by day - check if doctor has schedule on selected day
+      let matchDay = true;
+      if (activeFilter.day !== "Semua Hari") {
+        matchDay =
+          doc.schedules && doc.schedules.length > 0
+            ? doc.schedules.some(
+                (schedule) => schedule.day_of_week === activeFilter.day,
+              )
+            : false;
+      }
+
+      return matchSpecialty && matchName && matchDay;
     });
   }, [doctors, activeFilter]);
 
@@ -171,7 +190,6 @@ const DoctorSection = ({
     jumpToTop();
     setTimeout(() => setIsPaging(false), 400);
   };
-
 
   // --- RENDER CONTENT ---
   const renderContent = () => {
@@ -310,7 +328,7 @@ const DoctorSection = ({
         className="flex flex-col items-center justify-center h-96 bg-slate-50/50 rounded-none border border-dashed border-slate-200"
       >
         <Search size={40} className="text-slate-300 mb-4" />
-        <h3 className="text-slate-500 font-bold">Dokter tidak ditemukan</h3>
+        <h3 className="text-slate-500 font-normal">Dokter tidak ditemukan</h3>
       </motion.div>
     );
   };

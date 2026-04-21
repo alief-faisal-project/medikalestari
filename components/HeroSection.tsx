@@ -195,7 +195,7 @@ const HeroSection = () => {
           <div
             className="
               max-w-5xl mx-auto 
-              bg-transparent 
+              bg-white 
               md:rounded-full rounded-none 
               flex flex-col md:flex-row 
               overflow-hidden 

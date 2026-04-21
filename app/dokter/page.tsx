@@ -1,7 +1,11 @@
 import DoctorSection from "@/components/DoctorSection";
 
 interface DoctorPageProps {
-  searchParams: Promise<{ search?: string; specialty?: string }>;
+  readonly searchParams: Promise<{
+    search?: string;
+    specialty?: string;
+    day?: string;
+  }>;
 }
 
 export const metadata = {
@@ -10,13 +14,16 @@ export const metadata = {
     "Lihat daftar dokter spesialis kami yang berpengalaman dan terpercaya",
 };
 
-export default async function DoctorPage({ searchParams }: DoctorPageProps) {
+export default async function DoctorPage({
+  searchParams,
+}: Readonly<DoctorPageProps>) {
   const params = await searchParams;
   return (
     <div className="w-full min-h-screen bg-white">
       <DoctorSection
         initialSearch={params.search}
         initialSpecialty={params.specialty}
+        initialDay={params.day}
       />
     </div>
   );

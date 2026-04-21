@@ -64,7 +64,7 @@ export default function RootLayout({
     >
       <head>
         {/* SEO Metadata */}
-        <title>RS Medika Lestari | Layanan Medis Terpercaya 2026</title>
+        <title>RS Medika Lestari</title>
         <meta
           name="description"
           content="RS Medika Lestari menyediakan layanan kesehatan profesional, farmasi 24 jam, dan tim dokter spesialis."
