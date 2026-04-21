@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { ChevronRight } from "lucide-react";
 import {
   fetchDoctorById,
   fetchSchedulesByDoctor,
@@ -60,7 +62,28 @@ const DoctorDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-white text-[#1A1A1A]">
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        {/* BREADCRUMB & TITLE SECTION */}
+        <div className="pt-16 pb-12 -mt-20">
+          <nav className="flex items-center gap-2 text-[14px] font-normal text-gray-600 mb-6">
+            <Link
+              href="/"
+              className="text-black/60 hover:text-gray-300 transition-colors"
+            >
+              Beranda
+            </Link>
+            <ChevronRight size={16} className="text-black/40" />
+            <Link
+              href="/dokter"
+              className="text-black/60 hover:text-gray-300 transition-colors"
+            >
+              Dokter Kami
+            </Link>
+            <ChevronRight size={16} className="text-black/40" />
+            <span className="text-gray-300 font-medium">{doctor.name}</span>
+          </nav>
+        </div>
+
         {/* Kontainer Grid Utama */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mt-6">
           {/* KOLOM KIRI: STICKY IMAGE & SOCIALS */}
@@ -99,7 +122,7 @@ const DoctorDetailPage = () => {
                 </a>
                 <a
                   href="#"
-                  className="w-11 h-11 flex items-center justify-center rounded-full bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white transition-all"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-linear-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white transition-all"
                 >
                   <i className="fa-brands fa-instagram text-3xl"></i>
                 </a>

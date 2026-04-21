@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   Upload,
@@ -8,6 +9,7 @@ import {
   AlertCircle,
   CheckCircle,
   ChevronRight,
+  X,
 } from "lucide-react";
 import { CareersBannerConfig } from "@/lib/types";
 import CareersFormSkeleton from "@/components/CareersFormSkeleton";
@@ -18,6 +20,7 @@ const CareersPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -67,7 +70,7 @@ const CareersPage = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "experience_years" ? parseInt(value) || 0 : value,
+      [name]: name === "experience_years" ? Number.parseInt(value) || 0 : value,
     }));
   };
 
@@ -98,7 +101,9 @@ const CareersPage = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
     setError("");
     setSubmitting(true);
@@ -241,203 +246,311 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
       {/* Banner */}
       {config?.banner_image_url && (
         <div className="relative w-full max-w-2xl mx-auto mt-20">
-          <img
+          <Image
             src={config.banner_image_url}
             alt="Careers Banner"
+            width={800}
+            height={600}
             className="w-full h-auto object-contain"
           />
         </div>
       )}
 
-      {/* Form Section */}
-      <div className="max-w-2xl mx-auto px-4 py-12">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white rounded-2xl shadow-lg p-8"
+      {/* Button Daftar Section */}
+      <div className="max-w-2xl mx-auto px-4 py-12 flex justify-center">
+        <button
+          onClick={() => setShowModal(true)}
+          className="px-8 py-4 bg-[#005cb3] text-white rounded-lg font-semibold hover:bg-[#005cb3]/90 transition-colors cursor-pointer active:scale-95"
         >
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
-              <AlertCircle size={20} className="text-red-500 shrink-0" />
-              <p className="text-red-700 text-sm">{error}</p>
-            </div>
-          )}
-
-          {success && (
-            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
-              <CheckCircle size={20} className="text-green-500 shrink-0" />
-              <p className="text-green-700 text-sm">
-                Data berhasil dikirim! Anda akan dialihkan ke WhatsApp...
-              </p>
-            </div>
-          )}
-
-          {/* Basic Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nama Lengkap *
-              </label>
-              <input
-                type="text"
-                name="full_name"
-                value={formData.full_name}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
-                placeholder="Masukkan nama lengkap"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email *
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
-                placeholder="email@example.com"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                No. HP *
-              </label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
-                placeholder="08xxxxxxxxxx"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Posisi Lamaran *
-              </label>
-              <input
-                type="text"
-                name="position"
-                value={formData.position}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
-                placeholder="Misal: Perawat, Dokter, dll"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Pendidikan Terakhir *
-              </label>
-              <input
-                type="text"
-                name="education"
-                value={formData.education}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
-                placeholder="Misal: S1, D3, dll"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Pengalaman Kerja (Tahun) *
-              </label>
-              <input
-                type="number"
-                name="experience_years"
-                value={formData.experience_years}
-                onChange={handleInputChange}
-                min="0"
-                required
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
-                placeholder="0"
-              />
-            </div>
-          </div>
-
-          {/* Dynamic Criteria Fields */}
-          {config?.criteria &&
-            Array.isArray(config.criteria) &&
-            config.criteria.length > 0 && (
-              <div className="mb-6 pb-6 border-b">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                  Kriteria Tambahan
-                </h3>
-                <div className="space-y-4">
-                  {config.criteria.map((criterion, index) => (
-                    <div key={index}>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        {criterion}
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.criteria_fields[criterion] || ""}
-                        onChange={(e) =>
-                          handleCriteriaChange(criterion, e.target.value)
-                        }
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
-                        placeholder={`Masukkan ${criterion.toLowerCase()}`}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-          {/* Resume Upload */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Upload Resume (PDF) *
-            </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#005075] transition-colors">
-              <input
-                type="file"
-                accept=".pdf"
-                onChange={handleResumeChange}
-                className="hidden"
-                id="resume-input"
-              />
-              <label htmlFor="resume-input" className="cursor-pointer">
-                <Upload size={32} className="mx-auto mb-2 text-gray-400" />
-                <p className="text-sm font-medium text-gray-600">
-                  {resumePreview || "Klik untuk upload resume (Max 5MB)"}
-                </p>
-              </label>
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={submitting || !config?.is_form_active}
-            className="w-full bg-[#005cb3] text-white py-3 rounded-lg font-semibold hover:bg-[#005cb3]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 cursor-pointer"
-          >
-            {submitting ? (
-              <>
-                <Loader2 size={18} className="animate-spin" />
-                Mengirim...
-              </>
-            ) : (
-              "Kirim Pendaftaran"
-            )}
-          </button>
-
-          <p className="text-xs text-gray-500 text-center mt-4">
-            Dengan mengirim formulir ini, Anda setuju untuk melanjutkan proses
-            pendaftaran.
-          </p>
-        </form>
+          Daftar Lowongan
+        </button>
       </div>
+
+      {/* Modal Backdrop */}
+      {showModal && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-2 sm:p-4"
+          onClick={() => setShowModal(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setShowModal(false);
+          }}
+          role="presentation"
+        >
+          {/* Modal Container */}
+          <div
+            className="bg-white rounded-xl shadow-2xl w-full max-w-xl max-h-[95vh] sm:max-h-[90vh] flex flex-col z-50"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 shrink-0">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-800">
+                Formulir Pendaftaran Karir
+              </h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-gray-500 hover:text-gray-700 transition-colors p-1"
+                aria-label="Close modal"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Content with Scrollbar */}
+            <div className="flex-1 overflow-y-auto p-3 sm:p-4">
+              <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+                {error && (
+                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
+                    <AlertCircle size={18} className="text-red-500 shrink-0" />
+                    <p className="text-red-700 text-xs sm:text-sm">{error}</p>
+                  </div>
+                )}
+
+                {success && (
+                  <div className="p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2">
+                    <CheckCircle
+                      size={18}
+                      className="text-green-500 shrink-0"
+                    />
+                    <p className="text-green-700 text-xs sm:text-sm">
+                      Data berhasil dikirim! Anda akan dialihkan ke WhatsApp...
+                    </p>
+                  </div>
+                )}
+
+                {/* Basic Info */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                  <div>
+                    <label
+                      htmlFor="full_name"
+                      className="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Nama Lengkap *
+                    </label>
+                    <input
+                      id="full_name"
+                      type="text"
+                      name="full_name"
+                      value={formData.full_name}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+                      placeholder="Masukkan nama lengkap"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Email *
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+                      placeholder="email@example.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                    >
+                      No. HP *
+                    </label>
+                    <input
+                      id="phone"
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+                      placeholder="08xxxxxxxxxx"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="position"
+                      className="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Posisi Lamaran *
+                    </label>
+                    <input
+                      id="position"
+                      type="text"
+                      name="position"
+                      value={formData.position}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+                      placeholder="Misal: Perawat, Dokter, dll"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="education"
+                      className="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Pendidikan Terakhir *
+                    </label>
+                    <select
+                      id="education"
+                      name="education"
+                      value={formData.education}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none bg-white"
+                    >
+                      <option value="">Pilih Pendidikan Terakhir</option>
+                      <option value="D3">D3</option>
+                      <option value="S1">S1</option>
+                      <option value="S2">S2</option>
+                      <option value="S3">S3</option>
+                      <option value="Profesi">Profesi</option>
+                      <option value="Spesialis">Spesialis</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="experience_years"
+                      className="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Pengalaman Kerja (Tahun) *
+                    </label>
+                    <input
+                      id="experience_years"
+                      type="number"
+                      name="experience_years"
+                      value={formData.experience_years}
+                      onChange={handleInputChange}
+                      min="0"
+                      required
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+                      placeholder="0"
+                    />
+                  </div>
+                </div>
+
+                {/* Dynamic Criteria Fields */}
+                {config?.criteria &&
+                  Array.isArray(config.criteria) &&
+                  config.criteria.length > 0 && (
+                    <div className="pb-3 sm:pb-4 border-b">
+                      <div className="space-y-2 sm:space-y-3">
+                        {config.criteria.map((criterion) => {
+                          // Ubah "not" menjadi "Alasan Ingin Bekerja Disini"
+                          const displayCriterion =
+                            criterion.toLowerCase() === "not"
+                              ? "Alasan Ingin Bekerja Disini"
+                              : criterion;
+
+                          return (
+                            <div key={`criterion-${criterion}`}>
+                              <label
+                                htmlFor={`criterion-${criterion}`}
+                                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                              >
+                                {displayCriterion}
+                              </label>
+                              <input
+                                id={`criterion-${criterion}`}
+                                type="text"
+                                value={
+                                  formData.criteria_fields[criterion] || ""
+                                }
+                                onChange={(e) =>
+                                  handleCriteriaChange(
+                                    criterion,
+                                    e.target.value,
+                                  )
+                                }
+                                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+                                placeholder={
+                                  criterion.toLowerCase() === "not"
+                                    ? "Jelaskan alasan Anda ingin bekerja di RS Medika Lestari"
+                                    : `Masukkan ${criterion.toLowerCase()}`
+                                }
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                {/* Resume Upload */}
+                <div>
+                  <label
+                    htmlFor="resume-input"
+                    className="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Upload Resume (PDF) *
+                  </label>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 sm:p-4 text-center hover:border-[#005075] transition-colors">
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      onChange={handleResumeChange}
+                      className="hidden"
+                      id="resume-input"
+                    />
+                    <label
+                      htmlFor="resume-input"
+                      className="cursor-pointer block"
+                    >
+                      <Upload
+                        size={24}
+                        className="mx-auto mb-1 text-gray-400"
+                      />
+                      <p className="text-xs sm:text-sm font-medium text-gray-600">
+                        {resumePreview || "Klik upload resume (Max 5MB)"}
+                      </p>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Form Footer Buttons */}
+                <div className="flex gap-2 sm:gap-3 pt-3 sm:pt-4 border-t border-gray-200">
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="flex-1 px-3 py-2 text-sm border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting || !config?.is_form_active}
+                    className="flex-1 bg-[#005cb3] text-white py-2 text-sm rounded-lg font-semibold hover:bg-[#005cb3]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    {submitting ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        <span className="hidden sm:inline">Mengirim...</span>
+                        <span className="sm:hidden">Kirim...</span>
+                      </>
+                    ) : (
+                      "Kirim Pendaftaran"
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
