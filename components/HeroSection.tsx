@@ -161,7 +161,7 @@ const HeroSection = () => {
                 <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                   <button
                     onClick={(e) => {
-                      e.stopPropagation(); 
+                      e.stopPropagation();
                       setIsPlaying(!isPlaying);
                     }}
                     className="w-8 h-8 flex items-center justify-center rounded-full bg-white/40 backdrop-blur-sm text-white hover:bg-white/30 transition-colors"
@@ -199,7 +199,7 @@ const HeroSection = () => {
               md:rounded-full rounded-3xl 
               flex flex-col md:flex-row 
               overflow-hidden 
-              border border-gray-200
+              border border-gray-300
                 ]
             "
           >
