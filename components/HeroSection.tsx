@@ -138,7 +138,7 @@ const HeroSection = () => {
         ))}
 
         {/* PREVIEW INDICATORS (Desktop Only) */}
-        <div className="hidden md:flex absolute bottom-22 left-1/2 -translate-x-1/2 z-40 gap-4 opacity-40 hover:opacity-100 transition-opacity duration-500 p-4">
+        <div className="hidden md:flex absolute bottom-15 left-1/2 -translate-x-1/2 z-40 gap-4 opacity-40 hover:opacity-100 transition-opacity duration-500 p-4">
           {slides.map((slide, index) => (
             <div
               key={slide.id}

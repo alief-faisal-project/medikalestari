@@ -167,7 +167,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
           style={{ clipPath: "polygon(40px 0, 100% 0, 100% 100%, 0% 100%)" }}
         />
 
-        <div className="max-w-[1220px] mx-auto px-4 md:px-8 flex justify-between items-center h-14 relative z-10">
+        <div className="max-w-[1220px] mx-auto px-4 md:px-8 flex justify-between items-center h-12 relative z-10">
           <div className="flex h-full text-[15px]">
             <button
               onClick={handleHomeClick}
