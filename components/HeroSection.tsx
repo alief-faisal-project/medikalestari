@@ -189,8 +189,8 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* SEARCH BAR SECTION */}
-      <div className="relative w-full px-4 py-8 md:py-0 md:-mt-22 md:z-50 bg-white md:bg-transparent">
+      {/* SEARCH BAR */}
+      <div className="relative w-full px-4 py-8 md:py-0 md:-mt-14 md:z-50 bg-white md:bg-transparent">
         <div className="max-w-5xl mx-auto">
           <div
             className="
