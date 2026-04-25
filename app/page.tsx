@@ -3,7 +3,7 @@ import ServicesSection from "@/components/ServicesSection";
 import MadingSection from "@/components/MadingSection"; // Import komponen baru
 import LocationSection from "@/components/LocationSection";
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className="w-full min-h-screen bg-white">
       <main>

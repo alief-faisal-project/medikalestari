@@ -18,6 +18,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSearchParams } from "next/navigation";
 import { fetchAllDoctorsWithSchedules } from "@/lib/api";
 import { Doctor, Schedule } from "@/lib/types";
 
@@ -72,15 +73,23 @@ const DoctorSection = ({
   const [selectedDoctor, setSelectedDoctor] =
     useState<DoctorWithSchedules | null>(null);
 
+  // Baca parameter dari URL menggunakan useSearchParams
+  const searchParams = useSearchParams();
+  const urlSpecialty = searchParams.get("specialty") || "";
+
+  // Tentukan specialty awal dari URL atau dari props
+  const finalInitialSpecialty =
+    urlSpecialty || initialSpecialty || "Semua Spesialis";
+
   const [tempFilter, setTempFilter] = useState({
     name: initialSearch || "",
-    specialty: initialSpecialty || "Semua Spesialis",
+    specialty: finalInitialSpecialty,
     day: initialDay || "Semua Hari",
   });
 
   const [activeFilter, setActiveFilter] = useState({
     name: initialSearch || "",
-    specialty: initialSpecialty || "Semua Spesialis",
+    specialty: finalInitialSpecialty,
     day: initialDay || "Semua Hari",
   });
 
@@ -113,6 +122,19 @@ const DoctorSection = ({
       globalThis.window.scrollTo({ top: 0, behavior: "instant" });
     }
   }, []);
+
+  // --- AUTO APPLY FILTER WHEN URL SPECIALTY CHANGES ---
+  useEffect(() => {
+    if (urlSpecialty && urlSpecialty !== "Semua Spesialis") {
+      Promise.resolve().then(() => {
+        setActiveFilter((prev) => ({
+          ...prev,
+          specialty: urlSpecialty,
+        }));
+        setCurrentPage(1);
+      });
+    }
+  }, [urlSpecialty]);
 
   // --- DATA LOADING ---
   useEffect(() => {
