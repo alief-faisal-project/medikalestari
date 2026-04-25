@@ -2,29 +2,15 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const MobileBottomNavbar = () => {
   const pathname = usePathname();
-  const router = useRouter();
-
-  const isActive = (href: string) => pathname === href;
-
-  const handleHomeClick = (e: React.MouseEvent) => {
-    if (pathname === "/") {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      router.push("/");
-    }
-  };
 
   const navItems = [
     {
       label: "Beranda",
       href: "/",
-      onClick: handleHomeClick,
-      // Ikon Home ala Facebook (Lebih proporsional)
       outline: (
         <path d="M3 10.182V20a1 1 0 0 0 1 1h5v-6h6v6h5a1 1 0 0 0 1-1v-9.818a1 1 0 0 0-.316-.727l-8-7.273a1 1 0 0 0-1.368 0l-8 7.273A1 1 0 0 0 3 10.182Z" />
       ),
@@ -35,7 +21,6 @@ const MobileBottomNavbar = () => {
     {
       label: "Cari Dokter",
       href: "/dokter",
-      // Ikon Users/Dokter
       outline: (
         <g>
           <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
@@ -56,7 +41,6 @@ const MobileBottomNavbar = () => {
     {
       label: "Jadwal",
       href: "/jadwal-dokter",
-      // Ikon Clock
       outline: (
         <g>
           <circle cx="12" cy="12" r="10" />
@@ -79,7 +63,6 @@ const MobileBottomNavbar = () => {
     {
       label: "Kamar",
       href: "/services/kamar-perawatan",
-      // Ikon Gedung/Kamar
       outline: (
         <g>
           <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
@@ -105,20 +88,28 @@ const MobileBottomNavbar = () => {
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-[0_-4px_12px_rgba(0,0,0,0.08)] z-50">
         <div className="flex justify-around items-center">
           {navItems.map((item) => {
-            const isItemActive = isActive(item.href);
+            const isItemActive = pathname === item.href;
 
             return (
               <Link
                 key={item.label}
                 href={item.href}
-                onClick={item.onClick}
-                className={`flex flex-col items-center justify-center w-1/4 py-3 px-2 transition-all duration-200 relative ${
+                // Prefetch otomatis aktif (true), membuat perpindahan halaman terasa instan
+                prefetch={true}
+                onClick={(e) => {
+                  // Jika user klik menu yang sedang aktif, lakukan scroll ke atas
+                  if (isItemActive) {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }
+                }}
+                className={`flex flex-col items-center justify-center w-1/4 py-3 px-2 transition-all duration-200 relative tap-highlight-transparent ${
                   isItemActive ? "text-[#005cb3]" : "text-gray-400"
                 }`}
               >
-                {/* Indikator Garis Biru Atas ala Facebook */}
+                {/* Indikator Atas */}
                 <div
-                  className={`absolute top-0 w-full h-[3px] bg-[#005cb3] rounded-b-sm transition-transform duration-300 ${
+                  className={`absolute top-0 w-full h-[3px] bg-[#005cb3] rounded-b-sm transition-transform duration-300 ease-out ${
                     isItemActive ? "scale-x-100" : "scale-x-0"
                   }`}
                 />
@@ -126,14 +117,14 @@ const MobileBottomNavbar = () => {
                 <div className="relative mt-1">
                   <svg
                     viewBox="0 0 24 24"
-                    width="26"
-                    height="26"
+                    width="24" // Ukuran sedikit dikecilkan agar lebih proporsional
+                    height="24"
                     fill={isItemActive ? "currentColor" : "none"}
                     stroke="currentColor"
                     strokeWidth={isItemActive ? "0.5" : "1.8"}
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="transition-all duration-200"
+                    className="transition-transform duration-200 active:scale-90"
                   >
                     {isItemActive ? item.solid : item.outline}
                   </svg>
@@ -154,7 +145,8 @@ const MobileBottomNavbar = () => {
         </div>
       </nav>
 
-      <div className="md:hidden h-16" />
+      {/* Spacer agar konten tidak tertutup navbar */}
+      <div className="md:hidden h-[64px]" />
     </>
   );
 };
