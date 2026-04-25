@@ -156,7 +156,7 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.1 }}
-          className="fixed inset-0 bg-white z-[999] md:hidden flex flex-col"
+          className="fixed inset-0 bg-white z-[999] md:hidden flex flex-col overscroll-none"
         >
           {isNavigating && (
             <div className="absolute top-0 left-0 w-full h-[1px] bg-black z-[1000]" />
@@ -188,7 +188,8 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
                 placeholder="Cari dokter atau spesialis..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent flex-1 outline-none text-[15px] py-1 text-gray-700 "
+                // FIX: Pakai 16px agar tidak auto-zoom di mobile browser
+                className="bg-transparent flex-1 outline-none text-[16px] py-1 text-gray-700 "
               />
 
               {searchQuery && (
