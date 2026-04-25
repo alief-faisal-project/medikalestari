@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 
 const Footer = () => {
-  // SVG Paths dengan warna brand asli
   const WhatsAppIcon = (
     <path
       fill="#25D366"
@@ -36,7 +35,7 @@ const Footer = () => {
       ),
     },
     {
-      label: "Chat Customer Service",
+      label: "Customer Service",
       value: "+62 822-4623-2527",
       href: "https://wa.me/6282246232527",
       icon: (
@@ -44,7 +43,7 @@ const Footer = () => {
       ),
     },
     {
-      label: "Email",
+      label: "Email Support",
       value: "marketing@rsmedikalestari.com",
       href: "mailto:marketing@rsmedikalestari.com",
       icon: (
@@ -61,8 +60,8 @@ const Footer = () => {
     },
     {
       label: "Lokasi Kami",
-      value: "Lihat Lokasi Maps",
-      href: "https://maps.app.goo.gl/wJEhjgaJCJGW8wP6A",
+      value: "Lihat Maps",
+      href: "https://maps.google.com",
       icon: NewLocationIcon,
     },
   ];
@@ -113,7 +112,6 @@ const Footer = () => {
 
   return (
     <footer className="w-full font-sans">
-      {/* Definisi Gradien Instagram */}
       <svg width="0" height="0" className="absolute">
         <defs>
           <linearGradient
@@ -132,16 +130,17 @@ const Footer = () => {
         </defs>
       </svg>
 
-      {/* ===== Contact Bar ===== */}
-      <div className="bg-white border-t border-gray-100 py-12 mt-30">
-        <div className="max-w-[1900px] mx-auto px-6">
-          <div className="flex flex-wrap lg:flex-nowrap justify-between items-stretch">
+      {/* ===== Contact Bar (Desktop & Mobile Horizontal) ===== */}
+      <div className="bg-white border-t border-gray-100 py-6 lg:py-12 -mt-40 md:-mt-5">
+        <div className="max-w-[1900px] mx-auto px-1 md:px-6">
+          {/* Menggunakan flex-row agar selalu horizontal di semua layar */}
+          <div className="flex flex-row justify-between items-start w-full">
             {contactItems.map((item, idx) => (
               <div
                 key={idx}
-                className={`flex flex-col items-center text-center flex-1 min-w-[200px] px-4 mb-8 lg:mb-0 ${
+                className={`flex-1 flex flex-col items-center text-center px-0.5 md:px-4 ${
                   idx !== contactItems.length - 1
-                    ? "lg:border-r border-gray-200"
+                    ? "border-r border-gray-200"
                     : ""
                 }`}
               >
@@ -155,19 +154,21 @@ const Footer = () => {
                   }
                   className="group flex flex-col items-center w-full"
                 >
-                  <div className="mb-4">
+                  <div className="mb-2 md:mb-4">
                     <svg
                       viewBox="0 0 24 24"
-                      className="w-9 h-9 fill-[#004a8c] group-hover:fill-[#005cb3] transition-all duration-300 group-hover:scale-110"
+                      className="w-5 h-5 md:w-9 md:h-9 fill-[#004a8c] group-hover:fill-[#005cb3] transition-all duration-300"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       {item.icon}
                     </svg>
                   </div>
-                  <p className="text-[11px] text-gray-400 font-semibold uppercase tracking-[0.1em] mb-2">
+                  {/* Label: Sangat kecil di mobile agar tidak makan tempat */}
+                  <p className="text-[6px] md:text-[11px] text-gray-400 font-semibold uppercase leading-tight mb-1">
                     {item.label}
                   </p>
-                  <span className="text-sm md:text-[15px] font-bold text-[#004a8c] group-hover:text-[#005cb3] group-hover:underline transition-all">
+                  {/* Value: Link asli tetap ada, ukuran disesuaikan agar muat sebaris */}
+                  <span className="text-[7px] md:text-[15px] font-bold text-[#004a8c] group-hover:text-[#005cb3] transition-all break-all md:break-normal leading-none">
                     {item.value}
                   </span>
                 </a>
@@ -177,7 +178,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* ===== Main Footer  ===== */}
+      {/* ===== Main Footer ===== */}
       <div className="relative bg-[#005cb3] text-white overflow-hidden">
         <div
           className="absolute top-0 right-0 h-full w-[45%] bg-gradient-to-l from-[#004585] to-transparent opacity-40 hidden md:block"
@@ -217,29 +218,23 @@ const Footer = () => {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center transition-all hover:scale-110 shadow-sm group"
+                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center transition-all hover:scale-110 shadow-sm"
                   >
-                    <svg
-                      viewBox="0 0 24 24"
-                      className="w-6 h-6" // Ukuran ikon diperbesar sedikit agar warna aslinya terlihat bagus
-                    >
+                    <svg viewBox="0 0 24 24" className="w-6 h-6">
                       {social.icon}
                     </svg>
                   </Link>
                 ))}
               </div>
               <div className="mt-8 pt-4 border-t border-white/10">
-                <a
-                  href="mailto:marketing@rsmedikalestari.com"
-                  className="font-bold hover:text-blue-200 hover:underline underline-offset-4 text-sm md:text-base transition-all"
-                >
+                <p className="font-bold text-sm md:text-base">
                   marketing@rsmedikalestari.com
-                </a>
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="mt-12 md:mt-16 pt-6 border-t border-white/10 text-left">
+          <div className="mt-12 mb-20 md:mb-1 d:mt-16 pt-6 border-t border-white/10 text-left">
             <p className="text-xs md:text-sm opacity-70">
               © 1994-{new Date().getFullYear()} RS Medika Lestari. Semua Hak
               Cipta Dilindungi
