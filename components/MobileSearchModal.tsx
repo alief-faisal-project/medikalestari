@@ -28,7 +28,15 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
-  const [randomCategories, setRandomCategories] = useState<string[]>([]);
+  const randomCategories = useMemo(() => {
+    if (!isOpen) return [];
+
+    const cats = SPECIALTY_CATEGORIES.filter(
+      (item) => item !== "Semua Spesialis",
+    );
+
+    return cats;
+  }, [isOpen]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [doctorHistory, setDoctorHistory] = useState<Doctor[]>([]);
   const [isNavigating, setIsNavigating] = useState(false);
@@ -36,20 +44,21 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (globalThis.window === undefined) return;
 
-    const saved = localStorage.getItem("doctor_history");
-
-    if (saved) {
-      try {
-        const parsed: Doctor[] = JSON.parse(saved);
-        setDoctorHistory(parsed);
-      } catch {
-        setDoctorHistory([]);
+    const loadHistory = async () => {
+      const saved = localStorage.getItem("doctor_history");
+      if (saved) {
+        try {
+          const parsed: Doctor[] = JSON.parse(saved);
+          setDoctorHistory(parsed);
+        } catch {
+          // ignore parse errors
+        }
       }
-    } else {
-      setDoctorHistory([]);
-    }
+    };
+
+    loadHistory();
   }, [isOpen]);
 
   const saveToHistory = (doctor: Doctor) => {
@@ -57,7 +66,7 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
       const filtered = prev.filter((item) => item.id !== doctor.id);
       const newHistory = [doctor, ...filtered].slice(0, 4);
 
-      if (typeof window !== "undefined") {
+      if (globalThis.window !== undefined) {
         localStorage.setItem("doctor_history", JSON.stringify(newHistory));
       }
 
@@ -68,7 +77,7 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
   const clearHistory = () => {
     setDoctorHistory([]);
 
-    if (typeof window !== "undefined") {
+    if (globalThis.window !== undefined) {
       localStorage.removeItem("doctor_history");
     }
   };
@@ -77,7 +86,7 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
     setDoctorHistory((prev) => {
       const updated = prev.filter((item) => item.id !== id);
 
-      if (typeof window !== "undefined") {
+      if (globalThis.window !== undefined) {
         localStorage.setItem("doctor_history", JSON.stringify(updated));
       }
 
@@ -88,15 +97,6 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      setSearchQuery("");
-      setIsExpanded(false);
-      setIsNavigating(false);
-
-      const cats = SPECIALTY_CATEGORIES.filter(
-        (item) => item !== "Semua Spesialis",
-      ).sort(() => Math.random() - 0.5);
-
-      setRandomCategories(cats);
     } else {
       document.body.style.overflow = "unset";
     }
@@ -188,7 +188,7 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
                 placeholder="Cari dokter atau spesialis..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent flex-1 outline-none text-[15px] py-1 text-gray-700"
+                className="bg-transparent flex-1 outline-none text-[15px] py-1 text-gray-700 "
               />
 
               {searchQuery && (
