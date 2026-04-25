@@ -158,46 +158,8 @@ const ServicesSection = () => {
       </div>
 
       <div className="relative z-10">
-        {/* INFORMASI SECTION */}
-        <div className="max-w-290 mx-auto px-4 md:px-8 mb-20">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="flex items-center gap-6 mb-16 lg:mb-10 justify-center md:justify-start text-center md:text-left"
-          >
-            <h2 className="text-4xl font-light uppercase pb-2 tracking-widest">
-              Informasi
-            </h2>
-            <div className="hidden md:block flex-1 h-0.5 bg-linear-to-r from-[#005cb3]/30 to-transparent" />
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {infoData.map((item) => (
-              <motion.div
-                key={item.id}
-                whileHover={{ y: -8 }}
-                onClick={() => handleInfoClick(item.title)}
-                className="flex flex-col items-center justify-center p-10 bg-white/80 backdrop-blur-sm border border-white cursor-pointer transition-all duration-300 shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:bg-white"
-              >
-                <div className="relative w-16 h-16 mb-6">
-                  <Image
-                    src={item.img}
-                    alt={item.title}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <h3 className="text-lg font-black uppercase tracking-tighter">
-                  {item.title}
-                </h3>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
         {/* PELAYANAN SECTION */}
-        <div className="max-w-290 mx-auto px-4 md:px-8">
+        <div className="max-w-290 mx-auto px-4 md:px-8 mb-20">
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -228,6 +190,44 @@ const ServicesSection = () => {
                   />
                 </div>
                 <h3 className="text-sm md:text-base font-black uppercase tracking-tighter leading-tight">
+                  {item.title}
+                </h3>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* INFORMASI SECTION */}
+        <div className="max-w-290 mx-auto px-4 md:px-8 mb-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-6 mb-16 lg:mb-10 justify-center md:justify-start text-center md:text-left"
+          >
+            <h2 className="text-4xl font-light uppercase pb-2 tracking-widest">
+              Informasi
+            </h2>
+            <div className="hidden md:block flex-1 h-0.5 bg-linear-to-r from-[#005cb3]/30 to-transparent" />
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {infoData.map((item) => (
+              <motion.div
+                key={item.id}
+                whileHover={{ y: -8 }}
+                onClick={() => handleInfoClick(item.title)}
+                className="flex flex-col items-center justify-center p-10 bg-white/80 backdrop-blur-sm border border-white cursor-pointer transition-all duration-300 shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:bg-white"
+              >
+                <div className="relative w-16 h-16 mb-6">
+                  <Image
+                    src={item.img}
+                    alt={item.title}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <h3 className="text-lg font-black uppercase tracking-tighter">
                   {item.title}
                 </h3>
               </motion.div>
