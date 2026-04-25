@@ -13,6 +13,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthProvider";
 import SearchDropdown from "./SearchDropdown";
+import MobileSearchModal from "./MobileSearchModal";
 import DropdownMenuItem from "./DropdownMenuItem";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -24,6 +25,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -151,12 +153,21 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
             </Link>
           </div>
 
-          <button
-            className="md:hidden p-2 text-gray-700 relative z-[110]"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          <div className="md:hidden flex items-center gap-3 p-2 text-gray-700 relative z-[110]">
+            <button
+              onClick={() => setIsMobileSearchOpen(true)}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              title="Cari dokter"
+            >
+              <Search size={24} />
+            </button>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -401,6 +412,12 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
           </>
         )}
       </AnimatePresence>
+
+      {/* Mobile Search Modal */}
+      <MobileSearchModal
+        isOpen={isMobileSearchOpen}
+        onClose={() => setIsMobileSearchOpen(false)}
+      />
     </nav>
   );
 };
