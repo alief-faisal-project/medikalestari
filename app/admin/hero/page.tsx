@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AdminNavbar from "@/components/AdminSidebar";
 import { AdminPageSkeleton } from "@/components/AdminSkeleton";
 import {
@@ -26,9 +26,22 @@ const AdminHeroBannersPage = () => {
     image_url: "",
     order: 0,
     is_active: true,
+    device_type: "desktop" as "desktop" | "mobile",
   });
   const router = useRouter();
   const { loading: authLoading, isAuthenticated } = useAuth();
+
+  const fetchBanners = useCallback(async () => {
+    try {
+      const data = await fetchHeroBanners();
+      setBanners(data);
+    } catch (error) {
+      console.error("Error fetching hero banners:", error);
+      alert("Gagal memuat data banner");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -45,18 +58,7 @@ const AdminHeroBannersPage = () => {
     return () => {
       mounted = false;
     };
-  }, [authLoading, isAuthenticated, router]);
-
-  const fetchBanners = async () => {
-    try {
-      const data = await fetchHeroBanners();
-      setBanners(data);
-    } catch (error) {
-      console.error("Error fetching hero banners:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [authLoading, isAuthenticated, router, fetchBanners]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -89,6 +91,7 @@ const AdminHeroBannersPage = () => {
         image_url: imageUrl,
         order: formData.order,
         is_active: formData.is_active,
+        device_type: formData.device_type,
       };
 
       if (editingId) {
@@ -103,11 +106,18 @@ const AdminHeroBannersPage = () => {
       alert("Banner berhasil disimpan!");
     } catch (error) {
       console.error("Error saving banner:", error);
-      const message =
-        (error && (error as Error).message) ||
-        String(error) ||
-        "Terjadi kesalahan saat menyimpan data";
-      alert(`Error: ${message}`);
+      let errorMsg = "Terjadi kesalahan saat menyimpan data";
+
+      if (error instanceof Error) {
+        errorMsg = error.message;
+      } else if (typeof error === "object" && error !== null) {
+        const errObj = error as Record<string, unknown>;
+        errorMsg = (errObj.message as string) || JSON.stringify(error);
+      } else {
+        errorMsg = String(error);
+      }
+
+      alert(`Error: ${errorMsg}`);
     }
   };
 
@@ -117,6 +127,7 @@ const AdminHeroBannersPage = () => {
       image_url: banner.image_url,
       order: banner.order,
       is_active: banner.is_active,
+      device_type: banner.device_type,
     });
     setImagePreview(banner.image_url);
     setShowModal(true);
@@ -127,9 +138,21 @@ const AdminHeroBannersPage = () => {
       try {
         await deleteHeroBanner(id);
         fetchBanners();
+        alert("Banner berhasil dihapus!");
       } catch (error) {
         console.error("Error deleting banner:", error);
-        alert("Terjadi kesalahan saat menghapus data");
+        let errorMsg = "Terjadi kesalahan saat menghapus data";
+
+        if (error instanceof Error) {
+          errorMsg = error.message;
+        } else if (typeof error === "object" && error !== null) {
+          const errObj = error as Record<string, unknown>;
+          errorMsg = (errObj.message as string) || JSON.stringify(error);
+        } else {
+          errorMsg = String(error);
+        }
+
+        alert(`Error: ${errorMsg}`);
       }
     }
   };
@@ -139,6 +162,7 @@ const AdminHeroBannersPage = () => {
       image_url: "",
       order: 0,
       is_active: true,
+      device_type: "desktop",
     });
     setImageFile(null);
     setImagePreview("");
@@ -179,6 +203,9 @@ const AdminHeroBannersPage = () => {
                     Gambar
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                    Device
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                     Urutan
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
@@ -203,6 +230,19 @@ const AdminHeroBannersPage = () => {
                           />
                         </div>
                       )}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span
+                        className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
+                          banner.device_type === "desktop"
+                            ? "bg-blue-100 text-blue-800"
+                            : "bg-purple-100 text-purple-800"
+                        }`}
+                      >
+                        {banner.device_type === "desktop"
+                          ? "Desktop (1900x720)"
+                          : "Mobile (2208x2760)"}
+                      </span>
                     </td>
                     <td className="px-6 py-4 font-medium text-gray-800">
                       {banner.order}
@@ -319,7 +359,7 @@ const AdminHeroBannersPage = () => {
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      order: parseInt(e.target.value) || 0,
+                      order: Number.parseInt(e.target.value) || 0,
                     })
                   }
                   placeholder="0"
@@ -327,6 +367,63 @@ const AdminHeroBannersPage = () => {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
+
+              {/* Device Type */}
+              <fieldset>
+                <legend className="block text-sm font-medium text-gray-700 mb-2">
+                  Jenis Perangkat
+                </legend>
+                <div className="grid grid-cols-2 gap-4">
+                  <label
+                    htmlFor="device-desktop"
+                    className="flex items-center border border-gray-300 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                  >
+                    <input
+                      id="device-desktop"
+                      type="radio"
+                      name="device_type"
+                      value="desktop"
+                      checked={formData.device_type === "desktop"}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          device_type: e.target.value as "desktop" | "mobile",
+                        })
+                      }
+                      className="w-4 h-4 text-blue-600"
+                      aria-label="Desktop - 1900 x 720 px"
+                    />
+                    <span className="ml-2">
+                      <span className="font-medium">Desktop</span>
+                      <p className="text-xs text-gray-500">1900 x 720 px</p>
+                    </span>
+                  </label>
+                  <label
+                    htmlFor="device-mobile"
+                    className="flex items-center border border-gray-300 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                  >
+                    <input
+                      id="device-mobile"
+                      type="radio"
+                      name="device_type"
+                      value="mobile"
+                      checked={formData.device_type === "mobile"}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          device_type: e.target.value as "desktop" | "mobile",
+                        })
+                      }
+                      className="w-4 h-4 text-blue-600"
+                      aria-label="Mobile - 2208 x 2760 px"
+                    />
+                    <span className="ml-2">
+                      <span className="font-medium">Mobile</span>
+                      <p className="text-xs text-gray-500">2208 x 2760 px</p>
+                    </span>
+                  </label>
+                </div>
+              </fieldset>
 
               {/* Active Status */}
               <div className="flex items-center">

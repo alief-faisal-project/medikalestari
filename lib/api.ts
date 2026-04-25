@@ -318,11 +318,19 @@ export async function deleteMadingContent(id: string) {
 }
 
 // HERO BANNER OPERATIONS
-export async function fetchHeroBanners(): Promise<HeroBanner[]> {
-  const { data, error } = await supabase
+export async function fetchHeroBanners(
+  deviceType?: "desktop" | "mobile",
+): Promise<HeroBanner[]> {
+  let query = supabase
     .from("hero_banners")
     .select("*")
     .order("order", { ascending: true });
+
+  if (deviceType) {
+    query = query.eq("device_type", deviceType);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error("Error fetching hero banners:", error);
@@ -332,46 +340,77 @@ export async function fetchHeroBanners(): Promise<HeroBanner[]> {
   return data || [];
 }
 
+export async function fetchHeroBannersForDesktop(): Promise<HeroBanner[]> {
+  return fetchHeroBanners("desktop");
+}
+
+export async function fetchHeroBannersForMobile(): Promise<HeroBanner[]> {
+  return fetchHeroBanners("mobile");
+}
+
 export async function createHeroBanner(
   banner: Omit<HeroBanner, "id" | "created_at">,
 ) {
-  const { data, error } = await supabase
-    .from("hero_banners")
-    .insert([banner])
-    .select();
+  try {
+    const { data, error } = await supabase
+      .from("hero_banners")
+      .insert([banner])
+      .select();
 
-  if (error) {
-    console.error("Error creating hero banner:", error);
-    throw error;
+    if (error) {
+      console.error("Error creating hero banner:", error);
+      throw new Error(`Supabase error: ${error.message}`);
+    }
+
+    if (!data || data.length === 0) {
+      throw new Error("Tidak ada data yang dikembalikan dari server");
+    }
+
+    return data[0];
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    throw new Error(`Gagal membuat banner: ${message}`);
   }
-
-  return data[0];
 }
 
 export async function updateHeroBanner(
   id: string,
   banner: Partial<Omit<HeroBanner, "id" | "created_at">>,
 ) {
-  const { data, error } = await supabase
-    .from("hero_banners")
-    .update(banner)
-    .eq("id", id)
-    .select();
+  try {
+    const { data, error } = await supabase
+      .from("hero_banners")
+      .update(banner)
+      .eq("id", id)
+      .select();
 
-  if (error) {
-    console.error("Error updating hero banner:", error);
-    throw error;
+    if (error) {
+      console.error("Error updating hero banner:", error);
+      throw new Error(`Supabase error: ${error.message}`);
+    }
+
+    if (!data || data.length === 0) {
+      throw new Error("Tidak ada data yang dikembalikan dari server");
+    }
+
+    return data[0];
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    throw new Error(`Gagal memperbarui banner: ${message}`);
   }
-
-  return data[0];
 }
 
 export async function deleteHeroBanner(id: string) {
-  const { error } = await supabase.from("hero_banners").delete().eq("id", id);
+  try {
+    const { error } = await supabase.from("hero_banners").delete().eq("id", id);
 
-  if (error) {
-    console.error("Error deleting hero banner:", error);
-    throw error;
+    if (error) {
+      console.error("Error deleting hero banner:", error);
+      throw new Error(`Supabase error: ${error.message}`);
+    }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    throw new Error(`Gagal menghapus banner: ${message}`);
   }
 }
 
