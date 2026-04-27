@@ -453,8 +453,7 @@ function AuthArea({
       onClick={onClick}
       className={`flex items-center gap-2 font-medium ${isMobile ? "text-gray-600 text-lg" : "text-white text-sm"}`}
     >
-      <UserCircle size={isMobile ? 24 : 22} />
-      {isMobile && <span>Login Admin</span>}
+      {isMobile && <span>Login</span>}
     </Link>
   );
 }
