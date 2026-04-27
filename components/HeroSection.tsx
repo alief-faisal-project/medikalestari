@@ -9,6 +9,8 @@ import {
   User,
   Stethoscope,
   CalendarDays,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { fetchHeroBanners } from "@/lib/api";
 import { HeroBanner } from "@/lib/types";
@@ -134,23 +136,23 @@ const HeroSection = () => {
 
   if (loading || filteredSlides.length === 0) {
     return (
-      <section className="relative w-full bg-white overflow-hidden">
+      <section className="relative w-full bg-transparent overflow-hidden">
         {/* Empty state untuk desktop */}
         <div className="hidden md:block relative w-full aspect-[1900/720] bg-gray-200" />
 
         {/* Empty state untuk mobile */}
         <div className="md:hidden relative w-full aspect-[2208/2760] bg-gray-200" />
         {/* SEARCH BAR tetap ditampilkan */}
-        <div className="relative w-full px-4 py-8 md:py-0 md:-mt-14 md:z-50 bg-white md:bg-transparent">
+        <div className="relative w-full px-4 py-8 md:py-0 md:-mt-14 md:z-50 bg-transparent">
           <div className="max-w-5xl mx-auto">
             <div
               className="
                 max-w-5xl mx-auto 
-                bg-white 
+                bg-white
                 md:rounded-full rounded-3xl 
                 flex flex-col md:flex-row 
                 overflow-hidden 
-                border border-gray-300
+                
               "
             >
               {/* NAMA DOKTER */}
@@ -238,9 +240,9 @@ const HeroSection = () => {
   }
 
   return (
-    <section className="relative w-full bg-white overflow-hidden">
+    <section className="relative w-full bg-transparent overflow-hidden">
       {/* BANNER AREA - Desktop */}
-      <div className="hidden md:block relative w-full aspect-[1900/720] bg-black">
+      <div className="hidden md:block relative w-full aspect-[1900/780] bg-black">
         {desktopSlides.map((slide, index) => (
           <div
             key={slide.id}
@@ -258,60 +260,86 @@ const HeroSection = () => {
           </div>
         ))}
 
-        {/* PREVIEW INDICATORS (Desktop Only) */}
-        <div className="hidden md:flex absolute bottom-15 left-1/2 -translate-x-1/2 z-40 gap-4 opacity-40 hover:opacity-100 transition-opacity duration-500 p-4">
-          {desktopSlides.map((slide, index) => (
-            <button
-              key={slide.id}
-              className={`relative w-28 h-16 rounded-lg overflow-hidden border-2 transition-all duration-300 cursor-pointer shadow-lg ${
-                currentSlide === index
-                  ? "border-[#005cb3] scale-110"
-                  : "border-white/50"
-              }`}
-              onClick={() => setPage(index)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  setPage(index);
-                }
-              }}
+        {/* CONTROLS - Bottom Left */}
+        <div className="absolute bottom-8 left-8 z-40 flex items-center gap-3">
+          {/* Left Chevron */}
+          <button
+            onClick={() => paginate(-1)}
+            disabled={desktopSlides.length <= 1}
+            className={`p-2 rounded-full transition-all duration-300 ${
+              desktopSlides.length <= 1
+                ? "opacity-30 cursor-not-allowed"
+                : "opacity-60 hover:opacity-100 cursor-pointer"
+            }`}
+          >
+            <ChevronLeft size={20} className="text-white" />
+          </button>
+
+          {/* Play/Pause Button with Progress Ring */}
+          <div className="relative w-12 h-12">
+            {/* Progress Ring Background */}
+            <svg
+              className="absolute inset-0 w-full h-full"
+              viewBox="0 0 48 48"
+              style={{ transform: "rotate(-90deg)" }}
             >
-              <Image
-                src={slide.image_url}
-                alt="preview"
-                fill
-                className="object-cover"
+              {/* Background Circle */}
+              <circle
+                cx="24"
+                cy="24"
+                r="20"
+                fill="none"
+                stroke="rgba(255,255,255,0.2)"
+                strokeWidth="2"
               />
+              {/* Progress Circle */}
+              <motion.circle
+                cx="24"
+                cy="24"
+                r="20"
+                fill="none"
+                stroke="#005cb3"
+                strokeWidth="2"
+                strokeDasharray="125.6"
+                initial={{ strokeDashoffset: 125.6 }}
+                animate={
+                  isPlaying && desktopSlides.length > 0
+                    ? { strokeDashoffset: 0 }
+                    : { strokeDashoffset: 125.6 }
+                }
+                transition={{
+                  duration: 5,
+                  ease: "linear",
+                  repeat: Infinity,
+                }}
+              />
+            </svg>
 
-              {/* Tombol Pause/Play */}
-              {currentSlide === index && (
-                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsPlaying(!isPlaying);
-                    }}
-                    className="w-8 h-8 flex items-center justify-center rounded-full bg-white/40 backdrop-blur-sm text-white hover:bg-white/30 transition-colors"
-                  >
-                    {isPlaying ? (
-                      <Pause size={14} fill="currentColor" />
-                    ) : (
-                      <Play size={14} className="ml-0.5" fill="currentColor" />
-                    )}
-                  </button>
-                </div>
-              )}
-
-              {/* Progress Bar */}
-              {currentSlide === index && isPlaying && (
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 5, ease: "linear" }}
-                  className="absolute bottom-0 left-0 h-1 bg-[#005cb3]"
-                />
+            {/* Button Center */}
+            <button
+              onClick={() => setIsPlaying(!isPlaying)}
+              className="absolute inset-0 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors"
+            >
+              {isPlaying ? (
+                <Pause size={16} fill="white" className="text-white" />
+              ) : (
+                <Play size={16} className="text-white ml-0.5" fill="white" />
               )}
             </button>
-          ))}
+          </div>
+
+          {/* Right Chevron */}
+          <button
+            onClick={() => paginate(1)}
+            disabled={desktopSlides.length <= 1}
+            className={`p-2 rounded-full transition-all duration-300 ${
+              desktopSlides.length <= 1
+                ? "opacity-30 cursor-not-allowed"
+                : "opacity-60 hover:opacity-100 cursor-pointer"
+            }`}
+          >
+            <ChevronRight size={20} className="text-white" />
+          </button>
         </div>
       </div>
 
@@ -334,13 +362,97 @@ const HeroSection = () => {
           </div>
         ))}
 
+        {/* CONTROLS - Bottom Left Mobile */}
+        <div className="absolute bottom-8 left-8 z-40 flex items-center gap-2">
+          {/* Left Chevron */}
+          <button
+            onClick={() => paginate(-1)}
+            disabled={mobileSlides.length <= 1}
+            className={`p-1.5 rounded-full transition-all duration-300 ${
+              mobileSlides.length <= 1
+                ? "opacity-30 cursor-not-allowed"
+                : "opacity-60 hover:opacity-100 cursor-pointer"
+            }`}
+          >
+            <ChevronLeft size={16} className="text-white" />
+          </button>
+
+          {/* Play/Pause Button with Progress Ring */}
+          <div className="relative w-10 h-10">
+            {/* Progress Ring Background */}
+            <svg
+              className="absolute inset-0 w-full h-full"
+              viewBox="0 0 40 40"
+              style={{ transform: "rotate(-90deg)" }}
+            >
+              {/* Background Circle */}
+              <circle
+                cx="20"
+                cy="20"
+                r="16"
+                fill="none"
+                stroke="rgba(255,255,255,0.2)"
+                strokeWidth="1.5"
+              />
+              {/* Progress Circle */}
+              <motion.circle
+                cx="20"
+                cy="20"
+                r="16"
+                fill="none"
+                stroke="#005cb3"
+                strokeWidth="1.5"
+                strokeDasharray="100.5"
+                initial={{ strokeDashoffset: 100.5 }}
+                animate={
+                  isPlaying && mobileSlides.length > 0
+                    ? { strokeDashoffset: 0 }
+                    : { strokeDashoffset: 100.5 }
+                }
+                transition={{
+                  duration: 5,
+                  ease: "linear",
+                  repeat: Infinity,
+                }}
+              />
+            </svg>
+
+            {/* Button Center */}
+            <button
+              onClick={() => setIsPlaying(!isPlaying)}
+              className="absolute inset-0 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors"
+            >
+              {isPlaying ? (
+                <Pause size={12} fill="white" className="text-white" />
+              ) : (
+                <Play size={12} className="text-white ml-0.5" fill="white" />
+              )}
+            </button>
+          </div>
+
+          {/* Right Chevron */}
+          <button
+            onClick={() => paginate(1)}
+            disabled={mobileSlides.length <= 1}
+            className={`p-1.5 rounded-full transition-all duration-300 ${
+              mobileSlides.length <= 1
+                ? "opacity-30 cursor-not-allowed"
+                : "opacity-60 hover:opacity-100 cursor-pointer"
+            }`}
+          >
+            <ChevronRight size={16} className="text-white" />
+          </button>
+        </div>
+
         {/* MOBILE INDICATORS */}
-        <div className="flex md:hidden absolute bottom-8 left-1/2 -translate-x-1/2 z-40 gap-2">
+        <div className="flex md:hidden absolute bottom-8 right-8 z-40 gap-2">
           {mobileSlides.map((slide, index) => (
             <button
               key={slide.id}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                currentSlide === index ? "bg-[#005cb3] w-8" : "bg-white/50 w-2"
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                currentSlide === index
+                  ? "bg-[#005cb3] w-6"
+                  : "bg-white/50 w-1.5"
               }`}
               onClick={() => setPage(index)}
               onKeyDown={(e) => {
@@ -354,8 +466,8 @@ const HeroSection = () => {
       </div>
 
       {/* SEARCH BAR */}
-      <div className="relative w-full px-4 py-8 md:py-0 md:-mt-14 md:z-50 bg-white md:bg-transparent">
-        <div className="max-w-5xl mx-auto">
+      <div className="relative w-full px-4 py-8 md:absolute md:inset-0 md:px-4 md:py-0 md:flex md:items-end md:justify-center md:z-50 md:pb-8 md:pointer-events-none">
+        <div className="max-w-5xl mx-auto w-full md:pointer-events-auto">
           <div
             className="
               max-w-5xl mx-auto 
@@ -364,7 +476,6 @@ const HeroSection = () => {
               flex flex-col md:flex-row 
               overflow-hidden 
               border border-gray-300
-                ]
             "
           >
             {/* NAMA DOKTER */}
