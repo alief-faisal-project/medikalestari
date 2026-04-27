@@ -360,7 +360,7 @@ const HeroSection = () => {
             className="
               max-w-5xl mx-auto 
               bg-white 
-              md:rounded-full rounded-3xl 
+              md:rounded-full rounded-none
               flex flex-col md:flex-row 
               overflow-hidden 
               border border-gray-300

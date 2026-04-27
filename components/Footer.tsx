@@ -130,8 +130,8 @@ const Footer = () => {
         </defs>
       </svg>
 
-      {/* ===== Contact Bar (Desktop & Mobile Horizontal) ===== */}
-      <div className="bg-white border-t border-gray-100 py-6 lg:py-12 -mt-40 md:-mt-5">
+      {/* Gunakan 'hidden' untuk mobile, 'lg:block' untuk desktop (screen > 1024px) */}
+      <div className="hidden lg:block bg-white border-t border-gray-100 py-6 lg:py-12 -mt-40 md:-mt-5">
         <div className="max-w-[1900px] mx-auto px-1 md:px-6">
           {/* Menggunakan flex-row agar selalu horizontal di semua layar */}
           <div className="flex flex-row justify-between items-start w-full">
