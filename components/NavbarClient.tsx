@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Search,
@@ -26,8 +26,36 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+
   const pathname = usePathname();
   const router = useRouter();
+
+  /* ===============================
+     LOCK BODY SCROLL SAAT MENU MOBILE AKTIF
+  =============================== */
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
+
+      document.documentElement.style.overflow = "hidden";
+      document.documentElement.style.touchAction = "none";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.touchAction = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.touchAction = "";
+    };
+  }, [isMobileMenuOpen]);
 
   const menuData: Record<string, string[]> = {
     "Fasilitas & Layanan": [
@@ -64,6 +92,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
     } else {
       router.push("/");
     }
+
     setIsMobileMenuOpen(false);
   };
 
@@ -123,7 +152,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 
   return (
     <nav className="w-full font-sans sticky top-0 z-[100] bg-white shadow-sm">
-      {/* --- Top Navbar  --- */}
+      {/* --- Top Navbar --- */}
       <div className="bg-white py-2 relative z-[101]">
         <div className="max-w-[1200px] mx-auto px-4 md:px-8 flex justify-between items-center">
           <Link href="/" className="flex items-center">
@@ -137,14 +166,18 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
             >
               Kontak
             </Link>
+
             <span className="text-gray-300">|</span>
+
             <Link
               href="/careers"
               className="hover:text-[#005075] hover:underline"
             >
               Karir
             </Link>
+
             <span className="text-gray-300">|</span>
+
             <Link
               href="/tentang-kami"
               className="hover:text-[#005075] hover:underline"
@@ -161,6 +194,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
             >
               <Search size={24} />
             </button>
+
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -171,7 +205,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
         </div>
       </div>
 
-      {/* --- Bottom Navbar  --- */}
+      {/* --- Bottom Navbar --- */}
       <div className="hidden md:block relative w-full bg-[#005cb3] text-white z-30">
         <div
           className="absolute right-0 top-0 h-full w-[38%] bg-[#004585] hidden lg:block"
@@ -186,7 +220,11 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
             >
               Beranda
               <div
-                className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${pathname === "/" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+                className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${
+                  pathname === "/"
+                    ? "scale-x-100"
+                    : "scale-x-0 group-hover:scale-x-100"
+                }`}
               />
             </button>
 
@@ -196,7 +234,11 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
             >
               Dokter Kami
               <div
-                className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${pathname === "/dokter" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+                className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${
+                  pathname === "/dokter"
+                    ? "scale-x-100"
+                    : "scale-x-0 group-hover:scale-x-100"
+                }`}
               />
             </Link>
 
@@ -206,7 +248,11 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
             >
               Jadwal Dokter
               <div
-                className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${pathname === "/jadwal-dokter" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+                className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${
+                  pathname === "/jadwal-dokter"
+                    ? "scale-x-100"
+                    : "scale-x-0 group-hover:scale-x-100"
+                }`}
               />
             </Link>
 
@@ -219,10 +265,16 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               >
                 <button className="flex items-center h-full px-6 transition-colors font-medium relative group">
                   {item}
+
                   <div
-                    className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${activeMenu === item ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+                    className={`absolute bottom-0 left-6 right-6 h-1 bg-white rounded-t-full transition-transform duration-300 ${
+                      activeMenu === item
+                        ? "scale-x-100"
+                        : "scale-x-0 group-hover:scale-x-100"
+                    }`}
                   />
                 </button>
+
                 <AnimatePresence>
                   {activeMenu === item &&
                     renderDropdownContent(menuData[item], "left-0 w-72")}
@@ -238,8 +290,13 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
             >
               <Search size={20} strokeWidth={2.5} />
               <span className="font-medium">Cari Dokter Kami</span>
+
               <div
-                className={`absolute bottom-0 left-3 right-3 h-1 bg-white rounded-t-full transition-transform duration-300 ${isSearchOpen ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+                className={`absolute bottom-0 left-3 right-3 h-1 bg-white rounded-t-full transition-transform duration-300 ${
+                  isSearchOpen
+                    ? "scale-x-100"
+                    : "scale-x-0 group-hover:scale-x-100"
+                }`}
               />
             </button>
 
@@ -252,9 +309,15 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                 <Globe size={18} />
                 <span className="font-medium">ID</span>
               </div>
+
               <div
-                className={`absolute bottom-0 left-3 right-3 h-1 bg-white rounded-t-full transition-transform duration-300 ${activeMenu === "Lang" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+                className={`absolute bottom-0 left-3 right-3 h-1 bg-white rounded-t-full transition-transform duration-300 ${
+                  activeMenu === "Lang"
+                    ? "scale-x-100"
+                    : "scale-x-0 group-hover:scale-x-100"
+                }`}
               />
+
               <AnimatePresence>
                 {activeMenu === "Lang" &&
                   renderDropdownContent(languages, "right-0 w-48")}
@@ -273,11 +336,11 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
         />
       </div>
 
-      {/* --- Mobile Menu  --- */}
+      {/* --- Mobile Menu --- */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop Overlay */}
+            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -286,7 +349,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[99] md:hidden"
             />
 
-            {/* Menu Panel */}
+            {/* Panel */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -301,6 +364,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                 >
                   Beranda
                 </button>
+
                 <Link
                   href="/dokter#section-dokter"
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -326,12 +390,14 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                       className="w-full text-left p-4 font-semibold text-gray-700 flex justify-between items-center"
                     >
                       {item}
+
                       <motion.span
                         animate={{ rotate: activeMenu === item ? 180 : 0 }}
                       >
                         ▼
                       </motion.span>
                     </button>
+
                     <AnimatePresence>
                       {activeMenu === item && (
                         <motion.div
@@ -413,7 +479,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
         )}
       </AnimatePresence>
 
-      {/* Mobile Search Modal */}
+      {/* Mobile Search */}
       <MobileSearchModal
         isOpen={isMobileSearchOpen}
         onClose={() => setIsMobileSearchOpen(false)}
@@ -438,7 +504,9 @@ function AuthArea({
       <Link
         href="/admin/dashboard"
         onClick={onClick}
-        className={`flex items-center gap-2 font-medium ${isMobile ? "text-[#005075] text-lg" : "text-white text-sm"}`}
+        className={`flex items-center gap-2 font-medium ${
+          isMobile ? "text-[#005075] text-lg" : "text-white text-sm"
+        }`}
         title="Panel Admin"
       >
         <LayoutDashboard size={isMobile ? 24 : 20} />
@@ -451,7 +519,9 @@ function AuthArea({
     <Link
       href="/admin/login"
       onClick={onClick}
-      className={`flex items-center gap-2 font-medium ${isMobile ? "text-gray-600 text-lg" : "text-white text-sm"}`}
+      className={`flex items-center gap-2 font-medium ${
+        isMobile ? "text-gray-600 text-lg" : "text-white text-sm"
+      }`}
       title="Login Admin"
     >
       <UserCircle size={isMobile ? 24 : 20} />

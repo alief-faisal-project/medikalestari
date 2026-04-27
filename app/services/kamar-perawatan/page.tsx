@@ -154,7 +154,7 @@ export default function KamarPerawatan() {
     <div className="min-h-screen bg-white py-8">
       <div className="max-w-6xl mx-auto px-4">
         {/* Navigasi Kembali */}
-        <div className="pt-16 pb-12 -mt-16">
+        <div className="pt-16 pb-2 -mt-16">
           <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
             <Link
               href="/"
