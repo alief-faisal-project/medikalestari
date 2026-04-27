@@ -25,8 +25,6 @@ const AdminSidebar = () => {
   // default desktop buka, mobile tutup
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
 
   // detect mobile / desktop
   useEffect(() => {
@@ -47,8 +45,6 @@ const AdminSidebar = () => {
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    setMounted(true);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -58,13 +54,9 @@ const AdminSidebar = () => {
 
     const load = async () => {
       try {
-        const { data } = await supabase.auth.getSession();
+        await supabase.auth.getSession();
 
         if (!active) return;
-
-        if (data?.session?.user?.email) {
-          setUserEmail(data.session.user.email);
-        }
       } catch {
         //
       }
@@ -99,8 +91,15 @@ const AdminSidebar = () => {
 
   const isActive = (path: string) => pathname === path;
 
-
-  if (!mounted) return null;
+  // Compute sidebar width classes
+  let sidebarWidthClass = "w-20 translate-x-0";
+  if (isMobile) {
+    sidebarWidthClass = isOpen
+      ? "w-64 translate-x-0"
+      : "w-64 -translate-x-full";
+  } else if (isOpen) {
+    sidebarWidthClass = "w-64 translate-x-0";
+  }
 
   return (
     <>
@@ -108,7 +107,7 @@ const AdminSidebar = () => {
       {isMobile && (
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="fixed top-4 left-4 z-[70] p-2.5 bg-white rounded-xl shadow-md border border-slate-200 md:hidden"
+          className="fixed top-4 left-4 z-50 p-2.5 bg-white rounded-xl shadow-md border border-slate-200 md:hidden"
         >
           {isOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
@@ -117,8 +116,13 @@ const AdminSidebar = () => {
       {/* OVERLAY MOBILE */}
       {isMobile && isOpen && (
         <div
-          className="fixed inset-0 bg-black/30 z-40"
+          className="fixed inset-0 bg-black/30 z-40 cursor-pointer"
           onClick={() => setIsOpen(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setIsOpen(false);
+          }}
+          role="button"
+          tabIndex={-1}
         />
       )}
 
@@ -128,20 +132,11 @@ const AdminSidebar = () => {
           fixed top-0 left-0 h-screen bg-white border-r border-slate-100 z-50
           transition-all duration-300 ease-in-out
           flex flex-col overflow-hidden
-
-          ${
-            isMobile
-              ? isOpen
-                ? "w-64 translate-x-0"
-                : "w-64 -translate-x-full"
-              : isOpen
-                ? "w-64 translate-x-0"
-                : "w-20 translate-x-0"
-          }
+          ${sidebarWidthClass}
         `}
       >
         {/* HEADER */}
-        <div className="p-6 border-b border-slate-100 min-h-[88px] flex items-center">
+        <div className="p-6 border-b border-slate-100 min-h-22 flex items-center">
           <Link href="/admin/dashboard" className="flex items-center gap-3">
             {isOpen ? (
               <span className="font-semibold text-[28px] tracking-tight leading-none">
@@ -202,13 +197,13 @@ const AdminSidebar = () => {
           <button
             onClick={() => router.push("/")}
             className="
-              w-full flex items-center gap-4 px-4 py-3 rounded-xl
+              w-full flex items-center justify-center md:justify-start gap-4 px-4 py-3 rounded-xl
               bg-blue-600 text-white font-bold
               shadow-md hover:scale-[1.02] active:scale-[0.98]
               transition-all cursor-pointer
             "
           >
-            <Home size={20} />
+            <Home size={20} className="shrink-0" />
             {isOpen && <span className="text-[14px]">Beranda</span>}
           </button>
 
@@ -216,13 +211,13 @@ const AdminSidebar = () => {
           <button
             onClick={handleLogout}
             className="
-              w-full flex items-center gap-4 px-4 py-3 rounded-xl
+              w-full flex items-center justify-center md:justify-start gap-4 px-4 py-3 rounded-xl
               bg-red-600 text-white font-bold
               shadow-md hover:scale-[1.02] active:scale-[0.98]
               transition-all cursor-pointer
             "
           >
-            <LogOut size={20} />
+            <LogOut size={20} className="shrink-0" />
             {isOpen && <span className="text-[14px]">Logout</span>}
           </button>
         </div>
