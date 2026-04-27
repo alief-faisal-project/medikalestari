@@ -133,7 +133,7 @@ const MailIcon = (
       </div>
 
       {/* --- MAIN FOOTER --- */}
-      <div className="relative bg-[#004585] text-white overflow-hidden">
+      <div className="relative bg-[#005cb3] text-white overflow-hidden">
         <div className="relative max-w-[1140px] mx-auto px-5 md:px-6 py-10 md:py-16 z-10">
           <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-12">
             {footerLinks.map((section) => (
