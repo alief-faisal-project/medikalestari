@@ -123,8 +123,9 @@ const ServicesSection = () => {
                     <Image
                       src={item.image}
                       alt={item.title}
-                      fill
-                      className="object-cover"
+                      width={800}
+                      height={600}
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-[#005cb3] via-[#005cb3]/85 to-transparent z-10" />
@@ -152,8 +153,9 @@ const ServicesSection = () => {
           <Image
             src="/informasi.webp"
             alt="Hubungi Kami"
-            fill
-            className="object-cover"
+            width={800}
+            height={600}
+            className="w-full h-full object-cover"
             priority
           />
         </div>
