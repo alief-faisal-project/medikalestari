@@ -164,7 +164,7 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
           {/* Header */}
           <div className="bg-white p-4 flex items-center gap-3">
             <form
-              className="flex-1 flex items-center gap-2 bg-gray-100 px-4 py-1 border border-transparent transition-all duration-200 focus-within:border-gray-400 focus-within:bg-white focus-within:ring-1 focus-within:ring-gray-400"
+              className="flex-1 flex items-center gap-2 rounded-full bg-gray-100 px-4 py-1 border border-transparent transition-all duration-200 focus-within:border-gray-400 focus-within:bg-white focus-within:ring-1 focus-within:ring-gray-400"
               onSubmit={(e) => {
                 e.preventDefault();
 
@@ -180,7 +180,7 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
               <input
                 autoFocus
                 type="text"
-                placeholder="Cari dokter atau spesialis..."
+                placeholder="Cari nama dokter atau spesialisasi"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-transparent flex-1 outline-none text-[16px] py-1 text-gray-700"
@@ -197,7 +197,7 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
               onClick={onClose}
               className="text-[14px] font-bold text-gray-700 whitespace-nowrap active:opacity-60 cursor-pointer"
             >
-              Batal
+              Batalkan
             </button>
           </div>
 
@@ -303,7 +303,7 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
                   {/* Spesialisasi */}
                   <section>
                     <h3 className="text-[15px] font-bold text-black">
-                      Cari dokter dan spesialisasi
+                      Kategori Spesialisasi
                     </h3>
 
                     <p className="text-[11px] text-gray-500 mb-4">
