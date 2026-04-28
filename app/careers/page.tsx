@@ -335,7 +335,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       value={formData.full_name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1c2180] focus:border-transparent outline-none"
                       placeholder="Masukkan nama lengkap"
                     />
                   </div>
@@ -354,7 +354,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1c2180] focus:border-transparent outline-none"
                       placeholder="email@example.com"
                     />
                   </div>
@@ -373,7 +373,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       value={formData.phone}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1c2180] focus:border-transparent outline-none"
                       placeholder="08xxxxxxxxxx"
                     />
                   </div>
@@ -392,7 +392,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       value={formData.position}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1c2180] focus:border-transparent outline-none"
                       placeholder="Misal: Perawat, Dokter, dll"
                     />
                   </div>
@@ -410,7 +410,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       value={formData.education}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none bg-white"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1c2180] focus:border-transparent outline-none bg-white"
                     >
                       <option value="">Pilih Pendidikan Terakhir</option>
                       <option value="D3">D3</option>
@@ -437,7 +437,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       onChange={handleInputChange}
                       min="0"
                       required
-                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1c2180] focus:border-transparent outline-none"
                       placeholder="0"
                     />
                   </div>
@@ -476,7 +476,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                                     e.target.value,
                                   )
                                 }
-                                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#005075] focus:border-transparent outline-none"
+                                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1c2180] focus:border-transparent outline-none"
                                 placeholder={
                                   criterion.toLowerCase() === "not"
                                     ? "Jelaskan alasan Anda ingin bekerja di RS Medika Lestari"
@@ -498,7 +498,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                   >
                     Upload Resume (PDF) *
                   </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 sm:p-4 text-center hover:border-[#005075] transition-colors">
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 sm:p-4 text-center hover:border-[#1c2180] transition-colors">
                     <input
                       type="file"
                       accept=".pdf"

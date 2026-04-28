@@ -25,26 +25,6 @@ const Footer = () => {
       d="M21.8 8.001a2.75 2.75 0 00-1.936-1.948C18.15 5.5 12 5.5 12 5.5s-6.15 0-7.864.553A2.75 2.75 0 002.2 8c-.45 1.72-.45 4-.45 4s0 2.28.45 4a2.75 2.75 0 001.936 1.947C5.85 18.5 12 18.5 12 18.5s6.15 0 7.864-.553A2.75 2.75 0 0021.8 16c.45-1.72.45-4 .45-4s0-2.28-.45-3.999zM10 15.5v-7l6 3.5-6 3.5z"
     />
   );
-
-  const MailIcon = (
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Tiang Kiri (Biru) */}
-      <path d="M4 20V5c0-1.1.9-2 2-2h2v17H4z" fill="#4285F4" />
-
-      {/* Tiang Kanan (Hijau) */}
-      <path d="M16 20V3h2c1.1 0 2 .9 2 2v15h-4z" fill="#34A853" />
-
-      {/* Dasar Tengah (Sekarang Putih) */}
-      {/* Bagian ini yang memberikan latar belakang putih di celah huruf M */}
-      <path d="M16 3v5.5L12 12 8 8.5V3h8z" fill="#FFFFFF" />
-
-      {/* Bagian Merah (Bentuk M) */}
-      <path
-        d="M20 5V7L12 13L4 7V5C4 3.9 4.9 3 6 3H8L12 7L16 3H18C19.1 3 20 3.9 20 5Z"
-        fill="#EA4335"
-      />
-    </svg>
-  );
   // --- Data Konfigurasi ---
   const socialMedia = [
     {
@@ -61,12 +41,6 @@ const Footer = () => {
       name: "Instagram",
       href: "https://instagram.com/rsmedikalestari",
       icon: InstagramIcon,
-    },
-    {
-      name: "Gmail",
-
-      href: "https://mail.google.com/mail/?view=cm&fs=1&to=marketing@rsmedikalestari.com",
-      icon: MailIcon,
     },
   ];
 
@@ -133,8 +107,8 @@ const Footer = () => {
       </div>
 
       {/* --- MAIN FOOTER --- */}
-      <div className="relative bg-[#1c2180] text-white overflow-hidden">
-        <div className="relative max-w-[1140px] mx-auto px-5 md:px-6 py-10 md:py-16 z-10">
+      <div className="relative bg-[#1c2180] text-white overflow-hidden md:mt-50">
+        <div className="relative max-w-[1140px] mx-auto px-5 md:px-6 py-10 md:py-16 z-10 ">
           <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-12">
             {footerLinks.map((section) => (
               <div key={section.title} className="md:col-span-3">

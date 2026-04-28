@@ -145,7 +145,7 @@ const DoctorDetailPage = () => {
             >
               {/* Identitas Dokter */}
               <div className="mb-10">
-                <h1 className="text-5xl font-bold text-[#005075] mb-2 lowercase tracking-tight">
+                <h1 className="text-5xl font-bold text-gray-700 mb-2 lowercase tracking-tight">
                   {doctor.name}
                 </h1>
                 <p className="text-xl text-slate-400 font-medium">
@@ -155,7 +155,7 @@ const DoctorDetailPage = () => {
 
               {/* SECTION 1: BIODATA */}
               <div className="mb-12">
-                <h2 className="text-xl font-bold text-[#005075] mb-4">
+                <h2 className="text-xl font-bold text-gray-700 mb-4">
                   Biodata
                 </h2>
                 <div className="text-slate-600 leading-relaxed max-w-3xl text-lg">

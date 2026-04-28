@@ -162,7 +162,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
           <div className="hidden md:flex gap-4 items-center text-[15px] font-normal text-gray-700">
             <Link
               href="/kontak-kami"
-              className="hover:text-[#005075] hover:underline"
+              className="hover:text-[#0c0f57] hover:underline"
             >
               Kontak
             </Link>
@@ -171,7 +171,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 
             <Link
               href="/careers"
-              className="hover:text-[#005075] hover:underline"
+              className="hover:text-[#0c0f57] hover:underline"
             >
               Karir
             </Link>
@@ -180,7 +180,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 
             <Link
               href="/tentang-kami"
-              className="hover:text-[#005075] hover:underline"
+              className="hover:text-[#0c0f57] hover:underline"
             >
               Tentang Kami
             </Link>
@@ -360,7 +360,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               <div className="flex flex-col p-4">
                 <button
                   onClick={handleHomeClick}
-                  className="text-left p-4 font-bold text-[#005075] border-b text-lg"
+                  className="text-left p-4 font-bold text-[#1c2180] border-b text-lg"
                 >
                   Beranda
                 </button>
@@ -368,7 +368,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                 <Link
                   href="/dokter#section-dokter"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-left p-4 font-bold text-[#005075] border-b text-lg"
+                  className="text-left p-4 font-bold text-[#1c2180] border-b text-lg"
                 >
                   Dokter Kami
                 </Link>
@@ -376,7 +376,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                 <Link
                   href="/jadwal-dokter"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-left p-4 font-bold text-[#005075] border-b text-lg"
+                  className="text-left p-4 font-bold text-[#1c2180] border-b text-lg"
                 >
                   Jadwal Dokter
                 </Link>
@@ -447,7 +447,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                                   setIsMobileMenuOpen(false);
                                   setActiveMenu(null);
                                 }}
-                                className="block p-4 pl-8 text-gray-600 border-b text-sm hover:bg-blue-50 hover:text-[#005075] transition-colors"
+                                className="block p-4 pl-8 text-gray-600 border-b text-sm hover:bg-blue-50 hover:text-[#0c0f57] transition-colors"
                               >
                                 {subitem}
                               </Link>
@@ -462,7 +462,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                 <Link
                   href="/tentang-kami"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-left p-4 font-bold text-[#005075] border-b text-lg"
+                  className="text-left p-4 font-bold text-[#1c2180] border-b text-lg"
                 >
                   Tentang Kami
                 </Link>
@@ -505,7 +505,7 @@ function AuthArea({
         href="/admin/dashboard"
         onClick={onClick}
         className={`flex items-center gap-2 font-medium ${
-          isMobile ? "text-[#005075] text-sm" : "text-white text-sm "
+          isMobile ? "text-[#1c2180] text-sm" : "text-white text-sm "
         }`}
         title="Panel Admin"
       >
