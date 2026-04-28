@@ -181,7 +181,7 @@ const ServicesSection = () => {
                 onClick={() => handleServiceClick(item)}
                 className="aspect-square flex flex-col items-center justify-center text-center p-6 bg-white/80 backdrop-blur-sm border border-white cursor-pointer shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:bg-white transition-all duration-300"
               >
-                <div className="relative w-14 h-14 mb-5">
+                <div className="relative w-35 h-35 mb-5">
                   <Image
                     src={item.img}
                     alt={item.title}
