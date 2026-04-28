@@ -505,12 +505,12 @@ function AuthArea({
         href="/admin/dashboard"
         onClick={onClick}
         className={`flex items-center gap-2 font-medium ${
-          isMobile ? "text-[#005075] text-lg" : "text-white text-sm"
+          isMobile ? "text-[#005075] text-sm" : "text-white text-sm "
         }`}
         title="Panel Admin"
       >
         <LayoutDashboard size={isMobile ? 24 : 20} />
-        {isMobile && <span>Dashboard Admin</span>}
+        {isMobile && <span>DASHBOARD</span>}
       </Link>
     );
   }

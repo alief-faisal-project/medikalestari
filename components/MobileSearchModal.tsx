@@ -250,7 +250,7 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
 
                         <button
                           onClick={clearHistory}
-                          className="text-[10px] text-gray-700 font-bold cursor-pointer"
+                          className="text-[12px] text-gray-700 font-bold cursor-pointer"
                         >
                           Hapus Semua
                         </button>
