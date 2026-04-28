@@ -155,7 +155,7 @@ const AboutUs = () => {
             {cardData.map((item) => (
               <div
                 key={item.title}
-                className="group relative h-[420px] w-full overflow-hidden bg-[#005cb3] md:bg-white shadow-xl border border-slate-100 "
+                className="group relative h-[420px] w-full overflow-hidden bg-[#1c2180] md:bg-white shadow-xl border border-slate-100 "
               >
                 {/* Background Image desktop */}
                 <div
@@ -165,7 +165,7 @@ const AboutUs = () => {
 
                 {/* Layer Poligon/Jajar Genjang */}
                 <div
-                  className="absolute inset-0 z-10 bg-[#004585]/80 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] 
+                  className="absolute inset-0 z-10 bg-[#0c0f57]/80 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] 
                              md:[clip-path:polygon(0_85%,100%_70%,100%_100%,0%_100%)] 
                              group-hover:[clip-path:polygon(0_0,100%_0,100%_100%,0%_100%)]"
                 />

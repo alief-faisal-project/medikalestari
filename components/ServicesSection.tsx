@@ -40,7 +40,7 @@ const ServicesSection = () => {
     },
     {
       id: 2,
-      image: "/dokter-kami.jpg",
+      image: "/kamar-perawatan.jpg",
       title: "Dokter Kami",
       description:
         "Tim dokter spesialis berpengalaman yang siap melayani Anda.",
@@ -49,7 +49,7 @@ const ServicesSection = () => {
     },
     {
       id: 3,
-      image: "/jadwal-dokter.jpg",
+      image: "/kamar-perawatan.jpg",
       title: "Jadwal Dokter",
       description:
         "Temukan waktu konsultasi yang sesuai dengan dokter pilihan Anda.",
@@ -58,7 +58,7 @@ const ServicesSection = () => {
     },
     {
       id: 4,
-      image: "/jam-operasional.jpg",
+      image: "/kamar-perawatan.jpg",
       title: "Jam Operasional",
       description:
         "Informasi waktu pelayanan poliklinik dan unit layanan kami.",
@@ -127,7 +127,7 @@ const ServicesSection = () => {
                       className="object-cover"
                     />
                   </div>
-                  <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-[#005cb3] via-[#005cb3]/85 to-transparent z-10" />
+                  <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-[#1c2180] via-[#1c2180]/85 to-transparent z-10" />
                   <div
                     className="relative z-20 mt-auto p-7 flex flex-col items-start transform-gpu"
                     style={{ backfaceVisibility: "hidden" }}
@@ -150,7 +150,7 @@ const ServicesSection = () => {
       <div className="relative w-screen left-1/2 -translate-x-1/2 min-h-[550px] flex items-center overflow-hidden border-t border-slate-100">
         <div className="absolute inset-0">
           <Image
-            src="/informasi.jpg"
+            src="/kamar-perawatan.jpg"
             alt="Hubungi Kami"
             fill
             className="object-cover"

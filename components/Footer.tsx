@@ -26,25 +26,25 @@ const Footer = () => {
     />
   );
 
-const MailIcon = (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Tiang Kiri (Biru) */}
-    <path d="M4 20V5c0-1.1.9-2 2-2h2v17H4z" fill="#4285F4" />
+  const MailIcon = (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Tiang Kiri (Biru) */}
+      <path d="M4 20V5c0-1.1.9-2 2-2h2v17H4z" fill="#4285F4" />
 
-    {/* Tiang Kanan (Hijau) */}
-    <path d="M16 20V3h2c1.1 0 2 .9 2 2v15h-4z" fill="#34A853" />
+      {/* Tiang Kanan (Hijau) */}
+      <path d="M16 20V3h2c1.1 0 2 .9 2 2v15h-4z" fill="#34A853" />
 
-    {/* Dasar Tengah (Sekarang Putih) */}
-    {/* Bagian ini yang memberikan latar belakang putih di celah huruf M */}
-    <path d="M16 3v5.5L12 12 8 8.5V3h8z" fill="#FFFFFF" />
+      {/* Dasar Tengah (Sekarang Putih) */}
+      {/* Bagian ini yang memberikan latar belakang putih di celah huruf M */}
+      <path d="M16 3v5.5L12 12 8 8.5V3h8z" fill="#FFFFFF" />
 
-    {/* Bagian Merah (Bentuk M) */}
-    <path
-      d="M20 5V7L12 13L4 7V5C4 3.9 4.9 3 6 3H8L12 7L16 3H18C19.1 3 20 3.9 20 5Z"
-      fill="#EA4335"
-    />
-  </svg>
-);
+      {/* Bagian Merah (Bentuk M) */}
+      <path
+        d="M20 5V7L12 13L4 7V5C4 3.9 4.9 3 6 3H8L12 7L16 3H18C19.1 3 20 3.9 20 5Z"
+        fill="#EA4335"
+      />
+    </svg>
+  );
   // --- Data Konfigurasi ---
   const socialMedia = [
     {
@@ -133,7 +133,7 @@ const MailIcon = (
       </div>
 
       {/* --- MAIN FOOTER --- */}
-      <div className="relative bg-[#005cb3] text-white overflow-hidden">
+      <div className="relative bg-[#1c2180] text-white overflow-hidden">
         <div className="relative max-w-[1140px] mx-auto px-5 md:px-6 py-10 md:py-16 z-10">
           <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-12">
             {footerLinks.map((section) => (

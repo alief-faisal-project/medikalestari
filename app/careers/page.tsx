@@ -260,7 +260,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
       <div className="max-w-2xl mx-auto px-4 py-12 flex justify-center">
         <button
           onClick={() => setShowModal(true)}
-          className="px-8 py-4 bg-[#005cb3] text-white rounded-lg font-semibold hover:bg-[#005cb3]/90 transition-colors cursor-pointer active:scale-95"
+          className="px-8 py-4 bg-[#1c2180] text-white rounded-lg font-semibold hover:bg-[#1c2180]/90 transition-colors cursor-pointer active:scale-95"
         >
           Daftar Lowongan
         </button>
@@ -533,7 +533,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                   <button
                     type="submit"
                     disabled={submitting || !config?.is_form_active}
-                    className="flex-1 bg-[#005cb3] text-white py-2 text-sm rounded-lg font-semibold hover:bg-[#005cb3]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                    className="flex-1 bg-[#1c2180] text-white py-2 text-sm rounded-lg font-semibold hover:bg-[#1c2180]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {submitting ? (
                       <>
