@@ -7,7 +7,6 @@ import {
   ChevronRight,
   History,
   ChevronDown,
-  ArrowLeft,
   Trash2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -159,17 +158,13 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
           className="fixed inset-0 bg-white z-[999] md:hidden flex flex-col overscroll-none"
         >
           {isNavigating && (
-            <div className="absolute top-0 left-0 w-full h-[1px] bg-black z-[1000]" />
+            <div className="absolute top-0 left-0 w-full  z-[1000]" />
           )}
 
           {/* Header */}
-          <div className="bg-white border-b border-gray-100 p-4 flex items-center gap-2">
-            <button onClick={onClose} className="p-1">
-              <ArrowLeft size={22} className="text-gray-700" />
-            </button>
-
+          <div className="bg-white p-4 flex items-center gap-3">
             <form
-              className="flex-1 flex items-center gap-2 bg-gray-50 rounded-xl px-4 py-2"
+              className="flex-1 flex items-center gap-2 bg-gray-100 px-4 py-1 border border-transparent transition-all duration-200 focus-within:border-gray-400 focus-within:bg-white focus-within:ring-1 focus-within:ring-gray-400"
               onSubmit={(e) => {
                 e.preventDefault();
 
@@ -188,8 +183,7 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
                 placeholder="Cari dokter atau spesialis..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                // FIX: Pakai 16px agar tidak auto-zoom di mobile browser
-                className="bg-transparent flex-1 outline-none text-[16px] py-1 text-gray-700 "
+                className="bg-transparent flex-1 outline-none text-[16px] py-1 text-gray-700"
               />
 
               {searchQuery && (
@@ -198,6 +192,13 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
                 </button>
               )}
             </form>
+
+            <button
+              onClick={onClose}
+              className="text-[14px] font-bold text-gray-700 whitespace-nowrap active:opacity-60 cursor-pointer"
+            >
+              Batal
+            </button>
           </div>
 
           <div className="flex-1 overflow-y-auto">
@@ -249,9 +250,9 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
 
                         <button
                           onClick={clearHistory}
-                          className="text-[11px] text-gray-400 font-bold"
+                          className="text-[10px] text-gray-700 font-bold cursor-pointer"
                         >
-                          HAPUS
+                          Hapus Semua
                         </button>
                       </div>
 
@@ -289,9 +290,9 @@ const MobileSearchModal: React.FC<MobileSearchModalProps> = ({
                             <button
                               type="button"
                               onClick={() => removeHistoryItem(doc.id)}
-                              className="shrink-0 p-1"
+                              className="shrink-0 p-1 cursor-pointer"
                             >
-                              <Trash2 size={15} className="text-gray-400" />
+                              <Trash2 size={15} className="text-gray-700" />
                             </button>
                           </div>
                         ))}
