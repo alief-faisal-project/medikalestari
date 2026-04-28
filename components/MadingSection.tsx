@@ -69,7 +69,7 @@ const MadingSection = () => {
       <div className="max-w-[1110px] mx-auto">
         {/* Header Navigation */}
         <div className="flex items-center justify-between mb-8 border-b border-gray-100">
-          <h2 className="text-2xl md:text-3xl font-normal text-slate-800 pb-4">
+          <h2 className="text-2xl md:text-3xl font-light text-slate-900 mt-1 uppercase tracking-tight pb-4">
             Informasi & Event
           </h2>
           <div className="flex gap-6 md:gap-8">
@@ -77,7 +77,7 @@ const MadingSection = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`pb-4 px-1 text-xs md:text-sm font-normla transition-all relative ${
+                className={`pb-4 px-1 text-xs md:text-sm font-normal transition-all relative ${
                   activeTab === tab ? "text-[#1c2180]" : "text-gray-400"
                 }`}
               >
