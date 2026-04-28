@@ -176,7 +176,7 @@ const MailIcon = (
             </div>
           </div>
 
-          <div className="mt-8 md:mt-12 pt-5 border-t border-white/10 text-center md:text-left">
+          <div className="mt-8 md:mt-12 pt-5 border-t border-white/10 text-center md:text-left mb-15 md:-mb-10">
             <p className="text-[11px] md:text-sm opacity-70">
               © 1994-{new Date().getFullYear()} RS Medika Lestari. Semua Hak
               Cipta Dilindungi
