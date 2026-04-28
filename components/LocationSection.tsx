@@ -11,7 +11,7 @@ export default function LocationSection() {
   return (
     <section id="lokasi" className="bg-white py-16">
       <div className="max-w-[1160px] mx-auto px-4 md:px-8">
-        <h2 className="text-2xl md:text-3xl font-light text-slate-900 mt-1 uppercase tracking-tight">
+        <h2 className="text-2xl md:text-3xl font-light text-slate-900 mt-1 uppercase tracking-tight mb-5">
           Lokasi Kami
         </h2>
         <p className="text-slate-600 mb-6">
