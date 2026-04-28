@@ -40,7 +40,7 @@ const ServicesSection = () => {
     },
     {
       id: 2,
-      image: "/kamar-perawatan.jpg",
+      image: "/dokter-kami.jpg",
       title: "Dokter Kami",
       description:
         "Tim dokter spesialis berpengalaman yang siap melayani Anda.",
