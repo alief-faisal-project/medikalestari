@@ -40,7 +40,7 @@ const ServicesSection = () => {
     },
     {
       id: 2,
-      image: "/dokter-kami.jpg",
+      image: "/dokter-kami.png",
       title: "Dokter Kami",
       description:
         "Tim dokter spesialis berpengalaman yang siap melayani Anda.",
@@ -49,7 +49,7 @@ const ServicesSection = () => {
     },
     {
       id: 3,
-      image: "/kamar-perawatan.jpg",
+      image: "/jadwal-dokter.png",
       title: "Jadwal Dokter",
       description:
         "Temukan waktu konsultasi yang sesuai dengan dokter pilihan Anda.",
@@ -58,7 +58,7 @@ const ServicesSection = () => {
     },
     {
       id: 4,
-      image: "/kamar-perawatan.jpg",
+      image: "/jam-operasional.jpg",
       title: "Jam Operasional",
       description:
         "Informasi waktu pelayanan poliklinik dan unit layanan kami.",
