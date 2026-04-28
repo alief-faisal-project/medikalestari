@@ -40,7 +40,7 @@ const ServicesSection = () => {
     },
     {
       id: 2,
-      image: "/dokter-kami.jpeg",
+      image: "/dokter-kami.webp",
       title: "Dokter Kami",
       description:
         "Tim dokter spesialis berpengalaman yang siap melayani Anda.",
@@ -49,7 +49,7 @@ const ServicesSection = () => {
     },
     {
       id: 3,
-      image: "/jadwal-dokter.jpeg",
+      image: "/jadwal-dokter.webp",
       title: "Jadwal Dokter",
       description:
         "Temukan waktu konsultasi yang sesuai dengan dokter pilihan Anda.",
@@ -58,7 +58,7 @@ const ServicesSection = () => {
     },
     {
       id: 4,
-      image: "/jam-operasional.jpeg",
+      image: "/jam-operasional.webp",
       title: "Jam Operasional",
       description:
         "Informasi waktu pelayanan poliklinik dan unit layanan kami.",
@@ -150,7 +150,7 @@ const ServicesSection = () => {
       <div className="relative w-screen left-1/2 -translate-x-1/2 min-h-[550px] flex items-center overflow-hidden border-t border-slate-100">
         <div className="absolute inset-0">
           <Image
-            src="/informasi.jpg"
+            src="/informasi.webp"
             alt="Hubungi Kami"
             fill
             className="object-cover"
