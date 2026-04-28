@@ -5,6 +5,15 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
+interface ServiceItem {
+  id: number;
+  image: string;
+  title: string;
+  description: string;
+  targetId: string | null;
+  href: string | null;
+}
+
 const ServicesSection = () => {
   const router = useRouter();
 
@@ -19,218 +28,201 @@ const ServicesSection = () => {
     window.scrollTo({ top: elementPosition, behavior: "smooth" });
   };
 
-  const infoData = [
-    { id: 1, img: "/icons/informasi/telephone.png", title: "Customer service" },
-    { id: 2, img: "/icons/informasi/email.png", title: "Email" },
-    { id: 3, img: "/icons/informasi/map.png", title: "Lokasi" },
-  ];
-
-  const serviceData = [
+  const serviceData: ServiceItem[] = [
     {
       id: 1,
-      img: "/icons/pelayanan/hospital.png",
+      image: "/kamar-perawatan.jpg",
       title: "Kamar Perawatan",
+      description:
+        "Fasilitas rawat inap nyaman dengan standar pelayanan medis terbaik.",
       targetId: null,
       href: "/services/kamar-perawatan",
     },
     {
       id: 2,
-      img: "/icons/pelayanan/doctor.png",
+      image: "/dokter-kami.jpeg",
       title: "Dokter Kami",
+      description:
+        "Tim dokter spesialis berpengalaman yang siap melayani Anda.",
       targetId: "section-dokter",
       href: null,
     },
     {
       id: 3,
-      img: "/icons/pelayanan/calendar.png",
+      image: "/jadwal-dokter.jpeg",
       title: "Jadwal Dokter",
+      description:
+        "Temukan waktu konsultasi yang sesuai dengan dokter pilihan Anda.",
       targetId: null,
       href: "/jadwal-dokter",
     },
     {
       id: 4,
-      img: "/icons/pelayanan/clock.png",
+      image: "/jam-operasional.jpeg",
       title: "Jam Operasional",
+      description:
+        "Informasi waktu pelayanan poliklinik dan unit layanan kami.",
       targetId: null,
       href: null,
     },
   ];
 
-  const handleServiceClick = (item: {
-    id: number;
-    img: string;
-    title: string;
-    targetId: string | null;
-    href?: string | null;
-  }) => {
+  const handleServiceClick = (item: ServiceItem) => {
     if (item.href) {
       router.push(item.href);
       return;
     }
-
     if (!item.targetId) return;
 
     const el = document.getElementById(item.targetId);
     if (el) {
       scrollToSection(item.targetId);
-      return;
-    }
-
-    router.push(`/dokter#${item.targetId}`);
-  };
-
-  const handleInfoClick = (title: string) => {
-    const checkTitle = title.toLowerCase();
-
-    if (checkTitle === "lokasi") {
-      window.open("https://maps.app.goo.gl/EP5qTWzim9XmoUbe6", "_blank");
-    }
-
-    if (checkTitle === "email") {
-      const emailRecipient = "marketing@rsmedikalestari.com";
-
-      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${emailRecipient}`;
-      const newWindow = window.open(gmailUrl, "_blank");
-
-      // Fallback jika window.open diblokir atau gagal
-      if (!newWindow || newWindow.closed || newWindow.closed === undefined) {
-        const link = document.createElement("a");
-        link.href = `mailto:${emailRecipient}`;
-        link.click();
-      }
-    }
-
-    if (checkTitle === "customer service") {
-      window.open("https://wa.me/6282246232527", "_blank");
+    } else {
+      router.push(`/dokter#${item.targetId}`);
     }
   };
 
   return (
-    <section className="w-full bg-slate-50 font-sans text-[#005cb3] relative py-20 overflow-hidden">
-      {/* --- BACKGROUND DECORATION --- */}
-      <div className="absolute inset-0 z-0 opacity-40">
-        {/* Garis Grid Halus */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(#005cb3 0.5px, transparent 0.5px)`,
-            backgroundSize: "30px 30px",
-          }}
-        />
-
-        {/* Garis Diagonal Dekoratif */}
-        <svg
-          className="absolute top-0 left-0 w-full h-full"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <line
-            x1="0"
-            y1="10%"
-            x2="100%"
-            y2="40%"
-            stroke="#005cb3"
-            strokeWidth="0.5"
-            strokeOpacity="0.2"
-          />
-          <line
-            x1="0"
-            y1="60%"
-            x2="100%"
-            y2="90%"
-            stroke="#005cb3"
-            strokeWidth="0.5"
-            strokeOpacity="0.2"
-          />
-          <line
-            x1="100%"
-            y1="0%"
-            x2="0%"
-            y2="100%"
-            stroke="#005cb3"
-            strokeWidth="0.5"
-            strokeOpacity="0.1"
-          />
-        </svg>
-
-        {/* Lingkaran blur untuk kedalaman */}
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-50" />
-        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50" />
-      </div>
-
-      <div className="relative z-10">
-        {/* PELAYANAN SECTION */}
-        <div className="max-w-290 mx-auto px-4 md:px-8 mb-20">
+    <section className="w-full bg-white font-sans text-slate-800 relative py-20 overflow-hidden">
+      <div className="relative z-10 max-w-290 mx-auto px-4 md:px-8">
+        {/* PELAYANAN SECTION - PUTIH BERSIH */}
+        <div className="mb-12">
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex items-center gap-6 mb-16 lg:mb-10 justify-center md:justify-end text-center md:text-right"
+            className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4 pb-8 border-b border-slate-100"
           >
-            <div className="hidden md:block flex-1 h-0.5 bg-linear-to-l from-[#005cb3]/30 to-transparent" />
-            <h2 className="text-4xl font-light uppercase pb-2 tracking-widest">
-              Pelayanan
-            </h2>
+            <div>
+              <h2 className="text-3xl md:text-4xl font-light text-slate-900 mt-1 uppercase tracking-tight">
+                Pusat Pelayanan
+              </h2>
+            </div>
+            <p className="text-slate-500 max-w-sm text-sm md:text-right">
+              Akses informasi fasilitas, jadwal tenaga medis, dan operasional
+              rumah sakit.
+            </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {serviceData.map((item) => (
-              <motion.div
-                key={item.id}
-                whileHover={{ y: -8 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => handleServiceClick(item)}
-                className="aspect-square flex flex-col items-center justify-center text-center p-6 bg-white/80 backdrop-blur-sm border border-white cursor-pointer shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:bg-white transition-all duration-300"
-              >
-                <div className="relative w-22 h-22 mb-4">
-                  <Image
-                    src={item.img}
-                    alt={item.title}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <h3 className="text-sm md:text-base font-black uppercase tracking-tighter leading-tight">
-                  {item.title}
-                </h3>
-              </motion.div>
-            ))}
+          <div className="relative">
+            <div className="relative z-10 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {serviceData.map((item) => (
+                <motion.div
+                  key={item.id}
+                  onClick={() => handleServiceClick(item)}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 40,
+                    damping: 20,
+                    mass: 2,
+                  }}
+                  className="group relative aspect-[3/4.5] flex flex-col overflow-hidden bg-white border border-slate-200 shadow-sm cursor-default transform-gpu"
+                >
+                  <div className="absolute inset-0">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-[#005cb3] via-[#005cb3]/85 to-transparent z-10" />
+                  <div
+                    className="relative z-20 mt-auto p-7 flex flex-col items-start transform-gpu"
+                    style={{ backfaceVisibility: "hidden" }}
+                  >
+                    <h3 className="text-xl font-bold text-white mb-2 leading-tight">
+                      {item.title}
+                    </h3>
+                    <p className="text-blue-50/90 text-sm leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* INFORMASI SECTION */}
-        <div className="max-w-290 mx-auto px-4 md:px-8 mb-8">
+      {/* INFORMASI SECTION - ADA GAMBAR / OVERLAY GELAP */}
+      <div className="relative w-screen left-1/2 -translate-x-1/2 min-h-[550px] flex items-center overflow-hidden border-t border-slate-100">
+        <div className="absolute inset-0">
+          <Image
+            src="/informasi.jpg"
+            alt="Hubungi Kami"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+        <div className="absolute inset-0 bg-black/60 z-10" />
+
+        <div className="relative z-20 max-w-290 mx-auto px-6 md:px-10 w-full grid grid-cols-1 md:grid-cols-2 gap-16 py-24 items-center">
+          {/* Sisi Kiri - Simetris */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="flex items-center gap-6 mb-16 lg:mb-10 justify-center md:justify-start text-center md:text-left"
+            className="flex flex-col justify-center"
           >
-            <h2 className="text-4xl font-light uppercase pb-2 tracking-widest">
-              Informasi
+            <h2 className="text-4xl md:text-6xl font-light text-white tracking-tighter leading-[1.1] mb-6">
+              Hubungi Pusat <br /> Informasi Kami
             </h2>
-            <div className="hidden md:block flex-1 h-0.5 bg-linear-to-r from-[#005cb3]/30 to-transparent" />
+            <p className="text-white max-w-lg text-sm md:text-base leading-relaxed opacity-90">
+              Tim Layanan Pelanggan kami siap melayani pertanyaan, keluhan,
+              maupun panduan akses layanan Rumah Sakit Medika Lestari.
+            </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {infoData.map((item) => (
-              <motion.div
-                key={item.id}
-                whileHover={{ y: -8 }}
-                onClick={() => handleInfoClick(item.title)}
-                className="flex flex-col items-center justify-center p-10 bg-white/80 backdrop-blur-sm border border-white cursor-pointer transition-all duration-300 shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:bg-white"
+          {/* Sisi Kanan - Links */}
+          <div className="flex flex-col justify-center gap-10 md:pl-10">
+            {[
+              {
+                id: "cs",
+                title: "HUBUNGI CUSTOMER SERVICE",
+                action: "https://wa.me/6282246232527",
+              },
+              {
+                id: "email",
+                title: "EMAIL RESMI MARKETING",
+                action: "mailto:marketing@rsmedikalestari.com",
+              },
+              {
+                id: "lokasi",
+                title: "LIHAT LOKASI RUMAH SAKIT",
+                action: "https://maps.app.goo.gl/19qWtLaQQXXN7d5W9",
+              },
+            ].map((menu) => (
+              <motion.a
+                key={menu.id}
+                href={menu.action}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ x: 10 }}
+                className="group flex flex-col w-full"
               >
-                <div className="relative w-16 h-16 mb-6">
-                  <Image
-                    src={item.img}
-                    alt={item.title}
-                    fill
-                    className="object-contain"
-                  />
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs md:text-sm font-bold tracking-[0.25em] text-white transition-colors">
+                    {menu.title}
+                  </span>
+                  <svg
+                    className="w-5 h-5 text-white/50 transition-transform group-hover:translate-x-2 group-hover:text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
                 </div>
-                <h3 className="text-lg font-black uppercase tracking-tighter">
-                  {item.title}
-                </h3>
-              </motion.div>
+                <div className="w-full h-[1px] bg-white/20 transition-colors duration-300" />
+              </motion.a>
             ))}
           </div>
         </div>
