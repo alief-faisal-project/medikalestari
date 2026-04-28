@@ -44,8 +44,8 @@ const ServicesSection = () => {
       title: "Dokter Kami",
       description:
         "Tim dokter spesialis berpengalaman yang siap melayani Anda.",
-      targetId: "section-dokter",
-      href: null,
+      targetId: null,
+      href: "/dokter",
     },
     {
       id: 3,
