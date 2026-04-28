@@ -50,7 +50,6 @@ const AboutUs = () => {
     <section className="bg-white text-slate-900 scroll -mt-12 pb-20">
       {/* 1. SECTION FOTO & JUDUL */}
       <div className="max-w-[1159px] mx-auto px-6 py-12 md:py-20">
-        {/* BREADCRUMB & TITLE SECTION */}
         <div className="mb-8 md:mb-12 border-b border-slate-100 pb-6">
           <nav className="flex items-center gap-1 text-[14px] text-gray-300 mb-4">
             <Link
@@ -155,34 +154,35 @@ const AboutUs = () => {
             {cardData.map((item) => (
               <div
                 key={item.title}
-                className="group relative h-[420px] w-full overflow-hidden bg-[#1c2180] md:bg-white shadow-xl border border-slate-100 "
+                className="group relative h-[420px] w-full overflow-hidden bg-white shadow-xl border border-slate-100"
               >
-                {/* Background Image desktop */}
+                {/* Background Image - Tampil di Mobile & Desktop */}
                 <div
-                  className="hidden md:block absolute inset-0 z-0 bg-cover bg-center transition-transform duration-[800ms]"
+                  className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-[800ms] md:scale-105 md:group-hover:scale-100"
                   style={{ backgroundImage: `url('${item.img}')` }}
                 />
 
-                {/* Layer Poligon/Jajar Genjang */}
+                {/* Layer Overlay Biru (Transparansi) */}
                 <div
-                  className="absolute inset-0 z-10 bg-[#0c0f57]/80 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] 
+                  className="absolute inset-0 z-10 bg-[#0c0f57]/75 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] 
                              md:[clip-path:polygon(0_85%,100%_70%,100%_100%,0%_100%)] 
-                             group-hover:[clip-path:polygon(0_0,100%_0,100%_100%,0%_100%)]"
+                             md:group-hover:[clip-path:polygon(0_0,100%_0,100%_100%,0%_100%)]
+                             md:group-hover:bg-[#0c0f57]/85"
                 />
 
                 {/* Konten Teks */}
                 <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
                   {/* Judul */}
-                  <h3 className="text-white text-3xl font-bold transition-all duration-700 group-hover:-translate-y-2">
+                  <h3 className="text-white text-3xl font-bold transition-all duration-700 md:group-hover:-translate-y-2">
                     {item.title}
                   </h3>
 
-                  {/* Deskripsi */}
+                  {/* Deskripsi - Langsung tampil di mobile, hover di desktop */}
                   <div
-                    className="max-h-0 opacity-0 overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] 
-                                  group-hover:max-h-[200px] group-hover:opacity-100 group-hover:mt-4"
+                    className="max-h-[300px] opacity-100 mt-4 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] 
+                                 md:max-h-0 md:opacity-0 md:mt-0 md:group-hover:max-h-[200px] md:group-hover:opacity-100 md:group-hover:mt-4"
                   >
-                    <div className="text-white/90 leading-relaxed pt-3 border-t border-white/20">
+                    <div className="text-white/95 leading-relaxed pt-3 border-t border-white/20 font-medium">
                       {item.content}
                     </div>
                   </div>
