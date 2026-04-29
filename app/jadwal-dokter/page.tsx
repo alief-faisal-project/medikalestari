@@ -66,7 +66,7 @@ export default function DoctorSchedulePage() {
           <a
             href="https://wa.me/6282246232527"
             target="_blank"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#0009ad] text-white text-sm font-semibold rounded-full hover:bg-[#0009ad]/90 transition-all shadow-sm hover:scale-95"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#0059FF] text-white text-sm font-semibold rounded-full hover:bg-[#0059FF]/90 transition-all shadow-sm hover:scale-95"
           >
             Hubungi Customer Service
             <ArrowRight className="h-4 w-4" />

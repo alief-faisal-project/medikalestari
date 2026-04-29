@@ -260,7 +260,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
       <div className="max-w-2xl mx-auto px-4 py-12 flex justify-center">
         <button
           onClick={() => setShowModal(true)}
-          className="px-8 py-4 bg-[#0009ad] text-white rounded-lg font-semibold hover:bg-[#0009ad]/90 transition-colors cursor-pointer active:scale-95"
+          className="px-8 py-4 bg-[#0059FF] text-white rounded-lg font-semibold hover:bg-[#0059FF]/90 transition-colors cursor-pointer active:scale-95"
         >
           Daftar Lowongan
         </button>
@@ -335,7 +335,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       value={formData.full_name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0009ad] focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0059FF] focus:border-transparent outline-none"
                       placeholder="Masukkan nama lengkap"
                     />
                   </div>
@@ -354,7 +354,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0009ad] focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0059FF] focus:border-transparent outline-none"
                       placeholder="email@example.com"
                     />
                   </div>
@@ -373,7 +373,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       value={formData.phone}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0009ad] focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0059FF] focus:border-transparent outline-none"
                       placeholder="08xxxxxxxxxx"
                     />
                   </div>
@@ -392,7 +392,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       value={formData.position}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0009ad] focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0059FF] focus:border-transparent outline-none"
                       placeholder="Misal: Perawat, Dokter, dll"
                     />
                   </div>
@@ -410,7 +410,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       value={formData.education}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0009ad] focus:border-transparent outline-none bg-white"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0059FF] focus:border-transparent outline-none bg-white"
                     >
                       <option value="">Pilih Pendidikan Terakhir</option>
                       <option value="D3">D3</option>
@@ -437,7 +437,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       onChange={handleInputChange}
                       min="0"
                       required
-                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0009ad] focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0059FF] focus:border-transparent outline-none"
                       placeholder="0"
                     />
                   </div>
@@ -476,7 +476,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                                     e.target.value,
                                   )
                                 }
-                                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0009ad] focus:border-transparent outline-none"
+                                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0059FF] focus:border-transparent outline-none"
                                 placeholder={
                                   criterion.toLowerCase() === "not"
                                     ? "Jelaskan alasan Anda ingin bekerja di RS Medika Lestari"
@@ -498,7 +498,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                   >
                     Upload Resume (PDF) *
                   </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 sm:p-4 text-center hover:border-[#0009ad] transition-colors">
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 sm:p-4 text-center hover:border-[#0059FF] transition-colors">
                     <input
                       type="file"
                       accept=".pdf"
@@ -533,7 +533,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                   <button
                     type="submit"
                     disabled={submitting || !config?.is_form_active}
-                    className="flex-1 bg-[#0009ad] text-white py-2 text-sm rounded-lg font-semibold hover:bg-[#0009ad]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                    className="flex-1 bg-[#0059FF] text-white py-2 text-sm rounded-lg font-semibold hover:bg-[#0059FF]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {submitting ? (
                       <>
