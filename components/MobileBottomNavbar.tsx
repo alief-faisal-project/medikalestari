@@ -19,7 +19,7 @@ const MobileBottomNavbar = () => {
       ),
     },
     {
-      label: "Cari Dokter",
+      label: "Dokter Kami",
       href: "/dokter",
       outline: (
         <g>
@@ -39,7 +39,7 @@ const MobileBottomNavbar = () => {
       ),
     },
     {
-      label: "Jadwal",
+      label: "Jadwal Dokter",
       href: "/jadwal-dokter",
       outline: (
         <g>
@@ -61,7 +61,7 @@ const MobileBottomNavbar = () => {
       ),
     },
     {
-      label: "Kamar",
+      label: "Kamar Perawatan",
       href: "/services/kamar-perawatan",
       outline: (
         <g>
