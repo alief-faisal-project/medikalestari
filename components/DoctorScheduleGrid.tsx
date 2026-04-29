@@ -236,7 +236,7 @@ export default function DoctorScheduleGrid({
             <div
               key={doctor.id}
               onClick={() => router.push(`/dokter/${doctor.id}`)}
-              className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden active:scale-[0.99] transition-transform"
+              className="bg-white border border-slate-200 shadow-sm overflow-hidden active:scale-[0.99] transition-transform"
             >
               {/* Bagian Atas: Profil Dokter */}
               <div className="p-4 flex items-center gap-4 bg-slate-50/50">
