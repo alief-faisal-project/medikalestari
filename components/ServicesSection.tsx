@@ -58,7 +58,7 @@ const ServicesSection = () => {
     },
     {
       id: 4,
-      image: "/jam-operasional.jpg",
+      image: "/jam-operasional.png",
       title: "Jam Operasional",
       description:
         "Informasi waktu pelayanan poliklinik dan unit layanan kami.",
