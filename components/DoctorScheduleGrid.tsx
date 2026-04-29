@@ -152,7 +152,7 @@ export default function DoctorScheduleGrid({
                     <h3 className="font-bold text-slate-800 text-sm line-clamp-2">
                       {doctor.name}
                     </h3>
-                    <p className="text-xs text-gray-400 font-semibold">
+                    <p className="text-xs text-gray-400 font-normal">
                       {doctor.specialty}
                     </p>
                   </div>
