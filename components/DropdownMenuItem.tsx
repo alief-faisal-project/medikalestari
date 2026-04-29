@@ -21,7 +21,7 @@ const DropdownMenuItem = ({ title, href }: DropdownItemProps) => {
         </div>
 
         {/* TEKS */}
-        <span className="text-[14px] text-gray-700 group-hover:text-[#1c2180] group-hover:font-medium transition-colors duration-300">
+        <span className="text-[14px] text-gray-700 group-hover:text-[#0009ad] group-hover:font-medium transition-colors duration-300">
           {title}
         </span>
       </div>

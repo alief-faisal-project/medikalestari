@@ -173,7 +173,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
           <div className="hidden md:flex gap-4 items-center text-[15px] font-normal text-gray-700">
             <Link
               href="/kontak-kami"
-              className="hover:text-[#000367] hover:underline"
+              className="hover:text-[#000471] hover:underline"
             >
               Kontak
             </Link>
@@ -182,7 +182,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 
             <Link
               href="/careers"
-              className="hover:text-[#000367] hover:underline"
+              className="hover:text-[#000471] hover:underline"
             >
               Karir
             </Link>
@@ -191,7 +191,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 
             <Link
               href="/tentang-kami"
-              className="hover:text-[#000367] hover:underline"
+              className="hover:text-[#000471] hover:underline"
             >
               Tentang Kami
             </Link>
@@ -217,9 +217,9 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
       </div>
 
       {/* --- Bottom Navbar --- */}
-      <div className="hidden md:block relative w-full bg-[#1c2180] text-white z-30">
+      <div className="hidden md:block relative w-full bg-[#0009ad] text-white z-30">
         <div
-          className="absolute right-0 top-0 h-full w-[38%] bg-[#000367] hidden lg:block"
+          className="absolute right-0 top-0 h-full w-[38%] bg-[#000471] hidden lg:block"
           style={{ clipPath: "polygon(40px 0, 100% 0, 100% 100%, 0% 100%)" }}
         />
 
@@ -371,7 +371,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               <div className="flex flex-col p-4">
                 <button
                   onClick={handleHomeClick}
-                  className="text-left p-4 font-bold text-[#1c2180] border-b text-lg"
+                  className="text-left p-4 font-bold text-[#0009ad] border-b text-lg"
                 >
                   Beranda
                 </button>
@@ -379,7 +379,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                 <Link
                   href="/dokter#section-dokter"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-left p-4 font-bold text-[#1c2180] border-b text-lg"
+                  className="text-left p-4 font-bold text-[#0009ad] border-b text-lg"
                 >
                   Dokter Kami
                 </Link>
@@ -387,7 +387,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                 <Link
                   href="/jadwal-dokter"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-left p-4 font-bold text-[#1c2180] border-b text-lg"
+                  className="text-left p-4 font-bold text-[#0009ad] border-b text-lg"
                 >
                   Jadwal Dokter
                 </Link>
@@ -458,7 +458,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                                   setIsMobileMenuOpen(false);
                                   setActiveMenu(null);
                                 }}
-                                className="block p-4 pl-8 text-gray-600 border-b text-sm hover:bg-blue-50 hover:text-[#000367] transition-colors"
+                                className="block p-4 pl-8 text-gray-600 border-b text-sm hover:bg-blue-50 hover:text-[#000471] transition-colors"
                               >
                                 {subitem}
                               </Link>
@@ -473,7 +473,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                 <Link
                   href="/tentang-kami"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-left p-4 font-bold text-[#1c2180] border-b text-lg"
+                  className="text-left p-4 font-bold text-[#0009ad] border-b text-lg"
                 >
                   Tentang Kami
                 </Link>
@@ -516,7 +516,7 @@ function AuthArea({
         href="/admin/dashboard"
         onClick={onClick}
         className={`flex items-center gap-2 font-medium ${
-          isMobile ? "text-[#1c2180] text-sm" : "text-white text-sm "
+          isMobile ? "text-[#0009ad] text-sm" : "text-white text-sm "
         }`}
         title="Panel Admin"
       >

@@ -104,12 +104,12 @@ const MobileBottomNavbar = () => {
                   }
                 }}
                 className={`flex flex-col items-center justify-center w-1/4 py-3 px-2 transition-all duration-200 relative tap-highlight-transparent ${
-                  isItemActive ? "text-[#1c2180]" : "text-gray-400"
+                  isItemActive ? "text-[#0009ad]" : "text-gray-400"
                 }`}
               >
                 {/* Indikator Atas */}
                 <div
-                  className={`absolute top-0 w-full h-[3px] bg-[#1c2180] rounded-b-sm transition-transform duration-300 ease-out ${
+                  className={`absolute top-0 w-full h-[3px] bg-[#0009ad] rounded-b-sm transition-transform duration-300 ease-out ${
                     isItemActive ? "scale-x-100" : "scale-x-0"
                   }`}
                 />
@@ -133,7 +133,7 @@ const MobileBottomNavbar = () => {
                 <span
                   className={`text-[10px] mt-1 text-center font-bold tracking-tight transition-colors ${
                     isItemActive
-                      ? "text-[#1c2180]"
+                      ? "text-[#0009ad]"
                       : "text-gray-500 font-medium"
                   }`}
                 >

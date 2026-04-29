@@ -14,7 +14,7 @@ const Pembatalan = () => {
       <Breadcrumb items={breadcrumbs} />
 
       {/* Header */}
-      <section className="bg-gradient-to-r from-[#004a8c] to-[#1c2180] text-white py-8 px-6">
+      <section className="bg-gradient-to-r from-[#004a8c] to-[#0009ad] text-white py-8 px-6">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold">Kebijakan Pembatalan</h1>
         </div>
@@ -26,12 +26,12 @@ const Pembatalan = () => {
           <div className="space-y-12">
             {/* Pembatalan Janji Temu */}
             <div>
-              <h2 className="text-3xl font-bold text-[#004a8c] mb-6 pb-4 border-b-2 border-[#1c2180]">
+              <h2 className="text-3xl font-bold text-[#004a8c] mb-6 pb-4 border-b-2 border-[#0009ad]">
                 Pembatalan Janji Temu
               </h2>
 
               <div className="space-y-6">
-                <div className="p-4 bg-blue-50 border-l-4 border-[#1c2180] rounded">
+                <div className="p-4 bg-blue-50 border-l-4 border-[#0009ad] rounded">
                   <h3 className="text-lg font-bold text-gray-900 mb-3">
                     Pembatalan 48 Jam Sebelumnya
                   </h3>
@@ -99,12 +99,12 @@ const Pembatalan = () => {
 
             {/* Pembatalan Rawat Inap */}
             <div>
-              <h2 className="text-3xl font-bold text-[#004a8c] mb-6 pb-4 border-b-2 border-[#1c2180]">
+              <h2 className="text-3xl font-bold text-[#004a8c] mb-6 pb-4 border-b-2 border-[#0009ad]">
                 Pembatalan Rawat Inap
               </h2>
 
               <div className="space-y-6">
-                <div className="p-4 bg-blue-50 border-l-4 border-[#1c2180] rounded">
+                <div className="p-4 bg-blue-50 border-l-4 border-[#0009ad] rounded">
                   <h3 className="text-lg font-bold text-gray-900 mb-3">
                     Pembatalan Sebelum Perawatan Dimulai
                   </h3>
@@ -155,7 +155,7 @@ const Pembatalan = () => {
 
             {/* Pengecualian */}
             <div>
-              <h2 className="text-3xl font-bold text-[#004a8c] mb-6 pb-4 border-b-2 border-[#1c2180]">
+              <h2 className="text-3xl font-bold text-[#004a8c] mb-6 pb-4 border-b-2 border-[#0009ad]">
                 Pengecualian dan Keadaan Khusus
               </h2>
 
@@ -200,7 +200,7 @@ const Pembatalan = () => {
 
             {/* Cara Membatalkan */}
             <div>
-              <h2 className="text-3xl font-bold text-[#004a8c] mb-6 pb-4 border-b-2 border-[#1c2180]">
+              <h2 className="text-3xl font-bold text-[#004a8c] mb-6 pb-4 border-b-2 border-[#0009ad]">
                 Cara Membatalkan
               </h2>
 
@@ -253,7 +253,7 @@ const Pembatalan = () => {
             </div>
 
             {/* Important Notes */}
-            <div className="bg-blue-50 border-l-4 border-[#1c2180] p-6 rounded">
+            <div className="bg-blue-50 border-l-4 border-[#0009ad] p-6 rounded">
               <h3 className="text-lg font-bold text-[#004a8c] mb-3">
                 Catatan Penting
               </h3>
@@ -281,7 +281,7 @@ const Pembatalan = () => {
           <div className="mt-12 flex justify-between items-center pt-6 border-t">
             <Link
               href="/syarat-ketentuan/pembayaran"
-              className="text-[#1c2180] hover:text-[#000367] font-semibold flex items-center"
+              className="text-[#0009ad] hover:text-[#000471] font-semibold flex items-center"
             >
               <svg
                 className="w-4 h-4 mr-2"
@@ -300,7 +300,7 @@ const Pembatalan = () => {
             </Link>
             <Link
               href="/syarat-ketentuan/pertanggungjawaban"
-              className="text-[#1c2180] hover:text-[#000367] font-semibold flex items-center"
+              className="text-[#0009ad] hover:text-[#000471] font-semibold flex items-center"
             >
               Selanjutnya
               <svg

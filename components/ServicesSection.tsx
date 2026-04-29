@@ -127,7 +127,7 @@ const ServicesSection = () => {
                     />
                   </div>
 
-                  <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-[#1c2180] via-[#1c2180]/85 to-transparent z-10" />
+                  <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-[#0009ad] via-[#0009ad]/85 to-transparent z-10" />
 
                   <div
                     className="relative z-20 mt-auto p-7 flex flex-col items-start"
