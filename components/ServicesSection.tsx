@@ -85,12 +85,13 @@ const ServicesSection = () => {
   return (
     <section className="w-full bg-white font-sans text-slate-800 relative py-20 overflow-hidden">
       <div className="relative z-10 max-w-290 mx-auto px-4 md:px-8">
-        {/* PELAYANAN SECTION - PUTIH BERSIH */}
+        {/* SECTION PELAYANAN */}
         <div className="mb-12">
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4 pb-8 border-b border-slate-100"
           >
             <div>
@@ -106,30 +107,30 @@ const ServicesSection = () => {
 
           <div className="relative">
             <div className="relative z-10 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {serviceData.map((item) => (
+              {serviceData.map((item, index) => (
                 <motion.div
                   key={item.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
                   onClick={() => handleServiceClick(item)}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 40,
-                    damping: 20,
-                    mass: 2,
-                  }}
-                  className="group relative aspect-[3/4.5] flex flex-col overflow-hidden bg-white border border-slate-200 shadow-sm cursor-default transform-gpu"
+                  /* HOVER CARD SCALE (TAILWIND) */
+                  className="group relative aspect-[3/4.5] flex flex-col overflow-hidden bg-white border border-slate-200 shadow-sm cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 transform-gpu"
                 >
                   <div className="absolute inset-0">
                     <Image
                       src={item.image}
                       alt={item.title}
                       fill
-                      className="object-cover"
+                      className="object-cover" /* Hover zoom pada gambar dihapus */
                     />
                   </div>
+
                   <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-[#1c2180] via-[#1c2180]/85 to-transparent z-10" />
+
                   <div
-                    className="relative z-20 mt-auto p-7 flex flex-col items-start transform-gpu"
+                    className="relative z-20 mt-auto p-7 flex flex-col items-start"
                     style={{ backfaceVisibility: "hidden" }}
                   >
                     <h3 className="text-xl font-bold text-white mb-2 leading-tight">
@@ -146,7 +147,7 @@ const ServicesSection = () => {
         </div>
       </div>
 
-      {/* INFORMASI SECTION - ADA GAMBAR / OVERLAY GELAP */}
+      {/* SECTION INFORMASI */}
       <div className="relative w-screen left-1/2 -translate-x-1/2 min-h-[550px] flex items-center overflow-hidden border-t border-slate-100">
         <div className="absolute inset-0">
           <Image
@@ -160,11 +161,11 @@ const ServicesSection = () => {
         <div className="absolute inset-0 bg-black/60 z-10" />
 
         <div className="relative z-20 max-w-290 mx-auto px-6 md:px-10 w-full grid grid-cols-1 md:grid-cols-2 gap-16 py-24 items-center">
-          {/* Sisi Kiri - Simetris */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex flex-col justify-center"
           >
             <h2 className="text-4xl md:text-6xl font-light text-white tracking-tighter leading-[1.1] mb-6">
@@ -176,7 +177,6 @@ const ServicesSection = () => {
             </p>
           </motion.div>
 
-          {/* Sisi Kanan - Links */}
           <div className="flex flex-col justify-center gap-10 md:pl-10">
             {[
               {
@@ -194,21 +194,24 @@ const ServicesSection = () => {
                 title: "LIHAT LOKASI RUMAH SAKIT",
                 action: "https://maps.app.goo.gl/19qWtLaQQXXN7d5W9",
               },
-            ].map((menu) => (
+            ].map((menu, index) => (
               <motion.a
                 key={menu.id}
                 href={menu.action}
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ x: 10 }}
-                className="group flex flex-col w-full"
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+                className="group flex flex-col w-full transition-all duration-300 hover:pl-4"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs md:text-sm font-bold tracking-[0.25em] text-white transition-colors">
+                  <span className="text-xs md:text-sm font-bold tracking-[0.25em] text-white transition-colors group-hover:text-white">
                     {menu.title}
                   </span>
                   <svg
-                    className="w-5 h-5 text-white/50 transition-transform group-hover:translate-x-2 group-hover:text-white"
+                    className="w-5 h-5 text-white/50 transition-transform duration-300 group-hover:translate-x-2 group-hover:text-white"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -221,7 +224,7 @@ const ServicesSection = () => {
                     />
                   </svg>
                 </div>
-                <div className="w-full h-[1px] bg-white/20 transition-colors duration-300" />
+                <div className="w-full h-[1px] bg-white/20 transition-all duration-300 group-hover:bg-white/60" />
               </motion.a>
             ))}
           </div>
