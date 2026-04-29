@@ -53,12 +53,12 @@ export default function DoctorSchedulePage() {
         </div>
 
         {/* MINIMALIST FOOTER NOTE */}
-        <div className="flex flex-col md:flex-row items-center justify-between py-10 border-t border-slate-100 gap-6">
-          <div className="flex flex-col gap-1">
-            <span className="text-sm font-bold text-slate-900">
+        <div className="flex flex-row items-center justify-between py-10 border-t border-slate-100 gap-4">
+          <div className="flex flex-col gap-1 flex-1">
+            <span className="text-sm font-bold text-slate-900 leading-tight">
               Butuh Bantuan Pendaftaran?
             </span>
-            <p className="text-xs text-slate-500">
+            <p className="text-[10px] sm:text-xs text-slate-500 leading-relaxed max-w-[180px] sm:max-w-none">
               Silahkan hubungi bagian pendaftaran atau kunjungi meja informasi
               kami.
             </p>
@@ -66,10 +66,11 @@ export default function DoctorSchedulePage() {
           <a
             href="https://wa.me/6282246232527"
             target="_blank"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#0059FF] text-white text-sm font-semibold rounded-full hover:bg-[#0059FF]/90 transition-all shadow-sm hover:scale-95"
+            className="inline-flex items-center gap-2 px-4 py-3 bg-[#0059FF] text-white text-[11px] sm:text-sm font-semibold rounded-full hover:bg-[#0059FF]/90 transition-all hover:scale-95 shrink-0"
           >
-            Hubungi Customer Care
-            <ArrowRight className="h-4 w-4" />
+            <span className="hidden xs:inline">Hubungi Customer Care</span>
+            <span className="xs:hidden">Customer Care</span>
+            <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
           </a>
         </div>
       </main>
