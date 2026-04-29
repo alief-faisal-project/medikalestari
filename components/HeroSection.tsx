@@ -361,24 +361,23 @@ const HeroSection = () => {
           </div>
         ))}
 
-        {/* CONTROLS - Bottom Right Mobile */}
-        <div className="absolute bottom-1/2 translate-y-1/2 right-2 z-40 flex flex-col items-center gap-0.5">
-          {" "}
-          {/* Up Chevron */}
+        {/* CONTROLS - Horizontal Layout (Left, Center, Right) */}
+        <div className="absolute bottom-1/2 translate-y-1/2 left-0 right-0 z-40 flex flex-row items-center justify-between px-4">
+          {/* Left Chevron */}
           <button
             onClick={() => paginate(-1)}
             disabled={mobileSlides.length <= 1}
-            className={`p-0.5 rounded-full transition-all duration-300 ${
+            className={`p-2 rounded-full transition-all duration-300 ${
               mobileSlides.length <= 1
-                ? "opacity-30 cursor-not-allowed"
-                : "opacity-60 hover:opacity-100 cursor-pointer"
+                ? "opacity-0 pointer-events-none" // Hilangkan jika hanya 1 slide
+                : "opacity-60 hover:opacity-100 cursor-pointer]"
             }`}
           >
-            <ChevronUp size={35} className="text-white" />
+            <ChevronLeft size={60} className="text-white" />
           </button>
-          {/* Play/Pause Button */}
-          <div className="relative w-9 h-9 my-1">
-            {" "}
+
+          {/* Play/Pause Button (Centered) */}
+          <div className="relative w-12 h-12">
             <svg
               className="absolute inset-0 w-full h-full"
               viewBox="0 0 40 40"
@@ -387,7 +386,7 @@ const HeroSection = () => {
               <circle
                 cx="20"
                 cy="20"
-                r="16"
+                r="18"
                 fill="none"
                 stroke="rgba(255,255,255,0.2)"
                 strokeWidth="2"
@@ -395,43 +394,43 @@ const HeroSection = () => {
               <motion.circle
                 cx="20"
                 cy="20"
-                r="16"
+                r="18"
                 fill="none"
                 stroke="#ffffff"
                 strokeWidth="2"
-                strokeDasharray="100.5"
-                initial={{ strokeDashoffset: 100.5 }}
+                strokeDasharray="113"
+                initial={{ strokeDashoffset: 113 }}
                 animate={
                   isPlaying && mobileSlides.length > 0
                     ? { strokeDashoffset: 0 }
-                    : { strokeDashoffset: 100.5 }
+                    : { strokeDashoffset: 113 }
                 }
                 transition={{ duration: 5, ease: "linear", repeat: Infinity }}
               />
             </svg>
             <button
               onClick={() => setIsPlaying(!isPlaying)}
-              className="absolute inset-0 flex items-center justify-center rounded-full hover:bg-white/5 cursor-pointer"
+              className="absolute inset-0 flex items-center justify-center rounded-full hover:bg-white/10 cursor-pointer"
             >
               {isPlaying ? (
-                <Pause size={10} fill="white" className="text-white" />
+                <Pause size={14} fill="white" className="text-white" />
               ) : (
-                <Play size={10} className="text-white ml-0.5" fill="white" />
+                <Play size={14} className="text-white ml-1" fill="white" />
               )}
             </button>
           </div>
-          {/* Down Chevron */}
+
+          {/* Right Chevron */}
           <button
             onClick={() => paginate(1)}
             disabled={mobileSlides.length <= 1}
-            className={`p-0.5 rounded-full transition-all duration-300 ${
-              // Padding dikurangi
+            className={`p-2 rounded-full transition-all duration-300 ${
               mobileSlides.length <= 1
-                ? "opacity-30 cursor-not-allowed"
+                ? "opacity-0 pointer-events-none"
                 : "opacity-60 hover:opacity-100 cursor-pointer"
             }`}
           >
-            <ChevronDown size={35} className="text-white" />
+            <ChevronRight size={60} className="text-white" />
           </button>
         </div>
       </div>
