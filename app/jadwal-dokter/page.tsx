@@ -58,7 +58,7 @@ export default function DoctorSchedulePage() {
             <span className="text-sm font-bold text-slate-900 leading-tight">
               Butuh Bantuan Pendaftaran?
             </span>
-            <p className="text-[10px] sm:text-xs text-slate-500 leading-relaxed max-w-[280px] sm:max-w-none">
+            <p className="text-[10px] sm:text-xs text-slate-500 leading-relaxed max-w-[250px] sm:max-w-none">
               Silahkan hubungi bagian pendaftaran atau kunjungi meja informasi
               kami.
             </p>
@@ -66,10 +66,10 @@ export default function DoctorSchedulePage() {
           <a
             href="https://wa.me/6282246232527"
             target="_blank"
-            className="inline-flex items-center gap-2 px-4 py-3 bg-[#0059FF] text-white text-[11px] sm:text-sm font-semibold rounded-full hover:bg-[#0059FF]/90 transition-all hover:scale-95 shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-3 bg-[#0059FF] text-white text-[11px] sm:text-sm font-semibold rounded-lg hover:bg-[#0059FF]/90 transition-all hover:scale-95 shrink-0"
           >
             <span className="hidden lg:inline">Hubungi Customer Care</span>
-            <span className="md:hidden">Customer Care</span>
+            <span className="md:hidden">Hubungi Customer Care</span>
             <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
           </a>
         </div>
