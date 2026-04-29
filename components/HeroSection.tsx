@@ -396,7 +396,7 @@ const HeroSection = () => {
                 cy="20"
                 r="18"
                 fill="none"
-                stroke="#ffffff"
+                stroke="rgba(255,255,255,0.6)"
                 strokeWidth="2"
                 strokeDasharray="113"
                 initial={{ strokeDashoffset: 113 }}
