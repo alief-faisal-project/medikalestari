@@ -181,7 +181,7 @@ const ServicesSection = () => {
             {[
               {
                 id: "cs",
-                title: "HUBUNGI CUSTOMER SERVICE",
+                title: "HUBUNGI CUSTOMER CARE",
                 action: "https://wa.me/6282246232527",
               },
               {

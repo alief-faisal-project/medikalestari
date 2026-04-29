@@ -133,7 +133,7 @@ export default function DoctorScheduleGrid({
                   router.push(`/dokter/${doctor.id}`);
                 }
               }}
-              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-all hover:shadow-lg border border-slate-200 hover:border-blue-200 hover:shadow-md hover:shadow-[#0059FF] text-left"
+              className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transition-all hover:shadow-lg border border-slate-200 hover:border-blue-200 hover:shadow-md hover:shadow-[#0059FF] text-left"
             >
               {/* Doctor Header */}
               <div className="bg-slate-50 p-4 border-b border-slate-200">
@@ -152,7 +152,7 @@ export default function DoctorScheduleGrid({
                     <h3 className="font-bold text-slate-800 text-sm line-clamp-2">
                       {doctor.name}
                     </h3>
-                    <p className="text-xs text-[#0059FF] font-semibold">
+                    <p className="text-xs text-gray-400 font-semibold">
                       {doctor.specialty}
                     </p>
                   </div>
@@ -231,127 +231,92 @@ export default function DoctorScheduleGrid({
 
       {/* TABLE VIEW - MOBILE/TABLET */}
       {filteredDoctors.length > 0 && (
-        <div className="lg:hidden overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
-          <table className="w-full border-collapse min-w-80">
-            <thead>
-              <tr className="bg-slate-50 border-b border-slate-200">
-                <th className="py-4 px-6 text-left font-bold text-slate-800 text-sm">
-                  Dokter
-                </th>
-                <th className="py-4 px-4 text-left font-bold text-slate-800 text-sm border-l border-slate-200">
-                  Spesialisasi
-                </th>
-                {DAYS.map((day) => (
-                  <th
-                    key={day}
-                    className="py-4 px-3 text-center font-bold text-slate-800 text-sm whitespace-nowrap border-l border-slate-200"
-                  >
-                    {day.substring(0, 3)}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredDoctors.map((doctor, idx) => (
-                <React.Fragment key={doctor.id}>
-                  {/* Row 1 - First Schedule */}
-                  <tr
-                    onClick={() => router.push(`/dokter/${doctor.id}`)}
-                    className={`border-b border-slate-200 transition-colors cursor-pointer ${
-                      idx % 2 === 0
-                        ? "bg-white hover:bg-blue-50"
-                        : "bg-slate-50 hover:bg-slate-100"
-                    }`}
-                  >
-                    <td className="py-4 px-6 font-semibold text-slate-900">
-                      <div className="flex items-center gap-3">
-                        {doctor.image_url && (
-                          <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 bg-slate-200">
-                            <Image
-                              src={doctor.image_url}
-                              alt={doctor.name}
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                        )}
-                        <span>{doctor.name}</span>
-                      </div>
-                    </td>
-                    <td className="py-4 px-4 text-sm text-[#0059FF] font-medium border-l border-slate-200">
-                      {doctor.specialty}
-                    </td>
-                    {DAYS.map((day) => {
-                      const schedule = getScheduleForCell(
-                        day,
-                        1,
-                        doctor.schedules,
-                      );
-                      return (
-                        <td
-                          key={`${doctor.id}-${day}-1`}
-                          className="py-4 px-3 text-center text-sm border-l border-slate-200"
-                        >
-                          {schedule.length > 0 ? (
-                            <span className="font-medium text-slate-700">
-                              {schedule[0].start_time.substring(0, 5)}
-                            </span>
-                          ) : (
-                            <span className="text-slate-300 text-lg">—</span>
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
+        <div className="lg:hidden flex flex-col gap-6">
+          {filteredDoctors.map((doctor) => (
+            <div
+              key={doctor.id}
+              onClick={() => router.push(`/dokter/${doctor.id}`)}
+              className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden active:scale-[0.99] transition-transform"
+            >
+              {/* Bagian Atas: Profil Dokter */}
+              <div className="p-4 flex items-center gap-4 bg-slate-50/50">
+                {doctor.image_url && (
+                  <div className="relative w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-white shadow-md bg-slate-200">
+                    <Image
+                      src={doctor.image_url}
+                      alt={doctor.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+                <div className="flex-1">
+                  <h3 className="font-semibold text-slate-900 leading-tight">
+                    {doctor.name}
+                  </h3>
+                  <p className="text-sm text-gray-400 font-normal mt-0.5">
+                    {doctor.specialty}
+                  </p>
+                </div>
+              </div>
 
-                  {/* Row 2 - Second Schedule */}
-                  {doctor.schedules.some((s) => {
-                    const dayCount = doctor.schedules.filter(
-                      (x) => x.day_of_week === s.day_of_week,
-                    ).length;
-                    return dayCount > 1;
-                  }) && (
-                    <tr
-                      onClick={() => router.push(`/dokter/${doctor.id}`)}
-                      className={`border-b border-slate-200 text-xs transition-colors cursor-pointer ${
-                        idx % 2 === 0
-                          ? "bg-blue-50/30 hover:bg-blue-100/30"
-                          : "bg-slate-100/50 hover:bg-slate-100"
-                      }`}
-                    >
-                      <td
-                        colSpan={2}
-                        className="py-2 px-6 italic text-slate-400"
-                      >
-                        Sesi Tambahan
-                      </td>
+              {/* Bagian Bawah: Tabel Jadwal Ringkas */}
+              <div className="border-t border-slate-100">
+                <table className="w-full table-fixed border-collapse">
+                  <thead>
+                    <tr className="bg-slate-50/80">
+                      {DAYS.map((day) => (
+                        <th
+                          key={day}
+                          className="py-2 text-[10px] font-bold text-slate-500 uppercase border-r border-slate-100 last:border-0"
+                        >
+                          {day.substring(0, 3)}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
                       {DAYS.map((day) => {
-                        const schedule = getScheduleForCell(
-                          day,
-                          2,
-                          doctor.schedules,
-                        );
+                        const s1 = getScheduleForCell(day, 1, doctor.schedules);
+                        const s2 = getScheduleForCell(day, 2, doctor.schedules);
+                        const isAvailable = s1.length > 0 || s2.length > 0;
+
                         return (
                           <td
-                            key={`${doctor.id}-${day}-2`}
-                            className="py-3 px-3 text-center border-l border-slate-200"
+                            key={`${doctor.id}-${day}`}
+                            className={`py-3 px-0.5 text-center border-r border-slate-100 last:border-0 ${
+                              isAvailable ? "bg-white" : "bg-slate-50/30"
+                            }`}
                           >
-                            {schedule.length > 0 ? (
-                              <span className="font-medium text-slate-600">
-                                {schedule[0].start_time.substring(0, 5)}
-                              </span>
-                            ) : (
-                              <span className="text-slate-300">—</span>
-                            )}
+                            <div className="flex flex-col items-center justify-center gap-1.5 min-h-[40px]">
+                              {/* Sesi 1 */}
+                              {s1.length > 0 ? (
+                                <span className="text-[11px] font-bold text-slate-800">
+                                  {s1[0].start_time.substring(0, 5)}
+                                </span>
+                              ) : s2.length === 0 ? (
+                                <span className="text-slate-300 text-xs">
+                                  —
+                                </span>
+                              ) : null}
+
+                              {/* Sesi 2 - Menumpuk Langsung di Bawahnya */}
+                              {s2.length > 0 && (
+                                <span className="text-[11px] font-bold text-slate-800 ">
+                                  {s2[0].start_time.substring(0, 5)}
+                                </span>
+                              )}
+                            </div>
                           </td>
                         );
                       })}
                     </tr>
-                  )}
-                </React.Fragment>
-              ))}
-            </tbody>
-          </table>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 

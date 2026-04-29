@@ -68,7 +68,7 @@ export default function DoctorSchedulePage() {
             target="_blank"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[#0059FF] text-white text-sm font-semibold rounded-full hover:bg-[#0059FF]/90 transition-all shadow-sm hover:scale-95"
           >
-            Hubungi Customer Service
+            Hubungi Customer Care
             <ArrowRight className="h-4 w-4" />
           </a>
         </div>
