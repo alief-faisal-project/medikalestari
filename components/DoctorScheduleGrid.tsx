@@ -110,7 +110,7 @@ export default function DoctorScheduleGrid({
                 onClick={() => setSelectedSpecialty(specialty)}
                 className={`px-4 py-2 rounded-full font-medium transition-all text-sm whitespace-nowrap ${
                   selectedSpecialty === specialty
-                    ? "bg-[#0059FF] text-white shadow-md"
+                    ? "bg-[#0059FF] text-white "
                     : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                 }`}
               >
