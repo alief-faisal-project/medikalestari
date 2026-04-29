@@ -434,24 +434,6 @@ const HeroSection = () => {
             <ChevronDown size={35} className="text-white" />
           </button>
         </div>
-
-        {/* MOBILE INDICATORS */}
-        <div className="flex md:hidden absolute bottom-1 left-1/2 -translate-x-1/2 z-40 gap-2">
-          {mobileSlides.map((slide, index) => (
-            <button
-              key={slide.id}
-              className={`h-2 w-2 rounded-full transition-all duration-300 ${
-                currentSlide === index ? "bg-[#0059FF]" : "bg-white/50"
-              }`}
-              onClick={() => setPage(index)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  setPage(index);
-                }
-              }}
-            />
-          ))}
-        </div>
       </div>
 
       {/* SEARCH BAR */}
@@ -476,7 +458,7 @@ const HeroSection = () => {
                 <User size={18} className="text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Cari nama dokter..."
+                  placeholder="Masukan Nama Dokter"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="w-full outline-none text-sm bg-transparent"

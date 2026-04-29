@@ -92,7 +92,7 @@ const ServicesSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4 pb-8 border-b border-slate-100"
+            className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4 pb-5 border-b border-slate-100"
           >
             <div>
               <h2 className="text-3xl md:text-4xl font-light text-slate-900 mt-1 uppercase tracking-tight">
@@ -148,7 +148,7 @@ const ServicesSection = () => {
       </div>
 
       {/* SECTION INFORMASI */}
-      <div className="relative w-screen left-1/2 -translate-x-1/2 min-h-[550px] flex items-center overflow-hidden border-t border-slate-100">
+      <div className="relative w-screen left-1/2 -translate-x-1/2 min-h-[550px] flex items-center overflow-hidden border-t border-slate-100 -mb-20">
         <div className="absolute inset-0">
           <Image
             src="/kamar-perawatan.jpg"

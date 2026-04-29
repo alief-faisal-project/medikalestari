@@ -86,8 +86,8 @@ const Footer = () => {
       </svg>
 
       {/* --- CONTACT BAR MOBILE --- */}
-      <div className="lg:hidden bg-[#f3f3f3] border-t border-b border-gray-300 start-center">
-        <div className="grid grid-cols-4 h-[58px]">
+      <div className="lg:hidden bg-[#f3f3f3] border-t border-b border-gray-300">
+        <div className="grid grid-cols-3 h-[58px]">
           {socialMedia.map((item, index) => (
             <Link
               key={item.name}
