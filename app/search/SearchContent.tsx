@@ -226,7 +226,7 @@ const SearchContent = () => {
                             </p>
                           </div>
                           <div className="flex-shrink-0 flex items-center">
-                            <div className="px-3 md:px-4 py-2 bg-[#1c2180] text-white rounded-lg font-semibold text-xs md:text-sm hover:bg-[#0c0f57] transition-colors">
+                            <div className="px-3 md:px-4 py-2 bg-[#1c2180] text-white rounded-lg font-semibold text-xs md:text-sm hover:bg-[#000367] transition-colors">
                               Lihat
                             </div>
                           </div>

@@ -99,56 +99,67 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
   const renderDropdownContent = (
     items: Array<string | { label: string; code?: string; active?: boolean }>,
     widthClass: string = "w-72",
-  ) => (
-    <motion.div
-      initial={{ opacity: 0, y: -10, height: 0 }}
-      animate={{ opacity: 1, y: 0, height: "auto" }}
-      exit={{ opacity: 0, y: -10, height: 0 }}
-      transition={{ duration: 0.3, ease: "circOut" }}
-      className={`absolute top-full bg-white text-gray-800 shadow-2xl overflow-hidden z-50 rounded-b-xl ${widthClass}`}
-      style={{ borderTopColor: "#0084BF" }}
-    >
-      <div className="py-2">
-        {items.map((item) => {
-          const title = typeof item === "string" ? item : item.label;
-          let itemHref = "/";
+  ) => {
+    // --- LOGIKA BARU: Cek jika item banyak, kita buat 2 kolom ---
+    const isLargeMenu = items.length > 6;
 
-          if (title === "Profil RS Medika Lestari" || title === "Visi & Misi")
-            itemHref = "/tentang-kami";
-          else if (title === "Emergency") itemHref = "/services/emergency";
-          else if (title === "Farmasi") itemHref = "/services/farmasi";
-          else if (title === "Fisioterapi") itemHref = "/services/fisioterapi";
-          else if (title === "Kamar Perawatan")
-            itemHref = "/services/kamar-perawatan";
-          else if (title === "Laboratory Testing")
-            itemHref = "/services/laboratory-testing";
-          else if (title === "Layanan gawat darurat")
-            itemHref = "/services/layanan-gawat-darurat";
-          else if (title === "Medical Checkup")
-            itemHref = "/services/medical-checkup";
-          else if (title === "Poli Klinik") itemHref = "/services/poli-klinik";
-          else if (title === "Radiologi") itemHref = "/services/radiologi";
-          else if (title === "Rawat Inap") itemHref = "/services/rawat-inap";
-          else if (title === "Rehabilitasi Medik")
-            itemHref = "/services/rehabilitasi-medik";
-          else if (title === "Vaccination Services")
-            itemHref = "/services/vaccination-services";
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: -10, height: 0 }}
+        animate={{ opacity: 1, y: 0, height: "auto" }}
+        exit={{ opacity: 0, y: -10, height: 0 }}
+        transition={{ duration: 0.3, ease: "circOut" }}
+        className={`absolute top-full bg-white text-gray-800 shadow-2xl overflow-hidden z-50 rounded-b-xl ${
+          isLargeMenu ? "w-[600px] -left-20" : widthClass
+        }`}
+        style={{ borderTopColor: "#0084BF" }}
+      >
+        <div
+          className={`py-2 grid ${isLargeMenu ? "grid-cols-2" : "grid-cols-1"}`}
+        >
+          {items.map((item) => {
+            const title = typeof item === "string" ? item : item.label;
+            let itemHref = "/";
 
-          return (
-            <div
-              key={title}
-              onClick={() => {
-                setActiveMenu(null);
-                setIsMobileMenuOpen(false);
-              }}
-            >
-              <DropdownMenuItem title={title} href={itemHref} />
-            </div>
-          );
-        })}
-      </div>
-    </motion.div>
-  );
+            if (title === "Profil RS Medika Lestari" || title === "Visi & Misi")
+              itemHref = "/tentang-kami";
+            else if (title === "Emergency") itemHref = "/services/emergency";
+            else if (title === "Farmasi") itemHref = "/services/farmasi";
+            else if (title === "Fisioterapi")
+              itemHref = "/services/fisioterapi";
+            else if (title === "Kamar Perawatan")
+              itemHref = "/services/kamar-perawatan";
+            else if (title === "Laboratory Testing")
+              itemHref = "/services/laboratory-testing";
+            else if (title === "Layanan gawat darurat")
+              itemHref = "/services/layanan-gawat-darurat";
+            else if (title === "Medical Checkup")
+              itemHref = "/services/medical-checkup";
+            else if (title === "Poli Klinik")
+              itemHref = "/services/poli-klinik";
+            else if (title === "Radiologi") itemHref = "/services/radiologi";
+            else if (title === "Rawat Inap") itemHref = "/services/rawat-inap";
+            else if (title === "Rehabilitasi Medik")
+              itemHref = "/services/rehabilitasi-medik";
+            else if (title === "Vaccination Services")
+              itemHref = "/services/vaccination-services";
+
+            return (
+              <div
+                key={title}
+                onClick={() => {
+                  setActiveMenu(null);
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                <DropdownMenuItem title={title} href={itemHref} />
+              </div>
+            );
+          })}
+        </div>
+      </motion.div>
+    );
+  };
 
   return (
     <nav className="w-full font-sans sticky top-0 z-[100] bg-white shadow-sm">
@@ -162,7 +173,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
           <div className="hidden md:flex gap-4 items-center text-[15px] font-normal text-gray-700">
             <Link
               href="/kontak-kami"
-              className="hover:text-[#0c0f57] hover:underline"
+              className="hover:text-[#000367] hover:underline"
             >
               Kontak
             </Link>
@@ -171,7 +182,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 
             <Link
               href="/careers"
-              className="hover:text-[#0c0f57] hover:underline"
+              className="hover:text-[#000367] hover:underline"
             >
               Karir
             </Link>
@@ -180,7 +191,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 
             <Link
               href="/tentang-kami"
-              className="hover:text-[#0c0f57] hover:underline"
+              className="hover:text-[#000367] hover:underline"
             >
               Tentang Kami
             </Link>
@@ -208,7 +219,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
       {/* --- Bottom Navbar --- */}
       <div className="hidden md:block relative w-full bg-[#1c2180] text-white z-30">
         <div
-          className="absolute right-0 top-0 h-full w-[38%] bg-[#0c0f57] hidden lg:block"
+          className="absolute right-0 top-0 h-full w-[38%] bg-[#000367] hidden lg:block"
           style={{ clipPath: "polygon(40px 0, 100% 0, 100% 100%, 0% 100%)" }}
         />
 
@@ -447,7 +458,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                                   setIsMobileMenuOpen(false);
                                   setActiveMenu(null);
                                 }}
-                                className="block p-4 pl-8 text-gray-600 border-b text-sm hover:bg-blue-50 hover:text-[#0c0f57] transition-colors"
+                                className="block p-4 pl-8 text-gray-600 border-b text-sm hover:bg-blue-50 hover:text-[#000367] transition-colors"
                               >
                                 {subitem}
                               </Link>

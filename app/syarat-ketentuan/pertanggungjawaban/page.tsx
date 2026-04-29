@@ -296,7 +296,7 @@ const Pertanggungjawaban = () => {
           <div className="mt-12 flex justify-between items-center pt-6 border-t">
             <Link
               href="/syarat-ketentuan/pembatalan"
-              className="text-[#1c2180] hover:text-[#0c0f57] font-semibold flex items-center"
+              className="text-[#1c2180] hover:text-[#000367] font-semibold flex items-center"
             >
               <svg
                 className="w-4 h-4 mr-2"
@@ -315,7 +315,7 @@ const Pertanggungjawaban = () => {
             </Link>
             <Link
               href="/syarat-ketentuan"
-              className="text-[#1c2180] hover:text-[#0c0f57] font-semibold flex items-center"
+              className="text-[#1c2180] hover:text-[#000367] font-semibold flex items-center"
             >
               Kembali ke Utama
               <svg

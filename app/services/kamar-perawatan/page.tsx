@@ -178,7 +178,7 @@ export default function KamarPerawatan() {
               }}
               className={`pb-4 text-sm md:text-base font-medium transition-all relative ${
                 activeTab === room.name
-                  ? "text-[#0c0f57]"
+                  ? "text-[#000367]"
                   : "text-gray-400 hover:text-gray-600"
               }`}
             >
@@ -186,7 +186,7 @@ export default function KamarPerawatan() {
               {activeTab === room.name && (
                 <motion.div
                   layoutId="activeTabUnderline"
-                  className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#0c0f57]"
+                  className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#000367]"
                 />
               )}
             </button>
@@ -271,7 +271,7 @@ export default function KamarPerawatan() {
             <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-between bg-white">
               <div>
                 <div className="mb-6">
-                  <h1 className="text-3xl font-bold text-[#0c0f57] mb-2 leading-tight">
+                  <h1 className="text-3xl font-bold text-[#000367] mb-2 leading-tight">
                     {currentKamar.name}
                   </h1>
                   <p className="text-2xl font-bold text-[#1c2180]">
@@ -293,7 +293,7 @@ export default function KamarPerawatan() {
                   <div className="grid grid-cols-2 gap-y-4 gap-x-6">
                     {currentKamar.facilities.map((facility, idx) => (
                       <div key={idx} className="flex items-start gap-3">
-                        <div className="w-[7px] h-[7px] rounded-full bg-[#0c0f57] mt-1.5 shrink-0" />
+                        <div className="w-[7px] h-[7px] rounded-full bg-[#000367] mt-1.5 shrink-0" />
                         <span className="text-[14px] text-gray-600 font-medium leading-snug">
                           {facility}
                         </span>

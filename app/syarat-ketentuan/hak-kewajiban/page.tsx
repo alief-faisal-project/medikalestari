@@ -178,7 +178,7 @@ const HakKewajiban = () => {
           <div className="mt-12 flex justify-between items-center pt-6 border-t">
             <Link
               href="/syarat-ketentuan/umum"
-              className="text-[#1c2180] hover:text-[#0c0f57] font-semibold flex items-center"
+              className="text-[#1c2180] hover:text-[#000367] font-semibold flex items-center"
             >
               <svg
                 className="w-4 h-4 mr-2"
@@ -197,7 +197,7 @@ const HakKewajiban = () => {
             </Link>
             <Link
               href="/syarat-ketentuan/privasi"
-              className="text-[#1c2180] hover:text-[#0c0f57] font-semibold flex items-center"
+              className="text-[#1c2180] hover:text-[#000367] font-semibold flex items-center"
             >
               Selanjutnya
               <svg

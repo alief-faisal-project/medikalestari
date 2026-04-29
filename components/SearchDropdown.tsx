@@ -176,7 +176,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ isOpen, onClose }) => {
                   <button
                     key={specialty}
                     onClick={() => handleSpecialtyClick(specialty)}
-                    className="group flex justify-between items-center text-[13px] text-[#1c2180] font-medium hover:text-[#0c0f57] transition-colors border-b border-transparent hover:border-[#1c2180] pb-1 text-left"
+                    className="group flex justify-between items-center text-[13px] text-[#1c2180] font-medium hover:text-[#000367] transition-colors border-b border-transparent hover:border-[#1c2180] pb-1 text-left"
                   >
                     <span>{specialty}</span>
                     <ArrowRight
