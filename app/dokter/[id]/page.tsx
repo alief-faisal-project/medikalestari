@@ -111,7 +111,7 @@ const DoctorDetailPage = () => {
             {/* Social Share Section */}
             <div className="mt-10 flex flex-col items-center gap-4">
               <p className="text-[12px] font-bold text-slate-600 uppercase">
-                Bagikan Profil Dokter
+                Profil Dokter
               </p>
               <div className="flex gap-4">
                 <a
@@ -145,7 +145,7 @@ const DoctorDetailPage = () => {
             >
               {/* Identitas Dokter */}
               <div className="mb-10">
-                <h1 className="text-5xl font-bold text-gray-700 mb-2 lowercase tracking-tight">
+                <h1 className="text-3xl md:text-5xl font-bold text-gray-700 mb-2 tracking-tight">
                   {doctor.name}
                 </h1>
                 <p className="text-xl text-slate-400 font-medium">
@@ -154,7 +154,7 @@ const DoctorDetailPage = () => {
               </div>
 
               {/* SECTION 1: BIODATA */}
-              <div className="mb-12">
+              <div className="mb-5">
                 <h2 className="text-xl font-bold text-gray-700 mb-4">
                   Biodata
                 </h2>
@@ -164,7 +164,7 @@ const DoctorDetailPage = () => {
               </div>
 
               {/* SECTION 2: JADWAL PRAKTEK */}
-              <div className="pt-10 border-t border-slate-100">
+              <div className="pt-5 border-t border-slate-100 ">
                 <DoctorScheduleDisplay
                   schedules={schedules}
                   onBooking={() => setShowBookingForm(true)}

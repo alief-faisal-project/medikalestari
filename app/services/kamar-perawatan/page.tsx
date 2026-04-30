@@ -235,13 +235,13 @@ export default function KamarPerawatan() {
                     onClick={() => paginate(-1)}
                     className="absolute left-2 top-1/2 -translate-y-1/2 z-10 p-1 text-white/70 hover:text-white transition-all"
                   >
-                    <ChevronLeft size={32} />
+                    <ChevronLeft size={50} />
                   </button>
                   <button
                     onClick={() => paginate(1)}
                     className="absolute right-2 top-1/2 -translate-y-1/2 z-10 p-1 text-white/70 hover:text-white transition-all"
                   >
-                    <ChevronRight size={32} />
+                    <ChevronRight size={50} />
                   </button>
                 </>
               )}

@@ -22,9 +22,7 @@ export default function DoctorScheduleDisplay({
 
   return (
     <div className="w-full">
-      <h3 className="text-base font-bold text-slate-800 mb-6 uppercase tracking-widest">
-        Jadwal Praktek
-      </h3>
+      <h3 className="text-xl font-bold text-gray-700 mb-4">Jadwal Praktek</h3>
 
       <div className="overflow-x-auto border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.05)] bg-white">
         <table className="w-full border-collapse table-fixed min-w-[650px]">
@@ -92,12 +90,12 @@ export default function DoctorScheduleDisplay({
         </table>
       </div>
 
-      <div className="mt-10">
+      <div className="mt-10 flex justify-end md:justify-start">
         <button
           onClick={onBooking}
           className="bg-[#006adb] hover:bg-[#006adb]/90 text-white px-10 py-4 rounded-full font-bold 
-             transition-all duration-300 text-sm uppercase tracking-wide cursor-pointer
-             active:scale-95"
+               transition-all duration-300 text-sm uppercase tracking-wide cursor-pointer
+               active:scale-95"
         >
           Buat Janji Temu
         </button>
