@@ -16,12 +16,12 @@
    Chrome, Safari, Edge, Firefox, dan IE 
 */
 * {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
 }
 
 *::-webkit-scrollbar {
-  display: none;             /* Chrome, Safari, dan Opera */
+  display: none; /* Chrome, Safari, dan Opera */
 }
 
 body {
@@ -29,6 +29,25 @@ body {
   color: var(--foreground);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -webkit-touch-callout: none;
+}
+
+/* Prevent zoom on input focus for iOS/Android */
+input,
+textarea,
+select,
+button {
+  font-size: 16px !important;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  font-size: 16px !important;
 }
 
 .container-custom {

@@ -433,7 +433,10 @@ const DoctorSection = ({
                       handleApplyFilter();
                     }
                   }}
-                  className="w-full border border-slate-200 py-3 pl-10 pr-4 outline-none focus:border-[#006adb] text-sm bg-white "
+                  inputMode="search"
+                  enterKeyHint="search"
+                  className="w-full border border-slate-200 py-3 pl-10 pr-4 outline-none focus:border-[#006adb] text-base bg-white"
+                  style={{ fontSize: "16px" }}
                 />
               </div>
 
