@@ -81,10 +81,10 @@ export default function DoctorScheduleGrid({
           </div>
           <input
             type="text"
-            placeholder="Cari nama dokter..."
+            placeholder="Masukan Nama Dokter"
             value={searchDoctor}
             onChange={(e) => setSearchDoctor(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 border border-slate-300 bg-white transition-all duration-200 outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 text-slate-900 placeholder-slate-500"
+            className="w-full pl-11 border border-slate-200 py-3 pl-10 pr-4 outline-none focus:border-[#006adb] text-sm bg-white text-slate-900 placeholder-slate-500"
           />
         </div>
 

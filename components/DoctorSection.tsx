@@ -72,6 +72,9 @@ const DoctorSection = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDoctor, setSelectedDoctor] =
     useState<DoctorWithSchedules | null>(null);
+  const [showMobileSpecialtyModal, setShowMobileSpecialtyModal] =
+    useState(false);
+  const [showMobileDayModal, setShowMobileDayModal] = useState(false);
 
   // Baca parameter dari URL menggunakan useSearchParams
   const searchParams = useSearchParams();
@@ -204,6 +207,24 @@ const DoctorSection = ({
     setCurrentPage(1);
     jumpToTop();
     setTimeout(() => setIsPaging(false), 400);
+  };
+
+  const handleSpecialtySelect = (specialty: string) => {
+    setTempFilter((prev) => ({ ...prev, specialty }));
+    setShowMobileSpecialtyModal(false);
+    setTimeout(() => {
+      setActiveFilter((prev) => ({ ...prev, specialty }));
+      setCurrentPage(1);
+    }, 0);
+  };
+
+  const handleDaySelect = (day: string) => {
+    setTempFilter((prev) => ({ ...prev, day }));
+    setShowMobileDayModal(false);
+    setTimeout(() => {
+      setActiveFilter((prev) => ({ ...prev, day }));
+      setCurrentPage(1);
+    }, 0);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -391,8 +412,119 @@ const DoctorSection = ({
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 items-start">
-          {/* SIDEBAR FILTER */}
-          <aside className="w-full lg:w-1/3 xl:w-1/4 lg:sticky lg:top-45 z-30">
+          {/* MOBILE FILTER BAR */}
+          <div className="lg:hidden w-full flex flex-col gap-4">
+            <div className="flex items-center gap-2">
+              {/* Search Input */}
+              <div className="flex-1 relative">
+                <Search
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  size={18}
+                />
+                <input
+                  type="text"
+                  placeholder="Masukan Nama Dokter"
+                  value={tempFilter.name}
+                  onChange={(e) =>
+                    setTempFilter({ ...tempFilter, name: e.target.value })
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleApplyFilter();
+                    }
+                  }}
+                  className="w-full border border-slate-200 py-3 pl-10 pr-4 outline-none focus:border-[#006adb] text-sm bg-white "
+                />
+              </div>
+
+              {/* Specialty Icon Button */}
+              <button
+                onClick={() =>
+                  setShowMobileSpecialtyModal(!showMobileSpecialtyModal)
+                }
+                className="p-3 border border-slate-200 hover:bg-slate-50 transition-all"
+                title="Filter Spesialis"
+              >
+                <Stethoscope size={20} className="text-[#006adb]" />
+              </button>
+
+              {/* Day Icon Button */}
+              <button
+                onClick={() => setShowMobileDayModal(!showMobileDayModal)}
+                className="p-3 border border-slate-200  hover:bg-slate-50 transition-all"
+                title="Filter Hari"
+              >
+                <CalendarDays size={20} className="text-[#006adb]" />
+              </button>
+            </div>
+
+            {/* Specialty Dropdown Modal */}
+            <AnimatePresence>
+              {showMobileSpecialtyModal && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-20 left-0 right-0 mx-4 bg-white border border-slate-200 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
+                >
+                  <div className="p-2">
+                    <div className="px-4 py-2 text-xs font-bold text-[#006adb] sticky top-0 bg-white">
+                      Pilih Spesialis
+                    </div>
+                    {SPECIALTY_CATEGORIES.map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => handleSpecialtySelect(s)}
+                        className={`w-full text-left px-4 py-2 text-sm rounded-md transition-all ${
+                          tempFilter.specialty === s
+                            ? "bg-[#006adb]/10 text-[#006adb] font-semibold"
+                            : "text-slate-700 hover:bg-slate-50"
+                        }`}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Day Dropdown Modal */}
+            <AnimatePresence>
+              {showMobileDayModal && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-20 right-0 mx-4 bg-white border border-slate-200 rounded-lg shadow-lg z-50"
+                >
+                  <div className="p-2">
+                    <div className="px-4 py-2 text-xs font-bold text-[#006adb] bg-white">
+                      Pilih Hari
+                    </div>
+                    {DAYS.map((d) => (
+                      <button
+                        key={d}
+                        onClick={() => handleDaySelect(d)}
+                        className={`w-full text-left px-4 py-2 text-sm rounded-md transition-all whitespace-nowrap ${
+                          tempFilter.day === d
+                            ? "bg-[#006adb]/10 text-[#006adb] font-semibold"
+                            : "text-slate-700 hover:bg-slate-50"
+                        }`}
+                      >
+                        {d}
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* SIDEBAR FILTER - Desktop Only */}
+          <aside className="hidden lg:block w-1/3 xl:w-1/4 lg:sticky lg:top-45 z-30">
             <div className="border border-slate-200 p-8 bg-white rounded-none shadow-sm h-fit">
               <div className="flex items-center gap-3 mb-8 text-[#006adb] border-b border-slate-50 pb-4">
                 <FilterIcon size={18} />
