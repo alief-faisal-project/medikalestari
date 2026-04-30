@@ -64,7 +64,7 @@ export default function DoctorScheduleGrid({
   if (loading) {
     return (
       <div className="w-full min-h-96 flex flex-col items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-[#007AFF] mb-4" />
+        <Loader2 className="h-12 w-12 animate-spin text-[#006adb] mb-4" />
         <p className="text-slate-600">Memuat jadwal dokter...</p>
       </div>
     );
@@ -84,7 +84,7 @@ export default function DoctorScheduleGrid({
             placeholder="Cari nama dokter..."
             value={searchDoctor}
             onChange={(e) => setSearchDoctor(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-[#007AFF] focus:ring-2 focus:ring-[#007AFF]/20 transition text-slate-900 placeholder-slate-500"
+            className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-[#006adb] focus:ring-2 focus:ring-[#006adb]/20 transition text-slate-900 placeholder-slate-500"
           />
         </div>
 
@@ -94,7 +94,7 @@ export default function DoctorScheduleGrid({
             onClick={() => setSelectedSpecialty(null)}
             className={`px-4 py-2 rounded-full font-medium transition-all text-sm whitespace-nowrap ${
               selectedSpecialty === null
-                ? "bg-[#007AFF] text-white shadow-md"
+                ? "bg-[#006adb] text-white shadow-md"
                 : "bg-slate-100 text-slate-700 hover:bg-slate-200"
             }`}
           >
@@ -110,7 +110,7 @@ export default function DoctorScheduleGrid({
                 onClick={() => setSelectedSpecialty(specialty)}
                 className={`px-4 py-2 rounded-full font-medium transition-all text-sm whitespace-nowrap ${
                   selectedSpecialty === specialty
-                    ? "bg-[#007AFF] text-white "
+                    ? "bg-[#006adb] text-white "
                     : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                 }`}
               >
@@ -133,7 +133,7 @@ export default function DoctorScheduleGrid({
                   router.push(`/dokter/${doctor.id}`);
                 }
               }}
-              className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transition-all hover:shadow-lg border border-slate-200 hover:border-blue-200 hover:shadow-md hover:shadow-[#007AFF] text-left"
+              className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transition-all hover:shadow-lg border border-slate-200 hover:border-blue-200 hover:shadow-md hover:shadow-[#006adb] text-left"
             >
               {/* Doctor Header */}
               <div className="bg-slate-50 p-4 border-b border-slate-200">
@@ -163,7 +163,7 @@ export default function DoctorScheduleGrid({
               <div className="p-4 overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="bg-[#007AFF]/10">
+                    <tr className="bg-[#006adb]/10">
                       {DAYS.map((day) => (
                         <th
                           key={day}

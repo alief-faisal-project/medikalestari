@@ -96,7 +96,7 @@ const AdminLoginPage = () => {
 
           {/* Password Input */}
           <div className="relative group">
-            <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#007AFF] transition-colors">
+            <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#006adb] transition-colors">
               <Lock size={20} />
             </div>
             <input
@@ -105,7 +105,7 @@ const AdminLoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="w-full pl-14 pr-14 py-4 bg-white border border-gray-200 rounded-xs text-sm focus:border-[#007AFF] focus:ring-4 focus:ring-blue-50 outline-none transition-all placeholder:text-gray-300"
+              className="w-full pl-14 pr-14 py-4 bg-white border border-gray-200 rounded-xs text-sm focus:border-[#006adb] focus:ring-4 focus:ring-blue-50 outline-none transition-all placeholder:text-gray-300"
               required
             />
             <button
@@ -120,7 +120,7 @@ const AdminLoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#007AFF] text-white py-4 rounded-xs font-bold text-sm hover:bg-[#0055A4] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full bg-[#006adb] text-white py-4 rounded-xs font-bold text-sm hover:bg-[#0055A4] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
           >
             {loading ? <Loader2 size={18} className="animate-spin" /> : "Login"}
           </button>
@@ -129,7 +129,7 @@ const AdminLoginPage = () => {
         <div className="mt-10 flex flex-col items-center gap-4">
           <Link
             href="/"
-            className="text-sm font-bold text-[#007AFF] hover:underline"
+            className="text-sm font-bold text-[#006adb] hover:underline"
           >
             Kembali ke beranda
           </Link>

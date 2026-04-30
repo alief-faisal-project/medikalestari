@@ -217,7 +217,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
       </div>
 
       {/* --- Bottom Navbar --- */}
-      <div className="hidden md:block relative w-full bg-[#007AFF] text-white z-30">
+      <div className="hidden md:block relative w-full bg-[#006adb] text-white z-30">
         <div
           className="absolute right-0 top-0 h-full w-[38%] bg-[#0055A4] hidden lg:block"
           style={{ clipPath: "polygon(40px 0, 100% 0, 100% 100%, 0% 100%)" }}
@@ -371,7 +371,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               <div className="flex flex-col p-4">
                 <button
                   onClick={handleHomeClick}
-                  className="text-left p-4 font-bold text-[#007AFF] border-b text-lg"
+                  className="text-left p-4 font-bold text-[#006adb] border-b text-lg"
                 >
                   Beranda
                 </button>
@@ -379,7 +379,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                 <Link
                   href="/dokter#section-dokter"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-left p-4 font-bold text-[#007AFF] border-b text-lg"
+                  className="text-left p-4 font-bold text-[#006adb] border-b text-lg"
                 >
                   Dokter Kami
                 </Link>
@@ -387,7 +387,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                 <Link
                   href="/jadwal-dokter"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-left p-4 font-bold text-[#007AFF] border-b text-lg"
+                  className="text-left p-4 font-bold text-[#006adb] border-b text-lg"
                 >
                   Jadwal Dokter
                 </Link>
@@ -473,7 +473,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                 <Link
                   href="/tentang-kami"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-left p-4 font-bold text-[#007AFF] border-b text-lg"
+                  className="text-left p-4 font-bold text-[#006adb] border-b text-lg"
                 >
                   Tentang Kami
                 </Link>
@@ -516,7 +516,7 @@ function AuthArea({
         href="/admin/dashboard"
         onClick={onClick}
         className={`flex items-center gap-2 font-medium ${
-          isMobile ? "text-[#007AFF] text-sm" : "text-white text-sm "
+          isMobile ? "text-[#006adb] text-sm" : "text-white text-sm "
         }`}
         title="Panel Admin"
       >

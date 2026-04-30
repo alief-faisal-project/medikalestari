@@ -284,7 +284,7 @@ const DoctorSection = ({
                 <div className="flex flex-wrap justify-start gap-2 md:gap-3">
                   <button
                     onClick={() => setSelectedDoctor(doctor)}
-                    className="px-4 py-2 md:px-8 md:py-3 bg-[#007AFF] text-white text-[10px] md:text-[12px] font-bold rounded-full transition-all hover:bg-[#007AFF]/90 active:scale-95 shadow-md shadow-blue-900/5 cursor-pointer"
+                    className="px-4 py-2 md:px-8 md:py-3 bg-[#006adb] text-white text-[10px] md:text-[12px] font-bold rounded-full transition-all hover:bg-[#006adb]/90 active:scale-95 shadow-md shadow-blue-900/5 cursor-pointer"
                   >
                     Buat Janji Temu
                   </button>
@@ -318,7 +318,7 @@ const DoctorSection = ({
                     onClick={() => handlePageChange(i + 1)}
                     className={`w-11 h-11 flex items-center justify-center rounded-none font-bold text-xs transition-all ${
                       currentPage === i + 1
-                        ? "bg-[#007AFF] text-white border border-[#007AFF]"
+                        ? "bg-[#006adb] text-white border border-[#006adb]"
                         : "text-slate-500 border border-slate-200 hover:bg-slate-50"
                     }`}
                   >
@@ -394,7 +394,7 @@ const DoctorSection = ({
           {/* SIDEBAR FILTER */}
           <aside className="w-full lg:w-1/3 xl:w-1/4 lg:sticky lg:top-45 z-30">
             <div className="border border-slate-200 p-8 bg-white rounded-none shadow-sm h-fit">
-              <div className="flex items-center gap-3 mb-8 text-[#007AFF] border-b border-slate-50 pb-4">
+              <div className="flex items-center gap-3 mb-8 text-[#006adb] border-b border-slate-50 pb-4">
                 <FilterIcon size={18} />
                 <span className="text-lg font-bold">Filter Pencarian</span>
               </div>
@@ -403,7 +403,7 @@ const DoctorSection = ({
               <div className="mb-6">
                 <label
                   htmlFor="doctor-name"
-                  className="block text-sm font-bold text-[#007AFF] mb-2"
+                  className="block text-sm font-bold text-[#006adb] mb-2"
                 >
                   Nama Dokter
                 </label>
@@ -420,7 +420,7 @@ const DoctorSection = ({
                     onChange={(e) =>
                       setTempFilter({ ...tempFilter, name: e.target.value })
                     }
-                    className="w-full border-b border-slate-200 py-2 pl-7 outline-none focus:border-[#007AFF] text-sm bg-transparent rounded-none"
+                    className="w-full border-b border-slate-200 py-2 pl-7 outline-none focus:border-[#006adb] text-sm bg-transparent rounded-none"
                   />
                 </div>
               </div>
@@ -429,7 +429,7 @@ const DoctorSection = ({
               <div className="mb-6">
                 <label
                   htmlFor="specialty-select"
-                  className="block text-sm font-bold text-[#007AFF] mb-2"
+                  className="block text-sm font-bold text-[#006adb] mb-2"
                 >
                   Spesialis
                 </label>
@@ -462,7 +462,7 @@ const DoctorSection = ({
               <div className="mb-10">
                 <label
                   htmlFor="day-select"
-                  className="block text-sm font-bold text-[#007AFF] mb-2"
+                  className="block text-sm font-bold text-[#006adb] mb-2"
                 >
                   Pilih Hari
                 </label>
@@ -490,7 +490,7 @@ const DoctorSection = ({
 
               <button
                 onClick={handleApplyFilter}
-                className="w-full bg-[#007AFF] text-white py-4 font-bold rounded-full cursor-pointer transition-all hover:bg-[#007AFF]/90 active:scale-[0.98]"
+                className="w-full bg-[#006adb] text-white py-4 font-bold rounded-full cursor-pointer transition-all hover:bg-[#006adb]/90 active:scale-[0.98]"
               >
                 Cari Dokter Spesialis
               </button>
