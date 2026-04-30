@@ -33,10 +33,14 @@ body {
 }
 
 /* Prevent zoom on input focus for iOS/Android */
-input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="number"],
+input[type="tel"],
 textarea,
-select,
-button {
+select {
   font-size: 16px !important;
   -webkit-appearance: none;
   appearance: none;
@@ -48,6 +52,12 @@ input:focus,
 textarea:focus,
 select:focus {
   font-size: 16px !important;
+}
+
+/* Preserve rounded-full on buttons */
+button.rounded-full {
+  border-radius: 9999px !important;
+  -webkit-border-radius: 9999px !important;
 }
 
 .container-custom {
