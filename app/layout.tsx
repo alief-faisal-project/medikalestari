@@ -30,7 +30,6 @@ export default function RootLayout({
   const isAdminPage = pathname?.startsWith("/admin");
   const isLoginPage = pathname === "/admin/login";
 
-  // Schema Markup untuk Sitelinks (Menu di bawah pencarian Google)
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Hospital",
@@ -74,15 +73,29 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
-        {/* PWA & iOS Settings */}
+        {/* --- PWA & iOS Settings (INTEGRASI DISINI) --- */}
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#ffffff" />
+        <meta name="mobile-web-app-capable" content="yes" />
+
+        {/* iOS Specific */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="RSML" />
+        <meta name="apple-mobile-web-app-title" content="RS Medika Lestari" />
 
-        {/* Link  */}
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        {/* Apple Touch Icon - Menggunakan ukuran 180x180 yang Anda minta */}
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/icons/icon-180x180.png"
+        />
+        {/* Tambahan cadangan jika perlu */}
+        <link
+          rel="apple-touch-icon"
+          sizes="152x152"
+          href="/icons/icon-192x192.png"
+        />
+        {/* -------------------------------------------- */}
 
         <link
           rel="stylesheet"
