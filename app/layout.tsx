@@ -84,7 +84,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="RS Medika Lestari" />
         
         {/* Apple Touch Icon */}
-        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.jpg" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png" />
         <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-192x192.png" />
         <link
           rel="stylesheet"
