@@ -41,7 +41,6 @@ input[type="number"],
 input[type="tel"],
 textarea,
 select {
-  font-size: 16px !important;
   -webkit-appearance: none;
   appearance: none;
   -webkit-border-radius: 0;
