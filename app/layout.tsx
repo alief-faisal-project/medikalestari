@@ -73,29 +73,24 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
-        {/* --- PWA & iOS Settings (INTEGRASI DISINI) --- */}
+        {/* --- PWA & iOS Settings Terintegrasi --- */}
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#ffffff" />
         <meta name="mobile-web-app-capable" content="yes" />
 
-        {/* iOS Specific */}
+        {/* iOS Specific Settings */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="RS Medika Lestari" />
 
-        {/* Apple Touch Icon - Menggunakan ukuran 180x180 yang Anda minta */}
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/icons/icon-180x180.png"
-        />
-        {/* Tambahan cadangan jika perlu */}
-        <link
-          rel="apple-touch-icon"
-          sizes="152x152"
-          href="/icons/icon-192x192.png"
-        />
-        {/* -------------------------------------------- */}
+        {/* 
+            Apple Touch Icon: 
+            Disederhanakan tanpa atribut 'sizes' untuk mencegah isu zooming di iOS.
+            Pastikan file /icons/icon-180x180.png TIDAK transparan dan memiliki padding.
+        */}
+        <link rel="apple-touch-icon" href="/icons/icon-180x180.jpg" />
+
+        {/* -------------------------------------- */}
 
         <link
           rel="stylesheet"

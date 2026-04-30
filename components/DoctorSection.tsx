@@ -492,7 +492,7 @@ const DoctorSection = ({
                 onClick={handleApplyFilter}
                 className="w-full bg-[#006adb] text-white py-4 font-bold rounded-full cursor-pointer transition-all hover:bg-[#006adb]/90 active:scale-[0.98]"
               >
-                Cari Dokter Spesialis
+                Temukan Dokter
               </button>
             </div>
           </aside>
