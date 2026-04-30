@@ -13,7 +13,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-// Mengganti warna background ke [#0059FF] dan teks ke putih
+// Mengganti warna background ke [#007AFF] dan teks ke putih
 const ScaleButton = ({
   onClick,
   children,

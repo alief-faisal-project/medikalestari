@@ -14,7 +14,7 @@ const KetentruanUmum = () => {
       <Breadcrumb items={breadcrumbs} />
 
       {/* Header */}
-      <section className="bg-gradient-to-r from-[#004a8c] to-[#0059FF] text-white py-8 px-6">
+      <section className="bg-gradient-to-r from-[#004a8c] to-[#007AFF] text-white py-8 px-6">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold">Ketentuan Umum</h1>
         </div>
@@ -87,7 +87,7 @@ const KetentruanUmum = () => {
                 </p>
               </div>
 
-              <div className="bg-blue-50 border-l-4 border-[#0059FF] p-6 rounded">
+              <div className="bg-blue-50 border-l-4 border-[#007AFF] p-6 rounded">
                 <h3 className="text-lg font-bold text-[#004a8c] mb-3">
                   Catatan Penting
                 </h3>
@@ -105,7 +105,7 @@ const KetentruanUmum = () => {
           <div className="mt-12 flex justify-between items-center pt-6 border-t">
             <Link
               href="/syarat-ketentuan"
-              className="text-[#0059FF] hover:text-[#0045C9] font-semibold flex items-center"
+              className="text-[#007AFF] hover:text-[#0055A4] font-semibold flex items-center"
             >
               <svg
                 className="w-4 h-4 mr-2"
@@ -124,7 +124,7 @@ const KetentruanUmum = () => {
             </Link>
             <Link
               href="/syarat-ketentuan/hak-kewajiban"
-              className="text-[#0059FF] hover:text-[#0045C9] font-semibold flex items-center"
+              className="text-[#007AFF] hover:text-[#0055A4] font-semibold flex items-center"
             >
               Selanjutnya
               <svg

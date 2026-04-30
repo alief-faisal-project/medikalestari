@@ -29,7 +29,7 @@ export default function DoctorScheduleDisplay({
       <div className="overflow-x-auto border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.05)] bg-white">
         <table className="w-full border-collapse table-fixed min-w-[650px]">
           <thead>
-            <tr className="bg-[#0059FF]/10">
+            <tr className="bg-[#007AFF]/10">
               {DAYS.map((day) => (
                 <th
                   key={day}
@@ -95,7 +95,7 @@ export default function DoctorScheduleDisplay({
       <div className="mt-10">
         <button
           onClick={onBooking}
-          className="bg-[#0059FF] hover:bg-[#0059FF]/90 text-white px-10 py-4 rounded-full font-bold 
+          className="bg-[#007AFF] hover:bg-[#007AFF]/90 text-white px-10 py-4 rounded-full font-bold 
              transition-all duration-300 text-sm uppercase tracking-wide cursor-pointer
              active:scale-95"
         >
