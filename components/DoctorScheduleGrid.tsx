@@ -2,7 +2,8 @@
 
 import React, { useState, useMemo } from "react";
 import { Doctor, Schedule } from "@/lib/types";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, Stethoscope, CalendarDays } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -26,6 +27,10 @@ export default function DoctorScheduleGrid({
     null,
   );
   const [searchDoctor, setSearchDoctor] = useState("");
+  const [showMobileSpecialtyModal, setShowMobileSpecialtyModal] =
+    useState(false);
+  const [showMobileDayModal, setShowMobileDayModal] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
   const specialties = useMemo(() => {
     if (!doctorsWithSchedules) return [];
@@ -42,10 +47,22 @@ export default function DoctorScheduleGrid({
         const matchesSearch = doc.name
           .toLowerCase()
           .includes(searchDoctor.toLowerCase());
-        return matchesSpecialty && matchesSearch;
+
+        // Filter by day if selected
+        let matchesDay = true;
+        if (selectedDay && selectedDay !== "Semua Hari") {
+          matchesDay =
+            doc.schedules && doc.schedules.length > 0
+              ? doc.schedules.some(
+                  (schedule) => schedule.day_of_week === selectedDay,
+                )
+              : false;
+        }
+
+        return matchesSpecialty && matchesSearch && matchesDay;
       })
       .sort((a, b) => a.name.localeCompare(b.name));
-  }, [doctorsWithSchedules, selectedSpecialty, searchDoctor]);
+  }, [doctorsWithSchedules, selectedSpecialty, searchDoctor, selectedDay]);
 
   const getScheduleForCell = (
     day: string,
@@ -74,22 +91,169 @@ export default function DoctorScheduleGrid({
     <div className="w-full space-y-6">
       {/* SEARCH & FILTER SECTION */}
       <div className="space-y-4">
-        {/* Search Bar with Lucide Icon */}
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-slate-400" />
+        {/* MOBILE FILTER BAR */}
+        <div className="lg:hidden w-full flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            {/* Search Input */}
+            <div className="flex-1 relative">
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                size={18}
+              />
+              <input
+                type="text"
+                placeholder="Masukan Nama Dokter"
+                value={searchDoctor}
+                onChange={(e) => setSearchDoctor(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    // Auto-apply on enter
+                  }
+                }}
+                className="w-full border border-slate-200 py-3 pl-10 pr-4 outline-none focus:border-[#006adb] text-sm bg-white"
+              />
+            </div>
+
+            {/* Specialty Icon Button */}
+            <button
+              onClick={() =>
+                setShowMobileSpecialtyModal(!showMobileSpecialtyModal)
+              }
+              className="p-3 border border-slate-200 hover:bg-slate-50 transition-all"
+              title="Filter Spesialis"
+            >
+              <Stethoscope size={20} className="text-[#006adb]" />
+            </button>
+
+            {/* Day Icon Button */}
+            <button
+              onClick={() => setShowMobileDayModal(!showMobileDayModal)}
+              className="p-3 border border-slate-200 hover:bg-slate-50 transition-all"
+              title="Filter Hari"
+            >
+              <CalendarDays size={20} className="text-[#006adb]" />
+            </button>
           </div>
+
+          {/* Specialty Dropdown Modal */}
+          <AnimatePresence>
+            {showMobileSpecialtyModal && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="bg-white border border-slate-200 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
+              >
+                <div className="p-2">
+                  <div className="px-4 py-2 text-xs font-bold text-[#006adb] sticky top-0 bg-white">
+                    Pilih Spesialis
+                  </div>
+                  <button
+                    onClick={() => {
+                      setSelectedSpecialty(null);
+                      setShowMobileSpecialtyModal(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 text-sm rounded-md transition-all ${
+                      selectedSpecialty === null
+                        ? "bg-[#006adb]/10 text-[#006adb] font-semibold"
+                        : "text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    Semua Spesialis
+                  </button>
+                  {specialties.map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => {
+                        setSelectedSpecialty(s);
+                        setShowMobileSpecialtyModal(false);
+                      }}
+                      className={`w-full text-left px-4 py-2 text-sm rounded-md transition-all ${
+                        selectedSpecialty === s
+                          ? "bg-[#006adb]/10 text-[#006adb] font-semibold"
+                          : "text-slate-700 hover:bg-slate-50"
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Day Dropdown Modal */}
+          <AnimatePresence>
+            {showMobileDayModal && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="bg-white border border-slate-200 rounded-lg shadow-lg z-50"
+              >
+                <div className="p-2">
+                  <div className="px-4 py-2 text-xs font-bold text-[#006adb] bg-white">
+                    Pilih Hari
+                  </div>
+                  <button
+                    onClick={() => {
+                      setSelectedDay(null);
+                      setShowMobileDayModal(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 text-sm rounded-md transition-all whitespace-nowrap ${
+                      selectedDay === null
+                        ? "bg-[#006adb]/10 text-[#006adb] font-semibold"
+                        : "text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    Semua Hari
+                  </button>
+                  {DAYS.map((d) => (
+                    <button
+                      key={d}
+                      onClick={() => {
+                        setSelectedDay(d);
+                        setShowMobileDayModal(false);
+                      }}
+                      className={`w-full text-left px-4 py-2 text-sm rounded-md transition-all whitespace-nowrap ${
+                        selectedDay === d
+                          ? "bg-[#006adb]/10 text-[#006adb] font-semibold"
+                          : "text-slate-700 hover:bg-slate-50"
+                      }`}
+                    >
+                      {d}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* DESKTOP SEARCH BAR */}
+        <div className="hidden lg:block relative">
+          <Search
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            size={18}
+          />
           <input
             type="text"
             placeholder="Masukan Nama Dokter"
             value={searchDoctor}
             onChange={(e) => setSearchDoctor(e.target.value)}
-            className="w-full pl-11 border border-slate-200 py-3 pl-10 pr-4 outline-none focus:border-[#006adb] text-sm bg-white text-slate-900 placeholder-slate-500"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                // Auto-apply on enter
+              }
+            }}
+            className="w-full border border-slate-200 py-3 pl-10 pr-4 outline-none focus:border-[#006adb] text-sm bg-white"
           />
         </div>
 
-        {/* Specialty Filter */}
-        <div className="flex flex-wrap gap-2">
+        {/* DESKTOP FILTER - Specialty Filter Buttons */}
+        <div className="hidden lg:flex flex-wrap gap-2">
           <button
             onClick={() => setSelectedSpecialty(null)}
             className={`px-4 py-2 rounded-full font-medium transition-all text-sm whitespace-nowrap ${
