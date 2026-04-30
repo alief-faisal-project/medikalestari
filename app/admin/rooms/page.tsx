@@ -30,7 +30,7 @@ const ROOM_OPTIONS = [
   "Ruang Kelas 3",
   "Ruang ICU",
   "Ruang NICU",
-  "Ruang HVU",
+  "Ruang HCU",
 ];
 
 interface RoomImage {

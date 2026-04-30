@@ -2,12 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  ChevronLeft,
-  ChevronRight,
-  Link as LinkIcon,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Link as LinkIcon } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchRoomTypes } from "@/lib/api";
@@ -119,30 +114,9 @@ export default function KamarPerawatan() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white py-8 font-sans">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="h-5 w-32 bg-gray-200 rounded mb-8 animate-pulse"></div>
-          <div className="flex flex-wrap border-b border-gray-100 mb-8 justify-center gap-2 md:gap-12">
-            {Array(3)
-              .fill(0)
-              .map((_, i) => (
-                <div key={i} className="pb-4">
-                  <div className="h-5 w-24 bg-gray-200 rounded animate-pulse"></div>
-                </div>
-              ))}
-          </div>
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="flex flex-col md:flex-row md:min-h-[600px]">
-              <div className="md:w-1/2 relative bg-gray-200 animate-pulse"></div>
-              <div className="md:w-1/2 p-8 md:p-12 space-y-6">
-                <div className="h-8 w-48 bg-gray-200 rounded animate-pulse"></div>
-                <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
-                <div className="space-y-2 pt-4">
-                  <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
-                  <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="h-5 w-32 bg-gray-200 mb-8 animate-pulse"></div>
+          <div className="bg-gray-100 h-80 animate-pulse"></div>
         </div>
       </div>
     );
@@ -152,23 +126,49 @@ export default function KamarPerawatan() {
 
   return (
     <div className="min-h-screen bg-white py-8">
-      <div className="max-w-6xl mx-auto px-4">
-        {/* Navigasi Kembali */}
+      {/* Container Utama */}
+      <div className="max-w-5xl mx-auto px-4">
+        {/* Navigasi Breadcrumb - Posisi Tetap */}
         <div className="pt-16 pb-2 -mt-16">
           <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
             <Link
               href="/"
-              className="text-black/60 hover:text-gray-300 transition-colors"
+              className="text-black/60 hover:text-gray-400 transition-colors"
             >
               Beranda
             </Link>
             <ChevronRight size={12} className="text-black/60" />
-            <span className="font-normal">Kamar Perawatan</span>
+            <span className="font-normal text-gray-800">Kamar Perawatan</span>
           </nav>
         </div>
 
-        {/* Tab Navigasi */}
-        <div className="flex flex-wrap border-b border-gray-100 mb-8 justify-center gap-2 md:gap-12">
+        {/* Filter Mobile: Dropdown Tajam (Ganti Tab Slider di Mobile) */}
+        <div className="block md:hidden mb-6">
+          <select
+            value={activeTab}
+            onChange={(e) => {
+              setActiveTab(e.target.value);
+              setCurrentImageIndex(0);
+            }}
+            className="w-full p-3 bg-white border border-gray-200 rounded-none text-gray-700 font-medium outline-none appearance-none"
+            style={{
+              backgroundImage:
+                'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23666%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E")',
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "right 1rem center",
+              backgroundSize: "1em",
+            }}
+          >
+            {rooms.map((room) => (
+              <option key={room.id} value={room.name}>
+                {room.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Tab Navigasi Desktop */}
+        <div className="hidden md:flex flex-wrap border-b border-gray-100 mb-8 justify-center gap-2 md:gap-12">
           {rooms.map((room) => (
             <button
               key={room.id}
@@ -193,12 +193,11 @@ export default function KamarPerawatan() {
           ))}
         </div>
 
-        {/* Card Utama */}
-        <div className="bg-white rounded-2xl shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
-          {/* md:min-h-[600px] menjaga agar ukuran card tetap konsisten di desktop */}
-          <div className="flex flex-col md:flex-row md:min-h-[600px] items-stretch">
+        {/* Card Utama - Tanpa Rounded (Tajam) */}
+        <div className="bg-white rounded-none shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-gray-100 overflow-hidden">
+          <div className="flex flex-col md:flex-row md:min-h-[450px] items-stretch">
             {/* Sisi Kiri: Slider Gambar */}
-            <div className="md:w-1/2 relative bg-[#f8f9fa] overflow-hidden min-h-[350px] md:min-h-full">
+            <div className="md:w-1/2 relative bg-[#f8f9fa] overflow-hidden min-h-[280px] md:min-h-full">
               <AnimatePresence
                 initial={false}
                 custom={direction}
@@ -234,21 +233,21 @@ export default function KamarPerawatan() {
                 <>
                   <button
                     onClick={() => paginate(-1)}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-sm transition-all"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 z-10 p-1 text-white/70 hover:text-white transition-all"
                   >
-                    <ChevronLeft size={24} />
+                    <ChevronLeft size={32} />
                   </button>
                   <button
                     onClick={() => paginate(1)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-sm transition-all"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 z-10 p-1 text-white/70 hover:text-white transition-all"
                   >
-                    <ChevronRight size={24} />
+                    <ChevronRight size={32} />
                   </button>
                 </>
               )}
 
-              {/* Indikator Dots */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+              {/* Indikator Dots Bulat */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2">
                 {displayImages.map((_, index) => (
                   <button
                     key={index}
@@ -258,7 +257,7 @@ export default function KamarPerawatan() {
                     }}
                     className={`w-2 h-2 rounded-full transition-all ${
                       index === currentImageIndex
-                        ? "bg-white w-5"
+                        ? "bg-white"
                         : "bg-white/40 hover:bg-white/60"
                     }`}
                   />
@@ -267,34 +266,35 @@ export default function KamarPerawatan() {
             </div>
 
             {/* Sisi Kanan: Detail Kamar */}
-            {/* justify-between memastikan konten atas dan share bar tetap pada posisinya */}
-            <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-between bg-white">
+            <div className="md:w-1/2 p-6 md:p-8 flex flex-col justify-between bg-white">
               <div>
-                <div className="mb-6">
-                  <h1 className="text-3xl font-bold text-[#0055A4] mb-2 leading-tight">
+                <div className="mb-4">
+                  <h1 className="text-2xl md:text-3xl font-bold text-[#0055A4] mb-1 leading-tight">
                     {currentKamar.name}
                   </h1>
-                  <p className="text-2xl font-bold text-gray-700">
-                    Rp.{currentKamar.price}
+                  <p className="text-lg md:text-xl font-bold text-gray-700">
+                    Rp.{currentKamar.price}{" "}
+                    <span className="text-sm font-normal text-gray-400">
+                      /malam
+                    </span>
                   </p>
                 </div>
 
-                <div className="mb-8">
-                  <p className="text-gray-600 text-[15px] leading-relaxed">
+                <div className="mb-6">
+                  <p className="text-gray-600 text-[14px] leading-relaxed line-clamp-6 md:line-clamp-none">
                     {currentKamar.description}
                   </p>
                 </div>
 
                 <div className="mb-6">
-                  <h2 className="text-lg font-bold text-gray-800 mb-5">
+                  <h2 className="text-sm font-bold text-gray-800 mb-3 uppercase">
                     Fasilitas Kamar
                   </h2>
-                  {/* Grid dengan min-height atau penataan stabil */}
-                  <div className="grid grid-cols-2 gap-y-4 gap-x-6">
+                  <div className="grid grid-cols-2 gap-y-2 gap-x-4">
                     {currentKamar.facilities.map((facility, idx) => (
-                      <div key={idx} className="flex items-start gap-3">
-                        <div className="w-[7px] h-[7px] rounded-full bg-[#0055A4] mt-1.5 shrink-0" />
-                        <span className="text-[14px] text-gray-600 font-medium leading-snug">
+                      <div key={idx} className="flex items-center gap-2">
+                        <div className="w-[5px] h-[5px] rounded-full bg-[#0055A4] shrink-0" />
+                        <span className="text-[13px] text-gray-600 font-medium truncate">
                           {facility}
                         </span>
                       </div>
@@ -303,25 +303,25 @@ export default function KamarPerawatan() {
                 </div>
               </div>
 
-              {/* Bagian Share - Selalu menempel di bawah karena justify-between */}
-              <div className="pt-8 border-t border-gray-100 flex items-center gap-6 mt-auto">
-                <button className="text-gray-400 hover:text-[#006adb] transition-colors">
+              {/* Bagian Share */}
+              <div className="pt-6 border-t border-gray-100 flex items-center gap-5 mt-auto">
+                <button className="text-gray-400 hover:text-[#0055A4] transition-colors">
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                     <path d="M22.675 0h-21.35C.595 0 0 .595 0 1.326v21.348C0 23.405.595 24 1.326 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.595 1.323-1.326V1.326C24 .595 23.405 0 22.675 0z" />
                   </svg>
                 </button>
-                <button className="text-gray-400 hover:text-[#006adb] transition-colors">
+                <button className="text-gray-400 hover:text-[#0055A4] transition-colors">
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                     <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                   </svg>
                 </button>
-                <button className="text-gray-400 hover:text-[#006adb] transition-colors">
+                <button className="text-gray-400 hover:text-[#0055A4] transition-colors">
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
                 </button>
-                <button className="text-gray-400 hover:text-[#006adb] transition-colors">
-                  <LinkIcon size={20} />
+                <button className="text-gray-400 hover:text-[#0055A4] transition-colors">
+                  <LinkIcon size={18} />
                 </button>
               </div>
             </div>

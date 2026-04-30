@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -11,8 +11,6 @@ import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
-  ChevronUp,
-  ChevronDown,
 } from "lucide-react";
 import { fetchHeroBanners } from "@/lib/api";
 import { HeroBanner } from "@/lib/types";
@@ -60,6 +58,8 @@ const HeroSection = () => {
   >("desktop");
   // track which slide images have finished loading (by id)
   const [loadedSlides, setLoadedSlides] = useState<Record<string, boolean>>({});
+  // Keep reference to current slides to check for actual changes
+  const prevSlidesRef = useRef<string>("");
 
   // SEARCH STATE
   const [search, setSearch] = useState("");
@@ -145,13 +145,27 @@ const HeroSection = () => {
     };
   }, []);
 
-  // reset loaded slides whenever slides change (new banners)
+  // Sync loaded slides when slides actually change (not just component re-renders)
   useEffect(() => {
-    // Reset loaded slides state when new banners load
-    const timer = setTimeout(() => {
-      setLoadedSlides({});
-    }, 0);
-    return () => clearTimeout(timer);
+    const currentSlidesJson = JSON.stringify(slides.map((s) => s.id));
+
+    // Only update if slides actually changed
+    if (prevSlidesRef.current !== currentSlidesJson) {
+      prevSlidesRef.current = currentSlidesJson;
+
+      // Keep loaded states only for slides that still exist
+      const existingIds = new Set(slides.map((s) => String(s.id)));
+
+      setLoadedSlides((prev) => {
+        const updated: Record<string, boolean> = {};
+        Object.entries(prev).forEach(([id, loaded]) => {
+          if (existingIds.has(id)) {
+            updated[id] = loaded;
+          }
+        });
+        return updated;
+      });
+    }
   }, [slides]);
 
   // Filter slides based on device type - IMPORTANT: Use filtered length for currentSlide calculation
