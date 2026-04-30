@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import ServiceSkeletonShimmer from "./ServiceSkeletonShimmer";
 
 interface ServiceItem {
   id: number;
@@ -16,6 +17,13 @@ interface ServiceItem {
 
 const ServicesSection = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Simulate loading time or remove if real data fetching is implemented
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const scrollToSection = (id: string | null) => {
     if (!id) return;
@@ -107,41 +115,49 @@ const ServicesSection = () => {
 
           <div className="relative">
             <div className="relative z-10 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {serviceData.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  onClick={() => handleServiceClick(item)}
-                  /* HOVER CARD SCALE (TAILWIND) */
-                  className="group relative aspect-[3/4.5] flex flex-col overflow-hidden bg-white border border-slate-200 shadow-sm cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 transform-gpu"
-                >
-                  <div className="absolute inset-0">
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover" /* Hover zoom pada gambar dihapus */
+              {isLoading
+                ? // Skeleton loading state
+                  Array.from({ length: 4 }).map((_, index) => (
+                    <ServiceSkeletonShimmer
+                      key={`service-skeleton-${index + 1}`}
                     />
-                  </div>
+                  ))
+                : // Actual content
+                  serviceData.map((item, index) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      onClick={() => handleServiceClick(item)}
+                      /* HOVER CARD SCALE (TAILWIND) */
+                      className="group relative aspect-3/4.5 flex flex-col overflow-hidden bg-white border border-slate-200 shadow-sm cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 transform-gpu"
+                    >
+                      <div className="absolute inset-0">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          className="object-cover" /* Hover zoom pada gambar dihapus */
+                        />
+                      </div>
 
-                  <div className="absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-[#006adb] via-[#006adb]/85 to-transparent z-10" />
+                      <div className="absolute inset-x-0 bottom-0 h-[65%] bg-linear-to-t from-[#006adb] via-[#006adb]/85 to-transparent z-10" />
 
-                  <div
-                    className="relative z-20 mt-auto p-7 flex flex-col items-start"
-                    style={{ backfaceVisibility: "hidden" }}
-                  >
-                    <h3 className="text-xl font-bold text-white mb-2 leading-tight">
-                      {item.title}
-                    </h3>
-                    <p className="text-blue-50/90 text-sm leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+                      <div
+                        className="relative z-20 mt-auto p-7 flex flex-col items-start"
+                        style={{ backfaceVisibility: "hidden" }}
+                      >
+                        <h3 className="text-xl font-bold text-white mb-2 leading-tight">
+                          {item.title}
+                        </h3>
+                        <p className="text-blue-50/90 text-sm leading-relaxed">
+                          {item.description}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
             </div>
           </div>
         </div>

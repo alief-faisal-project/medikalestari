@@ -23,11 +23,14 @@ import {
 import Image from "next/image";
 
 const ROOM_OPTIONS = [
-  "Kamar Premier",
-  "Kamar Suite",
-  "Kamar Gold",
-  "Kamar Silver",
-  "Kamar Kelas III",
+  "Ruang VIP",
+  "Ruang Silver",
+  "Ruang Kelas 1",
+  "Ruang Kelas 2",
+  "Ruang Kelas 3",
+  "Ruang ICU",
+  "Ruang NICU",
+  "Ruang HVU",
 ];
 
 interface RoomImage {

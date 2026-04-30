@@ -17,6 +17,39 @@ import {
 import { fetchHeroBanners } from "@/lib/api";
 import { HeroBanner } from "@/lib/types";
 
+// Shimmer gradient animation untuk skeleton loading
+const shimmerStyle = `
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+  
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      #f3f4f6 0%,
+      #e5e7eb 50%,
+      #f3f4f6 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+`;
+
+// Inject style ke dalam dokumen
+if (typeof document !== "undefined") {
+  const style = document.createElement("style");
+  style.textContent = shimmerStyle;
+  if (!document.head.querySelector("style[data-shimmer]")) {
+    style.setAttribute("data-shimmer", "true");
+    document.head.appendChild(style);
+  }
+}
+
 const HeroSection = () => {
   const [slides, setSlides] = useState<HeroBanner[]>([]);
   const [page, setPage] = useState(0);
@@ -25,6 +58,8 @@ const HeroSection = () => {
   const [currentDeviceType, setCurrentDeviceType] = useState<
     "desktop" | "mobile"
   >("desktop");
+  // track which slide images have finished loading (by id)
+  const [loadedSlides, setLoadedSlides] = useState<Record<string, boolean>>({});
 
   // SEARCH STATE
   const [search, setSearch] = useState("");
@@ -110,6 +145,15 @@ const HeroSection = () => {
     };
   }, []);
 
+  // reset loaded slides whenever slides change (new banners)
+  useEffect(() => {
+    // Reset loaded slides state when new banners load
+    const timer = setTimeout(() => {
+      setLoadedSlides({});
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [slides]);
+
   // Filter slides based on device type - IMPORTANT: Use filtered length for currentSlide calculation
   const desktopSlides = slides.filter(
     (slide) => slide.device_type === "desktop",
@@ -135,6 +179,12 @@ const HeroSection = () => {
     }
     return () => clearInterval(slideInterval);
   }, [paginate, isPlaying, filteredSlides.length]);
+
+  const handleImageLoaded = (id?: string | number) => {
+    if (id === undefined || id === null) return;
+    const key = String(id);
+    setLoadedSlides((prev) => ({ ...prev, [key]: true }));
+  };
 
   if (loading || filteredSlides.length === 0) {
     return (
@@ -245,22 +295,34 @@ const HeroSection = () => {
     <section className="relative w-full bg-transparent overflow-hidden">
       {/* BANNER AREA - Desktop */}
       <div className="hidden md:block relative w-full aspect-[1900/780] bg-black">
-        {desktopSlides.map((slide, index) => (
-          <div
-            key={slide.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-            }`}
-          >
-            <Image
-              src={slide.image_url}
-              alt={`Slide ${index}`}
-              fill
-              priority={index === 0}
-              className="object-cover object-center"
-            />
-          </div>
-        ))}
+        {desktopSlides.map((slide, index) => {
+          const key = String(slide.id);
+          const isLoaded = !!loadedSlides[key];
+          return (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
+            >
+              {/* Skeleton shimmer shown until image loads */}
+              {!isLoaded && (
+                <div className="absolute inset-0 skeleton-shimmer" />
+              )}
+
+              <Image
+                src={slide.image_url}
+                alt={`Slide ${index}`}
+                fill
+                priority={index === 0}
+                onLoadingComplete={() => handleImageLoaded(slide.id)}
+                className={`object-cover object-center transition-opacity duration-700 ${
+                  isLoaded ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            </div>
+          );
+        })}
 
         {/* CONTROLS - Bottom Left */}
         <div className="absolute bottom-8 left-8 z-40 flex items-center gap-4">
@@ -344,22 +406,33 @@ const HeroSection = () => {
 
       {/* BANNER AREA - Mobile */}
       <div className="md:hidden relative w-full aspect-[2208/2760] bg-black">
-        {mobileSlides.map((slide, index) => (
-          <div
-            key={slide.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-            }`}
-          >
-            <Image
-              src={slide.image_url}
-              alt={`Slide ${index}`}
-              fill
-              priority={index === 0}
-              className="object-cover object-center"
-            />
-          </div>
-        ))}
+        {mobileSlides.map((slide, index) => {
+          const key = String(slide.id);
+          const isLoaded = !!loadedSlides[key];
+          return (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
+            >
+              {!isLoaded && (
+                <div className="absolute inset-0 skeleton-shimmer" />
+              )}
+
+              <Image
+                src={slide.image_url}
+                alt={`Slide ${index}`}
+                fill
+                priority={index === 0}
+                onLoadingComplete={() => handleImageLoaded(slide.id)}
+                className={`object-cover object-center transition-opacity duration-700 ${
+                  isLoaded ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            </div>
+          );
+        })}
 
         {/* CONTROLS - Horizontal Layout (Left, Center, Right) */}
         <div className="absolute bottom-1/2 translate-y-1/2 left-0 right-0 z-40 flex flex-row items-center justify-between px-4">
