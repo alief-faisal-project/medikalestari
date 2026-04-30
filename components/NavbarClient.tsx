@@ -109,7 +109,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
         animate={{ opacity: 1, y: 0, height: "auto" }}
         exit={{ opacity: 0, y: -10, height: 0 }}
         transition={{ duration: 0.3, ease: "circOut" }}
-        className={`absolute top-full bg-white text-gray-800 shadow-2xl overflow-hidden z-50 rounded-b-xl ${
+        className={`absolute top-full bg-white text-gray-800 shadow-xl overflow-hidden z-50  ${
           isLargeMenu ? "w-[600px] -left-20" : widthClass
         }`}
         style={{ borderTopColor: "#0084BF" }}

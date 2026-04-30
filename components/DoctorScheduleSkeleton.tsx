@@ -33,7 +33,7 @@ export default function DoctorScheduleSkeleton() {
       {/* Search Bar Skeleton */}
       <div className="space-y-4">
         <div className="relative">
-          <div className="w-full h-12 rounded-lg bg-slate-200 animate-pulse"></div>
+          <div className="w-full h-12 bg-slate-200 animate-pulse"></div>
         </div>
 
         {/* Filter Buttons Skeleton */}
@@ -41,14 +41,14 @@ export default function DoctorScheduleSkeleton() {
           {filterIds.map((id) => (
             <div
               key={id}
-              className="h-10 w-24 rounded-lg bg-slate-200 animate-pulse"
+              className="h-10 w-24 rounded-full bg-slate-200 animate-pulse"
             ></div>
           ))}
         </div>
       </div>
 
       {/* Table Skeleton */}
-      <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
+      <div className="overflow-x-auto border border-slate-200 bg-white shadow-sm">
         <table className="w-full border-collapse min-w-80">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200">
