@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import AdminNavbar from "@/components/AdminSidebar";
 import { AdminPageSkeleton } from "@/components/AdminSkeleton";
 import {
   fetchMadingContent,
@@ -193,7 +192,6 @@ const AdminMadingPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <AdminNavbar />
       <div className="max-w-[1220px] mx-auto px-4 md:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800">Kelola Mading</h1>

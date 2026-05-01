@@ -1,17 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import AdminNavbar from "@/components/AdminSidebar";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { AdminPageSkeleton } from "@/components/AdminSkeleton";
-import {
-  Users,
-  Calendar,
-  Plus,
-  LayoutDashboard,
-  ChevronRight,
-} from "lucide-react";
+import { Users, Calendar, Plus, ChevronRight } from "lucide-react";
 
 // Mengganti warna background ke [#006adb] dan teks ke putih
 const ScaleButton = ({
@@ -92,8 +85,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-[#F2F2F2] text-black font-sans">
-      <AdminNavbar />
-
       <div className="max-w-[1220px] mx-auto px-6 md:px-12 py-12">
         <header className="mb-5 flex items-center gap-4">
           <h1 className="text-[40px] font-medium">Dashboard</h1>

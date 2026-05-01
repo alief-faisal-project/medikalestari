@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import AdminNavbar from "@/components/AdminSidebar";
 import { AdminPageSkeleton } from "@/components/AdminSkeleton";
 import { useAuth } from "@/context/AuthProvider";
 import { useRouter } from "next/navigation";
@@ -216,8 +215,6 @@ const AdminCareersPage = () => {
 
   return (
     <div className="min-h-screen bg-[#F2F2F2]">
-      <AdminNavbar />
-
       <div className="max-w-[1220px] mx-auto px-6 md:px-12 py-12">
         <h1 className="text-[40px] font-medium mb-8">Kelola Careers</h1>
 

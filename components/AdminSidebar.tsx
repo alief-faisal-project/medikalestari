@@ -26,37 +26,35 @@ const AdminSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // detect mobile / desktop
+  // detect mobile / desktop - ONLY RUNS ONCE
   useEffect(() => {
+    // Skip logic dalam Strict Mode
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
-
       setIsMobile(mobile);
 
-      // mobile default close
       if (mobile) {
         setIsOpen(false);
       } else {
-        // desktop default open
         setIsOpen(true);
       }
     };
 
+    // Panggil sekali pada mount
     handleResize();
-    window.addEventListener("resize", handleResize);
 
+    window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ambil session user
+  // ambil session user - cukup sekali
   useEffect(() => {
     let active = true;
 
     const load = async () => {
       try {
-        await supabase.auth.getSession();
-
         if (!active) return;
+        await supabase.auth.getSession();
       } catch {
         //
       }
