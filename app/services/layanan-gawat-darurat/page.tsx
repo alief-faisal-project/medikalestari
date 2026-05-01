@@ -35,7 +35,7 @@ export default function LayananGawatDarurat() {
               <h3 className="font-semibold text-[#006adb] mb-2">Layanan UGD</h3>
               <ul className="text-sm text-gray-700 space-y-1">
                 <li>✓ Triase 24 jam</li>
-                <li>✓ Ruang stabilisasi</li>
+                <li>✓ Kamar stabilisasi</li>
                 <li>✓ Ambulans siaga</li>
               </ul>
             </div>

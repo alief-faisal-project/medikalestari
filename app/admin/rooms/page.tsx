@@ -22,14 +22,14 @@ import {
 import Image from "next/image";
 
 const ROOM_OPTIONS = [
-  "Ruang VIP",
-  "Ruang Silver",
-  "Ruang Kelas 1",
-  "Ruang Kelas 2",
-  "Ruang Kelas 3",
-  "Ruang ICU",
-  "Ruang NICU",
-  "Ruang HCU",
+  "Kamar VIP",
+  "Kamar Silver",
+  "Kamar Kelas 1",
+  "Kamar Kelas 2",
+  "Kamar Kelas 3",
+  "Kamar ICU",
+  "Kamar NICU",
+  "Kamar HCU",
 ];
 
 interface RoomImage {
