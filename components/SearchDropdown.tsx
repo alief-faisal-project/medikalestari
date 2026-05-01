@@ -58,15 +58,12 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ isOpen, onClose }) => {
   };
 
   const handleSpecialtyClick = (specialty: string) => {
-    // Jika "Semua Spesialis", navigasi tanpa parameter specialty
     if (specialty === "Semua Spesialis") {
       router.push("/dokter");
     } else {
-      // Untuk spesialisasi tertentu, set parameter specialty
       router.push(`/dokter?specialty=${encodeURIComponent(specialty)}`);
     }
     setSearchQuery("");
-    // Close the searchbar setelah memilih kategori
     if (onClose) {
       onClose();
     }

@@ -227,8 +227,7 @@ const AdminPopupPage = () => {
         {/* INFO BOX */}
         <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <p className="text-blue-900 font-medium">
-            ℹ️ Maksimal 3 gambar popup dapat ditambahkan. Popup akan ditampilkan
-            saat pengunjung pertama kali masuk website.
+            ℹ️ Maksimal 3 gambar.
           </p>
         </div>
 

@@ -95,9 +95,9 @@ const PopupDisplay = () => {
         onClick={handleForceClose}
       />
 
-      {/* Container - Dikecilkan max-w-nya agar tidak terlalu raksasa */}
+      {/* Container */}
       <div className="relative flex flex-col items-center animate-in fade-in zoom-in duration-300 max-w-[85%] md:max-w-[500px]">
-        {/* Close Button - Ditempel pas di sudut gambar */}
+        {/* Close Button */}
         <button
           onClick={handleAction}
           className="absolute -top-8 -right-2 text-white/50 hover:text-white transition-colors p-1"
@@ -105,7 +105,7 @@ const PopupDisplay = () => {
           <X size={18} strokeWidth={3} />
         </button>
 
-        {/* Image - Menggunakan h-auto dan w-full agar tidak ngecrop */}
+        {/* Image */}
         <div
           className="relative cursor-pointer flex justify-center items-center overflow-hidden shadow-2xl"
           onClick={handleAction}
@@ -117,7 +117,7 @@ const PopupDisplay = () => {
           />
         </div>
 
-        {/* Counter Tipis (Hanya muncul jika lebih dari 1 gambar) */}
+        {/* Counter untk logika hanya muncul jika lebih dari 1 gambar */}
         {popups.length > 1 && (
           <span className="mt-3 text-[10px] text-white/20 font-mono tracking-tighter">
             {currentIndex + 1}/{popups.length}

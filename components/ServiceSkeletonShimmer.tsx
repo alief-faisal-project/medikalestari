@@ -32,20 +32,20 @@ const ServiceSkeletonShimmer = () => {
       `}</style>
 
       <div className="relative aspect-3/4.5 flex flex-col overflow-hidden bg-white border border-slate-200 shadow-sm">
-        {/* Image skeleton with shimmer */}
+        {/* Image skeleton shimmer */}
         <div className="absolute inset-0">
           <div className="w-full h-full skeleton-shimmer" />
         </div>
 
-        {/* Gradient overlay skeleton - simulates the blue gradient */}
+        {/* Gradasi overlay skeleton */}
         <div className="absolute inset-x-0 bottom-0 h-[65%] bg-linear-to-t from-slate-300 via-slate-250 to-transparent z-10" />
 
         {/* Content skeleton area */}
         <div className="relative z-20 mt-auto p-7 flex flex-col items-start w-full gap-4">
-          {/* Title skeleton - shimmer effect */}
+          {/* Title skeleton */}
           <div className="w-3/4 h-7 skeleton-shimmer skeleton-rounded" />
 
-          {/* Description skeleton lines with varied widths */}
+          {/* Description skeleton */}
           <div className="flex flex-col gap-3 w-full">
             <div className="w-full h-3 skeleton-shimmer skeleton-rounded" />
             <div className="w-5/6 h-3 skeleton-shimmer skeleton-rounded" />

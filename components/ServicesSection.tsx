@@ -131,7 +131,7 @@ const ServicesSection = () => {
                       viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
                       onClick={() => handleServiceClick(item)}
-                      /* HOVER CARD SCALE (TAILWIND) */
+                      /* HOVER CARD SCALE */
                       className="group relative aspect-3/4.5 flex flex-col overflow-hidden bg-white border border-slate-200 shadow-sm cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 transform-gpu"
                     >
                       <div className="absolute inset-0">
