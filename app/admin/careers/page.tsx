@@ -34,6 +34,7 @@ const AdminCareersPage = () => {
   const [config, setConfig] = useState<CareersBannerConfig | null>(null);
   const [configForm, setConfigForm] = useState({
     criteria: [] as string[],
+    is_form_active: true,
   });
   const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [bannerPreview, setBannerPreview] = useState("");
@@ -60,6 +61,7 @@ const AdminCareersPage = () => {
             typeof configData.criteria === "string"
               ? JSON.parse(configData.criteria)
               : configData.criteria || [],
+          is_form_active: configData.is_form_active ?? true,
         });
         if (configData.banner_image_url) {
           setBannerPreview(configData.banner_image_url);
@@ -163,6 +165,7 @@ const AdminCareersPage = () => {
         id: config?.id || "default-config",
         banner_image_url: bannerUrl,
         criteria: JSON.stringify(configForm.criteria),
+        is_form_active: configForm.is_form_active,
       };
 
       console.log("Sending config update:", updateData);
@@ -225,7 +228,10 @@ const AdminCareersPage = () => {
         body: JSON.stringify({ id: registrationId }),
       });
 
+      const responseData = await res.json();
+
       if (res.ok) {
+        // Update state to remove the deleted registration
         setRegistrations(
           registrations.filter((reg) => reg.id !== registrationId),
         );
@@ -234,8 +240,9 @@ const AdminCareersPage = () => {
           text: "Pendaftar berhasil dihapus",
         });
       } else {
-        const data = await res.json();
-        throw new Error(data.error || "Gagal menghapus pendaftar");
+        // Re-fetch data jika ada error untuk memastikan state sync dengan database
+        await loadData();
+        throw new Error(responseData.error || "Gagal menghapus pendaftar");
       }
     } catch (err) {
       console.error("Error deleting registration:", err);
@@ -313,6 +320,40 @@ const AdminCareersPage = () => {
         {activeTab === "config" && (
           <div className="bg-white rounded-2xl p-8 shadow-sm">
             <div className="space-y-6">
+              {/* Form Active Toggle */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Status Form Pendaftaran
+                </label>
+                <div className="flex items-center gap-4">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setConfigForm((prev) => ({
+                        ...prev,
+                        is_form_active: !prev.is_form_active,
+                      }))
+                    }
+                    className={`relative inline-flex h-8 w-16 items-center rounded-full transition-colors ${
+                      configForm.is_form_active ? "bg-green-600" : "bg-gray-300"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
+                        configForm.is_form_active
+                          ? "translate-x-8"
+                          : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+                  <span className="text-sm text-gray-600">
+                    {configForm.is_form_active
+                      ? "Form pendaftaran aktif - akan muncul di halaman careers"
+                      : "Form pendaftaran nonaktif - tidak akan muncul di halaman careers"}
+                  </span>
+                </div>
+              </div>
+
               {/* Banner Upload */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">

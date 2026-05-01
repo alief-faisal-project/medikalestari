@@ -104,24 +104,42 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const { error } = await supabase
+    console.log("Deleting registration with ID:", id);
+
+    const { data, error, count } = await supabase
       .from("career_registrations")
       .delete()
-      .eq("id", id);
+      .eq("id", id)
+      .select();
+
+    console.log("Delete result:", { data, error, count });
 
     if (error) {
-      console.error("Supabase error:", error.message);
+      console.error("Supabase error:", error.message, error.code);
       return NextResponse.json(
         {
           error: "Gagal menghapus data",
           details: error.message,
+          code: error.code,
         },
         { status: 500 },
       );
     }
 
+    if (count === 0) {
+      console.warn("No record found with ID:", id);
+      return NextResponse.json(
+        {
+          error: "Data tidak ditemukan",
+          details: "ID tidak sesuai atau data sudah dihapus",
+        },
+        { status: 404 },
+      );
+    }
+
+    console.log("Successfully deleted registration with ID:", id);
     return NextResponse.json(
-      { success: true, message: "Pendaftar berhasil dihapus" },
+      { success: true, message: "Pendaftar berhasil dihapus", deleted_id: id },
       { status: 200 },
     );
   } catch (error) {
