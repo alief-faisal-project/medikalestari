@@ -12,6 +12,7 @@ import {
   CheckCircle,
   Download,
   Eye,
+  Trash2,
 } from "lucide-react";
 import { CareersBannerConfig, CareerRegistration } from "@/lib/types";
 
@@ -178,6 +179,13 @@ const AdminCareersPage = () => {
         setConfig(responseData);
         setBannerFile(null);
         setBannerPreview(responseData.banner_image_url || "");
+        // Reset file input
+        const bannerInput = document.getElementById(
+          "banner-input",
+        ) as HTMLInputElement;
+        if (bannerInput) {
+          bannerInput.value = "";
+        }
         setMessage({
           type: "success",
           text: "Konfigurasi berhasil disimpan",
@@ -201,6 +209,42 @@ const AdminCareersPage = () => {
   const downloadResume = (registration: CareerRegistration) => {
     if (registration.resume_url) {
       window.open(registration.resume_url, "_blank");
+    }
+  };
+
+  const deleteRegistration = async (registrationId: string) => {
+    if (!confirm("Apakah Anda yakin ingin menghapus pendaftar ini?")) {
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/careers/registrations", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: registrationId }),
+      });
+
+      if (res.ok) {
+        setRegistrations(
+          registrations.filter((reg) => reg.id !== registrationId),
+        );
+        setMessage({
+          type: "success",
+          text: "Pendaftar berhasil dihapus",
+        });
+      } else {
+        const data = await res.json();
+        throw new Error(data.error || "Gagal menghapus pendaftar");
+      }
+    } catch (err) {
+      console.error("Error deleting registration:", err);
+      setMessage({
+        type: "error",
+        text: err instanceof Error ? err.message : "Gagal menghapus pendaftar",
+      });
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -294,6 +338,12 @@ const AdminCareersPage = () => {
                         onClick={() => {
                           setBannerFile(null);
                           setBannerPreview("");
+                          const bannerInput = document.getElementById(
+                            "banner-input",
+                          ) as HTMLInputElement;
+                          if (bannerInput) {
+                            bannerInput.value = "";
+                          }
                         }}
                         className="text-sm text-red-600 hover:text-red-700"
                       >
@@ -456,6 +506,14 @@ const AdminCareersPage = () => {
                               title="Download Resume"
                             >
                               <Download size={16} />
+                            </button>
+                            <button
+                              onClick={() => deleteRegistration(reg.id)}
+                              disabled={submitting}
+                              className="text-red-600 hover:text-red-700 flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                              title="Hapus Pendaftar"
+                            >
+                              <Trash2 size={16} />
                             </button>
                           </td>
                         </tr>

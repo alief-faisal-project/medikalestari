@@ -91,3 +91,46 @@ export async function GET() {
     );
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { id } = body;
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "ID diperlukan untuk menghapus data" },
+        { status: 400 },
+      );
+    }
+
+    const { error } = await supabase
+      .from("career_registrations")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Supabase error:", error.message);
+      return NextResponse.json(
+        {
+          error: "Gagal menghapus data",
+          details: error.message,
+        },
+        { status: 500 },
+      );
+    }
+
+    return NextResponse.json(
+      { success: true, message: "Pendaftar berhasil dihapus" },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Error:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json(
+      { error: "Gagal menghapus data", details: errorMessage },
+      { status: 500 },
+    );
+  }
+}
