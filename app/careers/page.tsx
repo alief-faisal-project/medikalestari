@@ -213,20 +213,6 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
     return <CareersFormSkeleton />;
   }
 
-  if (!config?.is_form_active) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">Careers</h1>
-          <p className="text-gray-600">
-            Saat ini form pendaftaran tidak tersedia. Silakan hubungi HR kami
-            untuk informasi lebih lanjut.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-white">
       {/* BREADCRUMB & TITLE SECTION */}
@@ -256,15 +242,26 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
         </div>
       )}
 
-      {/* Button Daftar Section */}
-      <div className="max-w-2xl mx-auto px-4 py-12 flex justify-center">
-        <button
-          onClick={() => setShowModal(true)}
-          className="px-8 py-4 bg-[#006adb] text-white rounded-lg font-semibold hover:bg-[#006adb]/90 transition-colors cursor-pointer active:scale-95"
-        >
-          Daftar Lowongan
-        </button>
-      </div>
+      {/* Cek jika form tidak aktif */}
+      {!config?.is_form_active ? (
+        <div className="max-w-2xl mx-auto px-4 py-12 text-center">
+          <p className="text-gray-600">
+            Maaf saat ini RS Medika Lestari belum membuka lowongan. Silakan kunjungi kembali di lain waktu.
+          </p>
+        </div>
+      ) : (
+        <>
+          {/* Button Daftar Section */}
+          <div className="max-w-2xl mx-auto px-4 py-12 flex justify-center">
+            <button
+              onClick={() => setShowModal(true)}
+              className="px-8 py-4 bg-[#006adb] text-white rounded-lg font-semibold hover:bg-[#006adb]/90 transition-colors cursor-pointer active:scale-95"
+            >
+              Daftar Lowongan
+            </button>
+          </div>
+        </>
+      )}
 
       {/* Modal Backdrop */}
       {showModal && (

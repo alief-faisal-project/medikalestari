@@ -231,7 +231,7 @@ const AdminCareersPage = () => {
       const responseData = await res.json();
 
       if (res.ok) {
-        // Update state to remove the deleted registration
+        // Remove from local state immediately
         setRegistrations(
           registrations.filter((reg) => reg.id !== registrationId),
         );
@@ -239,13 +239,17 @@ const AdminCareersPage = () => {
           type: "success",
           text: "Pendaftar berhasil dihapus",
         });
+        // Reload data dari server untuk memastikan sync dengan database
+        setTimeout(() => {
+          loadData();
+        }, 500);
       } else {
-        // Re-fetch data jika ada error untuk memastikan state sync dengan database
-        await loadData();
         throw new Error(responseData.error || "Gagal menghapus pendaftar");
       }
     } catch (err) {
       console.error("Error deleting registration:", err);
+      // Reload data jika ada error
+      await loadData();
       setMessage({
         type: "error",
         text: err instanceof Error ? err.message : "Gagal menghapus pendaftar",
@@ -354,7 +358,7 @@ const AdminCareersPage = () => {
                 </div>
               </div>
 
-              {/* Banner Upload */}
+              {/* Banner Upload - Selalu tampil */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                   Banner Gambar
@@ -402,59 +406,61 @@ const AdminCareersPage = () => {
               </div>
 
               {/* Criteria */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Kriteria Tambahan
-                </label>
-                <div className="flex gap-2 mb-3">
-                  <input
-                    type="text"
-                    value={newCriteria}
-                    onChange={(e) => setNewCriteria(e.target.value)}
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter") {
-                        handleAddCriteria();
-                      }
-                    }}
-                    className="flex-1 px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                    placeholder="Masukkan kriteria baru"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleAddCriteria}
-                    className="px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2 cursor-pointer"
-                  >
-                    <Plus size={18} />
-                    Tambahkan
-                  </button>
-                </div>
-
-                {configForm.criteria.length > 0 && (
-                  <div className="space-y-2">
-                    {configForm.criteria.map((criterion) => (
-                      <div
-                        key={criterion}
-                        className="flex items-center justify-between bg-gray-50 p-3 rounded-lg"
-                      >
-                        <span className="text-sm text-gray-700">
-                          {criterion}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleRemoveCriteria(
-                              configForm.criteria.indexOf(criterion),
-                            )
-                          }
-                          className="text-red-600 hover:text-red-700"
-                        >
-                          <X size={18} />
-                        </button>
-                      </div>
-                    ))}
+              {configForm.is_form_active && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Kriteria Tambahan
+                  </label>
+                  <div className="flex gap-2 mb-3">
+                    <input
+                      type="text"
+                      value={newCriteria}
+                      onChange={(e) => setNewCriteria(e.target.value)}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          handleAddCriteria();
+                        }
+                      }}
+                      className="flex-1 px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                      placeholder="Masukkan kriteria baru"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddCriteria}
+                      className="px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2 cursor-pointer"
+                    >
+                      <Plus size={18} />
+                      Tambahkan
+                    </button>
                   </div>
-                )}
-              </div>
+
+                  {configForm.criteria.length > 0 && (
+                    <div className="space-y-2">
+                      {configForm.criteria.map((criterion) => (
+                        <div
+                          key={criterion}
+                          className="flex items-center justify-between bg-gray-50 p-3 rounded-lg"
+                        >
+                          <span className="text-sm text-gray-700">
+                            {criterion}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleRemoveCriteria(
+                                configForm.criteria.indexOf(criterion),
+                              )
+                            }
+                            className="text-red-600 hover:text-red-700"
+                          >
+                            <X size={18} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Save Button */}
               <button
