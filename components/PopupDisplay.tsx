@@ -3,241 +3,128 @@
 import React, { useState, useEffect, useRef } from "react";
 import { fetchPopups, type Popup } from "@/lib/popup-api";
 import { X } from "lucide-react";
-import Image from "next/image";
 
 const PopupDisplay = () => {
   const [popups, setPopups] = useState<Popup[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
   const tabLeftTimeRef = useRef<number | null>(null);
 
-  const checkAndShowPopup = () => {
-    const popupKey = "popupSessionData";
+  const POPUP_KEY = "last_popup_exit_time";
+  const SESSION_KEY = "has_seen_popup_session";
+  const FIVE_MINUTES = 5 * 60 * 1000;
+
+  const checkLogicAndShow = () => {
     const now = Date.now();
-    const sessionData = localStorage.getItem(popupKey);
+    const lastExit = localStorage.getItem(POPUP_KEY);
+    const hasSeenThisSession = sessionStorage.getItem(SESSION_KEY);
 
-    const data = sessionData
-      ? JSON.parse(sessionData)
-      : { firstShow: now, shown: false, tabLeftCount: 0, lastReturn: now };
-
-    const timeSinceFirstShow = now - data.firstShow;
-    const isActiveUser = timeSinceFirstShow < 5 * 60 * 1000; // 5 minutes = active user
-
-    // Logic:
-    // 1. Jika user baru pertama kali: tampilkan popup
-    // 2. Jika user aktif (< 5 menit): tampilkan popup sekali saja
-    // 3. Jika user jarang (keluar tab lama): tampilkan popup lagi
-    if (!data.shown) {
-      // First time showing
+    if (!hasSeenThisSession) {
       setIsVisible(true);
-      data.shown = true;
-    } else if (!isActiveUser && data.tabLeftCount > 0) {
-      // User jarang, dan sudah keluar-masuk tab: tampilkan lagi
+      sessionStorage.setItem(SESSION_KEY, "true");
+    } else if (lastExit && now - parseInt(lastExit) > FIVE_MINUTES) {
       setIsVisible(true);
-      data.shown = true;
     }
-
-    localStorage.setItem(popupKey, JSON.stringify(data));
   };
 
-  // Smart logic: detect user activity and tab switches
   useEffect(() => {
     const loadPopups = async () => {
       try {
         const popupData = await fetchPopups();
-        if (popupData.length > 0) {
+        if (popupData && popupData.length > 0) {
           setPopups(popupData);
-          checkAndShowPopup();
+          checkLogicAndShow();
         }
       } catch (error) {
         console.error("Error loading popups:", error);
       }
     };
-
     loadPopups();
   }, []);
 
-  // Track tab visibility changes
   useEffect(() => {
     const handleVisibilityChange = () => {
-      const popupKey = "popupSessionData";
-      const now = Date.now();
-      const sessionData = localStorage.getItem(popupKey);
-      const data = sessionData
-        ? JSON.parse(sessionData)
-        : { firstShow: now, shown: false, tabLeftCount: 0, lastReturn: now };
-
       if (document.hidden) {
-        // User meninggalkan tab
+        const now = Date.now();
         tabLeftTimeRef.current = now;
-        data.tabLeftCount = (data.tabLeftCount || 0) + 1;
+        localStorage.setItem(POPUP_KEY, now.toString());
       } else {
-        // User kembali ke tab
-        if (tabLeftTimeRef.current) {
-          const awayTime = now - tabLeftTimeRef.current;
-          const isAwayLong = awayTime > 30 * 1000; // 30 detik = jarang
-
-          if (isAwayLong && popups.length > 0) {
-            // User jarang dan away lama: tampilkan popup lagi
-            setIsVisible(true);
-            data.shown = false; // Reset agar popup muncul lagi
-          }
+        const now = Date.now();
+        if (
+          tabLeftTimeRef.current &&
+          now - tabLeftTimeRef.current > FIVE_MINUTES
+        ) {
+          setIsVisible(true);
         }
         tabLeftTimeRef.current = null;
       }
-
-      localStorage.setItem(popupKey, JSON.stringify(data));
     };
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [popups.length]);
+    window.addEventListener("visibilitychange", handleVisibilityChange);
+    return () =>
+      window.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
 
-  const handleClose = () => {
+  const handleAction = () => {
+    if (currentIndex < popups.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    } else {
+      setIsVisible(false);
+      setCurrentIndex(0);
+      localStorage.setItem(POPUP_KEY, Date.now().toString());
+    }
+  };
+
+  const handleForceClose = () => {
     setIsVisible(false);
     setCurrentIndex(0);
-    if (autoPlayTimerRef.current) {
-      clearTimeout(autoPlayTimerRef.current);
-    }
+    localStorage.setItem(POPUP_KEY, Date.now().toString());
   };
 
-  // Auto-play gambar dengan timing
   useEffect(() => {
-    if (isVisible && popups.length > 1) {
-      // Auto next ke gambar berikutnya setiap 5 detik
-      autoPlayTimerRef.current = setTimeout(() => {
-        setCurrentIndex((prev) => {
-          if (prev < popups.length - 1) {
-            return prev + 1;
-          } else {
-            // Jika sudah gambar terakhir, close popup
-            handleClose();
-            return 0;
-          }
-        });
-      }, 5000); // 5 detik
-    }
-
-    return () => {
-      if (autoPlayTimerRef.current) {
-        clearTimeout(autoPlayTimerRef.current);
-      }
-    };
-  }, [isVisible, currentIndex, popups.length]);
-
-  const handleImageClick = () => {
-    // Klik gambar = next atau close jika sudah terakhir
-    if (currentIndex < popups.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      handleClose();
-    }
-  };
-
-  // Lock scroll saat popup visible
-  useEffect(() => {
-    if (isVisible) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
+    document.body.style.overflow = isVisible ? "hidden" : "unset";
   }, [isVisible]);
 
-  if (!isVisible || popups.length === 0) {
-    return null;
-  }
-
-  const currentPopup = popups[currentIndex];
+  if (!isVisible || popups.length === 0) return null;
 
   return (
-    <>
-      {/* FULL SCREEN OVERLAY */}
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-6">
+      {/* Overlay */}
       <div
-        className="fixed inset-0 bg-black/70 z-40"
-        onClick={handleClose}
-        role="presentation"
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        onClick={handleForceClose}
       />
 
-      {/* FULL SCREEN POPUP - CLEAN & PROFESSIONAL */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="relative w-full max-w-5xl">
-          {/* IMAGE - FULL WIDTH, CLICKABLE */}
-          <div
-            className="relative w-full bg-black cursor-pointer overflow-hidden"
-            onClick={handleImageClick}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                handleImageClick();
-              }
-            }}
-            style={{ aspectRatio: "16/9" }}
-          >
-            <Image
-              src={currentPopup.image_url}
-              alt={`Popup ${currentIndex + 1}`}
-              fill
-              className="object-contain"
-              priority
-              quality={95}
-            />
+      {/* Container - Dikecilkan max-w-nya agar tidak terlalu raksasa */}
+      <div className="relative flex flex-col items-center animate-in fade-in zoom-in duration-300 max-w-[85%] md:max-w-[500px]">
+        {/* Close Button - Ditempel pas di sudut gambar */}
+        <button
+          onClick={handleAction}
+          className="absolute -top-8 -right-2 text-white/50 hover:text-white transition-colors p-1"
+        >
+          <X size={18} strokeWidth={3} />
+        </button>
 
-            {/* PROGRESS BAR */}
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/20">
-              <div
-                className="h-full bg-white/90 transition-all duration-300"
-                style={{
-                  width: `${((currentIndex + 1) / popups.length) * 100}%`,
-                }}
-              />
-            </div>
-          </div>
-
-          {/* CLOSE BUTTON - KECIL, PROFESSIONAL */}
-          <button
-            onClick={handleClose}
-            className="absolute -top-12 right-0 z-10 text-white hover:text-gray-300 transition p-1"
-            title="Tutup"
-            aria-label="Close popup"
-          >
-            <X size={18} strokeWidth={2.5} />
-          </button>
-
-          {/* COUNTER - MINIMAL */}
-          <div className="text-center mt-3 text-white text-xs font-medium opacity-60">
-            {currentIndex + 1} dari {popups.length}
-          </div>
-
-          {/* DOT INDICATORS - TINY */}
-          {popups.length > 1 && (
-            <div className="flex justify-center gap-1 mt-2">
-              {popups.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    setCurrentIndex(idx);
-                    if (autoPlayTimerRef.current) {
-                      clearTimeout(autoPlayTimerRef.current);
-                    }
-                  }}
-                  className={`w-1 h-1 rounded-full transition ${
-                    idx === currentIndex ? "bg-white" : "bg-white/30"
-                  }`}
-                  aria-label={`Gambar ${idx + 1}`}
-                />
-              ))}
-            </div>
-          )}
+        {/* Image - Menggunakan h-auto dan w-full agar tidak ngecrop */}
+        <div
+          className="relative cursor-pointer flex justify-center items-center rounded-lg overflow-hidden shadow-2xl"
+          onClick={handleAction}
+        >
+          <img
+            src={popups[currentIndex].image_url}
+            alt="Popup Content"
+            className="w-full h-auto max-h-[70vh] object-contain block"
+          />
         </div>
+
+        {/* Counter Tipis (Hanya muncul jika lebih dari 1 gambar) */}
+        {popups.length > 1 && (
+          <span className="mt-3 text-[10px] text-white/20 font-mono tracking-tighter">
+            {currentIndex + 1}/{popups.length}
+          </span>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 
