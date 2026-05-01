@@ -107,7 +107,7 @@ const PopupDisplay = () => {
 
         {/* Image - Menggunakan h-auto dan w-full agar tidak ngecrop */}
         <div
-          className="relative cursor-pointer flex justify-center items-center rounded-lg overflow-hidden shadow-2xl"
+          className="relative cursor-pointer flex justify-center items-center overflow-hidden shadow-2xl"
           onClick={handleAction}
         >
           <img
