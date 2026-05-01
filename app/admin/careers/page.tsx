@@ -352,8 +352,8 @@ const AdminCareersPage = () => {
                   </button>
                   <span className="text-sm text-gray-600">
                     {configForm.is_form_active
-                      ? "Form pendaftaran aktif - akan muncul di halaman careers"
-                      : "Form pendaftaran nonaktif - tidak akan muncul di halaman careers"}
+                      ? "Form pendaftaran aktif"
+                      : "Form pendaftaran nonaktif"}
                   </span>
                 </div>
               </div>
