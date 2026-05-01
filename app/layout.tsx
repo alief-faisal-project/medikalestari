@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AdminSidebar from "@/components/AdminSidebar";
+import PopupDisplay from "@/components/PopupDisplay";
 import EmergencyWA from "@/components/EmergencyWA";
 import MobileBottomNavbar from "@/components/MobileBottomNavbar";
 import { AuthProvider } from "@/context/AuthProvider";
@@ -122,6 +123,7 @@ export default function RootLayout({
             <div className="flex flex-col min-h-screen">
               {!isAdminPage && <Navbar />}
               <main className="flex-1">{children}</main>
+              {!isAdminPage && <PopupDisplay />}
               <EmergencyWA />
               {!isAdminPage && <MobileBottomNavbar />}
               {!isAdminPage && <Footer />}

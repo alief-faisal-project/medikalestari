@@ -85,6 +85,7 @@ const AdminSidebar = () => {
     { name: "Hero Banner", href: "/admin/hero", icon: ImageIcon },
     { name: "Kelola Kamar", href: "/admin/rooms", icon: ImageIcon },
     { name: "Kelola Careers", href: "/admin/careers", icon: ImageIcon },
+    { name: "Kelola Popup", href: "/admin/popup", icon: ImageIcon },
   ];
 
   const isActive = (path: string) => pathname === path;
