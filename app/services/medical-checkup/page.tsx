@@ -79,7 +79,10 @@ export default function MedicalCheckup() {
                     </h3>
                     <div className="mt-auto">
                       <p className="text-[#005753] font-bold text-base">
-                        Rp.{Number(item.price.replace(/\D/g, "")).toLocaleString("id-ID")}
+                        Rp.
+                        {Number(item.price.replace(/\D/g, "")).toLocaleString(
+                          "id-ID",
+                        )}
                       </p>
                     </div>
                   </div>

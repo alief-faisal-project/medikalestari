@@ -160,7 +160,7 @@ const AdminSidebar = () => {
                 href={item.href}
                 onClick={() => isMobile && setIsOpen(false)}
                 className={`
-                  flex items-center gap-4 px-4 py-3 rounded-xl transition-all
+                  flex items-center gap-4 px-4 py-3 transition-all
                   group
                   ${
                     active
