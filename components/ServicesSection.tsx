@@ -65,12 +65,11 @@ const ServicesSection = () => {
     },
     {
       id: 4,
-      image: "/jam-operasional.png",
-      title: "Jam Operasional",
-      description:
-        "Informasi waktu pelayanan poliklinik dan unit layanan kami.",
+      image: "/mcu.png",
+      title: "Medical Checkup",
+      description: "Informasi lengkap layanan Medical Check-Up (MCU).",
       targetId: null,
-      href: null,
+      href: "/medical-checkup",
     },
   ];
 

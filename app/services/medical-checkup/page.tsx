@@ -1,55 +1,80 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+const packages = [
+  {
+    title: "Paket Active Kartini",
+    price: "Rp 300.000 – Rp 1.200.000",
+    image: "/demo/mcu1.jpg",
+    href: "/mcu/active-kartini",
+  },
+  {
+    title: "Breast Screening",
+    price: "Rp 400.000",
+    image: "/demo/mcu2.jpg",
+    href: "/mcu/breast-screening",
+  },
+  {
+    title: "Skrining Kehamilan",
+    price: "Rp 700.000 – Rp 1.100.000",
+    image: "/demo/mcu3.jpg",
+    href: "/mcu/kehamilan",
+  },
+  {
+    title: "Paket General Checkup",
+    price: "Rp 500.000 – Rp 900.000",
+    image: "/demo/mcu4.jpg",
+    href: "/mcu/general",
+  },
+];
+
 export default function MedicalCheckup() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-4xl mx-auto px-4">
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-[#015A85] hover:text-[#005753] mb-8"
-        >
+    <div className="min-h-screen bg-gray-50 py-10">
+      <div className="max-w-6xl mx-auto px-4">
+        {/* Back */}
+        <Link href="/" className="flex items-center gap-2 text-[#015A85] mb-6">
           <ArrowLeft size={20} />
           Kembali ke Beranda
         </Link>
 
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-4xl font-bold text-[#005753] mb-4">
-            Medical Checkup
-          </h1>
+        {/* Title */}
+        <h1 className="text-3xl md:text-4xl font-bold text-[#005753] mb-2">
+          Medical Checkup
+        </h1>
+        <p className="text-gray-600 mb-8">
+          Pilih paket pemeriksaan kesehatan sesuai kebutuhan Anda.
+        </p>
 
-          <div className="mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-              Pemeriksaan Kesehatan Lengkap
-            </h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Paket medical checkup kami dirancang untuk memberikan gambaran
-              lengkap tentang kondisi kesehatan Anda dengan dokter berpengalaman
-              dan fasilitas diagnostik modern.
-            </p>
-          </div>
+        {/* Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {packages.map((item, index) => (
+            <Link key={index} href={item.href}>
+              <div className="bg-white border overflow-hidden">
+                {/* Image lebih tinggi */}
+                <div className="h-[260px] md:h-[320px] bg-gray-100">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-[#005753] mb-2">
-                Paket Tersedia
-              </h3>
-              <ul className="text-sm text-gray-700 space-y-1">
-                <li>✓ Paket Basic</li>
-                <li>✓ Paket Standard</li>
-                <li>✓ Paket Comprehensive</li>
-              </ul>
-            </div>
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-[#005753] mb-2">Pemeriksaan</h3>
-              <ul className="text-sm text-gray-700 space-y-1">
-                <li>✓ Konsultasi dokter</li>
-                <li>✓ Tes lab darah</li>
-                <li>✓ USG/Rontgen</li>
-              </ul>
-            </div>
-          </div>
+                {/* Content */}
+                <div className="p-4">
+                  <h3 className="text-sm md:text-base font-semibold text-gray-800 mb-2 leading-snug">
+                    {item.title}
+                  </h3>
+                  <p className="text-[#015A85] font-medium text-sm">
+                    {item.price}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
