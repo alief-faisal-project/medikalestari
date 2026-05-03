@@ -9,32 +9,72 @@ const PopupDisplay = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
-  const tabLeftTimeRef = useRef<number | null>(null);
   const popupsRef = useRef<Popup[]>([]);
+  const tabLeftTimeRef = useRef<number | null>(null);
+  const openTimeRef = useRef<number>(0);
 
   const POPUP_KEY = "last_popup_exit_time";
   const SESSION_KEY = "has_seen_popup_session";
+  const BEHAVIOR_KEY = "popup_user_behavior";
+
   const FIVE_MINUTES = 5 * 60 * 1000;
 
-  // Cache popups ke ref biar akses lebih cepat
   useEffect(() => {
     popupsRef.current = popups;
   }, [popups]);
+
+  // ===== Behavior Tracking (Simple AI-like logic) =====
+  const getBehavior = () => {
+    const raw = localStorage.getItem(BEHAVIOR_KEY);
+    return raw ? JSON.parse(raw) : { quickClose: 0, engaged: 0 };
+  };
+
+  const updateBehavior = (viewDuration: number) => {
+    const behavior = getBehavior();
+
+    if (viewDuration < 2000) {
+      behavior.quickClose += 1;
+    } else {
+      behavior.engaged += 1;
+    }
+
+    localStorage.setItem(BEHAVIOR_KEY, JSON.stringify(behavior));
+  };
+
+  const getDynamicCooldown = () => {
+    const behavior = getBehavior();
+
+    // Kalau user sering close cepat → tambah cooldown
+    if (behavior.quickClose >= 3) {
+      return FIVE_MINUTES * 2; // 10 menit
+    }
+
+    // Normal
+    return FIVE_MINUTES;
+  };
 
   const checkLogicAndShow = useCallback(() => {
     const now = Date.now();
     const lastExit = localStorage.getItem(POPUP_KEY);
     const hasSeenThisSession = sessionStorage.getItem(SESSION_KEY);
 
+    const cooldown = getDynamicCooldown();
+
     if (!hasSeenThisSession) {
       setIsVisible(true);
+      openTimeRef.current = now;
       sessionStorage.setItem(SESSION_KEY, "true");
-    } else if (lastExit && now - parseInt(lastExit) > FIVE_MINUTES) {
-      setIsVisible(true);
+      return;
     }
+
+    if (lastExit && now - parseInt(lastExit) < cooldown) {
+      return; // ❗ kurang dari cooldown → jangan tampil
+    }
+
+    setIsVisible(true);
+    openTimeRef.current = now;
   }, []);
 
-  // Preload gambar biar transisi & close nggak lag
   const preloadImages = useCallback((data: Popup[]) => {
     data.forEach((item) => {
       const img = new Image();
@@ -73,13 +113,12 @@ const PopupDisplay = () => {
 
       if (document.hidden) {
         tabLeftTimeRef.current = now;
-        localStorage.setItem(POPUP_KEY, now.toString());
       } else {
         if (
           tabLeftTimeRef.current &&
           now - tabLeftTimeRef.current > FIVE_MINUTES
         ) {
-          setIsVisible(true);
+          checkLogicAndShow();
         }
         tabLeftTimeRef.current = null;
       }
@@ -88,27 +127,32 @@ const PopupDisplay = () => {
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () =>
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [checkLogicAndShow]);
+
+  const closePopup = useCallback(() => {
+    const now = Date.now();
+    const duration = now - openTimeRef.current;
+
+    updateBehavior(duration);
+
+    requestAnimationFrame(() => {
+      setIsVisible(false);
+      setCurrentIndex(0);
+      localStorage.setItem(POPUP_KEY, now.toString());
+    });
   }, []);
 
   const handleAction = useCallback(() => {
     if (currentIndex < popupsRef.current.length - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
-      requestAnimationFrame(() => {
-        setIsVisible(false);
-        setCurrentIndex(0);
-        localStorage.setItem(POPUP_KEY, Date.now().toString());
-      });
+      closePopup();
     }
-  }, [currentIndex]);
+  }, [currentIndex, closePopup]);
 
   const handleForceClose = useCallback(() => {
-    requestAnimationFrame(() => {
-      setIsVisible(false);
-      setCurrentIndex(0);
-      localStorage.setItem(POPUP_KEY, Date.now().toString());
-    });
-  }, []);
+    closePopup();
+  }, [closePopup]);
 
   useEffect(() => {
     document.body.style.overflow = isVisible ? "hidden" : "";
@@ -128,7 +172,7 @@ const PopupDisplay = () => {
 
       {/* Container */}
       <div className="relative flex flex-col items-center animate-in fade-in zoom-in duration-300 max-w-[85%] md:max-w-[500px] will-change-transform">
-        {/* Close Button */}
+        {/* Close */}
         <button
           onClick={handleAction}
           className="absolute -top-8 -right-2 text-white/50 hover:text-white transition-colors p-1"
