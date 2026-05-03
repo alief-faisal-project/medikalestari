@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { fetchPopups, type Popup } from "@/lib/popup-api";
 import { X } from "lucide-react";
 
@@ -8,13 +8,20 @@ const PopupDisplay = () => {
   const [popups, setPopups] = useState<Popup[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+
   const tabLeftTimeRef = useRef<number | null>(null);
+  const popupsRef = useRef<Popup[]>([]);
 
   const POPUP_KEY = "last_popup_exit_time";
   const SESSION_KEY = "has_seen_popup_session";
   const FIVE_MINUTES = 5 * 60 * 1000;
 
-  const checkLogicAndShow = () => {
+  // Cache popups ke ref biar akses lebih cepat
+  useEffect(() => {
+    popupsRef.current = popups;
+  }, [popups]);
+
+  const checkLogicAndShow = useCallback(() => {
     const now = Date.now();
     const lastExit = localStorage.getItem(POPUP_KEY);
     const hasSeenThisSession = sessionStorage.getItem(SESSION_KEY);
@@ -25,13 +32,26 @@ const PopupDisplay = () => {
     } else if (lastExit && now - parseInt(lastExit) > FIVE_MINUTES) {
       setIsVisible(true);
     }
-  };
+  }, []);
+
+  // Preload gambar biar transisi & close nggak lag
+  const preloadImages = useCallback((data: Popup[]) => {
+    data.forEach((item) => {
+      const img = new Image();
+      img.src = item.image_url;
+    });
+  }, []);
 
   useEffect(() => {
+    let mounted = true;
+
     const loadPopups = async () => {
       try {
         const popupData = await fetchPopups();
-        if (popupData && popupData.length > 0) {
+        if (!mounted) return;
+
+        if (popupData?.length) {
+          preloadImages(popupData);
           setPopups(popupData);
           checkLogicAndShow();
         }
@@ -39,17 +59,22 @@ const PopupDisplay = () => {
         console.error("Error loading popups:", error);
       }
     };
+
     loadPopups();
-  }, []);
+
+    return () => {
+      mounted = false;
+    };
+  }, [checkLogicAndShow, preloadImages]);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
+      const now = Date.now();
+
       if (document.hidden) {
-        const now = Date.now();
         tabLeftTimeRef.current = now;
         localStorage.setItem(POPUP_KEY, now.toString());
       } else {
-        const now = Date.now();
         if (
           tabLeftTimeRef.current &&
           now - tabLeftTimeRef.current > FIVE_MINUTES
@@ -60,43 +85,49 @@ const PopupDisplay = () => {
       }
     };
 
-    window.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     return () =>
-      window.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, []);
 
-  const handleAction = () => {
-    if (currentIndex < popups.length - 1) {
+  const handleAction = useCallback(() => {
+    if (currentIndex < popupsRef.current.length - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
+      requestAnimationFrame(() => {
+        setIsVisible(false);
+        setCurrentIndex(0);
+        localStorage.setItem(POPUP_KEY, Date.now().toString());
+      });
+    }
+  }, [currentIndex]);
+
+  const handleForceClose = useCallback(() => {
+    requestAnimationFrame(() => {
       setIsVisible(false);
       setCurrentIndex(0);
       localStorage.setItem(POPUP_KEY, Date.now().toString());
-    }
-  };
-
-  const handleForceClose = () => {
-    setIsVisible(false);
-    setCurrentIndex(0);
-    localStorage.setItem(POPUP_KEY, Date.now().toString());
-  };
+    });
+  }, []);
 
   useEffect(() => {
-    document.body.style.overflow = isVisible ? "hidden" : "unset";
+    document.body.style.overflow = isVisible ? "hidden" : "";
   }, [isVisible]);
 
   if (!isVisible || popups.length === 0) return null;
+
+  const currentPopup = popups[currentIndex];
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-6">
       {/* Overlay */}
       <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm will-change-opacity"
         onClick={handleForceClose}
       />
 
       {/* Container */}
-      <div className="relative flex flex-col items-center animate-in fade-in zoom-in duration-300 max-w-[85%] md:max-w-[500px]">
+      <div className="relative flex flex-col items-center animate-in fade-in zoom-in duration-300 max-w-[85%] md:max-w-[500px] will-change-transform">
         {/* Close Button */}
         <button
           onClick={handleAction}
@@ -111,13 +142,14 @@ const PopupDisplay = () => {
           onClick={handleAction}
         >
           <img
-            src={popups[currentIndex].image_url}
+            src={currentPopup.image_url}
             alt="Popup Content"
+            loading="eager"
+            decoding="async"
             className="w-full h-auto max-h-[70vh] object-contain block"
           />
         </div>
 
-        {/* Counter untk logika hanya muncul jika lebih dari 1 gambar */}
         {popups.length > 1 && (
           <span className="mt-3 text-[10px] text-white/20 font-mono tracking-tighter">
             {currentIndex + 1}/{popups.length}
