@@ -400,53 +400,6 @@ const HeroSection = () => {
             </div>
           );
         })}
-
-        {/* CONTROLS - Horizontal Layout (Left, Center, Right) */}
-        <div className="absolute bottom-1/2 left-1/2 -translate-x-1/2 translate-y-1/2 z-40 flex flex-row items-center px-4">
-          {/* Play/Pause Button */}
-          <div className="relative w-12 h-12">
-            <svg
-              className="absolute inset-0 w-full h-full"
-              viewBox="0 0 40 40"
-              style={{ transform: "rotate(-90deg)" }}
-            >
-              <circle
-                cx="20"
-                cy="20"
-                r="18"
-                fill="none"
-                stroke="rgba(255,255,255,0.1)"
-                strokeWidth="2"
-              />
-              <motion.circle
-                cx="20"
-                cy="20"
-                r="18"
-                fill="none"
-                stroke="rgba(255,255,255,0.6)"
-                strokeWidth="2"
-                strokeDasharray="113"
-                initial={{ strokeDashoffset: 113 }}
-                animate={
-                  isPlaying && mobileSlides.length > 0
-                    ? { strokeDashoffset: 0 }
-                    : { strokeDashoffset: 113 }
-                }
-                transition={{ duration: 5, ease: "linear", repeat: Infinity }}
-              />
-            </svg>
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="absolute inset-0 flex items-center justify-center rounded-full hover:bg-white/10 cursor-pointer"
-            >
-              {isPlaying ? (
-                <Pause size={14} fill="white" className="text-white" />
-              ) : (
-                <Play size={14} className="text-white ml-1" fill="white" />
-              )}
-            </button>
-          </div>
-        </div>
       </div>
 
       {/* SEARCH BAR */}
