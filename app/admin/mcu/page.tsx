@@ -333,7 +333,7 @@ const MCUAdmin = () => {
                     }))
                   }
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Contoh: Paket Active Kartini"
+                  placeholder="Masukan Nama Paket"
                 />
               </div>
 
@@ -349,14 +349,22 @@ const MCUAdmin = () => {
                   id="price"
                   type="text"
                   value={formData.price}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    // 1. Ambil input dan hapus semua karakter kecuali angka
+                    const rawValue = e.target.value.replace(/\D/g, "");
+
+                    // 2. Format angka menjadi ribuan dengan titik (Locale Indonesia)
+                    const formattedValue = rawValue
+                      ? Number(rawValue).toLocaleString("id-ID")
+                      : "";
+
                     setFormData((prev) => ({
                       ...prev,
-                      price: e.target.value,
-                    }))
-                  }
+                      price: formattedValue,
+                    }));
+                  }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Contoh: Rp 300.000 – Rp 1.200.000"
+                  placeholder="Contoh: 1.000.000"
                 />
               </div>
 
