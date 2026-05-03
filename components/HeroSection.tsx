@@ -11,6 +11,7 @@ import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 import { fetchHeroBanners } from "@/lib/api";
 import { HeroBanner } from "@/lib/types";
@@ -65,6 +66,8 @@ const HeroSection = () => {
   const [search, setSearch] = useState("");
   const [specialty, setSpecialty] = useState("");
   const [day, setDay] = useState("");
+  const [isSpecialtyOpen, setIsSpecialtyOpen] = useState(false);
+  const [isDayOpen, setIsDayOpen] = useState(false);
 
   const SPECIALTY_CATEGORIES = [
     "Semua Spesialis",
@@ -366,8 +369,6 @@ const HeroSection = () => {
               <ChevronRight size={70} className="text-white" />
             </button>
           </div>
-
-
         </div>
       </div>
 
@@ -437,12 +438,19 @@ const HeroSection = () => {
               <p className="text-xs text-[#005753] font-semibold mb-1">
                 Spesialis
               </p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 relative">
                 <Stethoscope size={16} className="text-gray-400" />
                 <select
                   value={specialty}
-                  onChange={(e) => setSpecialty(e.target.value)}
-                  className="w-full outline-none text-sm bg-transparent cursor-pointer"
+                  onChange={(e) => {
+                    setSpecialty(e.target.value);
+                    setIsSpecialtyOpen(false);
+                  }}
+                  onFocus={() => setIsSpecialtyOpen(true)}
+                  onBlur={() =>
+                    setTimeout(() => setIsSpecialtyOpen(false), 100)
+                  }
+                  className="w-full outline-none text-sm bg-transparent cursor-pointer appearance-none pr-6"
                 >
                   {SPECIALTY_CATEGORIES.map((s) => (
                     <option key={s} value={s === "Semua Spesialis" ? "" : s}>
@@ -450,6 +458,12 @@ const HeroSection = () => {
                     </option>
                   ))}
                 </select>
+                <ChevronDown
+                  size={16}
+                  className={`text-gray-400 absolute right-0 pointer-events-none transition-transform duration-300 ${
+                    isSpecialtyOpen ? "rotate-180" : ""
+                  }`}
+                />
               </div>
             </div>
 
@@ -458,12 +472,17 @@ const HeroSection = () => {
               <p className="text-xs text-[#005753] font-semibold mb-1">
                 Pilih Hari
               </p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 relative">
                 <CalendarDays size={16} className="text-gray-400" />
                 <select
                   value={day}
-                  onChange={(e) => setDay(e.target.value)}
-                  className="w-full outline-none text-sm bg-transparent cursor-pointer"
+                  onChange={(e) => {
+                    setDay(e.target.value);
+                    setIsDayOpen(false);
+                  }}
+                  onFocus={() => setIsDayOpen(true)}
+                  onBlur={() => setTimeout(() => setIsDayOpen(false), 100)}
+                  className="w-full outline-none text-sm bg-transparent cursor-pointer appearance-none pr-6"
                 >
                   {DAYS.map((d) => (
                     <option key={d} value={d === "Semua Hari" ? "" : d}>
@@ -471,6 +490,12 @@ const HeroSection = () => {
                     </option>
                   ))}
                 </select>
+                <ChevronDown
+                  size={16}
+                  className={`text-gray-400 absolute right-0 pointer-events-none transition-transform duration-300 ${
+                    isDayOpen ? "rotate-180" : ""
+                  }`}
+                />
               </div>
             </div>
 
