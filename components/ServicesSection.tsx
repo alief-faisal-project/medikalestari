@@ -20,7 +20,6 @@ const ServicesSection = () => {
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    // Simulate loading time or remove if real data fetching is implemented
     const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
@@ -93,7 +92,6 @@ const ServicesSection = () => {
   return (
     <section className="w-full bg-white font-sans text-slate-800 relative py-20 overflow-hidden">
       <div className="relative z-10 max-w-290 mx-auto px-4 md:px-8">
-        {/* SECTION PELAYANAN */}
         <div className="mb-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -116,14 +114,12 @@ const ServicesSection = () => {
           <div className="relative">
             <div className="relative z-10 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {isLoading
-                ? // Skeleton loading state
-                  Array.from({ length: 4 }).map((_, index) => (
+                ? Array.from({ length: 4 }).map((_, index) => (
                     <ServiceSkeletonShimmer
                       key={`service-skeleton-${index + 1}`}
                     />
                   ))
-                : // Actual content
-                  serviceData.map((item, index) => (
+                : serviceData.map((item, index) => (
                     <motion.div
                       key={item.id}
                       initial={{ opacity: 0, y: 20 }}
@@ -131,7 +127,6 @@ const ServicesSection = () => {
                       viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
                       onClick={() => handleServiceClick(item)}
-                      /* HOVER CARD SCALE */
                       className="group relative aspect-3/4.5 flex flex-col overflow-hidden bg-white border border-slate-200 shadow-sm cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 transform-gpu"
                     >
                       <div className="absolute inset-0">
@@ -139,7 +134,7 @@ const ServicesSection = () => {
                           src={item.image}
                           alt={item.title}
                           fill
-                          className="object-cover" /* Hover zoom pada gambar dihapus */
+                          className="object-cover"
                         />
                       </div>
 
@@ -152,9 +147,33 @@ const ServicesSection = () => {
                         <h3 className="text-xl font-bold text-white mb-2 leading-tight">
                           {item.title}
                         </h3>
-                        <p className="text-blue-50/90 text-sm leading-relaxed">
+                        <p className="text-blue-50/90 text-sm leading-relaxed pr-6">
                           {item.description}
                         </p>
+                      </div>
+
+                      {/* --- EFEK KEBETAN BUKU (DOG EAR) LEBIH BESAR --- */}
+                      {/* Background Segitiga Gelap (untuk kedalaman) */}
+                      <div className="absolute bottom-0 right-0 z-30 w-0 h-0 border-solid border-t-[70px] border-r-[70px] border-t-transparent border-r-[#00403d] transition-all duration-300 opacity-0 group-hover:opacity-100" />
+
+                      {/* Lipatan Segitiga Putih */}
+                      <div className="absolute bottom-0 right-0 z-40 w-0 h-0 border-solid border-b-[65px] border-l-[65px] border-b-white border-l-transparent translate-x-20 translate-y-20 transition-transform duration-300 group-hover:translate-x-0 group-hover:translate-y-0 shadow-[-4px_-4px_10px_rgba(0,0,0,0.2)]" />
+
+                      {/* Panah di area sobekan */}
+                      <div className="absolute bottom-3 right-2 z-50 opacity-0 scale-50 transition-all duration-500 delay-100 group-hover:opacity-100 group-hover:scale-100">
+                        <svg
+                          className="w-7 h-7 text-[#005753]"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                          />
+                        </svg>
                       </div>
                     </motion.div>
                   ))}
@@ -175,7 +194,6 @@ const ServicesSection = () => {
           />
         </div>
         <div className="absolute inset-0 bg-black/60 z-10" />
-
         <div className="relative z-20 max-w-290 mx-auto px-6 md:px-10 w-full grid grid-cols-1 md:grid-cols-2 gap-16 py-24 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -192,7 +210,6 @@ const ServicesSection = () => {
               maupun panduan akses layanan Rumah Sakit Medika Lestari.
             </p>
           </motion.div>
-
           <div className="flex flex-col justify-center gap-10 md:pl-10">
             {[
               {

@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 const MobileBottomNavbar = () => {
   const pathname = usePathname();
@@ -19,7 +20,7 @@ const MobileBottomNavbar = () => {
       ),
     },
     {
-      label: "Dokter Kami",
+      label: "Temukan Dokter",
       href: "/dokter",
       outline: (
         <g>
@@ -39,7 +40,7 @@ const MobileBottomNavbar = () => {
       ),
     },
     {
-      label: "Jadwal Dokter",
+      label: "Jadwal",
       href: "/jadwal-dokter",
       outline: (
         <g>
@@ -51,17 +52,16 @@ const MobileBottomNavbar = () => {
         <g>
           <circle cx="12" cy="12" r="10" />
           <path
-            fill="white"
-            d="M12.5 7V12.5L16 14.5"
-            stroke="white"
-            strokeWidth="1.5"
+            d="M12 6v6l4 2"
+            stroke="#005753" // Memberikan warna kontras di dalam solid icon
+            strokeWidth="1.8"
             strokeLinecap="round"
           />
         </g>
       ),
     },
     {
-      label: "Kamar Perawatan",
+      label: "Kamar",
       href: "/services/kamar-perawatan",
       outline: (
         <g>
@@ -77,7 +77,7 @@ const MobileBottomNavbar = () => {
           <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18H6Z" />
           <path d="M2 14a2 2 0 0 1 2-2h2v10H4a2 2 0 0 1-2-2v-6Z" />
           <path d="M18 9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2V9Z" />
-          <path stroke="white" strokeWidth="1.5" d="M9 7h6M9 11h6M9 15h6" />
+          <path stroke="#005753" strokeWidth="1.5" d="M9 7h6M9 11h6M9 15h6" />
         </g>
       ),
     },
@@ -85,8 +85,8 @@ const MobileBottomNavbar = () => {
 
   return (
     <>
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-[0_-4px_12px_rgba(0,0,0,0.08)] z-50">
-        <div className="flex justify-around items-center">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#005753] z-50 border-t border-white/5 pb-safe">
+        <div className="flex justify-around items-stretch h-16">
           {navItems.map((item) => {
             const isItemActive = pathname === item.href;
 
@@ -94,59 +94,73 @@ const MobileBottomNavbar = () => {
               <Link
                 key={item.label}
                 href={item.href}
-                // Prefetch otomatis aktif (true), membuat perpindahan halaman terasa instan
                 prefetch={true}
                 onClick={(e) => {
-                  // Jika user klik menu yang sedang aktif, lakukan scroll ke atas
                   if (isItemActive) {
                     e.preventDefault();
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }
                 }}
-                className={`flex flex-col items-center justify-center w-1/4 py-3 px-2 transition-all duration-200 relative tap-highlight-transparent ${
-                  isItemActive ? "text-[#005753]" : "text-gray-400"
-                }`}
+                className="flex flex-col items-center justify-center w-1/4 relative tap-highlight-transparent overflow-hidden"
               >
-                {/* Indikator Atas */}
-                <div
-                  className={`absolute top-0 w-full h-[3px] bg-[#005753] rounded-b-sm transition-transform duration-300 ease-out ${
-                    isItemActive ? "scale-x-100" : "scale-x-0"
-                  }`}
-                />
+                {/* Indikator Atas menggunakan GPU Acceleration (Framer Motion) */}
+                {isItemActive && (
+                  <motion.div
+                    layoutId="navIndicator"
+                    className="absolute top-0 w-12 h-[3px] bg-white rounded-b-full z-10"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
 
-                <div className="relative mt-1">
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="24" // Ukuran sedikit dikecilkan agar lebih proporsional
-                    height="24"
-                    fill={isItemActive ? "currentColor" : "none"}
-                    stroke="currentColor"
-                    strokeWidth={isItemActive ? "0.5" : "1.8"}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="transition-transform duration-200 active:scale-90"
-                  >
-                    {isItemActive ? item.solid : item.outline}
-                  </svg>
-                </div>
-
-                <span
-                  className={`text-[10px] mt-1 text-center font-bold tracking-tight transition-colors ${
-                    isItemActive
-                      ? "text-[#005753]"
-                      : "text-gray-500 font-medium"
-                  }`}
+                <motion.div
+                  className="relative flex flex-col items-center"
+                  whileTap={{ scale: 0.9 }} // Visual feedback instan
                 >
-                  {item.label}
-                </span>
+                  <div className="relative h-6 w-6">
+                    <svg
+                      viewBox="0 0 24 24"
+                      className={`w-6 h-6 transition-colors duration-300 ${
+                        isItemActive ? "text-white" : "text-white/60"
+                      }`}
+                      // Agar ikon solid tidak menutupi detail garis dalam
+                      fill={isItemActive ? "white" : "none"}
+                      stroke="currentColor"
+                      strokeWidth={isItemActive ? "0.5" : "1.8"}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{ transform: "translateZ(0)" }} // Force GPU rendering
+                    >
+                      <AnimatePresence mode="wait">
+                        <motion.g
+                          key={isItemActive ? "solid" : "outline"}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.8 }}
+                          transition={{ duration: 0.15 }}
+                        >
+                          {isItemActive ? item.solid : item.outline}
+                        </motion.g>
+                      </AnimatePresence>
+                    </svg>
+                  </div>
+
+                  <span
+                    className={`text-[10px] mt-1 transition-all duration-300 ${
+                      isItemActive
+                        ? "text-white font-bold opacity-100"
+                        : "text-white/60 font-medium opacity-90"
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+                </motion.div>
               </Link>
             );
           })}
         </div>
       </nav>
 
-      {/* Spacer agar konten tidak tertutup navbar */}
-      <div className="md:hidden h-[64px]" />
+      <div className="md:hidden h-16" />
     </>
   );
 };
