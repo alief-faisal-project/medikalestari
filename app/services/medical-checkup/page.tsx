@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight, Stethoscope, Phone } from "lucide-react";
 import { MCUPackage } from "@/lib/types";
+import MCUSkeletonShimmer from "@/components/MCUSkeletonShimmer";
 
 export default function MedicalCheckup() {
   const [packages, setPackages] = useState<MCUPackage[]>([]);
@@ -51,11 +52,7 @@ export default function MedicalCheckup() {
         </p>
 
         {/* Loading State */}
-        {loading && (
-          <div className="flex items-center justify-center py-12">
-            <div className="text-center text-gray-500">Memuat paket...</div>
-          </div>
-        )}
+        {loading && <MCUSkeletonShimmer count={4} />}
 
         {/* Cards Grid */}
         {!loading && packages.length > 0 && (
@@ -65,15 +62,17 @@ export default function MedicalCheckup() {
                 <div className="bg-white border border-gray-200 overflow-hidden transition-all duration-300 flex flex-col h-full">
                   {/* Image Area - Menyesuaikan tinggi gambar asli secara otomatis */}
                   <div className="w-full relative bg-gray-50">
-                    <img
+                    <Image
                       src={item.image_url}
                       alt={item.title}
+                      width={300}
+                      height={300}
                       className="w-full h-auto block object-contain"
                     />
                   </div>
 
                   {/* Content Area */}
-                  <div className="p-4 flex flex-col flex-grow">
+                  <div className="p-4 flex flex-col grow">
                     <h3 className="text-[15px] font-bold text-gray-800 mb-2 leading-tight group-hover:text-[#005753] transition-colors">
                       {item.title}
                     </h3>
