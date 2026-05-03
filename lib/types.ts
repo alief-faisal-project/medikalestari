@@ -111,3 +111,14 @@ export interface RoomImage {
   display_order: number;
   created_at: string;
 }
+
+export interface MCUPackage {
+  id: string;
+  title: string;
+  price: string;
+  image_url: string;
+  href: string;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}

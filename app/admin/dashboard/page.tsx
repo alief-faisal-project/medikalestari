@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { AdminPageSkeleton } from "@/components/AdminSkeleton";
-import { Users, Calendar, Plus, ChevronRight } from "lucide-react";
+import { Users, Calendar, ChevronRight } from "lucide-react";
 
 // Mengganti warna background ke [#005753] dan teks ke putih
 const ScaleButton = ({
@@ -146,22 +146,26 @@ const AdminDashboard = () => {
         <div className="mt-12 bg-white rounded-2xl p-10 shadow-[0_4px_30px_rgba(0,0,0,0.03)] border border-slate-100">
           <div className="flex items-center gap-3 mb-8"></div>
           <p className="text-slate-400 font-semibold text-[30px] mb-10 -mt-10">
-            Tambah Data
+            Kelola Konten
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <ScaleButton
-              onClick={() => router.push("/admin/doctors?action=create")}
-              className="bg-green-600"
-              icon={Plus}
+              onClick={() => router.push("/admin/doctors")}
+              className="bg-blue-600"
             >
-              Tambah Dokter
+              Dokter
             </ScaleButton>
             <ScaleButton
-              onClick={() => router.push("/admin/schedules?action=create")}
-              className="bg-green-600"
-              icon={Plus}
+              onClick={() => router.push("/admin/schedules")}
+              className="bg-blue-600"
             >
-              Tambah Jadwal Dokter
+              Jadwal
+            </ScaleButton>
+            <ScaleButton
+              onClick={() => router.push("/admin/mcu")}
+              className="bg-blue-600"
+            >
+              Paket MCU
             </ScaleButton>
           </div>
         </div>

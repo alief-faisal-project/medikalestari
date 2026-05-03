@@ -14,6 +14,7 @@ import {
   Newspaper,
   Image as ImageIcon,
   Home,
+  ShoppingBag,
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 
@@ -86,6 +87,7 @@ const AdminSidebar = () => {
     { name: "Kelola Kamar", href: "/admin/rooms", icon: ImageIcon },
     { name: "Kelola Careers", href: "/admin/careers", icon: ImageIcon },
     { name: "Kelola Popup", href: "/admin/popup", icon: ImageIcon },
+    { name: "Kelola MCU", href: "/admin/mcu", icon: ShoppingBag },
   ];
 
   const isActive = (path: string) => pathname === path;
