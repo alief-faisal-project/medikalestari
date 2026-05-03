@@ -32,7 +32,7 @@ export default function MedicalCheckup() {
         <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
           <Link
             href="/"
-            className="text-black hover:text-gray-300 transition-colors"
+            className="text-black/60 hover:text-gray-300 transition-colors"
           >
             Beranda
           </Link>

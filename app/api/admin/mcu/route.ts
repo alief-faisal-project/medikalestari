@@ -1,10 +1,9 @@
-import { createServerSupabaseClient } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
 // GET all MCU packages
 export async function GET() {
   try {
-    const supabase = createServerSupabaseClient();
     const { data, error } = await supabase
       .from("mcu_packages")
       .select("*")
@@ -29,7 +28,6 @@ export async function GET() {
 // POST create new MCU package
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createServerSupabaseClient();
     const body = await request.json();
     const { title, price, image_url, href } = body;
 

@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
 // GET specific MCU package
@@ -7,7 +7,6 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const supabase = createServerSupabaseClient();
     const { id } = await params;
 
     const { data, error } = await supabase
@@ -34,7 +33,6 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const supabase = createServerSupabaseClient();
     const { id } = await params;
     const body = await request.json();
     const { title, price, image_url, href, display_order } = body;
@@ -101,7 +99,6 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const supabase = createServerSupabaseClient();
     const { id } = await params;
 
     console.log("DELETE request - ID:", id);
