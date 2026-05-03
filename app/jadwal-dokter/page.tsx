@@ -38,7 +38,9 @@ export default function DoctorSchedulePage() {
             <ChevronRight size={12} className="text-gray-400" />
             <span className="font-normal">Jadwal Dokter</span>
           </nav>
-          <h1 className="text-3xl md:text-4xl font-bold text-black mb-2">Jadwal Dokter</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-black mb-2">
+            Jadwal Dokter
+          </h1>
           <p className="text-slate-600">
             Lihat jadwal praktek lengkap semua dokter spesialis yang sedang anda
             cari.
@@ -66,7 +68,7 @@ export default function DoctorSchedulePage() {
           <a
             href="https://wa.me/6282246232527"
             target="_blank"
-            className="inline-flex items-center gap-2 px-4 py-3 bg-[#006adb] text-white text-[11px] sm:text-sm font-semibold rounded-lg hover:bg-[#006adb]/90 transition-all hover:scale-95 shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-3 bg-[#005753] text-white text-[11px] sm:text-sm font-semibold rounded-lg hover:bg-[#005753]/90 transition-all hover:scale-95 shrink-0"
           >
             <span className="hidden lg:inline">Hubungi Customer Care</span>
             <span className="md:hidden">Hubungi Customer Care</span>

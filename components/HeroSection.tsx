@@ -223,7 +223,7 @@ const HeroSection = () => {
             >
               {/* NAMA DOKTER */}
               <div className="flex-1 px-5 py-4 border-b md:px-8 md:border-b-0 md:border-r border-gray-100">
-                <p className="text-xs text-[#006adb] font-semibold mb-1">
+                <p className="text-xs text-[#005753] font-semibold mb-1">
                   Nama Dokter
                 </p>
                 <div className="flex items-center gap-2">
@@ -240,7 +240,7 @@ const HeroSection = () => {
 
               {/* SPESIALIS */}
               <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-100">
-                <p className="text-xs text-[#006adb] font-semibold mb-1">
+                <p className="text-xs text-[#005753] font-semibold mb-1">
                   Spesialis
                 </p>
                 <div className="flex items-center gap-2">
@@ -261,7 +261,7 @@ const HeroSection = () => {
 
               {/* HARI */}
               <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-100">
-                <p className="text-xs text-[#006adb] font-semibold mb-1">
+                <p className="text-xs text-[#005753] font-semibold mb-1">
                   Pilih Hari
                 </p>
                 <div className="flex items-center gap-2">
@@ -292,7 +292,7 @@ const HeroSection = () => {
                       `/dokter?${params.toString()}`,
                     );
                   }}
-                  className="w-full md:w-14 h-12 md:h-14 rounded-full md:rounded-full bg-[#006adb] flex items-center justify-center gap-2 text-white active:scale-95 transition cursor-pointer"
+                  className="w-full md:w-14 h-12 md:h-14 rounded-full md:rounded-full bg-[#005753] flex items-center justify-center gap-2 text-white active:scale-95 transition cursor-pointer"
                 >
                   <Search className="w-5 h-5 md:w-10 md:h-8" />
                   <span className="font-semibold md:hidden">Cari Dokter</span>
@@ -339,7 +339,7 @@ const HeroSection = () => {
         })}
 
         {/* CONTROLS - Bottom Left */}
-        <div className="absolute bottom-8 left-8 z-40 flex items-center gap-4">
+        <div className="absolute bottom-8 left-10 z-40 flex items-center gap-4">
           <div className="flex items-center gap-1">
             {" "}
             <button
@@ -351,7 +351,7 @@ const HeroSection = () => {
                   : "opacity-60 hover:opacity-100 cursor-pointer"
               }`}
             >
-              <ChevronLeft size={40} className="text-white" />
+              <ChevronLeft size={70} className="text-white" />
             </button>
             {/* Right Chevron */}
             <button
@@ -363,58 +363,11 @@ const HeroSection = () => {
                   : "opacity-60 hover:opacity-100 cursor-pointer"
               }`}
             >
-              <ChevronRight size={40} className="text-white" />
+              <ChevronRight size={70} className="text-white" />
             </button>
           </div>
 
-          {/* 2. Play/Pause Button */}
-          <div className="relative w-12 h-12">
-            <svg
-              className="absolute inset-0 w-full h-full"
-              viewBox="0 0 48 48"
-              style={{ transform: "rotate(-90deg)" }}
-            >
-              <circle
-                cx="24"
-                cy="24"
-                r="20"
-                fill="none"
-                stroke="rgba(255,255,255,0.2)"
-                strokeWidth="2"
-              />
-              <motion.circle
-                cx="24"
-                cy="24"
-                r="20"
-                fill="none"
-                stroke="#ffffff"
-                strokeWidth="2"
-                strokeDasharray="125.6"
-                initial={{ strokeDashoffset: 125.6 }}
-                animate={
-                  isPlaying && desktopSlides.length > 0
-                    ? { strokeDashoffset: 0 }
-                    : { strokeDashoffset: 125.6 }
-                }
-                transition={{
-                  duration: 5,
-                  ease: "linear",
-                  repeat: Infinity,
-                }}
-              />
-            </svg>
 
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="absolute inset-0 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors cursor-pointer"
-            >
-              {isPlaying ? (
-                <Pause size={16} fill="white" className="text-white" />
-              ) : (
-                <Play size={16} className="text-white ml-0.5" fill="white" />
-              )}
-            </button>
-          </div>
         </div>
       </div>
 
@@ -449,21 +402,8 @@ const HeroSection = () => {
         })}
 
         {/* CONTROLS - Horizontal Layout (Left, Center, Right) */}
-        <div className="absolute bottom-1/2 translate-y-1/2 left-0 right-0 z-40 flex flex-row items-center justify-between px-4">
-          {/* Left Chevron */}
-          <button
-            onClick={() => paginate(-1)}
-            disabled={mobileSlides.length <= 1}
-            className={`p-2 rounded-full transition-all duration-300 ${
-              mobileSlides.length <= 1
-                ? "opacity-0 pointer-events-none" // Hilangkan jika hanya 1 slide
-                : "opacity-60 hover:opacity-100 cursor-pointer]"
-            }`}
-          >
-            <ChevronLeft size={60} className="text-white" />
-          </button>
-
-          {/* Play/Pause Button (Centered) */}
+        <div className="absolute bottom-1/2 left-1/2 -translate-x-1/2 translate-y-1/2 z-40 flex flex-row items-center px-4">
+          {/* Play/Pause Button */}
           <div className="relative w-12 h-12">
             <svg
               className="absolute inset-0 w-full h-full"
@@ -475,7 +415,7 @@ const HeroSection = () => {
                 cy="20"
                 r="18"
                 fill="none"
-                stroke="rgba(255,255,255,0.2)"
+                stroke="rgba(255,255,255,0.1)"
                 strokeWidth="2"
               />
               <motion.circle
@@ -506,19 +446,6 @@ const HeroSection = () => {
               )}
             </button>
           </div>
-
-          {/* Right Chevron */}
-          <button
-            onClick={() => paginate(1)}
-            disabled={mobileSlides.length <= 1}
-            className={`p-2 rounded-full transition-all duration-300 ${
-              mobileSlides.length <= 1
-                ? "opacity-0 pointer-events-none"
-                : "opacity-60 hover:opacity-100 cursor-pointer"
-            }`}
-          >
-            <ChevronRight size={60} className="text-white" />
-          </button>
         </div>
       </div>
 
@@ -537,7 +464,7 @@ const HeroSection = () => {
           >
             {/* NAMA DOKTER */}
             <div className="flex-1 px-5 py-4 border-b md:px-8 md:border-b-0 md:border-r border-gray-100">
-              <p className="text-xs text-[#006adb] font-semibold mb-1">
+              <p className="text-xs text-[#005753] font-semibold mb-1">
                 Nama Dokter
               </p>
               <div className="flex items-center gap-2">
@@ -554,7 +481,7 @@ const HeroSection = () => {
 
             {/* SPESIALIS */}
             <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-100">
-              <p className="text-xs text-[#006adb] font-semibold mb-1">
+              <p className="text-xs text-[#005753] font-semibold mb-1">
                 Spesialis
               </p>
               <div className="flex items-center gap-2">
@@ -575,7 +502,7 @@ const HeroSection = () => {
 
             {/* HARI */}
             <div className="flex-1 px-5 py-4 border-b md:border-b-0 md:border-r border-gray-100">
-              <p className="text-xs text-[#006adb] font-semibold mb-1">
+              <p className="text-xs text-[#005753] font-semibold mb-1">
                 Pilih Hari
               </p>
               <div className="flex items-center gap-2">
@@ -606,7 +533,7 @@ const HeroSection = () => {
                     globalThis.window.location.href = `/dokter?${params.toString()}`;
                   }
                 }}
-                className="w-full md:w-14 h-12 md:h-14 rounded-full md:rounded-full bg-[#006adb] flex items-center justify-center gap-2 text-white active:scale-95 transition cursor-pointer"
+                className="w-full md:w-14 h-12 md:h-14 rounded-full md:rounded-full bg-[#005753] flex items-center justify-center gap-2 text-white active:scale-95 transition cursor-pointer"
               >
                 <Search className="w-5 h-5 md:w-10 md:h-8" />
                 <span className="font-semibold md:hidden">Cari Dokter</span>

@@ -14,7 +14,7 @@ const Privasi = () => {
       <Breadcrumb items={breadcrumbs} />
 
       {/* Header */}
-      <section className="bg-gradient-to-r from-[#004a8c] to-[#006adb] text-white py-8 px-6">
+      <section className="bg-gradient-to-r from-[#004a8c] to-[#005753] text-white py-8 px-6">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold">Kebijakan Privasi</h1>
         </div>
@@ -127,7 +127,7 @@ const Privasi = () => {
               </ul>
             </div>
 
-            <div className="bg-blue-50 border-l-4 border-[#006adb] p-6 rounded">
+            <div className="bg-blue-50 border-l-4 border-[#005753] p-6 rounded">
               <h3 className="text-lg font-bold text-[#004a8c] mb-3">
                 Hak-Hak Anda
               </h3>
@@ -166,7 +166,7 @@ const Privasi = () => {
           <div className="mt-12 flex justify-between items-center pt-6 border-t">
             <Link
               href="/syarat-ketentuan/hak-kewajiban"
-              className="text-[#006adb] hover:text-[#0055A4] font-semibold flex items-center"
+              className="text-[#005753] hover:text-[#00423E] font-semibold flex items-center"
             >
               <svg
                 className="w-4 h-4 mr-2"
@@ -185,7 +185,7 @@ const Privasi = () => {
             </Link>
             <Link
               href="/syarat-ketentuan/pembayaran"
-              className="text-[#006adb] hover:text-[#0055A4] font-semibold flex items-center"
+              className="text-[#005753] hover:text-[#00423E] font-semibold flex items-center"
             >
               Selanjutnya
               <svg

@@ -66,7 +66,7 @@ const AdminLoginPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
       <div className="w-full max-w-md bg-white rounded-xs shadow-xl p-10 border border-gray-200">
         <div className="mb-10 text-center">
-          <h1 className="text-4xl font-bold text-[#0055A4] mb-2">LOGIN</h1>
+          <h1 className="text-4xl font-bold text-[#00423E] mb-2">LOGIN</h1>
           <p className="text-gray-400 font-medium text-lg">RS Medika Lestari</p>
         </div>
 
@@ -80,7 +80,7 @@ const AdminLoginPage = () => {
         <form onSubmit={handleLogin} className="space-y-5">
           {/* Email Input */}
           <div className="relative group">
-            <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#0055A4] transition-colors">
+            <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#00423E] transition-colors">
               <Mail size={20} />
             </div>
             <input
@@ -89,14 +89,14 @@ const AdminLoginPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email Address"
-              className="w-full pl-14 pr-6 py-4 bg-white border border-gray-200 rounded-xs text-sm focus:border-[#0055A4] focus:ring-4 focus:ring-blue-50 outline-none transition-all placeholder:text-gray-300"
+              className="w-full pl-14 pr-6 py-4 bg-white border border-gray-200 rounded-xs text-sm focus:border-[#00423E] focus:ring-4 focus:ring-blue-50 outline-none transition-all placeholder:text-gray-300"
               required
             />
           </div>
 
           {/* Password Input */}
           <div className="relative group">
-            <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#006adb] transition-colors">
+            <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#005753] transition-colors">
               <Lock size={20} />
             </div>
             <input
@@ -105,7 +105,7 @@ const AdminLoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="w-full pl-14 pr-14 py-4 bg-white border border-gray-200 rounded-xs text-sm focus:border-[#006adb] focus:ring-4 focus:ring-blue-50 outline-none transition-all placeholder:text-gray-300"
+              className="w-full pl-14 pr-14 py-4 bg-white border border-gray-200 rounded-xs text-sm focus:border-[#005753] focus:ring-4 focus:ring-blue-50 outline-none transition-all placeholder:text-gray-300"
               required
             />
             <button
@@ -120,7 +120,7 @@ const AdminLoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#006adb] text-white py-4 rounded-xs font-bold text-sm hover:bg-[#0055A4] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full bg-[#005753] text-white py-4 rounded-xs font-bold text-sm hover:bg-[#00423E] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
           >
             {loading ? <Loader2 size={18} className="animate-spin" /> : "Login"}
           </button>
@@ -129,7 +129,7 @@ const AdminLoginPage = () => {
         <div className="mt-10 flex flex-col items-center gap-4">
           <Link
             href="/"
-            className="text-sm font-bold text-[#006adb] hover:underline"
+            className="text-sm font-bold text-[#005753] hover:underline"
           >
             Kembali ke beranda
           </Link>
