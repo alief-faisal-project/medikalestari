@@ -9,6 +9,8 @@ import {
   Globe,
   UserCircle,
   LayoutDashboard,
+  Stethoscope,
+  Phone,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthProvider";
@@ -495,6 +497,27 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
         isOpen={isMobileSearchOpen}
         onClose={() => setIsMobileSearchOpen(false)}
       />
+
+      {/* Mobile Quick Action Menu */}
+      <div className="md:hidden flex h-10">
+        {/* Left Menu - Medical Checkup */}
+        <Link
+          href="/services/medical-checkup"
+          className="flex-1 bg-[#005753] text-white font-semibold text-center text-xs flex items-center justify-center gap-2 hover:bg-[#003d39] transition-colors"
+        >
+          <Stethoscope size={16} />
+          Medical Checkup
+        </Link>
+
+        {/* Right Menu - Phone */}
+        <a
+          href="tel:021-585-4858"
+          className="flex-1 bg-red-500 text-white font-semibold text-center text-xs flex items-center justify-center gap-2 hover:bg-red-700 transition-colors"
+        >
+          <Phone size={16} />
+          (021) 585 4858
+        </a>
+      </div>
     </nav>
   );
 };
