@@ -102,7 +102,7 @@ export default function DoctorScheduleGrid({
               />
               <input
                 type="text"
-                placeholder="Masukan Nama Dokter"
+                placeholder="Masukkan Nama Dokter"
                 value={searchDoctor}
                 onChange={(e) => setSearchDoctor(e.target.value)}
                 onKeyDown={(e) => {
@@ -240,7 +240,7 @@ export default function DoctorScheduleGrid({
           />
           <input
             type="text"
-            placeholder="Masukan Nama Dokter"
+            placeholder="Masukkan Nama Dokter"
             value={searchDoctor}
             onChange={(e) => setSearchDoctor(e.target.value)}
             onKeyDown={(e) => {

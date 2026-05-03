@@ -425,7 +425,7 @@ const HeroSection = () => {
                 <User size={18} className="text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Masukan Nama Dokter"
+                  placeholder="Masukkan Nama Dokter"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="w-full outline-none text-sm bg-transparent"
