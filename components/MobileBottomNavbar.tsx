@@ -86,7 +86,7 @@ const MobileBottomNavbar = () => {
   return (
     <>
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#005753] z-50 border-t border-white/5 pb-safe">
-        <div className="flex justify-around items-stretch h-16">
+        <div className="flex justify-around items-stretch h-18">
           {navItems.map((item) => {
             const isItemActive = pathname === item.href;
 
@@ -160,7 +160,7 @@ const MobileBottomNavbar = () => {
         </div>
       </nav>
 
-      <div className="md:hidden h-16" />
+      <div className="md:hidden h-18" />
     </>
   );
 };
