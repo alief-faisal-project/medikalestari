@@ -10,23 +10,27 @@ import React, {
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
+
+// Font Awesome Imports & Types
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
-  Home,
-  UserRoundPlus,
-  Plus,
-  TicketPercent,
-  Bed,
-  CalendarCheck2,
-  CalendarDays,
-  BedDouble,
-} from "lucide-react";
+  faHouse,
+  faUserDoctor,
+  faPlus,
+  faCalendarDays,
+  faTicket,
+  faCalendarCheck,
+  faProcedures,
+  faBed,
+} from "@fortawesome/free-solid-svg-icons";
 
 import BookingModalFloating from "./BookingModalFloating";
 
 interface NavItem {
   label: string;
   href: string;
-  icon: React.ElementType;
+  icon: IconDefinition;
   isButton?: boolean;
 }
 
@@ -42,16 +46,16 @@ export default function MobileBottomNavbar() {
 
   const navItems = useMemo<NavItem[]>(
     () => [
-      { label: "Beranda", href: "/", icon: Home },
-      { label: "Dokter", href: "/dokter", icon: UserRoundPlus },
+      { label: "Beranda", href: "/", icon: faHouse },
+      { label: "Dokter", href: "/dokter", icon: faUserDoctor },
       {
         label: "Tambah",
         href: "#action-menu",
-        icon: Plus,
+        icon: faPlus,
         isButton: true,
       },
-      { label: "Jadwal", href: "/jadwal-dokter", icon: CalendarDays },
-      { label: "Promo", href: "/promo", icon: TicketPercent },
+      { label: "Jadwal", href: "/jadwal-dokter", icon: faCalendarDays },
+      { label: "Promo", href: "/promo", icon: faTicket },
     ],
     [],
   );
@@ -137,7 +141,10 @@ export default function MobileBottomNavbar() {
                 className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 text-sm font-medium text-left outline-none hover:bg-gray-50 active:bg-gray-100 transition-colors rounded-lg"
                 style={{ WebkitTapHighlightColor: "transparent" }}
               >
-                <CalendarCheck2 size={18} className="text-gray-500" />
+                <FontAwesomeIcon
+                  icon={faCalendarCheck}
+                  className="text-gray-500 w-[18px] h-[18px]"
+                />
                 <span>Buat Janji Temu</span>
               </button>
 
@@ -153,7 +160,10 @@ export default function MobileBottomNavbar() {
                 className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 text-sm font-medium text-left outline-none hover:bg-gray-50 active:bg-gray-100 transition-colors rounded-lg"
                 style={{ WebkitTapHighlightColor: "transparent" }}
               >
-                <BedDouble size={18} className="text-gray-500" />
+                <FontAwesomeIcon
+                  icon={faProcedures}
+                  className="text-gray-500 w-[18px] h-[18px]"
+                />
                 <span>Kamar Perawatan</span>
               </button>
 
@@ -167,7 +177,10 @@ export default function MobileBottomNavbar() {
                 className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 text-sm font-medium text-left outline-none hover:bg-gray-50 active:bg-gray-100 transition-colors rounded-lg"
                 style={{ WebkitTapHighlightColor: "transparent" }}
               >
-                <Bed size={18} className="text-gray-500" />
+                <FontAwesomeIcon
+                  icon={faBed}
+                  className="text-gray-500 w-[18px] h-[18px]"
+                />
                 <span>Ketersediaan Kamar</span>
               </button>
             </div>
@@ -178,7 +191,7 @@ export default function MobileBottomNavbar() {
         <div className="w-full h-16 bg-white border-t border-gray-100 shadow-[0_-2px_10px_rgba(0,0,0,0.02)]">
           <ul className="flex items-center justify-between h-full px-4">
             {navItems.map((item, i) => {
-              const Icon = item.icon;
+              const iconDef = item.icon;
               const isActive = i === activeIndex;
 
               return (
@@ -194,10 +207,9 @@ export default function MobileBottomNavbar() {
                       className="flex items-center justify-center w-12 h-12 rounded-full hover:bg-gray-50 active:scale-95 transition-all select-none focus:outline-none"
                       style={{ WebkitTapHighlightColor: "transparent" }}
                     >
-                      <Plus
-                        size={26}
-                        strokeWidth={2.5}
-                        className="transition-transform duration-200"
+                      <FontAwesomeIcon
+                        icon={faPlus}
+                        className="transition-transform duration-200 text-[26px]"
                         style={{
                           transform: isActionMenuOpen
                             ? "rotate(45deg)"
@@ -218,16 +230,11 @@ export default function MobileBottomNavbar() {
                       className="flex items-center justify-center w-12 h-12 rounded-xl active:scale-95 transition-transform select-none focus:outline-none"
                       style={{ WebkitTapHighlightColor: "transparent" }}
                     >
-                      <Icon
-                        size={24}
-                        // Menggunakan ketebalan stroke tebal saat aktif ala Instagram
-                        strokeWidth={isActive ? 2.8 : 2}
-                        // Khusus Home menggunakan fill solid, sisanya mempertahankan lubang aslinya
-                        fill={
-                          isActive && item.href === "/" ? "#000000" : "none"
-                        }
+                      <FontAwesomeIcon
+                        icon={iconDef}
+                        className="text-[24px]"
                         style={{
-                          color: isActive ? "#000000" : "#9CA3AF",
+                          color: isActive ? "#003f88" : "#9CA3AF",
                           transition: "all 0.15s ease",
                         }}
                       />

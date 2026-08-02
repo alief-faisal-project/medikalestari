@@ -130,7 +130,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
     closeSearch();
   }, [pathname, closeSearch]);
 
-  // Pastikan scrollbar halaman tidak ikut hilang saat mobile hamburger dibuka
+
   // (MobileSearchModal bisa mengunci body overflow saat search modal mobile aktif).
   useEffect(() => {
     const shouldRestoreScrollbar = isMobileMenuOpen || !isSearchOpen;
@@ -140,7 +140,6 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
       document.documentElement.style.overflow = "";
     }
 
-    // jangan override saat isSearchOpen & mobile menu belum dibuka,
     // karena MobileSearchModal / desktop search bisa jadi sedang mengatur overflow.
   }, [isMobileMenuOpen, isSearchOpen]);
 
@@ -622,11 +621,11 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
 
             {/* Panel: Dropdown dari Atas, Full Screen Scrollable */}
             <motion.div
-              initial={{ y: "-100%", opacity: 1 }} 
+              initial={{ y: "-100%", opacity: 1 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: "-100%", opacity: 1 }}
-              transition={{ type: "tween", duration: 0.4, ease: "easeInOut" }} 
-              className="fixed top-0 inset-x-0 w-full max-h-screen bg-white z-100 md:hidden flex flex-col border-b border-gray-200/40 rounded-b-2xl" 
+              transition={{ type: "tween", duration: 0.4, ease: "easeInOut" }}
+              className="fixed top-0 inset-x-0 w-full h-screen bg-white z-100 md:hidden flex flex-col border-b border-gray-200/40"
             >
               {/* Header di dalam panel untuk tombol close agar posisinya stabil */}
               <div className="flex justify-end p-6 border-b border-gray-100/50 min-h-[64px] items-center">

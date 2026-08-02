@@ -467,7 +467,7 @@ const PromoKesehatan = () => {
                 Kami hadir memberikan akses medis yang cepat, tepat, dan dapat
                 diandalkan kapan pun Anda membutuhkan penanganan.
               </p>
-              <p className="text-xs md:text-base text-white/90 font-semibold leading-normal mb-8 text-justify">
+              <p className="text-sm md:text-base text-white/90 font-semibold leading-normal mb-8 text-justify">
                 Kini Anda tidak perlu mengkhawatirkan rumitnya birokrasi. Berkat
                 kolaborasi erat dengan berbagai asuransi terkemuka dan mitra
                 korporasi, proses klaim serta administrasi kini menjadi jauh
