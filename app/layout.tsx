@@ -36,11 +36,6 @@ export default function RootLayout({
         },
         {
           "@type": "WebPage",
-          name: "Kamar Perawatan",
-          url: "https://www.rsmedikalestari.com/kamar-perawatan",
-        },
-        {
-          "@type": "WebPage",
           name: "Medical Checkup",
           url: "https://www.rsmedikalestari.com/medical-checkup",
         },
