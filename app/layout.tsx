@@ -59,7 +59,7 @@ export default function RootLayout({
         <title>RS Medika Lestari</title>
         <meta
           name="description"
-          content="RS Medika Lestari bermula dari sebuah klinik pada tahun 1994, kini telah berkembang menjadi fasilitas kesehatan terakreditasi Paripurna (KARS) yang menyediakan layanan medis lengkap dan modern."
+          content="RS Medika Lestari adalah sebuah Rumah Sakit Umum modern yang memiliki fasilitas lengkap, dan memiliki jaringan yang luas bertempat di Jl. HOS Cokroaminoto Perum Pondok Lestari Blok C1 No.1-2, Ciledug Kota Tanggerang 15157."
         />
         <script
           type="application/ld+json"
