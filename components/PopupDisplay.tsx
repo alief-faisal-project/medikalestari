@@ -43,7 +43,6 @@ const PopupDisplay = memo(() => {
     return raw ? JSON.parse(raw) : { quickClose: 0, engaged: 0 };
   }, []);
 
-  // Sinkronisasi state internal React dengan sessionStorage secara berkala
   const syncIndexFromStorage = useCallback(() => {
     if (typeof window !== "undefined") {
       const savedIndex = sessionStorage.getItem(INDEX_KEY);
@@ -64,10 +63,8 @@ const PopupDisplay = memo(() => {
       cooldown = FIVE_MINUTES * 2;
     }
 
-    // Ambil index terbaru dari sessionStorage sebelum memutuskan untuk merender
     const actualIndex = syncIndexFromStorage();
 
-    // JIKA ANTREAN POPUP SUDAH HABIS, JANGAN TAMPILKAN
     if (
       popupsRef.current.length > 0 &&
       actualIndex >= popupsRef.current.length
@@ -92,7 +89,6 @@ const PopupDisplay = memo(() => {
     openTimeRef.current = now;
   }, [getBehavior, syncIndexFromStorage]);
 
-  // JALAN SETIAP KALI POPUP DIMUAT PERTAMA KALI
   useEffect(() => {
     if (popups && popups.length > 0) {
       void Promise.all(
@@ -113,18 +109,14 @@ const PopupDisplay = memo(() => {
     }
   }, [popups, checkLogicAndShow]);
 
-  // TRIK UTAMA: Mendeteksi aksi 'Back' / Navigasi balik di browser agar popup langsung dievaluasi ulang
   useEffect(() => {
-    // 1. Ambil state index awal saat komponen mounting
     syncIndexFromStorage();
 
-    // 2. Dengarkan event popstate (ketika user klik tombol kembali di browser)
     const handlePopState = () => {
       syncIndexFromStorage();
       checkLogicAndShow();
     };
 
-    // 3. Cadangan: Jalankan juga ketika fokus halaman kembali didapatkan
     const handleFocus = () => {
       syncIndexFromStorage();
       checkLogicAndShow();
@@ -145,7 +137,6 @@ const PopupDisplay = memo(() => {
       if (document.hidden) {
         tabLeftTimeRef.current = now;
       } else {
-        // Tarik index terbaru dari storage saat tab dibuka kembali
         syncIndexFromStorage();
         if (
           tabLeftTimeRef.current &&
@@ -153,7 +144,6 @@ const PopupDisplay = memo(() => {
         ) {
           checkLogicAndShow();
         } else {
-          // Jika tidak lewat 5 menit, pastikan logic tetap mengecek ketersediaan antrean baru
           checkLogicAndShow();
         }
         tabLeftTimeRef.current = null;
@@ -197,7 +187,6 @@ const PopupDisplay = memo(() => {
     const nextIndex = currentIndex + 1;
 
     if (!isLastPopup) {
-      // Menyimpan nomor antrean berikutnya di storage browser sebelum berpindah halaman
       sessionStorage.setItem(INDEX_KEY, nextIndex.toString());
       setCurrentIndex(nextIndex);
       closePopup(false);
@@ -225,8 +214,30 @@ const PopupDisplay = memo(() => {
     }
   }, [closePopup, currentIndex]);
 
+  // FIX SCROLL LOCK: Mengunci html & body secara menyeluruh
   useEffect(() => {
-    document.body.style.overflow = isVisible ? "hidden" : "";
+    if (isVisible) {
+      const scrollY = window.scrollY;
+
+      // Simpan posisi scroll saat ini & kunci posisi layar
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+
+      return () => {
+        // Kembalikan ke keadaan semula saat popup ditutup
+        document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+
+        // Kembalikan posisi scroll ke tempat terakhir pengguna berada
+        window.scrollTo(0, scrollY);
+      };
+    }
   }, [isVisible]);
 
   if (
@@ -240,7 +251,11 @@ const PopupDisplay = memo(() => {
   const currentPopup = popups[currentIndex];
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-6">
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-6 touch-none"
+      onWheel={(e) => e.stopPropagation()}
+      onTouchMove={(e) => e.stopPropagation()}
+    >
       <div
         className="absolute inset-0 bg-black/80 backdrop-blur-sm"
         onClick={handleXAction}
@@ -256,7 +271,7 @@ const PopupDisplay = memo(() => {
 
         <div
           onClick={handleImageClick}
-          className="relative flex justify-center items-center overflow-hidden shadow-2xl rounded-lg cursor-pointer transition hover:opacity-95"
+          className="relative flex justify-center items-center overflow-hidden shadow-2xl cursor-pointer transition hover:opacity-95"
         >
           <img
             src={currentPopup.image_url}
