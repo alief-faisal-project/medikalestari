@@ -509,6 +509,96 @@ const HeroSection = () => {
                 />
               ))}
             </div>
+
+            {/* SOSIAL MEDIA DI BAWAH KIRI (DIPERBAIKI: POSISI, BG PUTIH BEFORE HOVER, GRADIENT INSTAGRAM & WHATSAPP) */}
+            <div className="absolute bottom-18 left-16 md:left-20 z-40 flex items-center gap-3">
+              {/* Instagram */}
+              <a
+                href="https://instagram.com/rsmedikalestari"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-2 bg-white hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] backdrop-blur-md text-gray-800 hover:text-white p-2.5 rounded-full transition-all duration-300 max-w-[42px] hover:max-w-[140px] overflow-hidden whitespace-nowrap shadow-lg"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="url(#ig-gradient)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="shrink-0 group-hover:stroke-white transition-colors duration-300"
+                >
+                  <defs>
+                    <linearGradient
+                      id="ig-gradient"
+                      x1="0%"
+                      y1="100%"
+                      x2="100%"
+                      y2="0%"
+                    >
+                      <stop offset="0%" stopColor="#f09433" />
+                      <stop offset="25%" stopColor="#e6683c" />
+                      <stop offset="50%" stopColor="#dc2743" />
+                      <stop offset="75%" stopColor="#cc2366" />
+                      <stop offset="100%" stopColor="#bc1888" />
+                    </linearGradient>
+                  </defs>
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                </svg>
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-semibold pr-2">
+                  Instagram
+                </span>
+              </a>
+
+              {/* WhatsApp */}
+              <a
+                href="https://wa.me/085717028133"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-2 bg-white hover:bg-[#25D366] backdrop-blur-md text-[#25D366] hover:text-white p-2.5 rounded-full transition-all duration-300 max-w-[42px] hover:max-w-[140px] overflow-hidden whitespace-nowrap shadow-lg"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="shrink-0 transition-colors duration-300"
+                >
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.99c-.002 5.45-4.437 9.886-9.89 9.886M12.051 0C5.401 0 .007 5.393.004 12.043a11.98 11.98 0 001.636 6.002L0 24l6.126-1.606a11.93 11.93 0 005.92 1.562h.005c6.649 0 12.043-5.393 12.046-12.045A12.016 12.016 0 0012.051 0" />
+                </svg>
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-semibold pr-2">
+                  WhatsApp
+                </span>
+              </a>
+
+              {/* YouTube */}
+              <a
+                href="https://www.youtube.com/@RSMedikaLestari"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-2 bg-white hover:bg-[#FF0000] backdrop-blur-md text-[#FF0000] hover:text-white p-2.5 rounded-full transition-all duration-300 max-w-[42px] hover:max-w-[140px] overflow-hidden whitespace-nowrap shadow-lg"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="shrink-0 transition-colors duration-300"
+                >
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                </svg>
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-semibold pr-2">
+                  YouTube
+                </span>
+              </a>
+            </div>
           </>
         ) : (
           <div className="absolute inset-0 bg-gray-300 flex items-center justify-center">
