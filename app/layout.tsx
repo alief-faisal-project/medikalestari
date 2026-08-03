@@ -1,4 +1,3 @@
-
 import "./globals.css";
 import { Providers } from "./providers";
 import { AuthProvider } from "@/context/AuthProvider";
@@ -49,7 +48,12 @@ export default function RootLayout({
   ];
 
   return (
-    <html lang="id" className="h-full antialiased" suppressHydrationWarning>
+    <html
+      lang="id"
+      className="h-full antialiased"
+      suppressHydrationWarning
+      style={{ fontFamily: "'Google Sans', sans-serif" }} // 👈 Terapkan di level paling atas
+    >
       <head>
         <title>RS Medika Lestari</title>
         <meta
@@ -102,7 +106,7 @@ export default function RootLayout({
           referrerPolicy="no-referrer"
         />
       </head>
-      <body className="min-h-screen bg-white text-black">
+      <body className="min-h-screen bg-white text-black font-sans">
         <Providers>
           <AuthProvider>
             <SearchModalProvider>

@@ -65,7 +65,8 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
   const toggleLanguage = () => {
     setLanguage(language === "ID" ? "EN" : "ID");
   };
-     /* SCROLL CONTROL UNTUK TOP NAVBAR*/
+
+  /* SCROLL CONTROL UNTUK TOP NAVBAR*/
   useEffect(() => {
     const controlNavbar = () => {
       // Deteksi PromoKesehatan, ServiceSection, dan MadingSection
@@ -130,18 +131,58 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
     closeSearch();
   }, [pathname, closeSearch]);
 
-
-  // (MobileSearchModal bisa mengunci body overflow saat search modal mobile aktif).
+  // pengunci scrollbar
   useEffect(() => {
-    const shouldRestoreScrollbar = isMobileMenuOpen || !isSearchOpen;
+    if (typeof document === "undefined") return;
 
-    if (shouldRestoreScrollbar && typeof document !== "undefined") {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
+    const isMobileDevice = window.innerWidth < 768;
+    if (!isMobileDevice) return;
+
+    const body = document.body;
+    const html = document.documentElement;
+
+    if (isMobileMenuOpen) {
+      if (!body.dataset.scrollY) {
+        const scrollY = window.scrollY;
+        body.dataset.scrollY = scrollY.toString();
+        body.style.position = "fixed";
+        body.style.top = `-${scrollY}px`;
+        body.style.left = "0";
+        body.style.width = "100%";
+        body.style.overflow = "hidden";
+        html.style.overflow = "hidden";
+      }
+    } else {
+      const scrollY = body.dataset.scrollY;
+
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.width = "";
+      body.style.overflow = "";
+      html.style.overflow = "";
+
+      delete body.dataset.scrollY;
+
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0", 10));
+      }
     }
 
-    // karena MobileSearchModal / desktop search bisa jadi sedang mengatur overflow.
-  }, [isMobileMenuOpen, isSearchOpen]);
+    return () => {
+      const scrollY = body.dataset.scrollY;
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.width = "";
+      body.style.overflow = "";
+      html.style.overflow = "";
+      delete body.dataset.scrollY;
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0", 10));
+      }
+    };
+  }, [isMobileMenuOpen]);
 
   const menuData: Record<string, string[]> = {
     "Fasilitas & Layanan": [
@@ -154,8 +195,8 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
     "Portal Pasien": [
       "Alur Pendaftaran",
       "Asuransi & Rekanan",
-       "Emergency",
-       "Ketersediaan Kamar",
+      "Emergency",
+      "Ketersediaan Kamar",
       "Tarif Kamar",
     ],
 
@@ -163,7 +204,6 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
   };
 
   const serviceIcons: Record<string, React.ReactNode> = {
-
     "Kamar Perawatan": <Hotel size={20} strokeWidth={1.5} />,
     "Medical Checkup": <Heart size={20} strokeWidth={1.5} />,
     "Poli Klinik": <Stethoscope size={20} strokeWidth={1.5} />,
@@ -187,8 +227,6 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
     widthClass: string = "w-72",
     category?: string,
   ) => {
-
-
     const isLargeMenu = items.length > 6;
     const isFasilitasLayanan = category === "Fasilitas & Layanan";
 
@@ -234,11 +272,9 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               itemHref = "/services/kamar-perawatan";
             else if (title === "Medical Checkup")
               itemHref = "/services/medical-checkup";
-            else if (title === "Paket Kesehatan")
-              itemHref = "/promo";
+            else if (title === "Paket Kesehatan") itemHref = "/promo";
             else if (title === "Poli Klinik")
               itemHref = "/services/poli-klinik";
-
             else if (title === "Tarif Kamar") itemHref = "/tarif-kamar";
             else if (title === "Ketersediaan Kamar")
               itemHref = "/ketersediaan-kamar";
@@ -611,35 +647,15 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
         {isMobileMenuOpen && (
           <>
             {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+            <div
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/30 backdrop-blur-[4px] z-99 md:hidden"
+              className="fixed inset-x-0 bottom-0 top-[80px] bg-black/30 z-[90] md:hidden"
             />
 
-            {/* Panel: Dropdown dari Atas, Full Screen Scrollable */}
-            <motion.div
-              initial={{ y: "-100%", opacity: 1 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: "-100%", opacity: 1 }}
-              transition={{ type: "tween", duration: 0.4, ease: "easeInOut" }}
-              className="fixed top-0 inset-x-0 w-full h-screen bg-white z-100 md:hidden flex flex-col border-b border-gray-200/40"
-            >
-              {/* Header di dalam panel untuk tombol close agar posisinya stabil */}
-              <div className="flex justify-end p-6 border-b border-gray-100/50 min-h-[64px] items-center">
-                <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 hover:bg-gray-50 rounded-lg transition-colors"
-                  title="Tutup menu"
-                >
-                  <X size={22} className="text-gray-500 mt-1" />
-                </button>
-              </div>
-
+            {/* Panel Dropdown (Fullscreen ke Bawah) */}
+            <div className="fixed top-[80px] bottom-0 inset-x-0 w-full h-[calc(100vh-80px)] bg-white z-[100] md:hidden flex flex-col border-b border-gray-200 shadow-xl overflow-hidden">
               {/* Area Menu yang Bisa Di-scroll */}
-              <div className="overflow-y-auto flex-1 px-6 pb-8 custom-scrollbar">
+              <div className="overflow-y-auto flex-1 px-6 py-4 custom-scrollbar">
                 {/* Beranda */}
                 <button
                   onClick={handleHomeClick}
@@ -823,14 +839,14 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
                   ))}
 
                 {/* Area Auth */}
-                <div className="pt-6">
+                <div className="pt-6 pb-12">
                   <AuthArea
                     isMobile
                     onClick={() => setIsMobileMenuOpen(false)}
                   />
                 </div>
               </div>
-            </motion.div>
+            </div>
           </>
         )}
       </AnimatePresence>
@@ -912,7 +928,7 @@ function AuthDropdown({ activeMenu, setActiveMenu }: AuthDropdownProps) {
             animate={{ opacity: 1, y: 0, height: "auto" }}
             exit={{ opacity: 0, y: -10, height: 0 }}
             transition={{ duration: 0.3, ease: "circOut" }}
-              className="absolute top-full right-0 bg-white text-white shadow-xl overflow-visible z-50 border-t border-white w-48 mt-2 active:scale-98"
+            className="absolute top-full right-0 bg-white text-white shadow-xl overflow-visible z-50 border-t border-white w-48 mt-2 active:scale-98"
           >
             {/* Arrow/Triangle */}
             <div className=" text-white absolute -top-2 right-6 w-0 h-0 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-white"></div>
