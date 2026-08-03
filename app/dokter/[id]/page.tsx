@@ -85,7 +85,7 @@ const DoctorDetailPage = () => {
         </div>
 
         {/* Kontainer Grid Utama */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start -mt-2 md:mt-2">
           {/* KOLOM KIRI: STICKY IMAGE & SOCIALS */}
           <div className="lg:col-span-4 lg:sticky lg:top-60 flex flex-col items-center">
             <motion.div

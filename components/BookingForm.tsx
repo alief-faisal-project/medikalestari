@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CheckCircle, AlertCircle } from "lucide-react";
@@ -9,7 +10,7 @@ interface BookingFormProps {
   readonly doctorName: string;
   readonly specialty: string;
   readonly onClose: () => void;
-  readonly schedules?: Schedule[]; // Jadwal opsional: jika tersedia, tampilkan pilihan hari+waktu
+  readonly schedules?: Schedule[];
 }
 
 export default function BookingForm({
@@ -21,7 +22,7 @@ export default function BookingForm({
   const [formData, setFormData] = useState({
     patientName: "",
     patientPhone: "",
-    preferredDate: "", // fallback / Alternatif jika jadwal tidak tersedia
+    preferredDate: "",
     keluhan: "",
   });
   const [selectedDay, setSelectedDay] = useState<string>("");
@@ -30,18 +31,27 @@ export default function BookingForm({
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
-  // Scroll Lock Mencegah pengguliran latar belakang saat modal terbuka
+  // Pengunci scroll latar belakang
   useEffect(() => {
-    // Tambahkan overflow hidden ke body untuk mencegah scroll
+    const scrollY = window.scrollY;
     const scrollbarWidth =
       window.innerWidth - document.documentElement.clientWidth;
+
+    // Kunci posisi body
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
     document.body.style.overflow = "hidden";
     document.body.style.paddingRight = `${scrollbarWidth}px`;
 
-    // Cleanup / kembalikan style saat modal ditutup
+    // Buka kunci scroll saat modal ditutup
     return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
+      window.scrollTo(0, scrollY);
     };
   }, []);
 
@@ -71,7 +81,6 @@ export default function BookingForm({
     const unique = Array.from(
       new Set(propsSchedules.map((s) => s.day_of_week)),
     );
-    // Urutkan berdasarkan DAYS_ORDER
     return unique.sort((a, b) => DAYS_ORDER.indexOf(a) - DAYS_ORDER.indexOf(b));
   };
 
@@ -83,7 +92,6 @@ export default function BookingForm({
         (s) =>
           `${s.start_time.substring(0, 5)} - ${s.end_time.substring(0, 5)}`,
       )
-      // dedupe
       .filter((v, i, arr) => arr.indexOf(v) === i)
       .sort();
     return slots;
@@ -99,15 +107,9 @@ export default function BookingForm({
       return setError("Nomor telepon wajib diisi");
     if (!formData.keluhan.trim()) return setError("Keluhan wajib diisi");
 
-    // Jika jadwal tersedia, wajib memilih hari dan waktu.
     if (schedules && schedules.length > 0) {
       if (!selectedDay) return setError("Pilih hari praktik dokter");
       if (!selectedTime) return setError("Pilih jam praktik dokter");
-      // Atur tanggal pilihan untuk menggabungkan hari + waktu
-      setFormData((prev) => ({
-        ...prev,
-        preferredDate: `${selectedDay} ${selectedTime}`,
-      }));
     }
 
     setLoading(true);
@@ -141,6 +143,7 @@ export default function BookingForm({
 
   return (
     <AnimatePresence>
+      {/* Overlay latar belakang */}
       <motion.div
         key="booking-backdrop"
         initial={{ opacity: 0 }}
@@ -150,6 +153,7 @@ export default function BookingForm({
         className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-60"
       />
 
+      {/* Container modal */}
       <motion.div
         key="booking-modal"
         initial={{ opacity: 0, scale: 0.98, y: 10 }}
@@ -157,9 +161,8 @@ export default function BookingForm({
         exit={{ opacity: 0, scale: 0.98, y: 10 }}
         className="fixed inset-0 z-70 flex items-center justify-center p-4 pointer-events-none"
       >
-        {/* Container Booking Form */}
-        <section className="bg-white rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.1)] w-full max-w-sm overflow-hidden pointer-events-auto border border-slate-100">
-          {/* Header */}
+        <section className="bg-white rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.1)] w-full max-w-sm overflow-hidden pointer-events-auto border border-slate-100 max-h-[90vh] overflow-y-auto">
+          {/* Header modal */}
           <header className="p-7 pb-2 flex items-start justify-between">
             <div className="pr-4">
               <h2 className="text-xl font-semibold text-slate-900 leading-tight">
@@ -177,9 +180,11 @@ export default function BookingForm({
             </button>
           </header>
 
+          {/* Isi form */}
           <main className="p-7">
             <AnimatePresence mode="wait">
               {submitted ? (
+                /* Pesan sukses */
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -196,6 +201,7 @@ export default function BookingForm({
                   </p>
                 </motion.div>
               ) : (
+                /* Form input */
                 <form onSubmit={handleSubmit} className="space-y-3">
                   {error && (
                     <div className="bg-red-50 text-red-600 p-3 rounded-2xl text-[11px] font-bold flex gap-2 items-center border border-red-100">
@@ -210,7 +216,7 @@ export default function BookingForm({
                       value={formData.patientName}
                       onChange={handleChange}
                       placeholder="Nama Lengkap Pasien"
-                      className="w-full px-5 py-3.5 bg-white border border-slate-100 focus:ring-2 focus:ring-[#003f88] transition-all text-sm outline-none  rounded-xl"
+                      className="w-full px-5 py-3.5 bg-white border border-slate-100 focus:ring-2 focus:ring-[#003f88] transition-all text-sm outline-none rounded-xl"
                     />
 
                     <div className="grid grid-cols-2 gap-3">
@@ -220,7 +226,7 @@ export default function BookingForm({
                         value={formData.patientPhone}
                         onChange={handleChange}
                         placeholder="Masukan No Tlp"
-                        className="w-full px-5 py-3.5  border border-slate-100  focus:ring-2 focus:ring-[#003f88] transition-all text-sm outline-none  rounded-xl"
+                        className="w-full px-5 py-3.5 border border-slate-100 focus:ring-2 focus:ring-[#003f88] transition-all text-sm outline-none rounded-xl"
                       />
 
                       {schedules && schedules.length > 0 ? (
@@ -231,7 +237,7 @@ export default function BookingForm({
                               setSelectedDay(e.target.value);
                               setSelectedTime("");
                             }}
-                            className="w-full px-4 py-3  border border-slate-100 rounded-xl text-sm outline-none"
+                            className="w-full px-4 py-3 border border-slate-100 rounded-xl text-sm outline-none"
                           >
                             <option value="">Pilih Hari</option>
                             {availableDays(schedules).map((d) => (
@@ -243,7 +249,7 @@ export default function BookingForm({
                           <select
                             value={selectedTime}
                             onChange={(e) => setSelectedTime(e.target.value)}
-                            className="w-full mt-2 px-4 py-3  border border-slate-100 rounded-xl text-sm outline-none"
+                            className="w-full mt-2 px-4 py-3 border border-slate-100 rounded-xl text-sm outline-none"
                             disabled={!selectedDay}
                           >
                             <option value="">Pilih Jam</option>
@@ -262,7 +268,7 @@ export default function BookingForm({
                           name="preferredDate"
                           value={formData.preferredDate}
                           onChange={handleChange}
-                          className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100  focus:bg-white focus:ring-2 focus:ring-blue-500/10 transition-all text-sm outline-none text-slate-400 rounded-xl"
+                          className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-2 focus:ring-blue-500/10 transition-all text-sm outline-none text-slate-400 rounded-xl"
                         />
                       )}
                     </div>
@@ -273,13 +279,13 @@ export default function BookingForm({
                       onChange={handleChange}
                       placeholder="Keluhan atau Alasan Kunjungan"
                       rows={2}
-                      className="w-full px-5 py-3.5 border border-slate-100  focus:bg-white focus:ring-2 focus:ring-[#003f88] transition-all text-sm outline-none resize-none  rounded-xl"
+                      className="w-full px-5 py-3.5 border border-slate-100 focus:bg-white focus:ring-2 focus:ring-[#003f88] transition-all text-sm outline-none resize-none rounded-xl"
                     />
                   </div>
 
-                  {/* Button Kirim Pendaftaran */}
+                  {/* Tombol aksi */}
                   <div className="flex gap-3 pt-4">
-                     <button
+                    <button
                       type="button"
                       onClick={onClose}
                       className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
@@ -293,7 +299,7 @@ export default function BookingForm({
                       className="flex-1 px-4 py-2 bg-[#003f88] hover:bg-[#003f88] text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
                     >
                       {loading ? (
-                        <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin " />
+                        <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
                       ) : (
                         <>Kirim</>
                       )}

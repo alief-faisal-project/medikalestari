@@ -30,7 +30,7 @@ export default function BookingModalFloating({
     (Doctor & { schedules: Schedule[] })[]
   >([]);
 
-  // Load doctors data saat modal dibuka
+  // Muat data dokter saat modal dibuka
   useEffect(() => {
     if (isOpen && doctorsData.length === 0) {
       const loadDoctors = async () => {
@@ -38,25 +38,36 @@ export default function BookingModalFloating({
           const data = await fetchAllDoctorsWithSchedules();
           setDoctorsData(data as (Doctor & { schedules: Schedule[] })[]);
         } catch (err) {
-          console.error("Error loading doctors:", err);
+          console.error("Gagal memuat data dokter:", err);
         }
       };
       loadDoctors();
     }
   }, [isOpen, doctorsData.length]);
 
-  // Scroll Lock / mencegah scroll saat modal terbuka
+  // Pengunci scroll latar belakang
   useEffect(() => {
-    if (isOpen) {
-      const scrollbarWidth =
-        window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.overflow = "hidden";
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-    }
+    if (!isOpen) return;
 
+    const scrollY = window.scrollY;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
+    // Kunci posisi body
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+    // Buka kunci scroll saat modal ditutup
     return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
+      window.scrollTo(0, scrollY);
     };
   }, [isOpen]);
 
@@ -79,6 +90,7 @@ export default function BookingModalFloating({
       ...prev,
       specialty,
       doctor: "",
+      dayOfWeek: "",
       timeSlot: "",
     }));
   };
@@ -112,12 +124,12 @@ export default function BookingModalFloating({
       setError("Pilih dokter");
       return;
     }
-    if (!formData.timeSlot) {
-      setError("Pilih jam");
-      return;
-    }
     if (!formData.dayOfWeek) {
       setError("Pilih hari");
+      return;
+    }
+    if (!formData.timeSlot) {
+      setError("Pilih jam");
       return;
     }
 
@@ -157,20 +169,20 @@ export default function BookingModalFloating({
     }
   };
 
-  // Dapatkan spesialisasi unik dari data dokter
+  // Daftar spesialisasi unik
   const specialties = Array.from(
     new Set(doctorsData.map((d) => d.specialty)),
   ).sort((a, b) => a.localeCompare(b));
 
-  // Dapatkan dokter berdasarkan spesialisasi yang dipilih
+  // Daftar dokter berdasarkan spesialisasi yang dipilih
   const availableDoctors = formData.specialty
     ? doctorsData.filter((d) => d.specialty === formData.specialty)
     : [];
 
-  // Dapatkan slot waktu berdasarkan dokter dan hari yang dipilih
+  // Data dokter yang sedang dipilih
   const selectedDoctor = doctorsData.find((d) => d.name === formData.doctor);
 
-  // Dapatkan hari unik dari jadwal dokter yang dipilih
+  // Daftar hari praktik dokter yang dipilih
   const availableDays = selectedDoctor
     ? Array.from(
         new Set(
@@ -192,7 +204,7 @@ export default function BookingModalFloating({
       })
     : [];
 
-  // Dapatkan slot waktu untuk hari dan dokter yang dipilih
+  // Daftar jam praktik berdasarkan hari & dokter yang dipilih
   const timeSlots =
     selectedDoctor && formData.dayOfWeek
       ? selectedDoctor.schedules
@@ -203,7 +215,7 @@ export default function BookingModalFloating({
 
   const getTimeSlotLabel = () => {
     if (!formData.doctor) {
-      return "Jam Praktek";
+      return "Jam Praktik";
     }
     if (!formData.dayOfWeek) {
       return "Pilih hari dulu";
@@ -215,7 +227,7 @@ export default function BookingModalFloating({
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
+          {/* Overlay latar belakang */}
           <motion.div
             key="booking-backdrop"
             initial={{ opacity: 0 }}
@@ -225,7 +237,7 @@ export default function BookingModalFloating({
             className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-60"
           />
 
-          {/* Modal */}
+          {/* Container modal */}
           <motion.div
             key="booking-modal"
             initial={{ opacity: 0, scale: 0.98, y: 10 }}
@@ -233,8 +245,8 @@ export default function BookingModalFloating({
             exit={{ opacity: 0, scale: 0.98, y: 10 }}
             className="fixed inset-0 z-70 flex items-center justify-center p-4 pointer-events-none"
           >
-            <section className="bg-white rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.1)] w-full max-w-sm overflow-hidden pointer-events-auto border border-slate-100">
-              {/* Header */}
+            <section className="bg-white rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.1)] w-full max-w-sm overflow-hidden pointer-events-auto border border-slate-100 max-h-[90vh] overflow-y-auto">
+              {/* Header modal */}
               <header className="p-7 pb-2 flex items-start justify-between">
                 <div className="pr-4">
                   <h2 className="text-xl font-bold text-slate-900 leading-tight">
@@ -252,10 +264,11 @@ export default function BookingModalFloating({
                 </button>
               </header>
 
-              {/* Main Content */}
+              {/* Isi form */}
               <main className="p-7">
                 <AnimatePresence mode="wait">
                   {submitted ? (
+                    /* Pesan sukses */
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -272,6 +285,7 @@ export default function BookingModalFloating({
                       </p>
                     </motion.div>
                   ) : (
+                    /* Form input */
                     <form onSubmit={handleSubmit} className="space-y-3">
                       {error && (
                         <div className="bg-red-50 text-red-600 p-3 rounded-2xl text-[11px] font-bold flex gap-2 items-center border border-red-100">
@@ -280,7 +294,7 @@ export default function BookingModalFloating({
                       )}
 
                       <div className="space-y-3">
-                        {/* Nama Pasien */}
+                        {/* Nama pasien */}
                         <input
                           type="text"
                           name="patientName"
@@ -384,7 +398,7 @@ export default function BookingModalFloating({
                         </select>
                       </div>
 
-                      {/* Submit Button */}
+                      {/* Tombol kirim */}
                       <div className="pt-6">
                         <button
                           type="submit"
