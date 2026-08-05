@@ -766,13 +766,13 @@ export default function PromoDetailPage() {
                 <button
                   type="button"
                   onClick={() => setShowWhatsAppForm(false)}
-                  className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors cursor-pointer text-sm"
+                  className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 font-semibold rounded hover:bg-gray-50 transition-colors cursor-pointer text-sm"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2.5 bg-[#003f88]  text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer text-sm"
+                  className="flex-1 px-4 py-2.5 bg-[#003f88]  text-white font-semibold rounded transition-colors flex items-center justify-center gap-2 cursor-pointer text-sm"
                 >
                   Kirim
                 </button>
