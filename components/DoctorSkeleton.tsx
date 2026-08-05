@@ -45,13 +45,12 @@ const DoctorSkeleton = () => {
           <ShimmerOverlay />
         </div>
 
-
         {/* Buttons shimmer */}
-        <div className="flex flex-wrap justify-start gap-2 md:gap-3 -mt-2 md:mt-0 ">
-          <div className="relative h-9 md:h-11 w-28 md:w-36 bg-linear-to-r from-slate-200 to-slate-300 rounded-full overflow-hidden shadow-sm">
+        <div className="flex flex-row items-center justify-start gap-2 md:gap-3 -mt-2 md:mt-0 w-full">
+          <div className="shrink-0 relative h-9 md:h-11 w-28 md:w-36 bg-linear-to-r from-slate-200 to-slate-300 rounded-full overflow-hidden shadow-sm">
             <ShimmerOverlay />
           </div>
-          <div className="relative h-9 md:h-11 w-28 md:w-36 bg-linear-to-r from-slate-200 to-slate-300 rounded-full overflow-hidden shadow-sm">
+          <div className="shrink-0 relative h-9 md:h-11 w-28 md:w-36 bg-linear-to-r from-slate-200 to-slate-300 rounded-full overflow-hidden shadow-sm">
             <ShimmerOverlay />
           </div>
         </div>
