@@ -261,7 +261,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
   return (
     <div className="min-h-screen bg-white">
       {/* BREADCRUMB & TITLE SECTION */}
-      <div className="max-w-293.75 mx-auto px-4 md:px-8 pt-10 md:pt-18 pb-12 md:-mt-1">
+      <div className="max-w-293.75 mx-auto px-4 md:px-8 pt-10 md:pt-18 md:-mt-1">
         <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
           <Link
             href="/"
@@ -354,9 +354,9 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
           <div className="max-w-2xl mx-auto px-4 py-12 flex justify-center ">
             <button
               onClick={() => setShowModal(true)}
-              className="px-8 py-4 bg-[#003f88] text-white font-semibold hover:bg-[#003f88]/90 transition-colors cursor-pointer active:scale-95 mb-20 rounded-md"
+              className="px-8 py-4 bg-[#003f88] text-white font-semibold hover:bg-[#003f88]/90 transition-colors cursor-pointer active:scale-95 mb-20 rounded"
             >
-              Daftar Lowongan
+              Daftar
             </button>
           </div>
         </>
