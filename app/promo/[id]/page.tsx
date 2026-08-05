@@ -515,7 +515,7 @@ export default function PromoDetailPage() {
                   height={22}
                   className="invert"
                 />
-                <span>Booking Online</span>
+                <span>Booking</span>
               </button>
 
               <a
