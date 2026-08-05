@@ -161,7 +161,7 @@ export default function BookingForm({
         exit={{ opacity: 0, scale: 0.98, y: 10 }}
         className="fixed inset-0 z-70 flex items-center justify-center p-4 pointer-events-none"
       >
-        <section className="bg-white rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.1)] w-full max-w-sm overflow-hidden pointer-events-auto border border-slate-100 max-h-[90vh] overflow-y-auto">
+        <section className="bg-white rounded shadow-[0_10px_40px_rgba(0,0,0,0.1)] w-full max-w-sm overflow-hidden pointer-events-auto border border-slate-100 max-h-[90vh] overflow-y-auto">
           {/* Header modal */}
           <header className="p-7 pb-2 flex items-start justify-between">
             <div className="pr-4">
@@ -204,74 +204,71 @@ export default function BookingForm({
                 /* Form input */
                 <form onSubmit={handleSubmit} className="space-y-3">
                   {error && (
-                    <div className="bg-red-50 text-red-600 p-3 rounded-2xl text-[11px] font-bold flex gap-2 items-center border border-red-100">
+                    <div className="bg-red-50 text-red-600 p-3 text-[11px] font-bold flex gap-2 items-center border border-red-100">
                       <AlertCircle size={14} /> {error}
                     </div>
                   )}
 
-                  <div className="space-y-3">
+                  <div className="flex flex-col gap-3">
                     <input
                       type="text"
                       name="patientName"
                       value={formData.patientName}
                       onChange={handleChange}
                       placeholder="Nama Lengkap Pasien"
-                      className="w-full px-5 py-3.5 bg-white border border-slate-100 focus:ring-2 focus:ring-[#003f88] transition-all text-sm outline-none rounded-xl"
+                      className="w-full h-11 px-4 bg-white border border-slate-200 focus:border-[#003f88] focus:ring-2 focus:ring-[#003f88]/20 transition-all text-sm outline-none rounded-xl"
                     />
 
-                    <div className="grid grid-cols-2 gap-3">
-                      <input
-                        type="tel"
-                        name="patientPhone"
-                        value={formData.patientPhone}
-                        onChange={handleChange}
-                        placeholder="Masukan No Tlp"
-                        className="w-full px-5 py-3.5 border border-slate-100 focus:ring-2 focus:ring-[#003f88] transition-all text-sm outline-none rounded-xl"
-                      />
+                    <input
+                      type="tel"
+                      name="patientPhone"
+                      value={formData.patientPhone}
+                      onChange={handleChange}
+                      placeholder="Masukan No Tlp"
+                      className="w-full h-11 px-4 bg-white border border-slate-200 focus:border-[#003f88] focus:ring-2 focus:ring-[#003f88]/20 transition-all text-sm outline-none rounded-xl"
+                    />
 
-                      {schedules && schedules.length > 0 ? (
-                        <div className="w-full">
-                          <select
-                            value={selectedDay}
-                            onChange={(e) => {
-                              setSelectedDay(e.target.value);
-                              setSelectedTime("");
-                            }}
-                            className="w-full px-4 py-3 border border-slate-100 rounded-xl text-sm outline-none"
-                          >
-                            <option value="">Pilih Hari</option>
-                            {availableDays(schedules).map((d) => (
-                              <option key={d} value={d}>
-                                {d}
-                              </option>
-                            ))}
-                          </select>
-                          <select
-                            value={selectedTime}
-                            onChange={(e) => setSelectedTime(e.target.value)}
-                            className="w-full mt-2 px-4 py-3 border border-slate-100 rounded-xl text-sm outline-none"
-                            disabled={!selectedDay}
-                          >
-                            <option value="">Pilih Jam</option>
-                            {timeSlotsForDay(selectedDay, schedules).map(
-                              (t) => (
-                                <option key={t} value={t}>
-                                  {t}
-                                </option>
-                              ),
-                            )}
-                          </select>
-                        </div>
-                      ) : (
-                        <input
-                          type="date"
-                          name="preferredDate"
-                          value={formData.preferredDate}
-                          onChange={handleChange}
-                          className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-2 focus:ring-blue-500/10 transition-all text-sm outline-none text-slate-400 rounded-xl"
-                        />
-                      )}
-                    </div>
+                    {schedules && schedules.length > 0 ? (
+                      <>
+                        <select
+                          value={selectedDay}
+                          onChange={(e) => {
+                            setSelectedDay(e.target.value);
+                            setSelectedTime("");
+                          }}
+                          className="w-full h-11 px-4 bg-white border border-slate-200 focus:border-[#003f88] focus:ring-2 focus:ring-[#003f88]/20 transition-all text-sm outline-none rounded-xl text-slate-700 cursor-pointer"
+                        >
+                          <option value="">Pilih Hari</option>
+                          {availableDays(schedules).map((d) => (
+                            <option key={d} value={d}>
+                              {d}
+                            </option>
+                          ))}
+                        </select>
+
+                        <select
+                          value={selectedTime}
+                          onChange={(e) => setSelectedTime(e.target.value)}
+                          className="w-full h-11 px-4 bg-white border border-slate-200 focus:border-[#003f88] focus:ring-2 focus:ring-[#003f88]/20 transition-all text-sm outline-none rounded-xl text-slate-700 disabled:bg-slate-100 disabled:cursor-not-allowed"
+                          disabled={!selectedDay}
+                        >
+                          <option value="">Pilih Jam</option>
+                          {timeSlotsForDay(selectedDay, schedules).map((t) => (
+                            <option key={t} value={t}>
+                              {t}
+                            </option>
+                          ))}
+                        </select>
+                      </>
+                    ) : (
+                      <input
+                        type="date"
+                        name="preferredDate"
+                        value={formData.preferredDate}
+                        onChange={handleChange}
+                        className="w-full h-11 px-4 bg-white border border-slate-200 focus:border-[#003f88] focus:ring-2 focus:ring-[#003f88]/20 transition-all text-sm outline-none text-slate-700 rounded-xl"
+                      />
+                    )}
 
                     <textarea
                       name="keluhan"
@@ -279,7 +276,7 @@ export default function BookingForm({
                       onChange={handleChange}
                       placeholder="Keluhan atau Alasan Kunjungan"
                       rows={2}
-                      className="w-full px-5 py-3.5 border border-slate-100 focus:bg-white focus:ring-2 focus:ring-[#003f88] transition-all text-sm outline-none resize-none rounded-xl"
+                      className="w-full px-4 py-3 bg-white border border-slate-200 focus:border-[#003f88] focus:ring-2 focus:ring-[#003f88]/20 transition-all text-sm outline-none resize-none rounded-xl"
                     />
                   </div>
 
@@ -288,7 +285,7 @@ export default function BookingForm({
                     <button
                       type="button"
                       onClick={onClose}
-                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 font-semibold rounded hover:bg-gray-50 transition-colors cursor-pointer"
                     >
                       Batal
                     </button>
@@ -296,7 +293,7 @@ export default function BookingForm({
                     <button
                       type="submit"
                       disabled={loading}
-                      className="flex-1 px-4 py-2 bg-[#003f88] hover:bg-[#003f88] text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                      className="flex-1 px-4 py-2 bg-[#003f88] hover:bg-[#003f88] text-white font-semibold rounded transition-colors flex items-center justify-center gap-2 cursor-pointer"
                     >
                       {loading ? (
                         <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />

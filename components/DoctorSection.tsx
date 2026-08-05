@@ -337,7 +337,8 @@ const DoctorSection = ({
               </div>
 
               {/* Detail Dokter */}
-              <div className="flex-1 text-left">
+              <div className="flex-1 text-left min-w-0">
+                {" "}
                 <div className="mb-2 md:mb-4">
                   <h3 className="text-lg md:text-2xl font-bold text-slate-800 mt-0 md:mt-8">
                     {doctor.name}
@@ -346,17 +347,18 @@ const DoctorSection = ({
                     {doctor.specialty}
                   </p>
                 </div>
-
-                <div className="flex flex-wrap justify-start gap-2 md:gap-3">
+                {/*  container tombol */}
+                <div className="flex flex-row items-center justify-start gap-2 md:gap-3 w-full">
                   <button
                     onClick={() => setSelectedDoctor(doctor)}
-                    className="px-4 py-2 md:px-8 md:py-3 bg-[#003f88] text-white text-[10px] md:text-[12px] font-bold rounded-full transition-all hover:bg-[#003f88]/90 active:scale-95 shadow-md shadow-blue-900/5 cursor-pointer"
+                    className="shrink-0 whitespace-nowrap px-4 py-2 md:px-8 md:py-3 bg-[#003f88] text-white text-[10px] md:text-[12px] font-bold rounded-full transition-all hover:bg-[#003f88]/90 active:scale-95 shadow-md shadow-blue-900/5 cursor-pointer"
                   >
                     Buat Janji Temu
                   </button>
+
                   <Link
                     href={`/dokter/${doctor.id}`}
-                    className="px-4 py-2 md:px-8 md:py-3 bg-white text-slate-600 text-[10px] md:text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-[#e67e22] hover:text-white active:scale-95"
+                    className="shrink-0 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 md:px-8 md:py-3 bg-white text-slate-600 text-[10px] md:text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-[#e67e22] hover:text-white active:scale-95"
                   >
                     Profil Dokter
                   </Link>

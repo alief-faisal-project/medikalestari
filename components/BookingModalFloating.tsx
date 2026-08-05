@@ -245,7 +245,7 @@ export default function BookingModalFloating({
             exit={{ opacity: 0, scale: 0.98, y: 10 }}
             className="fixed inset-0 z-70 flex items-center justify-center p-4 pointer-events-none"
           >
-            <section className="bg-white rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.1)] w-full max-w-sm overflow-hidden pointer-events-auto border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <section className="bg-white rounded shadow-[0_10px_40px_rgba(0,0,0,0.1)] w-full max-w-sm overflow-hidden pointer-events-auto border border-slate-100 max-h-[90vh] overflow-y-auto">
               {/* Header modal */}
               <header className="p-7 pb-2 flex items-start justify-between">
                 <div className="pr-4">
@@ -288,7 +288,7 @@ export default function BookingModalFloating({
                     /* Form input */
                     <form onSubmit={handleSubmit} className="space-y-3">
                       {error && (
-                        <div className="bg-red-50 text-red-600 p-3 rounded-2xl text-[11px] font-bold flex gap-2 items-center border border-red-100">
+                        <div className="bg-red-50 text-red-600 p-3 text-[11px] font-bold flex gap-2 items-center border border-red-100">
                           <AlertCircle size={14} /> {error}
                         </div>
                       )}
@@ -403,7 +403,7 @@ export default function BookingModalFloating({
                         <button
                           type="submit"
                           disabled={loading || doctorsData.length === 0}
-                          className="w-full py-4 bg-[#003f88] text-white font-bold rounded-full transition-all duration-300 active:scale-95 flex items-center justify-center gap-3 text-sm cursor-pointer hover:bg-[#003f88]/90 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="w-full py-4 bg-[#003f88] text-white font-bold rounded transition-all duration-300 active:scale-95 flex items-center justify-center gap-3 text-sm cursor-pointer hover:bg-[#003f88]/90 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {loading ? (
                             <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />

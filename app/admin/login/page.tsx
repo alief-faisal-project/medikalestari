@@ -63,10 +63,10 @@ const AdminLoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
-      <div className="w-full max-w-md bg-white rounded-xs shadow-xl p-10 border border-gray-200">
+    <div className="min-h-screen flex items-center justify-center bg-[#003369] p-6">
+      <div className="w-full max-w-md bg-white rounded-xl p-10 border border-gray-200">
         <div className="mb-10 text-center">
-          <h1 className="text-4xl font-bold text-[#01274F] mb-2">LOGIN</h1>
+          <h1 className="text-4xl font-bold text-[#01274F] mb-2">Login</h1>
           <p className="text-gray-400 font-medium text-lg">RS Medika Lestari</p>
         </div>
 
@@ -88,8 +88,8 @@ const AdminLoginPage = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email Address"
-              className="w-full pl-14 pr-6 py-4 bg-white border border-gray-200 rounded-xs text-sm focus:border-[#01274F] focus:ring-4 focus:ring-blue-50 outline-none transition-all placeholder:text-gray-300"
+              placeholder="Masukkan Email"
+              className="w-full pl-14 pr-6 py-4 bg-white border border-gray-200 rounded-xs text-sm transition-all placeholder:text-gray-300"
               required
             />
           </div>
@@ -104,8 +104,8 @@ const AdminLoginPage = () => {
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className="w-full pl-14 pr-14 py-4 bg-white border border-gray-200 rounded-xs text-sm focus:border-[#003369] focus:ring-4 focus:ring-blue-50 outline-none transition-all placeholder:text-gray-300"
+              placeholder="Masukkan Kata sandi"
+              className="w-full pl-14 pr-14 py-4 bg-white border border-gray-200 rounded-xs text-sm  transition-all placeholder:text-gray-300"
               required
             />
             <button
@@ -120,7 +120,7 @@ const AdminLoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#003369] text-white py-4 rounded-xs font-bold text-sm hover:bg-[#01274F] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full bg-[#003369] text-white py-4 rounded-xl font-bold text-sm hover:bg-[#01274F] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
           >
             {loading ? <Loader2 size={18} className="animate-spin" /> : "Login"}
           </button>
