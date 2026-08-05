@@ -351,7 +351,7 @@ const DoctorSection = ({
                 <div className="flex flex-row items-center justify-start gap-2 md:gap-3 w-full">
                   <button
                     onClick={() => setSelectedDoctor(doctor)}
-                    className="shrink-0 whitespace-nowrap px-4 py-2 md:px-8 md:py-3 bg-[#003f88] text-white text-[10px] md:text-[12px] font-bold rounded-full transition-all hover:bg-[#003f88]/90 active:scale-95 shadow-md shadow-blue-900/5 cursor-pointer"
+                    className="shrink-0 whitespace-nowrap px-4 py-2 md:px-8 md:py-3 bg-[#003f88] text-white text-[10px] md:text-[12px] font-bold rounded-full transition-all hover:bg-[#003f88]/90 active:scale-95 cursor-pointer"
                   >
                     Buat Janji Temu
                   </button>
