@@ -506,7 +506,7 @@ export default function PromoDetailPage() {
               <button
                 type="button"
                 onClick={() => setShowWhatsAppForm(true)}
-                className="flex-1 px-5 py-3 bg-green-500 hover:bg-green-600 active:bg-green-700 transition-colors duration-700 text-white text-sm font-semibold rounded-lg  flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                className="flex-1 px-5 py-3 bg-green-500 hover:bg-green-600 active:bg-green-700 transition-colors duration-700 text-white text-sm font-semibold rounded  flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Image
                   src="/images/icons/whatsapp-fill.svg"
@@ -520,7 +520,7 @@ export default function PromoDetailPage() {
 
               <a
                 href="tel:+6285717028133"
-                className="flex-1 px-5 py-3 bg-[#003f88] hover:bg-blue-800 active:bg-blue-900 transition-colors duration-700 text-white text-sm font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm"
+                className="flex-1 px-5 py-3 bg-[#003f88] hover:bg-blue-800 active:bg-blue-900 transition-colors duration-700 text-white text-sm font-semibold rounded transition-colors flex items-center justify-center gap-2"
               >
                 <Phone size={16} />
                 <span>Hubungi Kami</span>
