@@ -52,10 +52,11 @@ export default function RootLayout({
       lang="id"
       className="h-full antialiased"
       suppressHydrationWarning
-      style={{ fontFamily: "'Google Sans', sans-serif" }} // 👈 Terapkan di level paling atas
+      style={{ fontFamily: "'Google Sans', sans-serif" }} 
     >
       <head>
-        <title>RS Medika Lestari</title>
+        <title>Rumah Sakit Medika Lestari</title>
+        <meta name="google-site-verification" content="Th6lu-NdN8e4ZAo2P9c-j15Tfnc9oL_2znO4rLe9WJI" />
         <meta
           name="description"
           content="RS Medika Lestari adalah sebuah Rumah Sakit Umum modern yang memiliki fasilitas lengkap, dan memiliki jaringan yang luas bertempat di Jl. HOS Cokroaminoto Perum Pondok Lestari Blok C1 No.1-2, Ciledug Kota Tanggerang 15157."

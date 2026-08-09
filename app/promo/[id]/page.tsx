@@ -501,7 +501,7 @@ export default function PromoDetailPage() {
               }}
             />
 
-            {/* CTA Buttons - Sekarang posisinya persis di bawah deskripsi */}
+            {/* CTA Buttons  */}
             <div className="flex flex-row gap-2 sm:flex-row gap-3 w-full mt-6 pt-6 border-t border-slate-100">
               <button
                 type="button"
