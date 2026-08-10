@@ -56,7 +56,7 @@ const DAYS = [
 ];
 const ITEMS_PER_PAGE = 10;
 
-// Cache untuk menyimpan data dokter yang sudah di-load
+// cache dokter agar tidak fetch ulang
 let cachedDoctors: DoctorWithSchedules[] | null = null;
 let isDataLoading = false;
 
@@ -71,7 +71,6 @@ const DoctorSection = ({
 }) => {
   // --- STATES ---
   const [doctors, setDoctors] = useState<DoctorWithSchedules[]>(() => {
-    // Gunakan cached data jika tersedia
     return cachedDoctors || [];
   });
   const [loading, setLoading] = useState(!cachedDoctors);
@@ -83,11 +82,9 @@ const DoctorSection = ({
     useState(false);
   const [showMobileDayModal, setShowMobileDayModal] = useState(false);
 
-  // Baca parameter dari URL menggunakan useSearchParams
   const searchParams = useSearchParams();
   const urlSpecialty = searchParams.get("specialty") || "";
 
-  // Tentukan specialty awal dari URL atau dari props
   const finalInitialSpecialty =
     urlSpecialty || initialSpecialty || "Semua Spesialis";
 
@@ -106,7 +103,7 @@ const DoctorSection = ({
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInitialMount = useRef(true);
 
-  // --- HELPER FUNCTIONS ---
+  // --- HELPERS ---
   const jumpToTop = useCallback(() => {
     if (sectionRef.current) {
       const yOffset = -150;
@@ -116,7 +113,6 @@ const DoctorSection = ({
     }
   }, []);
 
-  // --- LOGIC HELPER ---
   const getUniqueDoctors = useCallback((doctors: Doctor[]): Doctor[] => {
     const seen = new Set<string | number>();
     return doctors.filter((v) => {
@@ -126,7 +122,7 @@ const DoctorSection = ({
     });
   }, []);
 
-  // Fungsi untuk shuffle array (Fisher-Yates)
+  // shuffle array (Fisher-Yates)
   const shuffleArray = useCallback((array: DoctorWithSchedules[]) => {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -136,15 +132,14 @@ const DoctorSection = ({
     return shuffled;
   }, []);
 
-  // --- HYDRATION & INITIAL SCROLL ---
+  // scroll ke atas saat mount
   useEffect(() => {
-    // Memastikan halaman mulai dari atas sebelum komponen tampil
     if (globalThis.window) {
       globalThis.window.scrollTo({ top: 0, behavior: "instant" });
     }
   }, []);
 
-  // --- AUTO APPLY FILTER WHEN URL SPECIALTY CHANGES ---
+  // sync filter dari URL specialty
   useEffect(() => {
     if (urlSpecialty && urlSpecialty !== "Semua Spesialis") {
       Promise.resolve().then(() => {
@@ -157,17 +152,15 @@ const DoctorSection = ({
     }
   }, [urlSpecialty]);
 
-  // --- DATA LOADING ---
+  // load data dokter
   useEffect(() => {
     const load = async () => {
-      // Jika data sudah di-cache dan tidak sedang loading, skip
       if (cachedDoctors) {
         setDoctors(cachedDoctors);
         setLoading(false);
         return;
       }
 
-      // Jika sedang loading, skip
       if (isDataLoading) return;
 
       try {
@@ -175,7 +168,6 @@ const DoctorSection = ({
         const data = await fetchAllDoctorsWithSchedules();
         if (data) {
           const uniqueData = getUniqueDoctors(data as DoctorWithSchedules[]);
-          // Shuffle data untuk mendapatkan urutan random
           const shuffledData = shuffleArray(uniqueData);
           cachedDoctors = shuffledData;
           setDoctors(shuffledData);
@@ -184,7 +176,6 @@ const DoctorSection = ({
         console.error("Error loading doctors:", error);
       } finally {
         isDataLoading = false;
-        // logic requestAnimationFrame agar state update tidak bentrok dengan paint browser
         requestAnimationFrame(() => {
           setLoading(false);
         });
@@ -193,7 +184,7 @@ const DoctorSection = ({
     load();
   }, [getUniqueDoctors, shuffleArray]);
 
-  // --- FILTER SYNC ---
+  // reset filter nama saat input dikosongkan
   useEffect(() => {
     if (tempFilter.name === "" && activeFilter.name !== "") {
       setTimeout(() => {
@@ -212,7 +203,6 @@ const DoctorSection = ({
         activeFilter.name === "" ||
         doc.name.toLowerCase().includes(activeFilter.name.toLowerCase());
 
-      // Filter berdasarkan hari
       let matchDay = true;
       if (activeFilter.day !== "Semua Hari") {
         matchDay =
@@ -233,6 +223,26 @@ const DoctorSection = ({
     startIndex,
     startIndex + ITEMS_PER_PAGE,
   );
+
+  // JSON-LD untuk daftar dokter yang tampil (bantu Google memahami konten)
+  const doctorsJsonLd = useMemo(() => {
+    if (paginatedDoctors.length === 0) return null;
+    return {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      itemListElement: paginatedDoctors.map((doctor, index) => ({
+        "@type": "ListItem",
+        position: startIndex + index + 1,
+        item: {
+          "@type": "Physician",
+          name: doctor.name,
+          medicalSpecialty: doctor.specialty,
+          image: doctor.image_url || undefined,
+          url: `/dokter/${doctor.id}`,
+        },
+      })),
+    };
+  }, [paginatedDoctors, startIndex]);
 
   const handleApplyFilter = () => {
     setIsPaging(true);
@@ -284,6 +294,7 @@ const DoctorSection = ({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           className="space-y-6"
+          aria-hidden="true"
         >
           {new Array(3).fill(null).map((_, i) => (
             <React.Fragment key={`skeleton-${i}-${loading ? "load" : "page"}`}>
@@ -302,77 +313,108 @@ const DoctorSection = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="grid grid-cols-1 gap-6"
         >
-          {paginatedDoctors.map((doctor, index) => (
-            <div
-              key={`doctor-${doctor.id || index}-${startIndex + index}`}
-              className={`relative group flex flex-row items-start gap-4 md:gap-8 p-4 md:p-8 bg-white border border-slate-100 shadow-sm h-fit rounded-none transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-slate-100 ${
-                doctor.status === "cuti" ? "opacity-60 pointer-events-none" : ""
-              }`}
-            >
-              {doctor.status === "cuti" && (
-                <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none"></div>
-              )}
-              {/* Foto Dokter */}
-              <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44 shrink-0 rounded-full overflow-hidden border-4 border-slate-50 group-hover:border-blue-50 transition-colors shadow-sm bg-slate-100 flex items-center justify-center">
-                {doctor.image_url ? (
-                  <Image
-                    src={doctor.image_url}
-                    alt={doctor.name}
-                    fill
-                    className="object-cover"
-                    priority={index < 3}
-                    sizes="(max-width: 768px) 96px, 176px"
-                  />
-                ) : (
-                  <svg
-                    className="w-1/2 h-1/2 text-gray-400"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                  </svg>
-                )}
-              </div>
+          {doctorsJsonLd && (
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(doctorsJsonLd),
+              }}
+            />
+          )}
 
-              {/* Detail Dokter */}
-              <div className="flex-1 text-left min-w-0">
-                {" "}
-                <div className="mb-2 md:mb-4">
-                  <h3 className="text-lg md:text-2xl font-bold text-slate-800 mt-0 md:mt-8">
-                    {doctor.name}
-                  </h3>
-                  <p className="text-gray-400 font-semibold text-[10px] md:text-xs mb-1">
-                    {doctor.specialty}
-                  </p>
-                </div>
-                {/*  container tombol */}
-                <div className="flex flex-row items-center justify-start gap-2 md:gap-3 w-full">
-                  <button
-                    onClick={() => setSelectedDoctor(doctor)}
-                    className="shrink-0 whitespace-nowrap px-4 py-2 md:px-8 md:py-3 bg-[#003f88] text-white text-[10px] md:text-[12px] font-bold rounded-full transition-all hover:bg-[#003f88]/90 active:scale-95 cursor-pointer"
-                  >
-                    Buat Janji Temu
-                  </button>
+          <ul className="grid grid-cols-1 gap-6 list-none p-0 m-0">
+            {paginatedDoctors.map((doctor, index) => (
+              <li
+                key={`doctor-${doctor.id || index}-${startIndex + index}`}
+                itemScope
+                itemType="https://schema.org/Physician"
+              >
+                <article
+                  className={`relative group flex flex-row items-start gap-4 md:gap-8 p-4 md:p-8 bg-white border border-slate-100 shadow-sm h-fit rounded-none transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-slate-100 ${
+                    doctor.status === "cuti"
+                      ? "opacity-60 pointer-events-none"
+                      : ""
+                  }`}
+                >
+                  {doctor.status === "cuti" && (
+                    <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none"></div>
+                  )}
+                  {/* foto dokter */}
+                  <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44 shrink-0 rounded-full overflow-hidden border-4 border-slate-50 group-hover:border-blue-50 transition-colors shadow-sm bg-slate-100 flex items-center justify-center">
+                    {doctor.image_url ? (
+                      <Image
+                        src={doctor.image_url}
+                        alt={`Foto ${doctor.name}, ${doctor.specialty}`}
+                        itemProp="image"
+                        fill
+                        className="object-cover"
+                        priority={index < 3}
+                        sizes="(max-width: 768px) 96px, 176px"
+                      />
+                    ) : (
+                      <svg
+                        className="w-1/2 h-1/2 text-gray-400"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                      </svg>
+                    )}
+                  </div>
 
-                  <Link
-                    href={`/dokter/${doctor.id}`}
-                    className="shrink-0 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 md:px-8 md:py-3 bg-white text-slate-600 text-[10px] md:text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-[#e67e22] hover:text-white active:scale-95"
-                  >
-                    Profil Dokter
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
+                  {/* detail dokter */}
+                  <div className="flex-1 text-left min-w-0">
+                    <div className="mb-2 md:mb-4">
+                      <h3
+                        itemProp="name"
+                        className="text-lg md:text-2xl font-bold text-slate-800 mt-0 md:mt-8"
+                      >
+                        {doctor.name}
+                      </h3>
+                      <p
+                        itemProp="medicalSpecialty"
+                        className="text-gray-400 font-semibold text-[10px] md:text-xs mb-1"
+                      >
+                        {doctor.specialty}
+                      </p>
+                    </div>
 
-          {/* PAGINATION */}
+                    <div className="flex flex-row items-center justify-start gap-2 md:gap-3 w-full">
+                      <button
+                        onClick={() => setSelectedDoctor(doctor)}
+                        aria-label={`Buat janji temu dengan ${doctor.name}`}
+                        className="shrink-0 whitespace-nowrap px-4 py-2 md:px-8 md:py-3 bg-[#003f88] text-white text-[10px] md:text-[12px] font-bold rounded-full transition-all hover:bg-[#003f88]/90 active:scale-95 cursor-pointer"
+                      >
+                        Buat Janji Temu
+                      </button>
+
+                      <Link
+                        href={`/dokter/${doctor.id}`}
+                        itemProp="url"
+                        aria-label={`Lihat profil ${doctor.name}`}
+                        className="shrink-0 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 md:px-8 md:py-3 bg-white text-slate-600 text-[10px] md:text-[12px] font-bold rounded-full border border-slate-200 transition-all hover:bg-[#e67e22] hover:text-white active:scale-95"
+                      >
+                        Profil Dokter
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              </li>
+            ))}
+          </ul>
+
+          {/* paginasi */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-2 mt-2 md:mt-12 pt-4 ">
+            <nav
+              aria-label="Navigasi halaman daftar dokter"
+              className="flex items-center justify-center gap-2 mt-2 md:mt-12 pt-4 "
+            >
               {currentPage > 1 && (
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
+                  aria-label="Halaman sebelumnya"
                   className="w-16 h-11 flex items-center justify-center text-slate-600 border border-slate-200 rounded-md hover:bg-slate-50 transition-all font-bold text-xs "
                 >
                   ← PREV
@@ -384,6 +426,8 @@ const DoctorSection = ({
                   <button
                     key={`page-${i + 1}`}
                     onClick={() => handlePageChange(i + 1)}
+                    aria-label={`Halaman ${i + 1}`}
+                    aria-current={currentPage === i + 1 ? "page" : undefined}
                     className={`w-11 h-11 flex items-center justify-center rounded-md font-bold text-xs transition-all ${
                       currentPage === i + 1
                         ? "bg-[#003f88] text-white border border-[#003f88]"
@@ -398,12 +442,13 @@ const DoctorSection = ({
               {currentPage < totalPages && (
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
+                  aria-label="Halaman berikutnya"
                   className="w-16 h-11 flex items-center justify-center text-slate-600 border border-slate-200 rounded-md hover:bg-slate-50 transition-all font-bold text-xs"
                 >
                   NEXT →
                 </button>
               )}
-            </div>
+            </nav>
           )}
         </motion.div>
       );
@@ -415,9 +460,11 @@ const DoctorSection = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        role="status"
+        aria-live="polite"
         className="flex flex-col items-center justify-center h-96 bg-slate-50/50 rounded-none border border-dashed border-slate-200"
       >
-        <Search size={40} className="text-slate-300 mb-4" />
+        <Search size={40} className="text-slate-300 mb-4" aria-hidden="true" />
         <h3 className="text-slate-500 font-normal">Dokter tidak ditemukan</h3>
       </motion.div>
     );
@@ -428,8 +475,9 @@ const DoctorSection = ({
       ref={sectionRef}
       className="w-full bg-white min-h-screen text-slate-800 relative mb-20"
       id="dokter-spesialis"
+      aria-label="Daftar dokter spesialis"
     >
-      {/* MODAL BOOKING */}
+      {/* modal booking */}
       <AnimatePresence>
         {selectedDoctor && (
           <BookingForm
@@ -442,17 +490,28 @@ const DoctorSection = ({
       </AnimatePresence>
 
       <div className="max-w-[1139px] w-full mx-auto px-4 py-8 md:py-8">
-        {/* BREADCRUMB & TITLE SECTION */}
+        {/* breadcrumb & judul */}
         <div className="pt-0 md:pt-9 pb-12">
-          <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
-            <Link
-              href="/"
-              className="text-black/60 hover:text-gray-300 transition-colors"
-            >
-              Beranda
-            </Link>
-            <ChevronRight size={12} className="text-black/60" />
-            <span className="font-normal">Dokter Kami</span>
+          <nav
+            aria-label="Breadcrumb"
+            className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4"
+          >
+            <ol className="flex items-center gap-1 list-none p-0 m-0">
+              <li>
+                <Link
+                  href="/"
+                  className="text-black/60 hover:text-gray-300 transition-colors"
+                >
+                  Beranda
+                </Link>
+              </li>
+              <li aria-hidden="true">
+                <ChevronRight size={12} className="text-black/60" />
+              </li>
+              <li aria-current="page" className="font-normal">
+                Dokter Kami
+              </li>
+            </ol>
           </nav>
           <h1 className="text-3xl md:text-4xl font-bold text-black border-b border-slate-100 pb-6">
             Dokter Kami
@@ -460,22 +519,29 @@ const DoctorSection = ({
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 items-start">
-          {/* MOBILE FILTER BAR */}
-          <div className="lg:hidden w-full flex flex-col gap-4 ">
+          {/* filter mobile */}
+          <search
+            className="lg:hidden w-full flex flex-col gap-4"
+            aria-label="Filter pencarian dokter"
+          >
             <div className="flex items-center gap-2 bg-slate-50 p-3 rounded-lg border border-slate-100 -mt-4">
-              {/* Search Input */}
+              {/* input nama */}
               <div className="flex-1 relative">
                 <Search
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-[#003f88]"
                   size={16}
+                  aria-hidden="true"
                 />
+                <label htmlFor="doctor-name-mobile" className="sr-only">
+                  Cari nama dokter
+                </label>
                 <input
+                  id="doctor-name-mobile"
                   type="text"
                   placeholder="Masukkan Nama Dokter"
                   value={tempFilter.name}
                   onChange={(e) => {
                     setTempFilter({ ...tempFilter, name: e.target.value });
-                    // Auto-reset search ketika input kosong
                     if (e.target.value === "") {
                       setActiveFilter((prev) => ({ ...prev, name: "" }));
                       setCurrentPage(1);
@@ -491,9 +557,11 @@ const DoctorSection = ({
                   className="w-full border border-slate-200 h-11 pl-10 pr-4 outline-none focus:border-[#003f88] text-sm bg-white"
                 />
               </div>
-              {/* Specialty Icon Button */}
+              {/* tombol spesialis */}
               <button
                 onClick={handleOpenSpecialtyModal}
+                aria-label="Filter spesialis"
+                aria-expanded={showMobileSpecialtyModal}
                 className={`w-11 h-11 flex items-center justify-center border transition-all bg-white ${
                   showMobileSpecialtyModal
                     ? "border-[#003f88] bg-white"
@@ -501,12 +569,18 @@ const DoctorSection = ({
                 }`}
                 title="Filter Spesialis"
               >
-                <Stethoscope size={20} className="text-[#003f88]" />
+                <Stethoscope
+                  size={20}
+                  className="text-[#003f88]"
+                  aria-hidden="true"
+                />
               </button>
 
-              {/* Day Icon Button */}
+              {/* tombol hari */}
               <button
                 onClick={handleOpenDayModal}
+                aria-label="Filter hari"
+                aria-expanded={showMobileDayModal}
                 className={`w-11 h-11 flex items-center justify-center border transition-all bg-white ${
                   showMobileDayModal
                     ? "border-[#003f88] bg-white"
@@ -514,10 +588,14 @@ const DoctorSection = ({
                 }`}
                 title="Filter Hari"
               >
-                <CalendarDays size={20} className="text-[#003f88]" />
+                <CalendarDays
+                  size={20}
+                  className="text-[#003f88]"
+                  aria-hidden="true"
+                />
               </button>
 
-              {/* Search Button */}
+              {/* tombol cari */}
               <button
                 onClick={() => {
                   handleApplyFilter();
@@ -528,7 +606,7 @@ const DoctorSection = ({
               </button>
             </div>
 
-            {/* Specialty Dropdown Modal */}
+            {/* dropdown spesialis */}
             <AnimatePresence>
               {showMobileSpecialtyModal && (
                 <motion.div
@@ -543,6 +621,9 @@ const DoctorSection = ({
                       <button
                         key={s}
                         onClick={() => handleSpecialtySelect(s)}
+                        aria-current={
+                          tempFilter.specialty === s ? "true" : undefined
+                        }
                         className={`w-full text-left px-4 py-2 text-sm transition-all ${
                           tempFilter.specialty === s
                             ? "bg-[#003f88] text-white font-semibold"
@@ -557,7 +638,7 @@ const DoctorSection = ({
               )}
             </AnimatePresence>
 
-            {/* Day Dropdown Modal */}
+            {/* dropdown hari */}
             <AnimatePresence>
               {showMobileDayModal && (
                 <motion.div
@@ -575,6 +656,7 @@ const DoctorSection = ({
                       <button
                         key={d}
                         onClick={() => handleDaySelect(d)}
+                        aria-current={tempFilter.day === d ? "true" : undefined}
                         className={`w-full text-left px-4 py-2 text-sm transition-all whitespace-nowrap ${
                           tempFilter.day === d
                             ? "bg-[#003f88] text-white font-semibold"
@@ -588,17 +670,20 @@ const DoctorSection = ({
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+          </search>
 
-          {/* SIDEBAR FILTER - Desktop Only */}
+          {/* sidebar filter desktop */}
           <aside className="hidden lg:block w-1/3 xl:w-1/4 lg:sticky lg:top-45 z-30">
-            <div className="border border-slate-200 p-8 bg-white rounded-none shadow-sm h-fit">
+            <search
+              className="border border-slate-200 p-8 bg-white rounded-none shadow-sm h-fit block"
+              aria-label="Filter pencarian dokter"
+            >
               <div className="flex items-center gap-3 mb-8 text-[#003f88] border-b border-slate-50 pb-4">
-                <FilterIcon size={18} />
-                <span className="text-lg font-bold">Filter Pencarian</span>
+                <FilterIcon size={18} aria-hidden="true" />
+                <h2 className="text-lg font-bold">Filter Pencarian</h2>
               </div>
 
-              {/* Input Nama */}
+              {/* input nama */}
               <div className="mb-6">
                 <label
                   htmlFor="doctor-name"
@@ -610,6 +695,7 @@ const DoctorSection = ({
                   <User
                     className="absolute left-0 bottom-3 text-slate-400"
                     size={16}
+                    aria-hidden="true"
                   />
                   <input
                     id="doctor-name"
@@ -624,7 +710,7 @@ const DoctorSection = ({
                 </div>
               </div>
 
-              {/* Select Spesialis */}
+              {/* select spesialis */}
               <div className="mb-6">
                 <label
                   htmlFor="specialty-select"
@@ -636,6 +722,7 @@ const DoctorSection = ({
                   <Stethoscope
                     className="absolute left-0 bottom-3 text-slate-400"
                     size={16}
+                    aria-hidden="true"
                   />
                   <select
                     id="specialty-select"
@@ -657,7 +744,7 @@ const DoctorSection = ({
                 </div>
               </div>
 
-              {/* Pilih Hari */}
+              {/* pilih hari */}
               <div className="mb-10">
                 <label
                   htmlFor="day-select"
@@ -669,6 +756,7 @@ const DoctorSection = ({
                   <CalendarDays
                     className="absolute left-0 bottom-3 text-slate-400"
                     size={16}
+                    aria-hidden="true"
                   />
                   <select
                     id="day-select"
@@ -693,10 +781,10 @@ const DoctorSection = ({
               >
                 Temukan Dokter
               </button>
-            </div>
+            </search>
           </aside>
 
-          {/* MAIN CONTENT AREA */}
+          {/* konten utama */}
           <main className="w-full lg:w-2/3 xl:w-3/4 relative z-20 min-h-150">
             <AnimatePresence mode="wait" initial={false}>
               {renderContent()}

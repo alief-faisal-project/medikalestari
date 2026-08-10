@@ -116,7 +116,7 @@ const AboutUs = () => {
         </div>
       </header>
 
-      {/* 2. sejarah */}
+      {/* sejarah */}
       <section className="max-w-[1160px] mx-auto px-6 pb-24">
         <div className="max-w-[1160px]">
           <h2 className="text-3xl font-bold tracking-tight text-slate-950 uppercase mb-6">
@@ -152,7 +152,7 @@ const AboutUs = () => {
         </div>
       </section>
 
-      {/* 3. visi & misi */}
+      {/* visi & misi */}
       <section className="bg-slate-50 border-y border-slate-200 py-24">
         <div className="max-w-[1160px] mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -198,7 +198,7 @@ const AboutUs = () => {
         </div>
       </section>
 
-      {/* 5. mitra kami */}
+      {/* mitra kami */}
       <section className="max-w-[1160px] mx-auto px-6 py-24">
         <div className="text-center mb-16">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 uppercase">

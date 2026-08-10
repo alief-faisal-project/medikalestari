@@ -22,7 +22,7 @@ const CareersPage = () => {
   const [success, setSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  // Form state
+  // state form
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -41,7 +41,7 @@ const CareersPage = () => {
         const res = await fetch("/api/careers/config");
         const data = await res.json();
 
-        // Parse criteria if it's a JSON string
+        // parse criteria
         if (data.criteria && typeof data.criteria === "string") {
           try {
             data.criteria = JSON.parse(data.criteria);
@@ -53,7 +53,7 @@ const CareersPage = () => {
           data.criteria = [];
         }
 
-        // Parse position_photos if it's a JSON string
+        // parse position_photos
         if (data.position_photos && typeof data.position_photos === "string") {
           try {
             data.position_photos = JSON.parse(data.position_photos);
@@ -76,7 +76,7 @@ const CareersPage = () => {
     loadConfig();
   }, []);
 
-  // Kunci scroll background saat modal formulir terbuka
+  // kunci scroll saat modal buka
   useEffect(() => {
     if (showModal) {
       const scrollY = window.scrollY;
@@ -160,7 +160,7 @@ const CareersPage = () => {
         return;
       }
 
-      // Upload resume
+      // upload resume
       const formDataUpload = new FormData();
       formDataUpload.append("file", resumeFile);
       formDataUpload.append("path", `careers/${Date.now()}-${resumeFile.name}`);
@@ -176,7 +176,7 @@ const CareersPage = () => {
         resumeUrl = uploadData.url || "";
       }
 
-      // Prepare message for WhatsApp
+      // siapkan pesan whatsapp
       const criteria_text = Object.entries(formData.criteria_fields)
         .map(([key, value]) => `${key}: ${value}`)
         .join("\n");
@@ -201,7 +201,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
       const whatsappMessage = encodeURIComponent(message);
       const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
-      // Save to database
+      // simpan ke database
       const registrationData = {
         full_name: formData.full_name,
         email: formData.email,
@@ -240,7 +240,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
       setResumeFile(null);
       setResumePreview("");
 
-      // Redirect ke WhatsApp
+      // redirect ke whatsapp
       setTimeout(() => {
         window.open(whatsappLink, "_blank");
       }, 1500);
@@ -258,27 +258,80 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
     return <CareersFormSkeleton />;
   }
 
+  // JSON-LD breadcrumb untuk SEO
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Beranda", item: "/" },
+      { "@type": "ListItem", position: 2, name: "Karir" },
+    ],
+  };
+
+  // JSON-LD daftar posisi lowongan untuk SEO
+  const positionsJsonLd =
+    config?.position_photos && config.position_photos.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Posisi Lowongan Kerja RS Medika Lestari",
+          itemListElement: config.position_photos.map((photo, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: photo.position_name,
+          })),
+        }
+      : null;
+
   return (
-    <div className="min-h-screen bg-white">
-      {/* BREADCRUMB & TITLE SECTION */}
+    <main className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {positionsJsonLd && (
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(positionsJsonLd) }}
+        />
+      )}
+
+      {/* breadcrumb */}
       <div className="max-w-293.75 mx-auto px-4 md:px-8 pt-10 md:pt-18 md:-mt-1">
-        <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
-          <Link
-            href="/"
-            className="text-black/60 hover:text-gray-300 transition-colors"
-          >
-            Beranda
-          </Link>
-          <ChevronRight size={12} className="text-black/60" />
-          <span className="font-normal">Karir</span>
+        <nav aria-label="Breadcrumb" className="mb-4">
+          <ol className="flex items-center gap-1 text-[14px] font-normal text-gray-300 list-none p-0 m-0">
+            <li>
+              <Link
+                href="/"
+                className="text-black/60 hover:text-gray-300 transition-colors"
+              >
+                Beranda
+              </Link>
+            </li>
+            <li aria-hidden="true" className="flex items-center">
+              <ChevronRight size={12} className="text-black/60" />
+            </li>
+            <li aria-current="page" className="font-normal">
+              Karir
+            </li>
+          </ol>
         </nav>
+        <h1 className="sr-only">Karir - Lowongan Kerja RS Medika Lestari</h1>
       </div>
 
-      {/* Position Photos Grid */}
+      {/* grid posisi lowongan */}
       {config?.position_photos && config.position_photos.length > 0 && (
-        <div className="max-w-293.75 mx-auto px-4 md:px-8 py-1">
+        <section
+          aria-labelledby="positions-heading"
+          className="max-w-293.75 mx-auto px-4 md:px-8 py-1"
+        >
           <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+            <h2
+              id="positions-heading"
+              className="text-3xl md:text-4xl font-bold text-gray-800 mb-2"
+            >
               Posisi lowongan yang tersedia
             </h2>
             <p className="text-sm md:text-base text-gray-500 italic">
@@ -287,60 +340,67 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 list-none p-0 m-0">
             {config.position_photos.map((photo, index) => (
-              <div
+              <li
                 key={photo.id ?? `photo-${index}`}
-                className="border border-gray-200  overflow-hidden"
+                className="border border-gray-200 overflow-hidden"
               >
-                <div className="relative w-full aspect-square overflow-hidden">
-                  {photo.image_url ? (
-                    <img
-                      src={photo.image_url}
-                      alt={photo.position_name}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        console.error("Failed to load image:", photo.image_url);
-                        // Check if it's a blob URL (temporary, invalid)
-                        if (photo.image_url?.startsWith("blob:")) {
-                          console.warn(
-                            "Blob URL detected - image is temporary and may have expired",
+                <figure className="m-0">
+                  <div className="relative w-full aspect-square overflow-hidden">
+                    {photo.image_url ? (
+                      <img
+                        src={photo.image_url}
+                        alt={photo.position_name}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          console.error(
+                            "Failed to load image:",
+                            photo.image_url,
                           );
-                        }
-                        e.currentTarget.style.display = "none";
-                        const parent = e.currentTarget.parentElement;
-                        if (
-                          parent &&
-                          !parent.querySelector("[data-error-message]")
-                        ) {
-                          const errorDiv = document.createElement("div");
-                          errorDiv.setAttribute("data-error-message", "true");
-                          errorDiv.className =
-                            "flex items-center justify-center h-full text-center text-gray-400 text-xs p-4";
-                          errorDiv.innerHTML =
-                            "<p>Gambar tidak dapat dimuat</p>";
-                          parent.appendChild(errorDiv);
-                        }
-                      }}
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-full text-gray-400 text-sm">
-                      Gambar tidak tersedia
-                    </div>
-                  )}
-                </div>
-                <div className="px-3 py-3 text-center border-t border-gray-100">
-                  <p className="text-sm md:text-base font-semibold text-gray-900 truncate">
-                    {photo.position_name}
-                  </p>
-                </div>
-              </div>
+                          // cek blob url yang sudah kadaluarsa
+                          if (photo.image_url?.startsWith("blob:")) {
+                            console.warn(
+                              "Blob URL detected - image is temporary and may have expired",
+                            );
+                          }
+                          e.currentTarget.style.display = "none";
+                          const parent = e.currentTarget.parentElement;
+                          if (
+                            parent &&
+                            !parent.querySelector("[data-error-message]")
+                          ) {
+                            const errorDiv = document.createElement("div");
+                            errorDiv.setAttribute("data-error-message", "true");
+                            errorDiv.className =
+                              "flex items-center justify-center h-full text-center text-gray-400 text-xs p-4";
+                            errorDiv.innerHTML =
+                              "<p>Gambar tidak dapat dimuat</p>";
+                            parent.appendChild(errorDiv);
+                          }
+                        }}
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-400 text-sm">
+                        Gambar tidak tersedia
+                      </div>
+                    )}
+                  </div>
+                  <figcaption className="px-3 py-3 text-center border-t border-gray-100">
+                    <p className="text-sm md:text-base font-semibold text-gray-900 truncate">
+                      {photo.position_name}
+                    </p>
+                  </figcaption>
+                </figure>
+              </li>
             ))}
-          </div>
-        </div>
+          </ul>
+        </section>
       )}
 
-      {/* Cek jika form tidak aktif */}
+      {/* form nonaktif */}
       {!config?.is_form_active ? (
         <div className="max-w-2xl mx-auto px-4 py-12 text-center">
           <p className="text-gray-600">
@@ -350,9 +410,10 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
         </div>
       ) : (
         <>
-          {/* Button Daftar Section */}
+          {/* button daftar */}
           <div className="max-w-2xl mx-auto px-4 py-12 flex justify-center ">
             <button
+              type="button"
               onClick={() => setShowModal(true)}
               className="px-8 py-4 bg-[#003f88] text-white font-semibold hover:bg-[#003f88]/90 transition-colors cursor-pointer active:scale-95 mb-20 rounded"
             >
@@ -362,7 +423,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
         </>
       )}
 
-      {/* Modal Backdrop */}
+      {/* backdrop modal */}
       {showModal && (
         <div
           className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-2 sm:p-4"
@@ -372,42 +433,58 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
           }}
           role="presentation"
         >
-          {/* Modal Container */}
+          {/* container modal */}
           <div
             className="bg-white rounded-xl shadow-2xl w-full max-w-xl max-h-[95vh] sm:max-h-[90vh] flex flex-col z-50"
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
+            aria-labelledby="careers-modal-title"
           >
-            {/* Modal Header */}
+            {/* header modal */}
             <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 shrink-0">
-              <h2 className="text-lg sm:text-xl font-bold text-gray-800">
+              <h2
+                id="careers-modal-title"
+                className="text-lg sm:text-xl font-bold text-gray-800"
+              >
                 Formulir Pendaftaran Karir
               </h2>
               <button
+                type="button"
                 onClick={() => setShowModal(false)}
                 className="text-gray-500 hover:text-gray-700 transition-colors p-1"
-                aria-label="Close modal"
+                aria-label="Tutup formulir"
               >
-                <X size={20} />
+                <X size={20} aria-hidden="true" />
               </button>
             </div>
 
-            {/* Modal Content with Scrollbar */}
+            {/* konten modal */}
             <div className="flex-1 overflow-y-auto p-3 sm:p-4">
               <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                 {error && (
-                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
-                    <AlertCircle size={18} className="text-red-500 shrink-0" />
+                  <div
+                    className="p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2"
+                    role="alert"
+                  >
+                    <AlertCircle
+                      size={18}
+                      className="text-red-500 shrink-0"
+                      aria-hidden="true"
+                    />
                     <p className="text-red-700 text-xs sm:text-sm">{error}</p>
                   </div>
                 )}
 
                 {success && (
-                  <div className="p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2">
+                  <div
+                    className="p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2"
+                    role="status"
+                  >
                     <CheckCircle
                       size={18}
                       className="text-green-500 shrink-0"
+                      aria-hidden="true"
                     />
                     <p className="text-green-700 text-xs sm:text-sm">
                       Data berhasil dikirim! Anda akan dialihkan ke WhatsApp...
@@ -415,8 +492,9 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                   </div>
                 )}
 
-                {/* Basic Info */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                {/* info dasar */}
+                <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 border-0 p-0 m-0">
+                  <legend className="sr-only">Data diri pelamar</legend>
                   <div>
                     <label
                       htmlFor="full_name"
@@ -556,16 +634,17 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       placeholder="0"
                     />
                   </div>
-                </div>
+                </fieldset>
 
-                {/* Dynamic Criteria Fields */}
+                {/* field kriteria */}
                 {config?.criteria &&
                   Array.isArray(config.criteria) &&
                   config.criteria.length > 0 && (
-                    <div className="pb-3 sm:pb-4 border-b">
+                    <fieldset className="pb-3 sm:pb-4 border-0 border-b border-gray-200 p-0">
+                      <legend className="sr-only">Kriteria tambahan</legend>
                       <div className="space-y-2 sm:space-y-3">
                         {config.criteria.map((criterion) => {
-                          // Ubah "not" menjadi "Alasan Ingin Bekerja Disini"
+                          // ganti label "not"
                           const displayCriterion =
                             criterion.toLowerCase() === "not"
                               ? "Alasan Ingin Bekerja Disini"
@@ -602,10 +681,10 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                           );
                         })}
                       </div>
-                    </div>
+                    </fieldset>
                   )}
 
-                {/* Resume Upload */}
+                {/* upload resume */}
                 <div>
                   <label
                     htmlFor="resume-input"
@@ -628,6 +707,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                       <Upload
                         size={24}
                         className="mx-auto mb-1 text-gray-400"
+                        aria-hidden="true"
                       />
                       <p className="text-xs sm:text-sm font-medium text-gray-600">
                         {resumePreview || "Klik upload resume (Max 5MB)"}
@@ -636,7 +716,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                   </div>
                 </div>
 
-                {/* Form Footer Buttons */}
+                {/* tombol form */}
                 <div className="flex gap-2 sm:gap-3 pt-3 sm:pt-4 border-t border-gray-200">
                   <button
                     type="button"
@@ -652,7 +732,11 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
                   >
                     {submitting ? (
                       <>
-                        <Loader2 size={16} className="animate-spin" />
+                        <Loader2
+                          size={16}
+                          className="animate-spin"
+                          aria-hidden="true"
+                        />
                         <span className="hidden sm:inline">Mengirim...</span>
                         <span className="sm:hidden">Kirim...</span>
                       </>
@@ -666,7 +750,7 @@ ${resumeUrl ? `\nResume: ${resumeUrl}` : ""}
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 
