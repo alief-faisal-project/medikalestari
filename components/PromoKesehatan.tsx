@@ -471,7 +471,7 @@ const PromoKesehatan = () => {
                 Kini Anda tidak perlu mengkhawatirkan rumitnya birokrasi. Berkat
                 kolaborasi erat dengan berbagai asuransi terkemuka dan mitra
                 korporasi, proses klaim serta administrasi kini menjadi jauh
-                lebih praktis. Saatnya menikmati layanan medis premium tanpa
+                lebih praktis. Saatnya menikmati layanan medis kami tanpa
                 kendala.
               </p>
               <Link href="/tentang-kami" passHref>
