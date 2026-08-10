@@ -1,13 +1,13 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { AuthProvider } from "@/context/AuthProvider";
 import { SearchModalProvider } from "@/context/SearchModalContext";
 import LayoutContent from "./LayoutContentClient";
 
-// Konfigurasi Font Bawaan Next.js
-const sansFont = Plus_Jakarta_Sans({
+// Konfigurasi Font Inter (Native Next.js)
+const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
@@ -51,7 +51,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Schema JSON-LD yang Diperbaiki
+  // Schema JSON-LD
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -104,7 +104,7 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`h-full antialiased ${sansFont.variable}`}
+      className={`h-full antialiased ${inter.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -117,14 +117,12 @@ export default function RootLayout({
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QX4TctnWMn13TZye+giMm8e2LwA=="
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
       </head>
-      <body
-        className={`${sansFont.className} min-h-screen bg-white text-black`}
-      >
+      <body className={`${inter.className} min-h-screen bg-white text-black`}>
         <Providers>
           <AuthProvider>
             <SearchModalProvider>
