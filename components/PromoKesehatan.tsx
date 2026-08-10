@@ -462,12 +462,12 @@ const PromoKesehatan = () => {
               <h3 className="text-3xl md:text-4xl font-bold mb-6 leading-tight -mt-5">
                 Solusi Kesehatan Tepercaya dengan Jaringan Mitra Terluas
               </h3>
-              <p className="text-sm md:text-base text-white/90 font-semibold mb-4 leading-normal text-justify">
+              <p className="text-sm md:text-base text-white/90 font-normal mb-4 leading-normal text-justify">
                 Di RS Medika Lestari, kenyamanan Anda adalah prioritas utama.
                 Kami hadir memberikan akses medis yang cepat, tepat, dan dapat
                 diandalkan kapan pun Anda membutuhkan penanganan.
               </p>
-              <p className="text-sm md:text-base text-white/90 font-semibold leading-normal mb-8 text-justify">
+              <p className="text-sm md:text-base text-white/90 font-normal leading-normal mb-8 text-justify">
                 Kini Anda tidak perlu mengkhawatirkan rumitnya birokrasi. Berkat
                 kolaborasi erat dengan berbagai asuransi terkemuka dan mitra
                 korporasi, proses klaim serta administrasi kini menjadi jauh
