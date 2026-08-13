@@ -111,7 +111,7 @@ const KontakKami = () => {
     <main className="min-h-screen bg-slate-50 text-slate-700 pb-20">
       <div className="max-w-[1172px] mx-auto px-4 md:px-8">
         {/* BREADCRUMB & TITLE SECTION */}
-        <div className="pt-8 md:pt-16 pb-12">
+        <div className="pt-8 md:pt-16 pb-2">
           <nav className="flex items-center gap-1 text-[14px] font-normal text-gray-300 mb-4">
             <Link
               href="/"
@@ -133,7 +133,7 @@ const KontakKami = () => {
           fasilitas kesehatan kami di bawah ini.
         </p>
 
-        {/* SECTION 6 MENU SOSIAL MEDIA & LAYANAN */}
+        {/* MENU SOSIAL MEDIA & LAYANAN */}
         <div className="mb-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {FEATURES_DATA.map((feat, index) => (
@@ -178,7 +178,7 @@ const KontakKami = () => {
           </div>
         </div>
 
-        {/* 2 INFO LAYANAN UTAMA (SETELAH PUSAT TELEPON DIHAPUS) */}
+        {/* INFO LAYANAN UTAMA  */}
         <div className="flex flex-col gap-4 mb-12">
           {contactInfo.map((item) => (
             <div
@@ -212,7 +212,7 @@ const KontakKami = () => {
           ))}
         </div>
 
-        {/* LAYOUT DUA KOLOM SIMETRIS (50:50) */}
+        {/* LAYOUT DUA KOLOM SIMETRIS */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
           {/* FORM KIRIM PESAN */}
           <div className="bg-white rounded-none border border-transparent p-6 md:p-8 transition-all duration-200 flex flex-col justify-between">
