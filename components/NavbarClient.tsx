@@ -507,7 +507,7 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
               className="flex items-center gap-1 transition-all h-full px-3 relative group text-gray-500"
               title="Cari Dokter Spesialis"
             >
-              <Search size={20} strokeWidth={3} />
+              <Search size={25} strokeWidth={3} />
 
               <div
                 className={`absolute bottom-0 left-3 right-3 h-1 bg-gray-400 rounded-t-full transition-transform duration-300  ${
@@ -917,7 +917,7 @@ function AuthDropdown({ activeMenu, setActiveMenu }: AuthDropdownProps) {
       onMouseLeave={() => setActiveMenu(null)}
     >
       <button className="flex items-center h-full gap-1 font-medium relative group text-gray-700">
-        <Menu size={20} strokeWidth={2} />
+        <Menu size={25} strokeWidth={2} />
         <div
           className={`absolute bottom-0 left-3 right-3 h-1 bg-gray-400 rounded-t-full transition-transform duration-300 ${
             activeMenu === "Auth"

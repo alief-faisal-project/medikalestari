@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthProvider";
+import Image from "next/image";
 import Link from "next/link";
-import { AlertCircle, Eye, EyeOff, Mail, Lock, Loader2 } from "lucide-react";
-// Import tipe AuthSession dari supabase-js
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/context/AuthProvider";
+import { AlertCircle, Eye, EyeOff, Mail, Lock, Loader2, X } from "lucide-react";
 import { Session } from "@supabase/supabase-js";
 
 const AdminLoginPage = () => {
@@ -18,8 +18,13 @@ const AdminLoginPage = () => {
   const router = useRouter();
   const { login } = useAuth();
 
+  // Validasi apakah email dan password sudah terisi
+  const isFormValid = email.trim() !== "" && password.trim() !== "";
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isFormValid) return;
+
     setError("");
     setLoading(true);
 
@@ -35,10 +40,8 @@ const AdminLoginPage = () => {
         setError(authError.message);
       } else if (data.session) {
         try {
-          // Menggunakan data.session secara langsung karena tipenya sudah valid (Session)
           const session: Session = data.session;
 
-          // Convert Supabase user to AdminUser type
           const adminUser = session.user
             ? {
                 id: session.user.id,
@@ -50,7 +53,6 @@ const AdminLoginPage = () => {
 
           await login(session.access_token, adminUser, session);
         } catch (error) {
-          // fallback jika ada error pada fungsi login context
           console.error("Login context error:", error);
         }
         router.push("/admin/dashboard");
@@ -63,79 +65,152 @@ const AdminLoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#003369] p-6">
-      <div className="w-full max-w-md bg-white rounded-xl p-10 border border-gray-200">
-        <div className="mb-10 text-center">
-          <h1 className="text-4xl font-bold text-[#01274F] mb-2">Login</h1>
-          <p className="text-gray-400 font-medium text-lg">RS Medika Lestari</p>
+    <main className="min-h-screen w-full flex bg-white font-sans antialiased overflow-hidden">
+      {/* Sisi Kiri - Banner Gambar */}
+      <aside className="hidden lg:block relative lg:w-[55%] xl:w-[60%] min-h-screen pl-20 bg-white">
+        <div className="relative w-full h-full bg-gray-100">
+          <Image
+            src="/reservasi.jpeg"
+            alt="Informasi RS Medika Lestari"
+            fill
+            priority
+            sizes="(max-width: 1024px) 0vw, 100vw"
+            className="object-cover"
+          />
         </div>
+      </aside>
 
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 animate-in fade-in">
-            <AlertCircle size={18} className="text-red-500 shrink-0" />
-            <p className="text-red-700 text-xs font-semibold">{error}</p>
-          </div>
-        )}
-
-        <form onSubmit={handleLogin} className="space-y-5">
-          {/* Email Input */}
-          <div className="relative group">
-            <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#01274F] transition-colors">
-              <Mail size={20} />
-            </div>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Masukkan Email"
-              className="w-full pl-14 pr-6 py-4 bg-white border border-gray-200 rounded-xs text-sm transition-all placeholder:text-gray-300"
-              required
+      {/* Form Login  */}
+      <section className="w-full lg:w-[45%] xl:w-[40%] min-h-screen flex flex-col justify-between p-8 sm:p-12 md:p-16 bg-white">
+        {/* Header: Logo & Tombol Close (X) */}
+        <header className="flex items-center justify-between w-full h-12">
+          <div className="relative w-32 h-10">
+            <Image
+              src="/logo.png"
+              alt="Logo RS Medika Lestari"
+              fill
+              priority
+              className="object-contain object-left"
             />
           </div>
-
-          {/* Password Input */}
-          <div className="relative group">
-            <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#003369] transition-colors">
-              <Lock size={20} />
-            </div>
-            <input
-              id="password"
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Masukkan Kata sandi"
-              className="w-full pl-14 pr-14 py-4 bg-white border border-gray-200 rounded-xs text-sm  transition-all placeholder:text-gray-300"
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors"
-            >
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-[#003369] text-white py-4 rounded-xl font-bold text-sm hover:bg-[#01274F] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
-          >
-            {loading ? <Loader2 size={18} className="animate-spin" /> : "Login"}
-          </button>
-        </form>
-
-        <div className="mt-10 flex flex-col items-center gap-4">
           <Link
             href="/"
-            className="text-sm font-bold text-[#003369] hover:underline"
+            aria-label="Kembali ke beranda"
+            className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
           >
-            Kembali ke beranda
+            <X size={20} />
           </Link>
-        </div>
-      </div>
-    </div>
+        </header>
+
+        {/* Section Utama Form */}
+        <article className="w-full max-w-sm mx-auto my-auto">
+          <header className="mb-8">
+            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
+              Masuk / Login
+            </h1>
+            <p className="text-gray-500 mt-2 text-sm leading-relaxed">
+              Selamat datang di RS Medika Lestari.
+            </p>
+          </header>
+
+          {error && (
+            <div
+              role="alert"
+              className="mb-6 p-3.5 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3"
+            >
+              <AlertCircle size={18} className="text-red-500 shrink-0" />
+              <p className="text-red-700 text-xs font-medium leading-snug">
+                {error}
+              </p>
+            </div>
+          )}
+
+          <form onSubmit={handleLogin} className="space-y-5">
+            {/* Field Email */}
+            <div className="space-y-1.5">
+              <label
+                htmlFor="email"
+                className="block text-xs font-semibold text-gray-700"
+              >
+                Email
+              </label>
+              <div className="relative flex items-center">
+                <div className="absolute left-3.5 pointer-events-none text-gray-400">
+                  <Mail size={18} />
+                </div>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Masukkan email Anda"
+                  className="w-full h-11 pl-10 pr-4 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all placeholder:text-gray-400"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Field Password */}
+            <div className="space-y-1.5">
+              <label
+                htmlFor="password"
+                className="block text-xs font-semibold text-gray-700"
+              >
+                Kata Sandi
+              </label>
+              <div className="relative flex items-center">
+                <div className="absolute left-3.5 pointer-events-none text-gray-400">
+                  <Lock size={18} />
+                </div>
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Masukkan kata sandi"
+                  className="w-full h-11 pl-10 pr-11 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all placeholder:text-gray-400"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={
+                    showPassword ? "Sembunyikan password" : "Tampilkan password"
+                  }
+                  tabIndex={-1}
+                  className="absolute right-0 h-11 w-11 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors cursor-pointer rounded-r-lg"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Tombol Submit */}
+            <button
+              type="submit"
+              disabled={loading || !isFormValid}
+              className={`w-full h-11 mt-2 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 shadow-xs ${
+                isFormValid && !loading
+                  ? "bg-[#003369] text-white hover:bg-[#01274F] active:scale-[0.99] cursor-pointer"
+                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
+              }`}
+            >
+              {loading ? (
+                <Loader2 size={18} className="animate-spin text-white" />
+              ) : (
+                "Lanjutkan"
+              )}
+            </button>
+          </form>
+        </article>
+
+        {/* Footer */}
+        <footer className="text-center text-xs text-gray-400">
+          &copy; {new Date().getFullYear()} RS Medika Lestari. All rights
+          reserved.
+        </footer>
+      </section>
+    </main>
   );
 };
 
