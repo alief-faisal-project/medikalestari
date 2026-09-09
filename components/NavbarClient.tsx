@@ -9,6 +9,7 @@ import {
   Menu,
   X,
   UserCircle,
+  UserRound,
   LayoutDashboard,
   Stethoscope,
   Phone,
@@ -332,17 +333,17 @@ const NavbarClient: React.FC<NavbarClientProps> = ({ logoNode }) => {
             <div className="md:hidden flex items-center gap-3 p-2 text-gray-700 relative z-[110]">
               <button
                 onClick={() => openSearch()}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 "
                 title="Cari dokter"
               >
-                <Search size={24} />
+                <Search size={28} />
               </button>
 
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 "
               >
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
               </button>
             </div>
           </div>
@@ -953,7 +954,7 @@ function AuthDropdown({ activeMenu, setActiveMenu }: AuthDropdownProps) {
                   onClick={() => setActiveMenu(null)}
                   className="px-2 py-2 text-gray-700 font-medium transition-colors flex items-center gap-2 m-1"
                 >
-                  <UserCircle size={18} />
+                  <UserRound size={20} />
                   Login
                 </Link>
               )}

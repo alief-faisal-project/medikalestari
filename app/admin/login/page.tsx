@@ -96,9 +96,9 @@ const AdminLoginPage = () => {
           <Link
             href="/"
             aria-label="Kembali ke beranda"
-            className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+            className="w-10 h-10 flex items-center justify-center text-gray-700"
           >
-            <X size={20} />
+            <X size={30} />
           </Link>
         </header>
 
